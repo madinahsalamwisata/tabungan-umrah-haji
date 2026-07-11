@@ -17,6 +17,20 @@ function LoginForm() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const images = [
+    "/images/bg/makkah_thumbnail.webp",
+    "/images/bg/madinah_thumbnail.webp",
+    "/images/bg/Thaif_thumbnail.webp",
+  ];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 5000); // Change image every 5 seconds
+    return () => clearInterval(interval);
+  }, [images.length]);
+
   useEffect(() => {
     if (searchParams.get("registered") === "true") {
       setSuccess("Registrasi berhasil! Silakan masuk dengan akun Anda.");
@@ -53,40 +67,58 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-emerald-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-emerald-900">
+    <div className="min-h-screen relative flex flex-col justify-center py-12 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Background Carousel */}
+      {images.map((src, idx) => (
+        <div
+          key={src}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out z-0 ${
+            idx === currentImageIndex ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt="Background" className="w-full h-full object-cover" />
+        </div>
+      ))}
+      
+      {/* Dark Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30 z-0"></div>
+
+      {/* Content Container (z-10 puts it above the background) */}
+      <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-white drop-shadow-md">
           Masuk ke Akun Anda
         </h2>
-        <p className="mt-2 text-center text-sm text-emerald-600">
+        <p className="mt-2 text-center text-sm text-gray-200 drop-shadow">
           Atau{" "}
           <Link
             href="/register"
-            className="font-medium text-yellow-600 hover:text-yellow-500"
+            className="font-medium text-yellow-400 hover:text-yellow-300 underline underline-offset-2 transition-colors"
           >
             daftar akun baru jika belum punya
           </Link>
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border-t-4 border-yellow-500">
+      <div className="relative z-10 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        {/* Glassmorphism Container */}
+        <div className="backdrop-blur-md bg-white/10 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/20">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-400 p-4">
+              <div className="bg-red-500/20 backdrop-blur-sm border-l-4 border-red-500 p-4 rounded-md">
                 <div className="flex">
                   <div className="ml-3">
-                    <p className="text-sm text-red-700">{error}</p>
+                    <p className="text-sm text-red-100 font-medium">{error}</p>
                   </div>
                 </div>
               </div>
             )}
 
             {success && (
-              <div className="bg-green-50 border-l-4 border-green-400 p-4">
+              <div className="bg-emerald-500/20 backdrop-blur-sm border-l-4 border-emerald-500 p-4 rounded-md">
                 <div className="flex">
                   <div className="ml-3">
-                    <p className="text-sm text-green-700">{success}</p>
+                    <p className="text-sm text-emerald-100 font-medium">{success}</p>
                   </div>
                 </div>
               </div>
@@ -95,7 +127,7 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-emerald-700"
+                className="block text-sm font-medium text-gray-100"
               >
                 Alamat Email
               </label>
@@ -107,7 +139,8 @@ function LoginForm() {
                   required
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="appearance-none block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm placeholder-emerald-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm text-black"
+                  className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
+                  placeholder="email@anda.com"
                 />
               </div>
             </div>
@@ -115,7 +148,7 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-emerald-700"
+                className="block text-sm font-medium text-gray-100"
               >
                 Kata Sandi
               </label>
@@ -129,7 +162,8 @@ function LoginForm() {
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
-                  className="appearance-none block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm placeholder-emerald-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm text-black"
+                  className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
+                  placeholder="••••••••"
                 />
               </div>
             </div>
@@ -138,7 +172,7 @@ function LoginForm() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-emerald-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 transition-colors"
+                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-lg text-sm font-bold text-emerald-900 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:ring-offset-black/50 disabled:opacity-50 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 {loading ? "Memproses..." : "Masuk"}
               </button>

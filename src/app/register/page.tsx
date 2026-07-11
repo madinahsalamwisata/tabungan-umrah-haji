@@ -86,7 +86,7 @@ export default function RegisterPage() {
       ))}
       
       {/* Dark Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30 z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/60 z-0"></div>
 
       <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-white drop-shadow-md">

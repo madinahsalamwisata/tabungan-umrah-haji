@@ -166,133 +166,126 @@ export default function TabunganDashboardClient({
     }
   };
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
-    <div className="space-y-6 mb-12">
-      <div className="flex justify-between items-end">
-        <h2 className="text-2xl font-bold text-gray-900">Ringkasan Tabungan</h2>
-        <div className="flex gap-2">
+    <div className="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden transition-all duration-300">
+      {/* Header / Summary (Always Visible) */}
+      <div 
+        className="p-5 cursor-pointer hover:bg-emerald-50/50 transition-colors flex items-center justify-between"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-1.5">
+            <h3 className="font-bold text-lg text-emerald-900">{rencana.paket.nama_paket}</h3>
+            {sudahBayarSemua && (
+              <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-yellow-200">LUNAS 🎉</span>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
+            <span>Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</span>
+            <span className="hidden sm:inline-block w-1 h-1 bg-gray-300 rounded-full"></span>
+            <span>Terkumpul: <strong className="text-emerald-700">{formatRp(totalTerkumpul)}</strong></span>
+            <span className="hidden sm:inline-block w-1 h-1 bg-gray-300 rounded-full"></span>
+            <span>Sisa: <strong className="text-gray-700">{formatRp(sisaTagihan)}</strong></span>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-4 pl-4 ml-4 border-l border-gray-100">
+          <div className="hidden md:block w-32">
+            <div className="flex justify-between text-[11px] text-gray-500 mb-1 font-medium">
+              <span>{persentase.toFixed(1)}%</span>
+            </div>
+            <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+              <div className="bg-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: `${persentase}%` }}></div>
+            </div>
+          </div>
+          <button className={`p-2 rounded-full hover:bg-gray-100 text-gray-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Expanded Content */}
+      {isExpanded && (
+        <div className="border-t border-emerald-50 bg-gray-50/30 p-5 sm:p-6 animate-in slide-in-from-top-2 duration-300">
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-2 mb-6">
             {!sudahBayarSemua && (
-                <button onClick={() => setIsEditing(true)} className="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold px-4 py-2 rounded shadow-sm text-sm transition-colors">
+                <button onClick={() => setIsEditing(true)} className="bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 font-medium px-3 py-1.5 rounded shadow-sm text-xs transition-colors">
                     Edit Rencana
                 </button>
             )}
-            <button onClick={handleDelete} disabled={isDeleting} className="bg-red-100 hover:bg-red-200 text-red-900 font-bold px-4 py-2 rounded shadow-sm text-sm transition-colors">
-                {isDeleting ? "Menghapus..." : "Hapus"}
+            <button onClick={handleDelete} disabled={isDeleting} className="bg-white border border-red-200 text-red-600 hover:bg-red-50 font-medium px-3 py-1.5 rounded shadow-sm text-xs transition-colors">
+                {isDeleting ? "Menghapus..." : "Hapus Tabungan"}
             </button>
-            {sudahBayarSemua && (
-              <span className="bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-full shadow-sm ml-2">
-                LUNAS 🎉
-              </span>
-            )}
-        </div>
-      </div>
-
-      <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-lg mb-6 shadow-sm">
-        <h4 className="font-bold text-emerald-900 mb-1 flex items-center gap-2">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          Informasi Penting
-        </h4>
-        <p className="text-sm text-emerald-800 leading-relaxed">
-          Kalkulasi biaya tabungan di bawah ini merupakan <strong>estimasi awal</strong>. Harga final paket Umrah dapat berubah sewaktu-waktu menyesuaikan dengan dinamika harga tiket pesawat, akomodasi hotel, kebijakan visa, dan komponen harga lainnya pada saat tahun keberangkatan Anda. Kami akan terus menginformasikan setiap pembaruan harga secara transparan.
-        </p>
-      </div>
-
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-emerald-900">
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <p className="text-sm text-gray-500 font-medium">Paket Terpilih</p>
-              <p className="text-xl font-bold text-emerald-900 mt-1">{rencana.paket.nama_paket}</p>
-              <p className="text-sm text-gray-600 mt-1">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</p>
-            </div>
-            
-            <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-600">Estimasi Total Biaya</span>
-                <span className="font-bold text-gray-900">{formatRp(Number(rencana.total_biaya))}</span>
-              </div>
-              <div className="flex justify-between text-sm mb-3">
-                <span className="text-gray-600">Total Terkumpul</span>
-                <span className="font-bold text-emerald-700">{formatRp(totalTerkumpul)}</span>
-              </div>
-              
-              <div className="w-full bg-emerald-200 rounded-full h-2.5 mb-1">
-                <div 
-                  className="bg-emerald-700 h-2.5 rounded-full" 
-                  style={{ width: `${persentase}%` }}
-                ></div>
-              </div>
-              <div className="flex justify-between text-xs text-emerald-900 font-medium mt-1">
-                <span>{persentase.toFixed(1)}% Terkumpul</span>
-                <span>Sisa: {formatRp(sisaTagihan)}</span>
-              </div>
-            </div>
           </div>
 
-          <div className="mt-8 border-t border-gray-100 pt-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Setoran Bulanan</h3>
-            <div className="flex flex-col md:flex-row items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <div className="mb-4 md:mb-0">
-                <p className="text-sm text-gray-500">Nominal Setoran per Bulan</p>
-                <p className="text-2xl font-black text-emerald-900">{formatRp(Number(rencana.setoran_per_bulan))}</p>
-                {!sudahBayarSemua && (
-                    <p className="text-xs text-gray-500 mt-1">Pembayaran untuk Cicilan ke-{cicilanKe} dari {rencana.periode_bulan}</p>
-                )}
-              </div>
-              
-              <div>
-                {sudahBayarSemua || sudahLunasBulanIni ? (
-                  <button disabled className="bg-gray-300 text-gray-600 font-medium py-3 px-6 rounded-md shadow-sm cursor-not-allowed">
-                    Sudah Dibayar Bulan Ini
-                  </button>
-                ) : (
-                  <button 
-                    onClick={handleBayar}
-                    disabled={isPaying}
-                    className={`font-medium py-3 px-6 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2 ${
-                        isPaying ? "bg-emerald-400 text-white cursor-wait" : "bg-emerald-900 hover:bg-emerald-800 text-white"
-                    }`}
-                  >
-                    {isPaying ? "Memproses..." : "Bayar Setoran Ini"}
-                  </button>
-                )}
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {/* Setoran Bulanan Card */}
+            <div className="bg-white p-5 rounded-xl shadow-sm border border-emerald-100 flex flex-col justify-between">
+               <div>
+                 <h4 className="text-sm font-bold text-gray-700 mb-1">Setoran Bulanan</h4>
+                 <p className="text-xs text-gray-500 mb-4">
+                   {!sudahBayarSemua ? `Pembayaran untuk Cicilan ke-${cicilanKe} dari ${rencana.periode_bulan}` : "Tabungan Anda telah lunas."}
+                 </p>
+                 <p className="text-3xl font-black text-emerald-900 mb-6">{formatRp(Number(rencana.setoran_per_bulan))}</p>
+               </div>
+               
+               <div>
+                 {sudahBayarSemua || sudahLunasBulanIni ? (
+                   <button disabled className="w-full bg-gray-100 text-gray-500 font-bold py-2.5 px-4 rounded-lg cursor-not-allowed text-sm border border-gray-200">
+                     Sudah Dibayar Bulan Ini
+                   </button>
+                 ) : (
+                   <button 
+                     onClick={handleBayar}
+                     disabled={isPaying}
+                     className={`w-full font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm ${
+                         isPaying ? "bg-emerald-400 text-white cursor-wait" : "bg-emerald-900 hover:bg-emerald-800 text-white"
+                     }`}
+                   >
+                     {isPaying ? "Memproses..." : "Bayar Setoran Ini"}
+                   </button>
+                 )}
+               </div>
+            </div>
+
+            {/* Riwayat Tabungan Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col max-h-[250px]">
+               <div className="p-4 border-b border-gray-100 bg-gray-50">
+                 <h4 className="text-sm font-bold text-gray-700">Riwayat Setoran</h4>
+               </div>
+               <div className="overflow-y-auto flex-1">
+                 {rencana.RiwayatSetoran.length > 0 ? (
+                   <ul className="divide-y divide-gray-100">
+                     {rencana.RiwayatSetoran.map((setoran: any) => (
+                       <li key={setoran.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                         <div>
+                           <p className="text-xs font-bold text-emerald-900 mb-0.5">Cicilan Ke-{setoran.bulan_ke}</p>
+                           <p className="text-[10px] text-gray-500">{new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                         </div>
+                         <div className="text-right">
+                           <p className="text-sm font-bold text-gray-900 mb-1">{formatRp(Number(setoran.nominal))}</p>
+                           <span className="px-2 py-0.5 inline-flex text-[10px] font-semibold rounded-md bg-emerald-100 text-emerald-800 uppercase">
+                             {setoran.status_pembayaran}
+                           </span>
+                         </div>
+                       </li>
+                     ))}
+                   </ul>
+                 ) : (
+                   <div className="p-8 text-center text-sm text-gray-500">
+                     Belum ada riwayat setoran pembayaran.
+                   </div>
+                 )}
+               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-emerald-900 mt-8">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Riwayat Tabungan</h3>
-          <p className="text-sm text-gray-500 mt-1">Daftar setoran pembayaran yang telah Anda lakukan untuk paket ini.</p>
-        </div>
-        <div className="border-t border-gray-200">
-          {rencana.RiwayatSetoran.length > 0 ? (
-            <ul className="divide-y divide-gray-200">
-              {rencana.RiwayatSetoran.map((setoran: any) => (
-                <li key={setoran.id} className="px-4 py-4 sm:px-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-emerald-900">Cicilan Ke-{setoran.bulan_ke}</p>
-                    <p className="text-xs text-gray-500">{new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-bold text-gray-900">{formatRp(Number(setoran.nominal))}</span>
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800 uppercase">
-                      {setoran.status_pembayaran}
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="p-6 text-center text-gray-500">
-              Belum ada riwayat setoran pembayaran.
-            </div>
-          )}
-        </div>
-      </div>
-
+      {/* Modal Edit */}
       {isEditing && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full">
@@ -330,10 +323,10 @@ export default function TabunganDashboardClient({
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded">
+              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">
                 Batal
               </button>
-              <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded">
+              <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg">
                 {isSubmittingEdit ? "Menyimpan..." : "Simpan Perubahan"}
               </button>
             </div>

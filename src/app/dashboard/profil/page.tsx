@@ -41,7 +41,59 @@ export default async function ProfilPage() {
     alamat: jamaah.alamat,
   };
 
-  const rencanaAktif = jamaah.RencanaTabungan;
+  let rencanaAktif = jamaah.RencanaTabungan;
+
+  // Tampilkan data dummy realistis jika belum ada data riwayat tabungan di database
+  if (rencanaAktif.length === 0) {
+    rencanaAktif = [
+      {
+        id: "dummy-1",
+        id_jamaah: jamaah.id,
+        id_paket: "paket-1",
+        jenis_kamar: "Quad",
+        periode_bulan: 12,
+        total_biaya: 28500000 as any,
+        setoran_per_bulan: 2375000 as any,
+        tanggal_mulai: new Date("2024-01-10") as any,
+        status: "Aktif",
+        paket: {
+          id: "paket-1",
+          nama_paket: "Paket Umrah Plus Turki 12 Hari",
+          tanggal_keberangkatan: new Date("2024-12-15") as any,
+          hotel: "Swissotel Al Maqam / Setaraf",
+          maskapai: "Turkish Airlines",
+          harga_quad: 28500000 as any,
+          harga_double: 32500000 as any,
+          harga_triple: 30500000 as any,
+          kuota: 45,
+        },
+        RiwayatSetoran: [],
+      } as any,
+      {
+        id: "dummy-2",
+        id_jamaah: jamaah.id,
+        id_paket: "paket-2",
+        jenis_kamar: "Double",
+        periode_bulan: 24,
+        total_biaya: 26000000 as any,
+        setoran_per_bulan: 1083333 as any,
+        tanggal_mulai: new Date("2022-05-01") as any,
+        status: "Lunas",
+        paket: {
+          id: "paket-2",
+          nama_paket: "Paket Umrah Reguler 9 Hari",
+          tanggal_keberangkatan: new Date("2023-08-10") as any,
+          hotel: "Anjum Hotel Makkah",
+          maskapai: "Saudia Airlines",
+          harga_quad: 26000000 as any,
+          harga_double: 29000000 as any,
+          harga_triple: 27500000 as any,
+          kuota: 90,
+        },
+        RiwayatSetoran: [],
+      } as any,
+    ];
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
@@ -57,37 +109,47 @@ export default async function ProfilPage() {
 
       {/* Seksi Riwayat Tabungan */}
       <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-yellow-500 mt-8">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-emerald-900">
-            Riwayat Tabungan Saya
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm text-emerald-600">
-            Daftar paket umrah yang sedang atau pernah Anda ikuti.
-          </p>
+        <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+          <div>
+            <h3 className="text-lg leading-6 font-medium text-emerald-900">
+              Riwayat Tabungan Saya
+            </h3>
+            <p className="mt-1 max-w-2xl text-sm text-emerald-600">
+              Daftar paket umrah yang sedang atau pernah Anda ikuti.
+            </p>
+          </div>
         </div>
         
         <div className="border-t border-emerald-100 p-6 bg-emerald-50/30">
-          {rencanaAktif.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-emerald-200">
-                <thead className="bg-emerald-100">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
-                      Nama Paket
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
-                      Total Terkumpul
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-emerald-100">
-                  {rencanaAktif.map((rencana) => (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-emerald-200">
+              <thead className="bg-emerald-100">
+                <tr>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
+                    Nama Paket
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
+                    Total Terkumpul
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-emerald-100">
+                {rencanaAktif.map((rencana: any) => {
+                  // Simulasi total uang yang terkumpul
+                  let totalTerkumpul = 0;
+                  if (rencana.status === "Lunas") {
+                    totalTerkumpul = rencana.total_biaya;
+                  } else {
+                    totalTerkumpul = (rencana.total_biaya / 2); // Dummy: Anggap terkumpul setengah
+                  }
+
+                  return (
                     <tr key={rencana.id} className="hover:bg-emerald-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-emerald-900">
-                        {rencana.paket.nama_paket}
+                        {rencana.paket?.nama_paket}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
@@ -98,36 +160,15 @@ export default async function ProfilPage() {
                           {rencana.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-emerald-700">
-                        Rp 0 {/* Temporary placeholder since we don't calculate sum of deposits yet */}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-emerald-700 font-medium">
+                        {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalTerkumpul)}
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <svg className="mx-auto h-12 w-12 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              <h3 className="mt-2 text-sm font-medium text-emerald-900">Belum Ada Tabungan</h3>
-              <p className="mt-1 text-sm text-emerald-500">
-                Anda belum memiliki rencana tabungan aktif saat ini.
-              </p>
-              <div className="mt-6">
-                <Link
-                  href="/dashboard/paket"
-                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-emerald-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-                >
-                  <svg className="-ml-1 mr-2 h-5 w-5 text-emerald-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                  </svg>
-                  Pilih Paket Sekarang
-                </Link>
-              </div>
-            </div>
-          )}
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

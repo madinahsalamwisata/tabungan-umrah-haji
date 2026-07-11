@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 // Using midtrans-client requires require() as it doesn't have proper types sometimes, or we can use the Midtrans Node API.
 const midtransClient = require('midtrans-client');
 

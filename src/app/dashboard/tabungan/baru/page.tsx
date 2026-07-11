@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import TabunganForm from "@/components/tabungan/TabunganForm";
 
-const prisma = new PrismaClient();
+
 
 export default async function TabunganBaruPage(props: {
   searchParams: Promise<{ paketId?: string }>;

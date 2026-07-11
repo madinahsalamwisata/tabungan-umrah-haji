@@ -1,7 +1,71 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+
+function CustomSelect({ 
+  value, 
+  onChange, 
+  options, 
+  placeholder 
+}: { 
+  value: string, 
+  onChange: (val: string) => void, 
+  options: { label: string, value: string }[], 
+  placeholder: string 
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find(opt => opt.value === value);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm h-[38px]"
+      >
+        <span className="block truncate">{selectedOption ? selectedOption.label : placeholder}</span>
+        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+          <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </span>
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-20 mt-1 w-full bg-white shadow-lg max-h-48 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+          <div
+            className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-50 hover:text-emerald-900 ${value === "" ? "bg-emerald-100 text-emerald-900 font-semibold" : "text-gray-900"}`}
+            onClick={() => { onChange(""); setIsOpen(false); }}
+          >
+            <span className="block truncate">{placeholder}</span>
+          </div>
+          {options.map((opt) => (
+            <div
+              key={opt.value}
+              className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-50 hover:text-emerald-900 ${value === opt.value ? "bg-emerald-100 text-emerald-900 font-semibold" : "text-gray-900"}`}
+              onClick={() => { onChange(opt.value); setIsOpen(false); }}
+            >
+              <span className="block truncate">{opt.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function TabunganSearchClient({ pakets, activePaketIds }: { pakets: any[], activePaketIds: string[] }) {
   const [pesawat, setPesawat] = useState("");
@@ -47,27 +111,33 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Pesawat</label>
-            <select value={pesawat} onChange={e => setPesawat(e.target.value)} className="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-              <option value="">Semua Pesawat</option>
-              {pesawatOptions.map((opt: any) => <option key={opt} value={opt}>{opt}</option>)}
-            </select>
+            <CustomSelect 
+              value={pesawat} 
+              onChange={setPesawat} 
+              options={pesawatOptions.map((opt: any) => ({ label: opt, value: opt }))}
+              placeholder="Semua Pesawat"
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Hotel</label>
-            <select value={hotel} onChange={e => setHotel(e.target.value)} className="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-              <option value="">Semua Hotel</option>
-              {hotelOptions.map((opt: any) => <option key={opt} value={opt}>{formatHotelOption(opt)}</option>)}
-            </select>
+            <CustomSelect 
+              value={hotel} 
+              onChange={setHotel} 
+              options={hotelOptions.map((opt: any) => ({ label: formatHotelOption(opt), value: opt }))}
+              placeholder="Semua Hotel"
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Bulan Keberangkatan</label>
-            <select value={bulan} onChange={e => setBulan(e.target.value)} className="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-              <option value="">Semua Bulan</option>
-              {bulanOptions.map((opt: any) => <option key={opt} value={opt}>{opt}</option>)}
-            </select>
+            <CustomSelect 
+              value={bulan} 
+              onChange={setBulan} 
+              options={bulanOptions.map((opt: any) => ({ label: opt, value: opt }))}
+              placeholder="Semua Bulan"
+            />
           </div>
           <div>
-            <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+            <button type="submit" className="w-full h-[38px] bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
               Cari Paket
             </button>
           </div>

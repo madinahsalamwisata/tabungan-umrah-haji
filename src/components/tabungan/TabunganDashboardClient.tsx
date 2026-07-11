@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 declare global {
   interface Window {
@@ -59,7 +60,7 @@ export default function TabunganDashboardClient({
            await syncPayment(dataToken.order_id, cicilanKe, dataToken.nominal);
         },
         onError: function() {
-          alert("Pembayaran gagal!");
+          Swal.fire('Gagal!', 'Pembayaran gagal!', 'error');
           setIsPaying(false);
         },
         onClose: async function() {
@@ -67,7 +68,7 @@ export default function TabunganDashboardClient({
         }
       });
     } catch (err: any) {
-      alert("Error: " + err.message);
+      Swal.fire('Error', err.message, 'error');
       setIsPaying(false);
     }
   };
@@ -81,8 +82,8 @@ export default function TabunganDashboardClient({
       });
       const data = await res.json();
       if (data.status === "success") {
-          alert("Pembayaran berhasil!");
-          window.location.reload();
+          Swal.fire('Berhasil!', 'Pembayaran berhasil!', 'success');
+          router.refresh();
       }
     } catch (e) {
       console.error(e);
@@ -92,7 +93,19 @@ export default function TabunganDashboardClient({
   };
 
   const handleDelete = async () => {
-    if (!confirm("Apakah Anda yakin ingin menghapus paket ini? Jika sudah ada uang masuk, hubungi admin untuk pembatalan.")) return;
+    const result = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: "Jika sudah ada setoran masuk, hubungi admin untuk pembatalan atau *refund*.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#059669', // emerald-600
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal'
+    });
+
+    if (!result.isConfirmed) return;
+    
     setIsDeleting(true);
     try {
       const res = await fetch("/api/tabungan/hapus", {
@@ -101,14 +114,14 @@ export default function TabunganDashboardClient({
         body: JSON.stringify({ id: rencana.id })
       });
       if (res.ok) {
-        alert("Berhasil dihapus");
-        window.location.assign("/dashboard/paket");
+        Swal.fire('Terhapus!', 'Rencana tabungan Anda telah dihapus.', 'success');
+        router.refresh();
       } else {
         const data = await res.json();
-        alert(data.message);
+        Swal.fire('Gagal', data.message, 'error');
       }
     } catch (e) {
-      alert("Terjadi kesalahan saat menghapus");
+      Swal.fire('Gagal', 'Terjadi kesalahan saat menghapus', 'error');
     } finally {
       setIsDeleting(false);
     }
@@ -123,15 +136,15 @@ export default function TabunganDashboardClient({
         body: JSON.stringify({ id: rencana.id, jenis_kamar: editKamar, jumlah_jamaah: editJamaah })
       });
       if (res.ok) {
-        alert("Berhasil diperbarui");
+        Swal.fire('Berhasil diperbarui!', 'Rencana Anda telah disesuaikan.', 'success');
         setIsEditing(false);
-        window.location.reload();
+        router.refresh();
       } else {
         const data = await res.json();
-        alert(data.message);
+        Swal.fire('Gagal', data.message, 'error');
       }
     } catch (e) {
-      alert("Terjadi kesalahan saat menyimpan");
+      Swal.fire('Gagal', 'Terjadi kesalahan saat menyimpan', 'error');
     } finally {
       setIsSubmittingEdit(false);
     }

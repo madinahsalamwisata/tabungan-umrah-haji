@@ -31,14 +31,22 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ message: "Rencana tidak ditemukan atau bukan milik Anda" }, { status: 404 });
     }
 
-    // Hapus riwayat setoran terkait dulu
-    await prisma.riwayatSetoran.deleteMany({
-      where: { id_rencana_tabungan: id },
-    });
+    await prisma.$transaction(async (tx: any) => {
+      // Hapus riwayat setoran terkait dulu
+      await tx.riwayatSetoran.deleteMany({
+        where: { id_rencana_tabungan: id },
+      });
 
-    // Baru hapus rencana
-    await prisma.rencanaTabungan.delete({
-      where: { id },
+      // Kembalikan kuota paket
+      await tx.paket.update({
+        where: { id: rencana.id_paket },
+        data: { kuota: { increment: rencana.jumlah_jamaah } }
+      });
+
+      // Baru hapus rencana
+      await tx.rencanaTabungan.delete({
+        where: { id },
+      });
     });
 
     return NextResponse.json({ message: "Berhasil dihapus" }, { status: 200 });

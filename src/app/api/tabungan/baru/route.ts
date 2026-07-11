@@ -45,18 +45,36 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: "Anda sudah memiliki rencana tabungan aktif untuk paket ini" }, { status: 400 });
     }
 
-    const rencanaTabungan = await prisma.rencanaTabungan.create({
-      data: {
-        id_jamaah: jamaah.id,
-        id_paket: id_paket,
-        jenis_kamar: jenis_kamar,
-        jumlah_jamaah: jumlah_jamaah || 1,
-        periode_bulan: Number(durasi_bulan),
-        total_biaya: Number(total_biaya),
-        setoran_per_bulan: Number(setoran_bulanan),
-        tanggal_mulai: new Date(),
-        status: "Aktif",
-      },
+    const parsedJumlahJamaah = jumlah_jamaah || 1;
+
+    // Cek ketersediaan kuota
+    const paketData = await prisma.paket.findUnique({ where: { id: id_paket } });
+    if (!paketData || paketData.kuota < parsedJumlahJamaah) {
+        return NextResponse.json({ message: "Sisa kuota paket tidak mencukupi untuk jumlah jamaah tersebut" }, { status: 400 });
+    }
+
+    // Gunakan transaksi untuk menjamin keamanan perubahan data ganda
+    const rencanaTabungan = await prisma.$transaction(async (tx: any) => {
+      const rencana = await tx.rencanaTabungan.create({
+        data: {
+          id_jamaah: jamaah.id,
+          id_paket: id_paket,
+          jenis_kamar: jenis_kamar,
+          jumlah_jamaah: parsedJumlahJamaah,
+          periode_bulan: Number(durasi_bulan),
+          total_biaya: Number(total_biaya),
+          setoran_per_bulan: Number(setoran_bulanan),
+          tanggal_mulai: new Date(),
+          status: "Aktif",
+        },
+      });
+
+      await tx.paket.update({
+        where: { id: id_paket },
+        data: { kuota: { decrement: parsedJumlahJamaah } }
+      });
+
+      return rencana;
     });
 
     return NextResponse.json(

@@ -78,6 +78,7 @@ export async function POST(req: Request) {
 
   } catch (error: any) {
     console.error("Error creating snap token:", error);
-    return NextResponse.json({ message: "Internal server error", detail: error.message }, { status: 500 });
+    const detail = error.ApiResponse ? error.ApiResponse : error.message;
+    return NextResponse.json({ message: "Gagal memproses pembayaran (Midtrans)", detail }, { status: 500 });
   }
 }

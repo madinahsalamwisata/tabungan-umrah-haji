@@ -41,14 +41,32 @@ export async function PUT(req: Request) {
     const totalBiayaBaru = hargaPerOrang * Number(jumlah_jamaah);
     const setoranBulananBaru = Math.ceil(totalBiayaBaru / rencana.periode_bulan);
 
-    const updated = await prisma.rencanaTabungan.update({
-      where: { id },
-      data: {
-        jenis_kamar,
-        jumlah_jamaah: Number(jumlah_jamaah),
-        total_biaya: totalBiayaBaru,
-        setoran_per_bulan: setoranBulananBaru
+    const difference = Number(jumlah_jamaah) - rencana.jumlah_jamaah;
+    if (difference > 0) {
+      if (rencana.paket.kuota < difference) {
+         return NextResponse.json({ message: "Sisa kuota paket tidak mencukupi untuk penambahan jamaah" }, { status: 400 });
       }
+    }
+
+    const updated = await prisma.$transaction(async (tx: any) => {
+      const res = await tx.rencanaTabungan.update({
+        where: { id },
+        data: {
+          jenis_kamar,
+          jumlah_jamaah: Number(jumlah_jamaah),
+          total_biaya: totalBiayaBaru,
+          setoran_per_bulan: setoranBulananBaru
+        }
+      });
+      
+      if (difference !== 0) {
+        await tx.paket.update({
+          where: { id: rencana.id_paket },
+          data: { kuota: { decrement: difference } } 
+        });
+      }
+      
+      return res;
     });
 
     return NextResponse.json({ message: "Berhasil diperbarui", data: updated }, { status: 200 });

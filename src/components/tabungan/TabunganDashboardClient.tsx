@@ -50,7 +50,15 @@ export default function TabunganDashboardClient({
         body: JSON.stringify({ id_rencana_tabungan: rencana.id })
       });
       const dataToken = await resToken.json();
-      if (!resToken.ok) throw new Error(dataToken.message || "Gagal membuat transaksi");
+      if (!resToken.ok) {
+         let errMsg = dataToken.message || "Gagal membuat transaksi";
+         if (dataToken.detail && dataToken.detail.error_messages) {
+            errMsg += ": " + dataToken.detail.error_messages.join(', ');
+         } else if (dataToken.detail) {
+            errMsg += ": " + JSON.stringify(dataToken.detail);
+         }
+         throw new Error(errMsg);
+      }
 
       window.snap.pay(dataToken.token, {
         onSuccess: async function() {
@@ -171,6 +179,16 @@ export default function TabunganDashboardClient({
         </div>
       </div>
 
+      <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-lg mb-6 shadow-sm">
+        <h4 className="font-bold text-emerald-900 mb-1 flex items-center gap-2">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Informasi Penting
+        </h4>
+        <p className="text-sm text-emerald-800 leading-relaxed">
+          Kalkulasi biaya tabungan di bawah ini merupakan <strong>estimasi awal</strong>. Harga final paket Umrah dapat berubah sewaktu-waktu menyesuaikan dengan dinamika harga tiket pesawat, akomodasi hotel, kebijakan visa, dan komponen harga lainnya pada saat tahun keberangkatan Anda. Kami akan terus menginformasikan setiap pembaruan harga secara transparan.
+        </p>
+      </div>
+
       <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-emerald-900">
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -182,7 +200,7 @@ export default function TabunganDashboardClient({
             
             <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-600">Total Biaya Keseluruhan</span>
+                <span className="text-gray-600">Estimasi Total Biaya</span>
                 <span className="font-bold text-gray-900">{formatRp(Number(rencana.total_biaya))}</span>
               </div>
               <div className="flex justify-between text-sm mb-3">

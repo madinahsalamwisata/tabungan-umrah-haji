@@ -97,7 +97,7 @@ export default function TabunganForm({ paket }: { paket: any }) {
             <input 
               type="range" 
               min="3" 
-              max="36" 
+              max="24" 
               step="1" 
               value={durasiBulan} 
               onChange={(e) => setDurasiBulan(Number(e.target.value))}
@@ -115,7 +115,7 @@ export default function TabunganForm({ paket }: { paket: any }) {
           </div>
           <div className="flex justify-between text-xs text-gray-400 mt-2">
             <span>3 Bulan</span>
-            <span>36 Bulan</span>
+            <span>24 Bulan</span>
           </div>
         </div>
 

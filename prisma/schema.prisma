@@ -23,12 +23,15 @@ model Paket {
   id                    String            @id @default(uuid())
   nama_paket            String
   tanggal_keberangkatan DateTime
-  hotel                 String
+  tanggal_kepulangan    DateTime
+  hotel_makkah          String
+  hotel_madinah         String
   maskapai              String
   harga_quad            Decimal
   harga_double          Decimal
   harga_triple          Decimal
   kuota                 Int
+  deskripsi_fasilitas   String?
   RencanaTabungan       RencanaTabungan[]
 }
 

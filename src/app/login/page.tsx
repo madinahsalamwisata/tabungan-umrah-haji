@@ -74,13 +74,13 @@ function LoginForm() {
         <img 
           src="/images/logo_.png" 
           alt="Madinah Salam Wisata Logo" 
-          className="h-10 sm:h-14 w-auto object-contain pointer-events-auto drop-shadow-md"
+          className="h-16 sm:h-24 md:h-28 w-auto object-contain pointer-events-auto drop-shadow-lg"
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src="/images/izin-ppiu.png" 
           alt="Izin PPIU" 
-          className="h-10 sm:h-14 w-auto object-contain pointer-events-auto drop-shadow-md"
+          className="h-16 sm:h-24 md:h-28 w-auto object-contain pointer-events-auto drop-shadow-lg"
         />
       </div>
 

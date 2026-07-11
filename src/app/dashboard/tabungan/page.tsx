@@ -4,8 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import TabunganDashboardClient from "@/components/tabungan/TabunganDashboardClient";
-
-
+import TabunganSearchClient from "@/components/tabungan/TabunganSearchClient";
 
 export default async function TabunganDashboard() {
   const session = await getServerSession(authOptions);

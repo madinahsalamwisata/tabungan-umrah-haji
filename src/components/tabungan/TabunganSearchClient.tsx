@@ -12,9 +12,10 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
   // Extract unique options for dropdowns
   const pesawatOptions = Array.from(new Set(pakets.map(p => p.maskapai).filter(Boolean)));
   const hotelOptions = Array.from(new Set(pakets.map(p => p.hotel_makkah).filter(Boolean)));
-  const bulanOptions = Array.from(new Set(pakets.map(p => {
-    return new Date(p.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
-  })));
+  const bulanOptions = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
 
   const formatHotelOption = (hotelString: string) => {
     const match = hotelString.match(/Bintang\s+(\d)/i);
@@ -34,7 +35,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
   const filteredPakets = pakets.filter(p => {
     const matchPesawat = pesawat === "" || p.maskapai === pesawat;
     const matchHotel = hotel === "" || p.hotel_makkah === hotel;
-    const pBulan = new Date(p.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+    const pBulan = new Date(p.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' });
     const matchBulan = bulan === "" || pBulan === bulan;
     return matchPesawat && matchHotel && matchBulan;
   });
@@ -123,7 +124,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                         </div>
                         <div>
                           <p className="text-[11px] text-gray-500 mb-0.5 uppercase tracking-wider font-bold">Bulan Keberangkatan</p>
-                          <p className="text-sm font-semibold text-gray-900">{new Date(paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}</p>
+                          <p className="text-sm font-semibold text-gray-900">{new Date(paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' })}</p>
                         </div>
                       </div>
                       

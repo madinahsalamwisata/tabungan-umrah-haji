@@ -29,7 +29,26 @@ export default async function PaketPage() {
 
   const now = new Date();
   // Hide estimation packages from this page as they belong to Tabungan
-  const pastiPakets = pakets.filter(paket => !paket.nama_paket.includes("(Estimasi)"));
+  // Also deduplicate by name to prevent duplicate dummy packages showing up
+  const uniqueNames = new Set();
+  const pastiPakets = pakets.filter(paket => {
+    if (paket.nama_paket.includes("(Estimasi)")) return false;
+    
+    // Normalize name to deduplicate those that have tags like '(< 1 Tahun)'
+    let baseName = paket.nama_paket;
+    if (baseName.includes('< 1 Tahun')) baseName = 'Umrah Reguler';
+    if (baseName.includes('Tepat > 1 Tahun')) baseName = 'Umrah Spesial';
+    if (baseName.includes('1.5 Tahun')) baseName = 'Umrah Plus';
+    
+    // Override name for display if it's a dummy package
+    if (paket.nama_paket !== baseName) {
+        paket.nama_paket = baseName;
+    }
+
+    if (uniqueNames.has(baseName)) return false;
+    uniqueNames.add(baseName);
+    return true;
+  });
 
   const rencanaTabunganList = await prisma.rencanaTabungan.findMany({
     where: {

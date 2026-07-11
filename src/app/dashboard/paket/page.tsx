@@ -62,6 +62,10 @@ export default async function PaketPage() {
             const durasiHari = Math.round((paket.tanggal_kepulangan.getTime() - paket.tanggal_keberangkatan.getTime()) / (1000 * 60 * 60 * 24));
             const isAlreadySelected = activePaketIds.includes(paket.id);
             
+            const now = new Date();
+            const depart = paket.tanggal_keberangkatan;
+            const diffInMonths = (depart.getFullYear() - now.getFullYear()) * 12 + (depart.getMonth() - now.getMonth());
+
             return (
               <div key={paket.id} className="bg-white rounded-xl shadow-md overflow-hidden border border-emerald-100 flex flex-col hover:shadow-lg transition-shadow relative">
                 
@@ -88,9 +92,10 @@ export default async function PaketPage() {
                     <div>
                       <p className="text-xs font-medium text-emerald-500 uppercase tracking-wider mb-1">Jadwal</p>
                       <p className="text-sm font-semibold text-emerald-950">
-                        {paket.tanggal_keberangkatan.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                        <br/>s/d<br/>
-                        {paket.tanggal_kepulangan.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {diffInMonths < 6 
+                          ? `${paket.tanggal_keberangkatan.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} s/d ${paket.tanggal_kepulangan.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                          : `Estimasi Bulan ${paket.tanggal_keberangkatan.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}`
+                        }
                       </p>
                     </div>
                     <div>
@@ -99,7 +104,7 @@ export default async function PaketPage() {
                         <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
-                        {paket.maskapai}
+                        {paket.maskapai || "Menyesuaikan"}
                       </p>
                     </div>
                   </div>
@@ -115,7 +120,7 @@ export default async function PaketPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                         <div>
-                          <p className="text-sm font-semibold text-emerald-950">Makkah: {paket.hotel_makkah}</p>
+                          <p className="text-sm font-semibold text-emerald-950">Makkah: {paket.hotel_makkah || "Bintang 4/5"}</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
@@ -123,7 +128,7 @@ export default async function PaketPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                         <div>
-                          <p className="text-sm font-semibold text-emerald-950">Madinah: {paket.hotel_madinah}</p>
+                          <p className="text-sm font-semibold text-emerald-950">Madinah: {paket.hotel_madinah || "Bintang 4/5"}</p>
                         </div>
                       </div>
                     </div>
@@ -167,22 +172,26 @@ export default async function PaketPage() {
                   )}
                 </div>
 
-                <div className="p-4 bg-emerald-50 border-t border-emerald-100 mt-auto">
-                  {isAlreadySelected ? (
-                    <button disabled className="w-full bg-gray-300 text-gray-600 font-medium py-3 px-4 rounded-md shadow-sm cursor-not-allowed flex items-center justify-center gap-2">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Sudah Dipilih
-                    </button>
-                  ) : (
-                    <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}`} className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Pilih Paket Ini
-                    </Link>
+                <div className="p-4 bg-emerald-50 border-t border-emerald-100 mt-auto space-y-3">
+                  {diffInMonths >= 6 && (
+                    isAlreadySelected ? (
+                      <button disabled className="w-full bg-gray-300 text-gray-600 font-medium py-3 px-4 rounded-md shadow-sm cursor-not-allowed flex items-center justify-center gap-2">
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                        Sudah Dipilih (Tabungan)
+                      </button>
+                    ) : (
+                      <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}`} className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2">
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Pilih Skema Tabungan
+                      </Link>
+                    )
                   )}
+                  
+                  <a href="https://www.madinahsalamwisata.com/paket/1" target="_blank" rel="noopener noreferrer" className={`w-full ${diffInMonths < 6 ? 'bg-emerald-900 hover:bg-emerald-800 text-white' : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-900'} font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2`}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    Booking Sekarang (Penuh)
+                  </a>
+
                   <p className="text-center text-xs text-emerald-600 mt-2 font-medium">Sisa Kuota: {paket.kuota} Kursi</p>
                 </div>
               </div>

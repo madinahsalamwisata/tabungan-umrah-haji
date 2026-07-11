@@ -31,7 +31,7 @@ export default function DashboardLayout({
   const navigation = [
     { name: "Beranda", href: "/dashboard", icon: HomeIcon },
     { name: "Profil Saya", href: "/dashboard/profil", icon: UserIcon },
-    { name: "Riwayat Tabungan", href: "/dashboard/tabungan", icon: WalletIcon },
+    { name: "Tabungan", href: "/dashboard/tabungan", icon: WalletIcon },
     { name: "Paket Umrah", href: "/dashboard/paket", icon: MapIcon },
   ];
 

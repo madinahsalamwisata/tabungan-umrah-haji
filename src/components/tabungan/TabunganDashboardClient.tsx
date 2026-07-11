@@ -4,6 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
+const MySwal = Swal.mixin({
+  width: '360px',
+  customClass: {
+    title: 'text-lg',
+    htmlContainer: 'text-sm'
+  }
+});
+
 declare global {
   interface Window {
     snap: any;
@@ -68,7 +76,7 @@ export default function TabunganDashboardClient({
            await syncPayment(dataToken.order_id, cicilanKe, dataToken.nominal);
         },
         onError: function() {
-          Swal.fire('Gagal!', 'Pembayaran gagal!', 'error');
+          MySwal.fire('Gagal!', 'Pembayaran gagal!', 'error');
           setIsPaying(false);
         },
         onClose: async function() {
@@ -76,7 +84,7 @@ export default function TabunganDashboardClient({
         }
       });
     } catch (err: any) {
-      Swal.fire('Error', err.message, 'error');
+      MySwal.fire('Error', err.message, 'error');
       setIsPaying(false);
     }
   };
@@ -90,7 +98,7 @@ export default function TabunganDashboardClient({
       });
       const data = await res.json();
       if (data.status === "success") {
-          Swal.fire('Berhasil!', 'Pembayaran berhasil!', 'success');
+          MySwal.fire('Berhasil!', 'Pembayaran berhasil!', 'success');
           router.refresh();
       }
     } catch (e) {
@@ -101,7 +109,7 @@ export default function TabunganDashboardClient({
   };
 
   const handleDelete = async () => {
-    const result = await Swal.fire({
+    const result = await MySwal.fire({
       title: 'Apakah Anda yakin?',
       text: "Jika sudah ada setoran masuk, hubungi admin untuk pembatalan atau *refund*.",
       icon: 'warning',
@@ -122,14 +130,14 @@ export default function TabunganDashboardClient({
         body: JSON.stringify({ id: rencana.id })
       });
       if (res.ok) {
-        Swal.fire('Terhapus!', 'Rencana tabungan Anda telah dihapus.', 'success');
+        MySwal.fire('Terhapus!', 'Rencana tabungan Anda telah dihapus.', 'success');
         router.refresh();
       } else {
         const data = await res.json();
-        Swal.fire('Gagal', data.message, 'error');
+        MySwal.fire('Gagal', data.message, 'error');
       }
     } catch (e) {
-      Swal.fire('Gagal', 'Terjadi kesalahan saat menghapus', 'error');
+      MySwal.fire('Gagal', 'Terjadi kesalahan saat menghapus', 'error');
     } finally {
       setIsDeleting(false);
     }
@@ -144,15 +152,15 @@ export default function TabunganDashboardClient({
         body: JSON.stringify({ id: rencana.id, jenis_kamar: editKamar, jumlah_jamaah: editJamaah })
       });
       if (res.ok) {
-        Swal.fire('Berhasil diperbarui!', 'Rencana Anda telah disesuaikan.', 'success');
+        MySwal.fire('Berhasil diperbarui!', 'Rencana Anda telah disesuaikan.', 'success');
         setIsEditing(false);
         router.refresh();
       } else {
         const data = await res.json();
-        Swal.fire('Gagal', data.message, 'error');
+        MySwal.fire('Gagal', data.message, 'error');
       }
     } catch (e) {
-      Swal.fire('Gagal', 'Terjadi kesalahan saat menyimpan', 'error');
+      MySwal.fire('Gagal', 'Terjadi kesalahan saat menyimpan', 'error');
     } finally {
       setIsSubmittingEdit(false);
     }

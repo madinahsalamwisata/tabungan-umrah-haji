@@ -67,11 +67,6 @@ export default async function TabunganDashboard() {
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-      <div className="pb-8 border-b border-gray-200">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Cari & Tambah Rencana Tabungan Baru</h3>
-        <TabunganSearchClient pakets={estimasiPakets} activePaketIds={activePaketIds} />
-      </div>
-
       <div>
         <h3 className="text-xl font-bold text-gray-900 mb-4">Rencana Tabungan Aktif Anda</h3>
         
@@ -120,6 +115,11 @@ export default async function TabunganDashboard() {
             );
           })}
         </div>
+      </div>
+
+      <div className="pt-8 border-t border-gray-200">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Cari & Tambah Rencana Tabungan Baru</h3>
+        <TabunganSearchClient pakets={estimasiPakets} activePaketIds={activePaketIds} />
       </div>
     </div>
   );

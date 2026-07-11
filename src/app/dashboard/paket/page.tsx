@@ -1,21 +1,48 @@
 import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
 const prisma = new PrismaClient();
 
 export default async function PaketPage() {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.email) {
+    redirect("/login");
+  }
+
+  const jamaah = await prisma.jamaah.findUnique({
+    where: { email: session.user.email },
+  });
+
+  if (!jamaah) {
+    redirect("/login");
+  }
+
   const pakets = await prisma.paket.findMany({
     orderBy: {
       tanggal_keberangkatan: 'asc'
     }
   });
 
+  const rencanaTabunganList = await prisma.rencanaTabungan.findMany({
+    where: {
+        id_jamaah: jamaah.id,
+        status: { in: ["Aktif", "Lunas"] }
+    },
+    select: { id_paket: true }
+  });
+
+  const activePaketIds = rencanaTabunganList.map((r: any) => r.id_paket);
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-emerald-900">Pilihan Paket Umrah</h1>
-        <p className="mt-1 text-sm text-emerald-600">
-          Pilih paket umrah yang sesuai dengan rencana dan anggaran Anda.
+        <h2 className="text-2xl font-bold text-gray-900">Pilihan Paket Umrah</h2>
+        <p className="mt-1 text-sm text-gray-500">
+          Pilih paket umrah yang sesuai dengan rencana keberangkatan dan budget Anda.
         </p>
       </div>
 
@@ -33,9 +60,17 @@ export default async function PaketPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {pakets.map((paket) => {
             const durasiHari = Math.round((paket.tanggal_kepulangan.getTime() - paket.tanggal_keberangkatan.getTime()) / (1000 * 60 * 60 * 24));
+            const isAlreadySelected = activePaketIds.includes(paket.id);
             
             return (
-              <div key={paket.id} className="bg-white rounded-xl shadow-md overflow-hidden border border-emerald-100 flex flex-col hover:shadow-lg transition-shadow">
+              <div key={paket.id} className="bg-white rounded-xl shadow-md overflow-hidden border border-emerald-100 flex flex-col hover:shadow-lg transition-shadow relative">
+                
+                {isAlreadySelected && (
+                  <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-bl-lg z-10">
+                    Terdaftar
+                  </div>
+                )}
+
                 <div className="bg-emerald-900 px-6 py-4 border-b-4 border-yellow-500">
                   <div className="flex justify-between items-start">
                     <h2 className="text-xl font-bold text-white leading-tight">
@@ -133,12 +168,21 @@ export default async function PaketPage() {
                 </div>
 
                 <div className="p-4 bg-emerald-50 border-t border-emerald-100 mt-auto">
-                  <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}`} className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Pilih Paket Ini
-                  </Link>
+                  {isAlreadySelected ? (
+                    <button disabled className="w-full bg-gray-300 text-gray-600 font-medium py-3 px-4 rounded-md shadow-sm cursor-not-allowed flex items-center justify-center gap-2">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Sudah Dipilih
+                    </button>
+                  ) : (
+                    <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}`} className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Pilih Paket Ini
+                    </Link>
+                  )}
                   <p className="text-center text-xs text-emerald-600 mt-2 font-medium">Sisa Kuota: {paket.kuota} Kursi</p>
                 </div>
               </div>

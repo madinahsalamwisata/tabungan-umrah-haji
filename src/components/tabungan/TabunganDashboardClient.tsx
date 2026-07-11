@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Extend window object to include snap
 declare global {
   interface Window {
     snap: any;
@@ -23,45 +22,47 @@ export default function TabunganDashboardClient({
 }) {
   const router = useRouter();
   const [isPaying, setIsPaying] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  // Edit states
+  const [editKamar, setEditKamar] = useState(rencana.jenis_kamar);
+  const [editJamaah, setEditJamaah] = useState(rencana.jumlah_jamaah || 1);
+  const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
 
-  // Cek apakah bulan ini sudah dibayar (asumsi riwayat setoran = bulan berjalan)
   const sudahBayarSemua = rencana.status === "Lunas" || persentase >= 100;
   
   const riwayatSuccess = rencana.RiwayatSetoran.filter((r: any) => r.status_pembayaran === "success");
   const cicilanKe = riwayatSuccess.length + 1;
-  const sudahLunasBulanIni = cicilanKe > rencana.periode_bulan; // if cicilanKe > periode_bulan, it's paid off
+  const sudahLunasBulanIni = cicilanKe > rencana.periode_bulan;
+
+  const formatRp = (num: number) => {
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
+  };
 
   const handleBayar = async () => {
     setIsPaying(true);
     try {
-      // 1. Dapatkan Token Snap dari Backend
       const resToken = await fetch("/api/tabungan/bayar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_rencana_tabungan: rencana.id })
       });
-
       const dataToken = await resToken.json();
+      if (!resToken.ok) throw new Error(dataToken.message || "Gagal membuat transaksi");
 
-      if (!resToken.ok) {
-        throw new Error(dataToken.message || "Gagal membuat transaksi");
-      }
-
-      // 2. Tampilkan Popup Snap
       window.snap.pay(dataToken.token, {
-        onSuccess: async function(result: any) {
-          // 3. Verifikasi & Simpan ke DB
+        onSuccess: async function() {
           await syncPayment(dataToken.order_id, cicilanKe, dataToken.nominal);
         },
-        onPending: async function(result: any) {
+        onPending: async function() {
            await syncPayment(dataToken.order_id, cicilanKe, dataToken.nominal);
         },
-        onError: function(result: any) {
+        onError: function() {
           alert("Pembayaran gagal!");
           setIsPaying(false);
         },
         onClose: async function() {
-          // User close popup, check if payment actually succeeded
           await syncPayment(dataToken.order_id, cicilanKe, dataToken.nominal);
         }
       });
@@ -76,14 +77,8 @@ export default function TabunganDashboardClient({
       const res = await fetch("/api/tabungan/sync", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-            order_id, 
-            id_rencana_tabungan: rencana.id,
-            bulan_ke,
-            nominal
-        })
+        body: JSON.stringify({ order_id, id_rencana_tabungan: rencana.id, bulan_ke, nominal })
       });
-      
       const data = await res.json();
       if (data.status === "success") {
           alert("Pembayaran berhasil!");
@@ -96,19 +91,72 @@ export default function TabunganDashboardClient({
     }
   };
 
-  const formatRp = (num: number) => {
-    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
+  const handleDelete = async () => {
+    if (!confirm("Apakah Anda yakin ingin menghapus paket ini? Jika sudah ada uang masuk, hubungi admin untuk pembatalan.")) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch("/api/tabungan/hapus", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: rencana.id })
+      });
+      if (res.ok) {
+        alert("Berhasil dihapus");
+        router.push("/dashboard/paket");
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(data.message);
+      }
+    } catch (e) {
+      alert("Terjadi kesalahan saat menghapus");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const submitEdit = async () => {
+    setIsSubmittingEdit(true);
+    try {
+      const res = await fetch("/api/tabungan/edit", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: rencana.id, jenis_kamar: editKamar, jumlah_jamaah: editJamaah })
+      });
+      if (res.ok) {
+        alert("Berhasil diperbarui");
+        setIsEditing(false);
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(data.message);
+      }
+    } catch (e) {
+      alert("Terjadi kesalahan saat menyimpan");
+    } finally {
+      setIsSubmittingEdit(false);
+    }
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-end">
         <h2 className="text-2xl font-bold text-gray-900">Ringkasan Tabungan</h2>
-        {sudahBayarSemua && (
-          <span className="bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-full shadow-sm">
-            LUNAS 🎉
-          </span>
-        )}
+        <div className="flex gap-2">
+            {!sudahBayarSemua && (
+                <button onClick={() => setIsEditing(true)} className="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold px-4 py-2 rounded shadow-sm text-sm transition-colors">
+                    Edit Rencana
+                </button>
+            )}
+            <button onClick={handleDelete} disabled={isDeleting} className="bg-red-100 hover:bg-red-200 text-red-900 font-bold px-4 py-2 rounded shadow-sm text-sm transition-colors">
+                {isDeleting ? "Menghapus..." : "Hapus"}
+            </button>
+            {sudahBayarSemua && (
+              <span className="bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-full shadow-sm ml-2">
+                LUNAS 🎉
+              </span>
+            )}
+        </div>
       </div>
 
       <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-emerald-900">
@@ -117,12 +165,12 @@ export default function TabunganDashboardClient({
             <div>
               <p className="text-sm text-gray-500 font-medium">Paket Terpilih</p>
               <p className="text-xl font-bold text-emerald-900 mt-1">{rencana.paket.nama_paket}</p>
-              <p className="text-sm text-gray-600 mt-1">Kamar {rencana.jenis_kamar}</p>
+              <p className="text-sm text-gray-600 mt-1">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</p>
             </div>
             
             <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-600">Total Biaya</span>
+                <span className="text-gray-600">Total Biaya Keseluruhan</span>
                 <span className="font-bold text-gray-900">{formatRp(Number(rencana.total_biaya))}</span>
               </div>
               <div className="flex justify-between text-sm mb-3">
@@ -157,7 +205,7 @@ export default function TabunganDashboardClient({
               <div>
                 {sudahBayarSemua || sudahLunasBulanIni ? (
                   <button disabled className="bg-gray-300 text-gray-600 font-medium py-3 px-6 rounded-md shadow-sm cursor-not-allowed">
-                    Sudah Lunas
+                    Sudah Dibayar Bulan Ini
                   </button>
                 ) : (
                   <button 
@@ -205,6 +253,54 @@ export default function TabunganDashboardClient({
           )}
         </div>
       </div>
+
+      {isEditing && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Edit Rencana Tabungan</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-emerald-900 mb-2">Jenis Kamar</label>
+                <select 
+                  value={editKamar}
+                  onChange={(e) => setEditKamar(e.target.value)}
+                  className="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                >
+                  <option value="Quad">Quad (Ber-4)</option>
+                  <option value="Triple">Triple (Ber-3)</option>
+                  <option value="Double">Double (Ber-2)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-emerald-900 mb-2">Jumlah Jamaah</label>
+                <input 
+                  type="number" 
+                  min="1"
+                  max={rencana.paket.kuota}
+                  value={editJamaah}
+                  onChange={(e) => setEditJamaah(Number(e.target.value))}
+                  className="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                />
+              </div>
+
+              <div className="bg-emerald-50 p-3 rounded text-sm text-emerald-800">
+                Pembaruan ini akan otomatis menyesuaikan total biaya paket dan sisa tagihan bulanan Anda ke depan.
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded">
+                Batal
+              </button>
+              <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded">
+                {isSubmittingEdit ? "Menyimpan..." : "Simpan Perubahan"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

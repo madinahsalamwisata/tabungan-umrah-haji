@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Jamaah {
@@ -40,6 +41,7 @@ model RencanaTabungan {
   id_jamaah         String
   id_paket          String
   jenis_kamar       String
+  jumlah_jamaah     Int              @default(1)
   periode_bulan     Int
   total_biaya       Decimal
   setoran_per_bulan Decimal

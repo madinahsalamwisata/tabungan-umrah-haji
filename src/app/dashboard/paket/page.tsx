@@ -28,11 +28,8 @@ export default async function PaketPage() {
   });
 
   const now = new Date();
-  const pastiPakets = pakets.filter(paket => {
-    const depart = paket.tanggal_keberangkatan;
-    const diffInMonths = (depart.getFullYear() - now.getFullYear()) * 12 + (depart.getMonth() - now.getMonth());
-    return diffInMonths < 6;
-  });
+  // Filter is removed so it shows all packages with confirmed dates
+  const pastiPakets = pakets;
 
   const rencanaTabunganList = await prisma.rencanaTabungan.findMany({
     where: {
@@ -47,9 +44,9 @@ export default async function PaketPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">Pilihan Paket Umrah (Booking Langsung)</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Pilihan Paket Umrah (Jadwal Pasti)</h2>
         <p className="mt-1 text-sm text-gray-500">
-          Daftar paket umrah dengan jadwal pasti. Untuk paket dengan jadwal keberangkatan lebih dari 6 bulan (estimasi), silakan cek di menu Tabungan.
+          Daftar paket umrah dengan jadwal keberangkatan pasti. Untuk paket yang jadwalnya masih lebih dari 1 tahun, Anda dapat memilih opsi Booking Langsung atau menggunakan skema Tabungan.
         </p>
       </div>
 
@@ -68,10 +65,7 @@ export default async function PaketPage() {
           {pastiPakets.map((paket) => {
             const durasiHari = Math.round((paket.tanggal_kepulangan.getTime() - paket.tanggal_keberangkatan.getTime()) / (1000 * 60 * 60 * 24));
             const isAlreadySelected = activePaketIds.includes(paket.id);
-            
-            // diffInMonths already calculated as < 6
             const depart = paket.tanggal_keberangkatan;
-            const diffInMonths = (depart.getFullYear() - now.getFullYear()) * 12 + (depart.getMonth() - now.getMonth());
 
             // Helper to format currency and short currency (e.g. 29.5 jt)
             const formatCurrency = (val: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
@@ -189,9 +183,32 @@ export default async function PaketPage() {
                         </div>
                       </div>
 
-                      <a href="https://www.madinahsalamwisata.com/paket/1" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-emerald-900 hover:bg-emerald-800 text-white font-bold py-2 px-5 text-sm rounded-full shadow transition-colors text-center inline-block">
-                        Lihat Detail Paket
-                      </a>
+                      {(() => {
+                        const oneYearFromNow = new Date();
+                        // Add exactly 1 year from today's date
+                        oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+                        
+                        // User requirement: if it's more than 1 year away, allow tabungan
+                        const isMoreThanOneYear = depart > oneYearFromNow;
+
+                        return (
+                          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto mt-3">
+                            {isMoreThanOneYear && !isAlreadySelected && (
+                              <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}`} className="w-full sm:w-auto bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold py-2 px-5 text-sm rounded-full shadow-sm transition-colors text-center whitespace-nowrap">
+                                Mulai Tabungan
+                              </Link>
+                            )}
+                            {isMoreThanOneYear && isAlreadySelected && (
+                              <button disabled className="w-full sm:w-auto bg-gray-100 text-gray-500 font-bold py-2 px-5 text-sm rounded-full cursor-not-allowed text-center whitespace-nowrap">
+                                Sudah Ditabung
+                              </button>
+                            )}
+                            <a href="https://www.madinahsalamwisata.com/paket/1" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-emerald-900 hover:bg-emerald-800 text-white font-bold py-2 px-5 text-sm rounded-full shadow transition-colors text-center whitespace-nowrap">
+                              Booking Langsung
+                            </a>
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>

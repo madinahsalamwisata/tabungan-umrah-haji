@@ -13,7 +13,7 @@ model Jamaah {
   email           String            @unique
   no_hp           String
   nik             String            @unique
-  alamat          String
+  alamat          String?
   password_hash   String
   created_at      DateTime          @default(now())
   RencanaTabungan RencanaTabungan[]

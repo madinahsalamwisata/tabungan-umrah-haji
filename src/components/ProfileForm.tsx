@@ -69,7 +69,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-emerald-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-emerald-900 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-900"
           >
             Edit Profil
           </button>
@@ -110,7 +110,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                   required
                   value={form.nama}
                   onChange={(e) => setForm({ ...form, nama: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm text-black"
+                  className="mt-1 block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-900 focus:border-emerald-900 sm:text-sm text-black"
                 />
               </div>
 
@@ -122,7 +122,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                   required
                   value={form.no_hp}
                   onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm text-black"
+                  className="mt-1 block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-900 focus:border-emerald-900 sm:text-sm text-black"
                 />
               </div>
 
@@ -134,7 +134,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                   required
                   value={form.nik}
                   onChange={(e) => setForm({ ...form, nik: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm text-black"
+                  className="mt-1 block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-900 focus:border-emerald-900 sm:text-sm text-black"
                 />
               </div>
 
@@ -145,7 +145,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                   rows={3}
                   value={form.alamat}
                   onChange={(e) => setForm({ ...form, alamat: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm text-black"
+                  className="mt-1 block w-full px-3 py-2 border border-emerald-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-900 focus:border-emerald-900 sm:text-sm text-black"
                 />
               </div>
             </div>
@@ -161,14 +161,14 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                     alamat: jamaah.alamat || "",
                   });
                 }}
-                className="bg-white py-2 px-4 border border-emerald-300 rounded-md shadow-sm text-sm font-medium text-emerald-700 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+                className="bg-white py-2 px-4 border border-emerald-300 rounded-md shadow-sm text-sm font-medium text-emerald-700 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-900"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-emerald-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50"
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-emerald-900 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-900 disabled:opacity-50"
               >
                 {loading ? "Menyimpan..." : "Simpan Perubahan"}
               </button>

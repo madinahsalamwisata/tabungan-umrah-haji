@@ -108,7 +108,7 @@ export default async function ProfilPage() {
       <ProfileForm jamaah={serializedJamaah} />
 
       {/* Seksi Riwayat Tabungan */}
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-yellow-500 mt-8">
+      <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-emerald-900 mt-8">
         <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
           <div>
             <h3 className="text-lg leading-6 font-medium text-emerald-900">
@@ -155,7 +155,7 @@ export default async function ProfilPage() {
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           rencana.status === 'Lunas' 
                             ? 'bg-green-100 text-green-800' 
-                            : 'bg-yellow-100 text-yellow-800'
+                            : 'bg-emerald-100 text-emerald-800'
                         }`}>
                           {rencana.status}
                         </span>

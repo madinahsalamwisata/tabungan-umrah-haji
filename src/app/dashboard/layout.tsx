@@ -36,12 +36,12 @@ export default function DashboardLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-emerald-50 flex">
+    <div className="min-h-screen bg-white flex text-black">
       {/* Sidebar for desktop */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex-1 flex flex-col min-h-0 bg-emerald-900 border-r border-emerald-800 shadow-xl">
+        <div className="flex-1 flex flex-col min-h-0 bg-emerald-900 shadow-xl">
           <div className="flex items-center h-16 flex-shrink-0 px-4 bg-emerald-950">
-            <h1 className="text-xl font-bold text-yellow-400 truncate">
+            <h1 className="text-xl font-bold text-white truncate">
               Tabungan Umrah
             </h1>
           </div>
@@ -55,13 +55,13 @@ export default function DashboardLayout({
                     href={item.href}
                     className={`${
                       isActive
-                        ? "bg-emerald-800 text-yellow-400 border-l-4 border-yellow-400"
-                        : "text-emerald-100 hover:bg-emerald-800 hover:text-white border-l-4 border-transparent"
+                        ? "bg-emerald-800 text-white border-l-4 border-white"
+                        : "text-gray-300 hover:bg-emerald-800 hover:text-white border-l-4 border-transparent"
                     } group flex items-center px-3 py-3 text-sm font-medium rounded-r-md transition-colors`}
                   >
                     <item.icon
                       className={`${
-                        isActive ? "text-yellow-400" : "text-emerald-300 group-hover:text-white"
+                        isActive ? "text-white" : "text-gray-400 group-hover:text-white"
                       } flex-shrink-0 -ml-1 mr-3 h-6 w-6`}
                     />
                     {item.name}
@@ -71,17 +71,17 @@ export default function DashboardLayout({
             </nav>
             <div className="p-4 border-t border-emerald-800">
               <div className="flex items-center mb-4">
-                <div className="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center text-yellow-400 font-bold uppercase">
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-emerald-900 font-bold uppercase">
                   {session?.user?.name?.charAt(0) || "U"}
                 </div>
                 <div className="ml-3 truncate">
                   <p className="text-sm font-medium text-white truncate">{session?.user?.name}</p>
-                  <p className="text-xs font-medium text-emerald-300 truncate">{session?.user?.email}</p>
+                  <p className="text-xs font-medium text-gray-300 truncate">{session?.user?.email}</p>
                 </div>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-emerald-950 px-4 py-2 rounded-md text-sm font-bold transition-colors shadow-sm"
+                className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-emerald-900 px-4 py-2 rounded-md text-sm font-bold transition-colors shadow-sm"
               >
                 <ArrowLeftOnRectangleIcon className="w-5 h-5" />
                 Keluar
@@ -94,12 +94,12 @@ export default function DashboardLayout({
       {/* Mobile Header & Nav */}
       <div className="md:hidden fixed top-0 w-full z-10">
         <div className="flex items-center justify-between bg-emerald-900 h-16 px-4 shadow-md">
-          <h1 className="text-lg font-bold text-yellow-400">
+          <h1 className="text-lg font-bold text-white">
             Tabungan Umrah
           </h1>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-emerald-100 hover:text-white p-2"
+            className="text-white hover:text-gray-200 p-2"
           >
             {mobileMenuOpen ? (
               <XMarkIcon className="h-6 w-6" />
@@ -122,20 +122,20 @@ export default function DashboardLayout({
                     onClick={() => setMobileMenuOpen(false)}
                     className={`${
                       isActive
-                        ? "bg-emerald-800 text-yellow-400"
-                        : "text-emerald-100 hover:bg-emerald-800 hover:text-white"
+                        ? "bg-emerald-800 text-white"
+                        : "text-gray-300 hover:bg-emerald-800 hover:text-white"
                     } block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3`}
                   >
-                    <item.icon className={`h-5 w-5 ${isActive ? "text-yellow-400" : "text-emerald-300"}`} />
+                    <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-400"}`} />
                     {item.name}
                   </Link>
                 );
               })}
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full text-left text-emerald-100 hover:bg-emerald-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3"
+                className="w-full text-left text-gray-300 hover:bg-emerald-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3"
               >
-                <ArrowLeftOnRectangleIcon className="h-5 w-5 text-emerald-300" />
+                <ArrowLeftOnRectangleIcon className="h-5 w-5 text-gray-400" />
                 Keluar
               </button>
             </div>

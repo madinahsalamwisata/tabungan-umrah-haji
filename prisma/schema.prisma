@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Jamaah {
+  id              String            @id @default(uuid())
+  nama            String
+  email           String            @unique
+  no_hp           String
+  nik             String            @unique
+  alamat          String
+  password_hash   String
+  created_at      DateTime          @default(now())
+  RencanaTabungan RencanaTabungan[]
+}
+
+model Paket {
+  id                    String            @id @default(uuid())
+  nama_paket            String
+  tanggal_keberangkatan DateTime
+  hotel                 String
+  maskapai              String
+  harga_quad            Decimal
+  harga_double          Decimal
+  harga_triple          Decimal
+  kuota                 Int
+  RencanaTabungan       RencanaTabungan[]
+}
+
+model RencanaTabungan {
+  id                String           @id @default(uuid())
+  id_jamaah         String
+  id_paket          String
+  jenis_kamar       String
+  periode_bulan     Int
+  total_biaya       Decimal
+  setoran_per_bulan Decimal
+  tanggal_mulai     DateTime
+  status            String
+  jamaah            Jamaah           @relation(fields: [id_jamaah], references: [id])
+  paket             Paket            @relation(fields: [id_paket], references: [id])
+  RiwayatSetoran    RiwayatSetoran[]
+}
+
+model RiwayatSetoran {
+  id                   String          @id @default(uuid())
+  id_rencana_tabungan  String
+  bulan_ke             Int
+  tanggal_setor        DateTime
+  nominal              Decimal
+  status_pembayaran    String
+  id_transaksi_gateway String?
+  rencana_tabungan     RencanaTabungan @relation(fields: [id_rencana_tabungan], references: [id])
+}

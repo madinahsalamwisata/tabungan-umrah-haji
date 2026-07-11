@@ -39,12 +39,17 @@ export default async function TabunganDashboard() {
     orderBy: { tanggal_keberangkatan: 'asc' }
   });
   
-  // Filter > 6 bulan (hanya perkiraan / estimasi yang ditabung)
+  // Filter > 6 bulan (hanya perkiraan / estimasi yang ditabung) dan serialize Decimal
   const estimasiPakets = futurePakets.filter(p => {
      const depart = p.tanggal_keberangkatan;
      const diffInMonths = (depart.getFullYear() - now.getFullYear()) * 12 + (depart.getMonth() - now.getMonth());
      return diffInMonths >= 6;
-  });
+  }).map(p => ({
+     ...p,
+     harga_quad: p.harga_quad.toString(),
+     harga_triple: p.harga_triple.toString(),
+     harga_double: p.harga_double.toString(),
+  }));
 
   const activePaketIds = rencanaTabunganList.map(r => r.id_paket);
 

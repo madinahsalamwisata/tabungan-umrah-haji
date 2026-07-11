@@ -27,6 +27,13 @@ export default async function PaketPage() {
     }
   });
 
+  const now = new Date();
+  const pastiPakets = pakets.filter(paket => {
+    const depart = paket.tanggal_keberangkatan;
+    const diffInMonths = (depart.getFullYear() - now.getFullYear()) * 12 + (depart.getMonth() - now.getMonth());
+    return diffInMonths < 6;
+  });
+
   const rencanaTabunganList = await prisma.rencanaTabungan.findMany({
     where: {
         id_jamaah: jamaah.id,
@@ -40,29 +47,29 @@ export default async function PaketPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">Pilihan Paket Umrah</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Pilihan Paket Umrah (Booking Langsung)</h2>
         <p className="mt-1 text-sm text-gray-500">
-          Pilih paket umrah yang sesuai dengan rencana keberangkatan dan budget Anda.
+          Daftar paket umrah dengan jadwal pasti. Untuk paket dengan jadwal keberangkatan lebih dari 6 bulan (estimasi), silakan cek di menu Tabungan.
         </p>
       </div>
 
-      {pakets.length === 0 ? (
+      {pastiPakets.length === 0 ? (
         <div className="bg-white rounded-lg shadow-sm border border-emerald-100 p-12 text-center">
           <svg className="mx-auto h-12 w-12 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
           </svg>
           <h3 className="mt-2 text-sm font-medium text-emerald-900">Belum Ada Paket</h3>
           <p className="mt-1 text-sm text-emerald-500">
-            Saat ini belum ada paket umrah yang tersedia.
+            Saat ini belum ada paket umrah dengan jadwal pasti yang tersedia.
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {pakets.map((paket) => {
+          {pastiPakets.map((paket) => {
             const durasiHari = Math.round((paket.tanggal_kepulangan.getTime() - paket.tanggal_keberangkatan.getTime()) / (1000 * 60 * 60 * 24));
             const isAlreadySelected = activePaketIds.includes(paket.id);
             
-            const now = new Date();
+            // diffInMonths already calculated as < 6
             const depart = paket.tanggal_keberangkatan;
             const diffInMonths = (depart.getFullYear() - now.getFullYear()) * 12 + (depart.getMonth() - now.getMonth());
 

@@ -28,8 +28,8 @@ export default async function PaketPage() {
   });
 
   const now = new Date();
-  // Filter is removed so it shows all packages with confirmed dates
-  const pastiPakets = pakets;
+  // Hide estimation packages from this page as they belong to Tabungan
+  const pastiPakets = pakets.filter(paket => !paket.nama_paket.includes("(Estimasi)"));
 
   const rencanaTabunganList = await prisma.rencanaTabungan.findMany({
     where: {

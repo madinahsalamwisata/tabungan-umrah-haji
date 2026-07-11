@@ -73,8 +73,16 @@ export default async function TabunganDashboard() {
       </div>
 
       <div>
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Rencana Tabungan Aktif Anda</h3>
-        <div className="space-y-8">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Rencana Tabungan Aktif Anda</h3>
+        
+        <div className="bg-yellow-50 border border-yellow-200 px-4 py-3 rounded-lg mb-6 shadow-sm flex gap-3 items-start">
+          <svg className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <p className="text-sm text-yellow-800 leading-relaxed">
+            <strong>Penting:</strong> Kalkulasi biaya di bawah adalah estimasi. Harga final menyesuaikan dengan harga tiket, hotel, dan visa pada tahun keberangkatan.
+          </p>
+        </div>
+
+        <div className="space-y-4">
           {rencanaTabunganList.map((rencanaTabungan) => {
             // Kalkulasi progress
             const totalTerkumpul = rencanaTabungan.RiwayatSetoran

@@ -82,7 +82,7 @@ export default function TabunganDashboardClient({
       const data = await res.json();
       if (data.status === "success") {
           alert("Pembayaran berhasil!");
-          router.refresh();
+          window.location.reload();
       }
     } catch (e) {
       console.error(e);
@@ -102,8 +102,7 @@ export default function TabunganDashboardClient({
       });
       if (res.ok) {
         alert("Berhasil dihapus");
-        router.push("/dashboard/paket");
-        router.refresh();
+        window.location.assign("/dashboard/paket");
       } else {
         const data = await res.json();
         alert(data.message);
@@ -126,7 +125,7 @@ export default function TabunganDashboardClient({
       if (res.ok) {
         alert("Berhasil diperbarui");
         setIsEditing(false);
-        router.refresh();
+        window.location.reload();
       } else {
         const data = await res.json();
         alert(data.message);
@@ -139,7 +138,7 @@ export default function TabunganDashboardClient({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mb-12">
       <div className="flex justify-between items-end">
         <h2 className="text-2xl font-bold text-gray-900">Ringkasan Tabungan</h2>
         <div className="flex gap-2">
@@ -226,7 +225,8 @@ export default function TabunganDashboardClient({
 
       <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-emerald-900 mt-8">
         <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Riwayat Setoran</h3>
+          <h3 className="text-lg leading-6 font-medium text-gray-900">Riwayat Tabungan</h3>
+          <p className="text-sm text-gray-500 mt-1">Daftar setoran pembayaran yang telah Anda lakukan untuk paket ini.</p>
         </div>
         <div className="border-t border-gray-200">
           {rencana.RiwayatSetoran.length > 0 ? (
@@ -248,7 +248,7 @@ export default function TabunganDashboardClient({
             </ul>
           ) : (
             <div className="p-6 text-center text-gray-500">
-              Belum ada riwayat setoran.
+              Belum ada riwayat setoran pembayaran.
             </div>
           )}
         </div>

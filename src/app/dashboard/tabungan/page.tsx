@@ -22,8 +22,8 @@ export default async function TabunganDashboard() {
     redirect("/login");
   }
 
-  // Ambil rencana tabungan aktif jamaah
-  const rencanaTabungan = await prisma.rencanaTabungan.findFirst({
+  // Ambil semua rencana tabungan aktif jamaah
+  const rencanaTabunganList = await prisma.rencanaTabungan.findMany({
     where: { id_jamaah: jamaah.id },
     include: {
       paket: true,
@@ -34,7 +34,7 @@ export default async function TabunganDashboard() {
     orderBy: { tanggal_mulai: 'desc' }
   });
 
-  if (!rencanaTabungan) {
+  if (rencanaTabunganList.length === 0) {
     return (
       <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-emerald-900 mt-8">
         <div className="px-4 py-12 sm:px-6 flex flex-col justify-center items-center text-center">
@@ -53,39 +53,44 @@ export default async function TabunganDashboard() {
     );
   }
 
-  // Kalkulasi progress
-  const totalTerkumpul = rencanaTabungan.RiwayatSetoran
-    .filter(r => r.status_pembayaran === "success")
-    .reduce((sum, item) => sum + Number(item.nominal), 0);
-  
-  const sisaTagihan = Math.max(0, Number(rencanaTabungan.total_biaya) - totalTerkumpul);
-  const persentase = Math.min(100, (totalTerkumpul / Number(rencanaTabungan.total_biaya)) * 100);
-
-  // Serialize decimals to string for Client Component
-  const serializedRencana = {
-    ...rencanaTabungan,
-    total_biaya: rencanaTabungan.total_biaya.toString(),
-    setoran_per_bulan: rencanaTabungan.setoran_per_bulan.toString(),
-    paket: {
-      ...rencanaTabungan.paket,
-      harga_quad: rencanaTabungan.paket.harga_quad.toString(),
-      harga_triple: rencanaTabungan.paket.harga_triple.toString(),
-      harga_double: rencanaTabungan.paket.harga_double.toString(),
-    },
-    RiwayatSetoran: rencanaTabungan.RiwayatSetoran.map(r => ({
-      ...r,
-      nominal: r.nominal.toString()
-    }))
-  };
-
   return (
-    <div className="space-y-6">
-      <TabunganDashboardClient 
-        rencana={serializedRencana} 
-        totalTerkumpul={totalTerkumpul}
-        sisaTagihan={sisaTagihan}
-        persentase={persentase}
-      />
+    <div className="space-y-12">
+      {rencanaTabunganList.map((rencanaTabungan) => {
+        // Kalkulasi progress
+        const totalTerkumpul = rencanaTabungan.RiwayatSetoran
+          .filter(r => r.status_pembayaran === "success")
+          .reduce((sum, item) => sum + Number(item.nominal), 0);
+        
+        const sisaTagihan = Math.max(0, Number(rencanaTabungan.total_biaya) - totalTerkumpul);
+        const persentase = Math.min(100, (totalTerkumpul / Number(rencanaTabungan.total_biaya)) * 100);
+
+        // Serialize decimals to string for Client Component
+        const serializedRencana = {
+          ...rencanaTabungan,
+          total_biaya: rencanaTabungan.total_biaya.toString(),
+          setoran_per_bulan: rencanaTabungan.setoran_per_bulan.toString(),
+          paket: {
+            ...rencanaTabungan.paket,
+            harga_quad: rencanaTabungan.paket.harga_quad.toString(),
+            harga_triple: rencanaTabungan.paket.harga_triple.toString(),
+            harga_double: rencanaTabungan.paket.harga_double.toString(),
+          },
+          RiwayatSetoran: rencanaTabungan.RiwayatSetoran.map(r => ({
+            ...r,
+            nominal: r.nominal.toString()
+          }))
+        };
+
+        return (
+          <TabunganDashboardClient 
+            key={rencanaTabungan.id}
+            rencana={serializedRencana} 
+            totalTerkumpul={totalTerkumpul}
+            sisaTagihan={sisaTagihan}
+            persentase={persentase}
+          />
+        );
+      })}
     </div>
   );
 }

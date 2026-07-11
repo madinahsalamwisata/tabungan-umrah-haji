@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Script from "next/script";
 
 export default function DashboardLayout({
   children,
@@ -37,6 +38,11 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-white flex text-black">
+      <Script 
+        src="https://app.sandbox.midtrans.com/snap/snap.js" 
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+        strategy="beforeInteractive"
+      />
       {/* Sidebar for desktop */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
         <div className="flex-1 flex flex-col min-h-0 bg-emerald-900 shadow-xl">

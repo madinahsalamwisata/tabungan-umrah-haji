@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import Link from "next/link";
 
 const prisma = new PrismaClient();
 
@@ -132,12 +133,12 @@ export default async function PaketPage() {
                 </div>
 
                 <div className="p-4 bg-emerald-50 border-t border-emerald-100 mt-auto">
-                  <button className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2">
+                  <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}`} className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     Pilih Paket Ini
-                  </button>
+                  </Link>
                   <p className="text-center text-xs text-emerald-600 mt-2 font-medium">Sisa Kuota: {paket.kuota} Kursi</p>
                 </div>
               </div>

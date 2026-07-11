@@ -19,7 +19,8 @@ export default async function ProfilPage() {
     include: {
       RencanaTabungan: {
         include: {
-          paket: true
+          paket: true,
+          RiwayatSetoran: true
         }
       }
     }
@@ -138,13 +139,11 @@ export default async function ProfilPage() {
               </thead>
               <tbody className="bg-white divide-y divide-emerald-100">
                 {rencanaAktif.map((rencana: any) => {
-                  // Simulasi total uang yang terkumpul
-                  let totalTerkumpul = 0;
-                  if (rencana.status === "Lunas") {
-                    totalTerkumpul = rencana.total_biaya;
-                  } else {
-                    totalTerkumpul = (rencana.total_biaya / 2); // Dummy: Anggap terkumpul setengah
-                  }
+                  // Hitung total dari riwayat setoran yang berhasil
+                  const totalTerkumpul = rencana.RiwayatSetoran
+                    ? rencana.RiwayatSetoran.filter((r: any) => r.status_pembayaran === "success")
+                        .reduce((sum: number, r: any) => sum + Number(r.nominal), 0)
+                    : 0;
 
                   return (
                     <tr key={rencana.id} className="hover:bg-emerald-50">

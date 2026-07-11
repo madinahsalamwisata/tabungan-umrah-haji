@@ -72,6 +72,22 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen relative flex flex-col justify-center py-12 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Logos Header */}
+      <div className="absolute top-0 left-0 w-full flex justify-between items-start p-6 sm:p-8 z-20 pointer-events-none">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img 
+          src="/images/logo_.png" 
+          alt="Madinah Salam Wisata Logo" 
+          className="h-10 sm:h-14 w-auto object-contain pointer-events-auto drop-shadow-md"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img 
+          src="/images/izin-ppiu.png" 
+          alt="Izin PPIU" 
+          className="h-10 sm:h-14 w-auto object-contain pointer-events-auto drop-shadow-md"
+        />
+      </div>
+
       {/* Background Carousel */}
       {images.map((src, idx) => (
         <div

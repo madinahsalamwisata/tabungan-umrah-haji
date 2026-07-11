@@ -48,6 +48,7 @@ export async function POST(req: Request) {
         email,
         no_hp,
         nik,
+        alamat: "", // Default to empty string since database still enforces NOT NULL
         password_hash: hashedPassword,
       },
     });

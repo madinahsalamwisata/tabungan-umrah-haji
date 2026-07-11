@@ -4,11 +4,10 @@ import TabunganForm from "@/components/tabungan/TabunganForm";
 
 const prisma = new PrismaClient();
 
-export default async function TabunganBaruPage({
-  searchParams,
-}: {
-  searchParams: { paketId?: string };
+export default async function TabunganBaruPage(props: {
+  searchParams: Promise<{ paketId?: string }>;
 }) {
+  const searchParams = await props.searchParams;
   const paketId = searchParams.paketId;
 
   if (!paketId) {

@@ -213,7 +213,7 @@ export default async function PaketPage() {
                         return (
                           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto mt-3">
                             {isMoreThanOneYear && !isAlreadySelected && (
-                              <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}`} className="w-full sm:w-auto bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold py-2 px-5 text-sm rounded-full shadow-sm transition-colors text-center whitespace-nowrap">
+                              <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}&source=paket`} className="w-full sm:w-auto bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold py-2 px-5 text-sm rounded-full shadow-sm transition-colors text-center whitespace-nowrap">
                                 Mulai Tabungan
                               </Link>
                             )}

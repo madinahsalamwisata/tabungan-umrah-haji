@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function TabunganForm({ paket }: { paket: any }) {
+export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, maxBulan?: number }) {
   const router = useRouter();
   
   const [jenisKamar, setJenisKamar] = useState<string>("Quad");
   const [jumlahJamaah, setJumlahJamaah] = useState<number>(1);
-  const [durasiBulan, setDurasiBulan] = useState<number>(12);
+  const [durasiBulan, setDurasiBulan] = useState<number>(Math.min(12, maxBulan));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -144,17 +144,17 @@ export default function TabunganForm({ paket }: { paket: any }) {
                 <input 
                   type="range" 
                   min="3" 
-                  max="24" 
+                  max={maxBulan} 
                   step="1" 
                   value={durasiBulan} 
-                  onChange={(e) => setDurasiBulan(Number(e.target.value))}
+                  onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer accent-emerald-700"
                 />
                 <div className="w-24 text-center">
                   <input 
                     type="number" 
                     value={durasiBulan} 
-                    onChange={(e) => setDurasiBulan(Number(e.target.value))}
+                    onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
                     className="w-16 text-center border-b-2 border-emerald-500 font-bold text-xl text-emerald-900 focus:outline-none focus:border-emerald-700"
                   />
                   <span className="text-sm text-emerald-700 font-medium ml-1">Bulan</span>
@@ -162,7 +162,7 @@ export default function TabunganForm({ paket }: { paket: any }) {
               </div>
               <div className="flex justify-between text-xs text-gray-400 mt-2">
                 <span>3 Bulan</span>
-                <span>24 Bulan</span>
+                <span>{maxBulan} Bulan</span>
               </div>
             </div>
 

@@ -16,6 +16,16 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
     return new Date(p.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
   })));
 
+  const formatHotelOption = (hotelString: string) => {
+    const match = hotelString.match(/Bintang\s+(\d)/i);
+    if (match) {
+      const numStars = parseInt(match[1]);
+      const stars = "⭐".repeat(numStars);
+      return `${stars} /Setaraf`;
+    }
+    return hotelString.replace(/\s*\(Atau Setaraf\)/i, " /Setaraf");
+  };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setHasSearched(true);
@@ -45,7 +55,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
             <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Hotel</label>
             <select value={hotel} onChange={e => setHotel(e.target.value)} className="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
               <option value="">Semua Hotel</option>
-              {hotelOptions.map((opt: any) => <option key={opt} value={opt}>{opt}</option>)}
+              {hotelOptions.map((opt: any) => <option key={opt} value={opt}>{formatHotelOption(opt)}</option>)}
             </select>
           </div>
           <div>

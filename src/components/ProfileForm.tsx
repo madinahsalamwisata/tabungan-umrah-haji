@@ -252,10 +252,6 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
               </button>
             </div>
             
-            <div className="mb-2 hidden sm:block">
-              <h2 className="text-xl font-bold text-gray-900">{jamaah.nama}</h2>
-              <p className="text-sm text-gray-500">{jamaah.email}</p>
-            </div>
           </div>
           
           <button 

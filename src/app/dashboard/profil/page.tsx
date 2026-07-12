@@ -109,35 +109,35 @@ export default async function ProfilPage() {
       <ProfileForm jamaah={serializedJamaah} />
 
       {/* Seksi Riwayat Tabungan */}
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg border-t-4 border-emerald-900 mt-8">
-        <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+      <div className="bg-white shadow-xl rounded-2xl border border-gray-100 overflow-hidden mt-8">
+        <div className="px-6 py-6 sm:px-8 flex justify-between items-center border-b border-gray-100">
           <div>
-            <h3 className="text-lg leading-6 font-medium text-emerald-900">
+            <h3 className="text-xl leading-6 font-bold text-gray-900">
               Riwayat Tabungan Saya
             </h3>
-            <p className="mt-1 max-w-2xl text-sm text-emerald-600">
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">
               Daftar paket umrah yang sedang atau pernah Anda ikuti.
             </p>
           </div>
         </div>
         
-        <div className="border-t border-emerald-100 p-6 bg-emerald-50/30">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-emerald-200">
-              <thead className="bg-emerald-100">
+        <div className="p-0 sm:p-6 bg-gray-50/50">
+          <div className="overflow-x-auto sm:rounded-xl sm:border sm:border-gray-100 sm:shadow-sm">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-white">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                     Nama Paket
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-emerald-800 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                     Total Terkumpul
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-emerald-100">
+              <tbody className="bg-white divide-y divide-gray-100">
                 {rencanaAktif.map((rencana: any) => {
                   // Hitung total dari riwayat setoran yang berhasil
                   const totalTerkumpul = rencana.RiwayatSetoran
@@ -146,20 +146,20 @@ export default async function ProfilPage() {
                     : 0;
 
                   return (
-                    <tr key={rencana.id} className="hover:bg-emerald-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-emerald-900">
+                    <tr key={rencana.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                         {rencana.paket?.nama_paket}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        <span className={`px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full shadow-sm ${
                           rencana.status === 'Lunas' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-emerald-100 text-emerald-800'
+                            ? 'bg-green-100 text-green-700 border border-green-200' 
+                            : 'bg-emerald-100 text-emerald-700 border border-emerald-200'
                         }`}>
                           {rencana.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-emerald-700 font-medium">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-emerald-700 font-bold">
                         {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalTerkumpul)}
                       </td>
                     </tr>

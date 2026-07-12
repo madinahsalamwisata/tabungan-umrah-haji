@@ -58,16 +58,16 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-white flex text-black">
       {/* Sidebar for desktop */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 rounded-tr-2xl bg-white/10 backdrop-blur-md">
+        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/10 backdrop-blur-md">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/bg-sidebar-new.jpeg" alt="Sidebar Background" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/40"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60"></div>
           </div>
           
           <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-sm">
-            <div className="flex flex-col items-center justify-center pt-3 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0">
+            <div className="flex flex-col items-center justify-center pt-1 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0">
               <img src="/images/logo_.png" alt="Logo" className="h-24 w-auto drop-shadow-md -mb-1" />
               <div className="text-center space-y-0">
                 <h1 className="text-base font-extrabold text-emerald-950 drop-shadow-sm leading-tight">

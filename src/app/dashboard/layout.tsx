@@ -95,14 +95,14 @@ export default function DashboardLayout({
           
           <div className="relative z-10 flex flex-col flex-1 min-h-0 bg-white/5 backdrop-blur-sm">
 
-            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-5 border-b border-white/30 bg-white/20 backdrop-blur-md rounded-b-lg transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3.5'}`}>
+            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md rounded-b-lg transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
               <img src="/images/ms-wisata-new-logo.png" alt="Logo" className={`${isCollapsed ? 'h-10' : 'h-14'} w-auto drop-shadow-md shrink-0 transition-all duration-300`} />
               {!isCollapsed && (
                 <div className="text-left flex flex-col justify-center overflow-hidden transition-all duration-300">
-                  <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight whitespace-nowrap">
+                  <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight">
                     Tabungan Umrah & Haji
                   </h1>
-                  <p className="text-[11px] font-bold text-yellow-300 drop-shadow-sm mt-0.5 whitespace-nowrap">
+                  <p className="text-[11px] font-bold text-yellow-300 drop-shadow-sm mt-0.5">
                     Madinah Salam Wisata
                   </p>
                 </div>

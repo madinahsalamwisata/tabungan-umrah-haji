@@ -72,7 +72,7 @@ function LoginForm() {
       <div className="absolute top-0 left-0 w-full flex justify-between items-start px-4 sm:px-6 pt-2 sm:pt-4 z-20 pointer-events-none">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
-          src="/images/ms-wisata-new-logo.png" 
+          src="/images/logo_.png" 
           alt="Madinah Salam Wisata Logo" 
           className="h-16 sm:h-24 md:h-28 w-auto object-contain pointer-events-auto drop-shadow-lg ml-2 sm:ml-8"
         />

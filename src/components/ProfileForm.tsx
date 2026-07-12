@@ -151,14 +151,12 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   };
 
   return (
-    <div className="relative rounded-[2rem] shadow-xl overflow-hidden bg-white border border-gray-100">
+    <div className="relative rounded-[2rem] shadow-xl overflow-hidden border border-white/10">
+      <div className="absolute inset-0 bg-cover bg-[center_top] z-0" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
+      <div className="absolute inset-0 bg-[#111814]/70 backdrop-blur-xl z-0"></div>
 
-      {/* Header/Cover Image Area */}
-      <div 
-        className="h-36 relative bg-cover bg-[center_65%]"
-        style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent"></div>
+      {/* Header Area */}
+      <div className="h-36 relative z-10 border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.1)] bg-gradient-to-b from-black/20 to-transparent">
         
         {/* Dropdown Menu */}
         <div className="absolute top-4 right-4 z-20" ref={menuRef}>
@@ -255,65 +253,65 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
         {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
             <div className="grid grid-cols-1 gap-y-4 gap-x-6 sm:grid-cols-2">
-              <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Email (Tidak bisa diubah)</label>
+              <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label className="block text-xs font-medium text-white/70 mb-1">Email (Tidak bisa diubah)</label>
                 <input
                   type="text"
                   disabled
                   value={jamaah.email}
-                  className="block w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 sm:text-sm cursor-not-allowed"
+                  className="block w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white/50 sm:text-sm cursor-not-allowed"
                 />
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label htmlFor="nama" className="block text-xs font-medium text-gray-700 mb-1">Nama Lengkap</label>
+              <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label htmlFor="nama" className="block text-xs font-medium text-white/90 mb-1">Nama Lengkap</label>
                 <input
                   type="text"
                   id="nama"
                   required
                   value={form.nama}
                   onChange={(e) => setForm({ ...form, nama: e.target.value })}
-                  className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label htmlFor="no_hp" className="block text-xs font-medium text-gray-700 mb-1">No. HP / WhatsApp</label>
+              <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label htmlFor="no_hp" className="block text-xs font-medium text-white/90 mb-1">No. HP / WhatsApp</label>
                 <input
                   type="text"
                   id="no_hp"
                   required
                   value={form.no_hp}
                   onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
-                  className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label htmlFor="nik" className="block text-xs font-medium text-gray-700 mb-1">NIK</label>
+              <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label htmlFor="nik" className="block text-xs font-medium text-white/90 mb-1">NIK</label>
                 <input
                   type="text"
                   id="nik"
                   required
                   value={form.nik}
                   onChange={(e) => setForm({ ...form, nik: e.target.value })}
-                  className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="sm:col-span-2 bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label htmlFor="alamat" className="block text-xs font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+              <div className="sm:col-span-2 bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label htmlFor="alamat" className="block text-xs font-medium text-white/90 mb-1">Alamat Lengkap</label>
                 <textarea
                   id="alamat"
                   rows={2}
                   value={form.alamat}
                   onChange={(e) => setForm({ ...form, alamat: e.target.value })}
-                  className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all resize-none"
+                  className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all resize-none"
                 />
               </div>
             </div>
             
-            <div className="flex justify-end gap-3 pt-3 border-t border-gray-100 mt-5">
+            <div className="flex justify-end gap-3 pt-3 border-t border-white/10 mt-5">
               <button
                 type="button"
                 onClick={() => {
@@ -325,7 +323,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                     alamat: jamaah.alamat || "",
                   });
                 }}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors"
+                className="px-4 py-2 border border-white/20 rounded-lg text-sm font-medium text-white/90 bg-white/5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors backdrop-blur-sm"
               >
                 Batal
               </button>
@@ -340,26 +338,26 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
           </form>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4 animate-in fade-in duration-300">
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Nama Lengkap</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">{jamaah.nama}</p>
+            <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-white/30 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-white/70">Nama Lengkap</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.nama}</p>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Alamat Email</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">{jamaah.email}</p>
+            <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-white/30 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-white/70">Alamat Email</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.email}</p>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">No. HP / WhatsApp</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">{jamaah.no_hp}</p>
+            <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-white/30 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-white/70">No. HP / WhatsApp</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.no_hp}</p>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Nomor Induk Kependudukan (NIK)</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">{jamaah.nik}</p>
+            <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-white/30 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-white/70">Nomor Induk Kependudukan (NIK)</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.nik}</p>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 md:col-span-2 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Alamat Lengkap</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5 leading-relaxed">
-                {jamaah.alamat || <span className="text-gray-400 italic">Belum diisi</span>}
+            <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-3.5 sm:p-4 md:col-span-2 hover:border-white/30 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-white/70">Alamat Lengkap</p>
+              <p className="text-sm font-semibold text-white mt-0.5 leading-relaxed">
+                {jamaah.alamat || <span className="text-white/40 italic">Belum diisi</span>}
               </p>
             </div>
           </div>

@@ -116,7 +116,7 @@ export default function DashboardLayout({
                     <div key={item.name} className="space-y-1 relative">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`group w-full flex items-center justify-between py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
+                        className={`group w-full flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
                           isCollapsed ? 'px-0 justify-center' : 'px-4 justify-between'
                         } ${
                           isOpen 

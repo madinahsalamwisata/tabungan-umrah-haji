@@ -167,7 +167,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                 ];
 
             return (
-              <div key={paket.id} className="bg-white rounded-xl shadow border border-gray-200 overflow-hidden flex flex-col md:flex-row hover:shadow-lg transition-shadow relative max-w-5xl">
+              <div key={paket.id} className="bg-white rounded-xl shadow border border-gray-200 overflow-hidden flex flex-col md:flex-row hover:shadow-lg transition-shadow relative w-full">
                 
                 {isAlreadySelected && (
                   <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-bl-lg z-20">

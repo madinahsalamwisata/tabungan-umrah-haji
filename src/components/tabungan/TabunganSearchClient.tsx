@@ -110,7 +110,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
         className="relative bg-cover bg-center p-6 rounded-2xl shadow-xl border border-white/10 overflow-hidden"
         style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}
       >
-        <div className="absolute inset-0 bg-[#111814]/80 backdrop-blur-xl rounded-2xl"></div>
+        <div className="absolute -inset-2 bg-[#111814]/80 backdrop-blur-xl"></div>
         <div className="relative z-10">
           <h3 className="text-lg font-bold text-white mb-4">Cari Estimasi Paket Tabungan</h3>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
@@ -180,7 +180,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                   className="relative rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/10 overflow-hidden group flex flex-col bg-cover bg-center"
                   style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}
                 >
-                  <div className="absolute inset-0 bg-[#111814]/40 backdrop-blur-sm rounded-2xl"></div>
+                  <div className="absolute -inset-2 bg-[#111814]/40 backdrop-blur-sm"></div>
                   
                   <div className="relative z-10 p-6 md:pl-8 flex flex-col md:flex-row md:items-center gap-6">
                     {/* Left content (Title & Details) */}

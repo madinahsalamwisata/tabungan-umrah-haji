@@ -173,7 +173,7 @@ export default function TabunganDashboardClient({
       className="relative rounded-2xl shadow-xl border border-white/10 overflow-hidden transition-all duration-300 bg-cover bg-center"
       style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}
     >
-      <div className="absolute inset-0 bg-[#111814]/40 backdrop-blur-sm rounded-2xl"></div>
+      <div className="absolute -inset-2 bg-[#111814]/40 backdrop-blur-sm"></div>
       
       {/* Header / Summary (Always Visible) */}
       <div 

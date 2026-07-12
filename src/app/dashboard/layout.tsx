@@ -58,7 +58,7 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-white flex text-black">
       {/* Sidebar for desktop */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 rounded-tr-[40px] rounded-bl-[40px] bg-white/10 backdrop-blur-md">
+        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 rounded-tr-[40px] rounded-br-[40px] bg-white/10 backdrop-blur-md">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -67,10 +67,16 @@ export default function DashboardLayout({
           </div>
           
           <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-sm">
-            <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-white/10 bg-black/20">
-              <h1 className="text-xl font-bold text-white truncate drop-shadow-md">
-                Tabungan Umrah
-              </h1>
+            <div className="flex flex-col items-center justify-center py-6 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-2">
+              <img src="/images/logo.png" alt="Logo" className="h-14 w-auto drop-shadow-md" />
+              <div className="text-center">
+                <h1 className="text-[15px] font-extrabold text-emerald-950 drop-shadow-sm leading-tight">
+                  Tabungan Umrah & Haji
+                </h1>
+                <p className="text-[11px] font-bold text-emerald-900 drop-shadow-sm">
+                  Madinah Salam Wisata
+                </p>
+              </div>
             </div>
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-3 py-6 space-y-3 overflow-y-auto">
@@ -164,9 +170,17 @@ export default function DashboardLayout({
       {/* Mobile Header & Nav */}
       <div className="md:hidden fixed top-0 w-full z-20">
         <div className="flex items-center justify-between bg-black/70 backdrop-blur-sm h-16 px-4 shadow-md border-b border-white/10">
-          <h1 className="text-lg font-bold text-white drop-shadow-md">
-            Tabungan Umrah
-          </h1>
+          <div className="flex items-center gap-3">
+            <img src="/images/logo.png" alt="Logo" className="h-9 w-auto" />
+            <div className="flex flex-col">
+              <h1 className="text-sm font-bold text-white drop-shadow-md leading-tight">
+                Tabungan Umrah & Haji
+              </h1>
+              <p className="text-[10px] text-gray-200 drop-shadow-md">
+                Madinah Salam Wisata
+              </p>
+            </div>
+          </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-white hover:text-gray-200 p-2"

@@ -67,9 +67,9 @@ export default function DashboardLayout({
           </div>
           
           <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-sm">
-            <div className="flex flex-col items-center justify-center pt-5 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-2">
-              <img src="/images/logo_.png" alt="Logo" className="h-24 w-auto drop-shadow-md" />
-              <div className="text-center space-y-0.5">
+            <div className="flex flex-col items-center justify-center pt-3 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0">
+              <img src="/images/logo_.png" alt="Logo" className="h-24 w-auto drop-shadow-md -mb-1" />
+              <div className="text-center space-y-0">
                 <h1 className="text-base font-extrabold text-emerald-950 drop-shadow-sm leading-tight">
                   Tabungan Umrah & Haji
                 </h1>

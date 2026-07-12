@@ -152,14 +152,22 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   };
 
   return (
-    <div className="relative rounded-[2rem] shadow-xl overflow-hidden bg-white border border-gray-100">
-      
+    <div 
+      className={`relative rounded-[2rem] shadow-xl overflow-hidden transition-all duration-300 ${
+        isExpanded ? 'bg-white border border-gray-100' : 'border border-white/10'
+      }`}
+    >
+      {/* Background Image Layer for Collapsed State */}
+      {!isExpanded && (
+        <div className="absolute inset-0 bg-cover bg-[center_top] z-0" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
+      )}
+
       {/* Header/Cover Image Area */}
       <div 
-        className="h-36 relative bg-cover bg-[center_65%]"
-        style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
+        className={`h-36 relative ${isExpanded ? 'bg-cover bg-[center_65%]' : ''}`}
+        style={isExpanded ? { backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" } : {}}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent z-0"></div>
         
         {/* Dropdown Menu */}
         <div className="absolute top-4 right-4 z-20" ref={menuRef}>
@@ -256,7 +264,11 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
           
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
-            className="mb-3 p-2 rounded-full hover:bg-gray-100 transition-colors border border-gray-200 shadow-sm"
+            className={`mb-3 p-2 rounded-full transition-colors shadow-sm ${
+              isExpanded 
+                ? 'hover:bg-gray-100 border border-gray-200' 
+                : 'bg-white hover:bg-gray-50 border border-transparent'
+            }`}
           >
             <svg className={`w-5 h-5 text-gray-600 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

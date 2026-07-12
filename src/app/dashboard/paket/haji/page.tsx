@@ -19,7 +19,7 @@ export default async function PaketHajiPage() {
         </div>
         <h2 className="text-2xl font-bold text-emerald-900 mb-4">Katalog Paket Haji</h2>
         <p className="text-emerald-700 max-w-2xl mx-auto leading-relaxed text-lg italic">
-          "Ya Allah <i>Subhanahu Wa Ta'ala</i>, mudahkanlah kami untuk segera menyelenggarakan program Haji dan mudahkanlah langkah jamaah kami untuk menunaikan ibadah Haji ke Baitullah. Amin Ya Rabbal 'Alamin."
+          "Semoga Allah <i>Subhanahu Wa Ta'ala</i> memudahkan kami untuk segera menyelenggarakan program Haji dan memudahkan langkah jamaah kami untuk menunaikan ibadah Haji ke Baitullah. Amin Ya Rabbal 'Alamin."
         </p>
       </div>
 

@@ -58,40 +58,44 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-white flex text-black">
       {/* Sidebar for desktop */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex-1 flex flex-col min-h-0 bg-emerald-900 shadow-xl">
-          <div className="flex items-center h-16 flex-shrink-0 px-4 bg-emerald-950">
-            <h1 className="text-xl font-bold text-white truncate">
-              Tabungan Umrah
-            </h1>
+        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-xl border-r border-white/10">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/bg-sidebar.jpeg" alt="Sidebar Background" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90"></div>
           </div>
+          
+          <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-md">
+            <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-white/10 bg-black/20">
+              <h1 className="text-xl font-bold text-white truncate drop-shadow-md">
+                Tabungan Umrah
+              </h1>
+            </div>
           <div className="flex-1 flex flex-col overflow-y-auto">
-            <nav className="flex-1 px-2 py-6 space-y-1">
+            <nav className="flex-1 px-2 py-6 space-y-2">
               {navigation.map((item) => {
                 if (item.children) {
                   const isOpen = openMenus.includes(item.name);
-                  const isChildActive = item.children.some(child => pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/')));
+                  // We only highlight the child, the parent just acts as a toggle without strong background
                   return (
                     <div key={item.name} className="space-y-1">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`${
-                          isChildActive
-                            ? "bg-emerald-800 text-white"
-                            : "text-gray-300 hover:bg-emerald-800 hover:text-white"
-                        } group flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-r-md transition-colors border-l-4 border-transparent ${isChildActive ? 'border-white' : ''}`}
+                        className={`group flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-r-md transition-colors border-l-4 border-transparent ${isOpen ? 'text-white' : 'text-gray-300 hover:bg-white/10 hover:text-white'}`}
                       >
                         <div className="flex items-center">
                           <item.icon
                             className={`${
-                              isChildActive ? "text-white" : "text-gray-400 group-hover:text-white"
+                              isOpen ? "text-white" : "text-gray-400 group-hover:text-white"
                             } flex-shrink-0 -ml-1 mr-3 h-6 w-6`}
                           />
-                          {item.name}
+                          <span className="drop-shadow-sm">{item.name}</span>
                         </div>
                         <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                       </button>
                       {isOpen && (
-                        <div className="pl-11 pr-2 space-y-1">
+                        <div className="pl-11 pr-2 space-y-1 mt-1">
                           {item.children.map(child => {
                             const isChildCurrent = pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'));
                             return (
@@ -100,9 +104,9 @@ export default function DashboardLayout({
                                 href={child.href}
                                 className={`${
                                   isChildCurrent
-                                    ? "bg-emerald-800 text-white font-semibold"
-                                    : "text-gray-300 hover:bg-emerald-700 hover:text-white"
-                                } flex items-center px-3 py-2 text-xs md:text-sm rounded-md transition-colors`}
+                                    ? "bg-white/20 text-white font-semibold border-l-4 border-white"
+                                    : "text-gray-300 hover:bg-white/10 hover:text-white border-l-4 border-transparent"
+                                } flex items-center px-3 py-2 text-xs md:text-sm rounded-r-md transition-colors drop-shadow-sm`}
                               >
                                 {child.name}
                               </Link>
@@ -121,9 +125,9 @@ export default function DashboardLayout({
                     href={item.href!}
                     className={`${
                       isActive
-                        ? "bg-emerald-800 text-white border-l-4 border-white"
-                        : "text-gray-300 hover:bg-emerald-800 hover:text-white border-l-4 border-transparent"
-                    } group flex items-center px-3 py-3 text-sm font-medium rounded-r-md transition-colors`}
+                        ? "bg-white/20 text-white border-l-4 border-white font-semibold"
+                        : "text-gray-300 hover:bg-white/10 hover:text-white border-l-4 border-transparent"
+                    } group flex items-center px-3 py-3 text-sm font-medium rounded-r-md transition-colors drop-shadow-sm`}
                   >
                     <item.icon
                       className={`${
@@ -135,32 +139,33 @@ export default function DashboardLayout({
                 );
               })}
             </nav>
-            <div className="p-4 border-t border-emerald-800">
+            <div className="p-4 border-t border-white/10 bg-black/20">
               <div className="flex items-center mb-4">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-emerald-900 font-bold uppercase">
+                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md">
                   {session?.user?.name?.charAt(0) || "U"}
                 </div>
                 <div className="ml-3 truncate">
-                  <p className="text-sm font-medium text-white truncate">{session?.user?.name}</p>
-                  <p className="text-xs font-medium text-gray-300 truncate">{session?.user?.email}</p>
+                  <p className="text-sm font-medium text-white truncate drop-shadow-md">{session?.user?.name}</p>
+                  <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">{session?.user?.email}</p>
                 </div>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-emerald-900 px-4 py-2 rounded-md text-sm font-bold transition-colors shadow-sm"
+                className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-4 py-2 rounded-md text-sm font-bold transition-colors shadow-sm"
               >
                 <ArrowLeftOnRectangleIcon className="w-5 h-5" />
                 Keluar
               </button>
             </div>
           </div>
+          </div>
         </div>
       </div>
 
       {/* Mobile Header & Nav */}
-      <div className="md:hidden fixed top-0 w-full z-10">
-        <div className="flex items-center justify-between bg-emerald-900 h-16 px-4 shadow-md">
-          <h1 className="text-lg font-bold text-white">
+      <div className="md:hidden fixed top-0 w-full z-20">
+        <div className="flex items-center justify-between bg-black/90 backdrop-blur-md h-16 px-4 shadow-md border-b border-white/10">
+          <h1 className="text-lg font-bold text-white drop-shadow-md">
             Tabungan Umrah
           </h1>
           <button
@@ -177,30 +182,25 @@ export default function DashboardLayout({
         
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="bg-emerald-900 shadow-xl border-b border-emerald-800">
+          <div className="relative bg-black/90 backdrop-blur-xl shadow-xl border-b border-white/10">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => {
                 if (item.children) {
                   const isOpen = openMenus.includes(item.name);
-                  const isChildActive = item.children.some(child => pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/')));
                   return (
                     <div key={item.name} className="space-y-1">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`${
-                          isChildActive
-                            ? "bg-emerald-800 text-white"
-                            : "text-gray-300 hover:bg-emerald-800 hover:text-white"
-                        } flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium`}
+                        className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium ${isOpen ? 'text-white' : 'text-gray-300 hover:bg-white/10 hover:text-white'}`}
                       >
                         <div className="flex items-center gap-3">
-                          <item.icon className={`h-5 w-5 ${isChildActive ? "text-white" : "text-gray-400"}`} />
-                          {item.name}
+                          <item.icon className={`h-5 w-5 ${isOpen ? "text-white" : "text-gray-400"}`} />
+                          <span className="drop-shadow-sm">{item.name}</span>
                         </div>
                         <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                       </button>
                       {isOpen && (
-                        <div className="pl-11 pr-2 space-y-1">
+                        <div className="pl-11 pr-2 space-y-1 mt-1">
                           {item.children.map(child => {
                             const isChildCurrent = pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'));
                             return (
@@ -210,9 +210,9 @@ export default function DashboardLayout({
                                 onClick={() => setMobileMenuOpen(false)}
                                 className={`${
                                   isChildCurrent
-                                    ? "bg-emerald-800 text-white font-semibold"
-                                    : "text-gray-300 hover:bg-emerald-700 hover:text-white"
-                                } block px-3 py-2 text-sm rounded-md transition-colors`}
+                                    ? "bg-white/20 text-white font-semibold border-l-4 border-white"
+                                    : "text-gray-300 hover:bg-white/10 hover:text-white border-l-4 border-transparent"
+                                } block px-3 py-2 text-sm rounded-r-md transition-colors drop-shadow-sm`}
                               >
                                 {child.name}
                               </Link>
@@ -232,9 +232,9 @@ export default function DashboardLayout({
                     onClick={() => setMobileMenuOpen(false)}
                     className={`${
                       isActive
-                        ? "bg-emerald-800 text-white"
-                        : "text-gray-300 hover:bg-emerald-800 hover:text-white"
-                    } block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3`}
+                        ? "bg-white/20 text-white font-semibold border-l-4 border-white"
+                        : "text-gray-300 hover:bg-white/10 hover:text-white border-l-4 border-transparent"
+                    } block px-3 py-2 rounded-r-md text-base font-medium flex items-center gap-3 drop-shadow-sm`}
                   >
                     <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-400"}`} />
                     {item.name}
@@ -243,7 +243,7 @@ export default function DashboardLayout({
               })}
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full text-left text-gray-300 hover:bg-emerald-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3"
+                className="w-full text-left text-gray-300 hover:bg-white/10 hover:text-white block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3 drop-shadow-sm"
               >
                 <ArrowLeftOnRectangleIcon className="h-5 w-5 text-gray-400" />
                 Keluar

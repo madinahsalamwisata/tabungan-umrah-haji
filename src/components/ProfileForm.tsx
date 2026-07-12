@@ -76,7 +76,11 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
 
     // Check size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      setError("Ukuran foto maksimal 2MB");
+      SmallSwal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        html: 'Ukuran foto maksimal 2MB',
+      });
       return;
     }
 

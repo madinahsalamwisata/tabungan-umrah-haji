@@ -82,17 +82,17 @@ export default function DashboardLayout({
                     <div key={item.name} className="space-y-1">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`group flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-r-md transition-colors border-l-4 border-transparent ${isOpen ? 'text-white' : 'text-gray-300 hover:bg-white/10 hover:text-white'}`}
+                        className={`group flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-r-md transition-colors border-l-4 border-transparent ${isOpen ? 'text-emerald-900' : 'text-emerald-800 hover:bg-white/30 hover:text-emerald-900'}`}
                       >
                         <div className="flex items-center">
                           <item.icon
                             className={`${
-                              isOpen ? "text-white" : "text-gray-400 group-hover:text-white"
+                              isOpen ? "text-emerald-900" : "text-emerald-700 group-hover:text-emerald-900"
                             } flex-shrink-0 -ml-1 mr-3 h-6 w-6`}
                           />
-                          <span className="drop-shadow-sm">{item.name}</span>
+                          <span className="drop-shadow-sm font-bold">{item.name}</span>
                         </div>
-                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180 text-emerald-900' : 'text-emerald-800'}`} />
                       </button>
                       {isOpen && (
                         <div className="pl-11 pr-2 space-y-1 mt-1">
@@ -104,8 +104,8 @@ export default function DashboardLayout({
                                 href={child.href}
                                 className={`${
                                   isChildCurrent
-                                    ? "bg-white/20 text-white font-semibold border-l-4 border-white"
-                                    : "text-gray-300 hover:bg-white/10 hover:text-white border-l-4 border-transparent"
+                                    ? "bg-white/30 text-emerald-900 font-bold border-l-4 border-emerald-900"
+                                    : "text-emerald-800 font-medium hover:bg-white/30 hover:text-emerald-900 border-l-4 border-transparent"
                                 } flex items-center px-3 py-2 text-xs md:text-sm rounded-r-md transition-colors drop-shadow-sm`}
                               >
                                 {child.name}
@@ -125,16 +125,16 @@ export default function DashboardLayout({
                     href={item.href!}
                     className={`${
                       isActive
-                        ? "bg-white/20 text-white border-l-4 border-white font-semibold"
-                        : "text-gray-300 hover:bg-white/10 hover:text-white border-l-4 border-transparent"
-                    } group flex items-center px-3 py-3 text-sm font-medium rounded-r-md transition-colors drop-shadow-sm`}
+                        ? "bg-white/30 text-emerald-900 border-l-4 border-emerald-900 font-bold"
+                        : "text-emerald-800 font-medium hover:bg-white/30 hover:text-emerald-900 border-l-4 border-transparent"
+                    } group flex items-center px-3 py-3 text-sm rounded-r-md transition-colors drop-shadow-sm`}
                   >
                     <item.icon
                       className={`${
-                        isActive ? "text-white" : "text-gray-400 group-hover:text-white"
+                        isActive ? "text-emerald-900" : "text-emerald-700 group-hover:text-emerald-900"
                       } flex-shrink-0 -ml-1 mr-3 h-6 w-6`}
                     />
-                    {item.name}
+                    <span className={isActive ? "font-bold" : "font-semibold"}>{item.name}</span>
                   </Link>
                 );
               })}
@@ -191,13 +191,13 @@ export default function DashboardLayout({
                     <div key={item.name} className="space-y-1">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium ${isOpen ? 'text-white' : 'text-gray-300 hover:bg-white/10 hover:text-white'}`}
+                        className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium ${isOpen ? 'text-emerald-900' : 'text-emerald-800 hover:bg-white/30 hover:text-emerald-900'}`}
                       >
                         <div className="flex items-center gap-3">
-                          <item.icon className={`h-5 w-5 ${isOpen ? "text-white" : "text-gray-400"}`} />
-                          <span className="drop-shadow-sm">{item.name}</span>
+                          <item.icon className={`h-5 w-5 ${isOpen ? "text-emerald-900" : "text-emerald-700"}`} />
+                          <span className="drop-shadow-sm font-bold">{item.name}</span>
                         </div>
-                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180 text-emerald-900' : 'text-emerald-800'}`} />
                       </button>
                       {isOpen && (
                         <div className="pl-11 pr-2 space-y-1 mt-1">
@@ -210,8 +210,8 @@ export default function DashboardLayout({
                                 onClick={() => setMobileMenuOpen(false)}
                                 className={`${
                                   isChildCurrent
-                                    ? "bg-white/20 text-white font-semibold border-l-4 border-white"
-                                    : "text-gray-300 hover:bg-white/10 hover:text-white border-l-4 border-transparent"
+                                    ? "bg-white/30 text-emerald-900 font-bold border-l-4 border-emerald-900"
+                                    : "text-emerald-800 font-medium hover:bg-white/30 hover:text-emerald-900 border-l-4 border-transparent"
                                 } block px-3 py-2 text-sm rounded-r-md transition-colors drop-shadow-sm`}
                               >
                                 {child.name}
@@ -232,12 +232,12 @@ export default function DashboardLayout({
                     onClick={() => setMobileMenuOpen(false)}
                     className={`${
                       isActive
-                        ? "bg-white/20 text-white font-semibold border-l-4 border-white"
-                        : "text-gray-300 hover:bg-white/10 hover:text-white border-l-4 border-transparent"
-                    } block px-3 py-2 rounded-r-md text-base font-medium flex items-center gap-3 drop-shadow-sm`}
+                        ? "bg-white/30 text-emerald-900 font-bold border-l-4 border-emerald-900"
+                        : "text-emerald-800 font-medium hover:bg-white/30 hover:text-emerald-900 border-l-4 border-transparent"
+                    } block px-3 py-2 rounded-r-md text-base flex items-center gap-3 drop-shadow-sm`}
                   >
-                    <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-400"}`} />
-                    {item.name}
+                    <item.icon className={`h-5 w-5 ${isActive ? "text-emerald-900" : "text-emerald-700"}`} />
+                    <span className={isActive ? "font-bold" : "font-semibold"}>{item.name}</span>
                   </Link>
                 );
               })}

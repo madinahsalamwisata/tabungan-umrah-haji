@@ -151,14 +151,15 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   };
 
   return (
-    <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-[#111814]/90 backdrop-blur-xl border border-white/5">
+    <div 
+      className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-cover bg-[center_65%]" 
+      style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
+    >
+      <div className="absolute inset-0 bg-black/10"></div>
 
       {/* Header/Cover Image Area */}
-      <div 
-        className="h-36 relative bg-cover bg-[center_65%]" 
-        style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-[#111814]/90"></div>
+      <div className="h-36 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#111814]/80"></div>
         
         {/* Dropdown Menu */}
         <div className="absolute top-4 right-4 z-20" ref={menuRef}>
@@ -224,7 +225,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
       />
 
       {/* Bottom Area (Glassmorphism Data) */}
-      <div className="relative z-10 px-6 sm:px-8 pb-8 pt-0">
+      <div className="relative z-10 bg-[#111814]/70 backdrop-blur-xl border-t border-white/5 px-6 sm:px-8 pb-8 pt-0">
         {/* Avatar Section */}
         <div className="flex justify-between items-end -mt-14 mb-7 relative">
           <div className="relative group">

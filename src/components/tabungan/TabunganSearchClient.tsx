@@ -115,7 +115,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
           <h3 className="text-lg font-bold text-white mb-4">Cari Estimasi Paket Tabungan</h3>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Jenis Pesawat</label>
+              <label className="block text-sm font-medium text-white mb-1">Jenis Pesawat</label>
               <CustomSelect 
                 value={pesawat} 
                 onChange={setPesawat} 
@@ -124,7 +124,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Jenis Hotel</label>
+              <label className="block text-sm font-medium text-white mb-1">Jenis Hotel</label>
               <CustomSelect 
                 value={hotel} 
                 onChange={setHotel} 
@@ -133,7 +133,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Bulan Keberangkatan</label>
+              <label className="block text-sm font-medium text-white mb-1">Bulan Keberangkatan</label>
               <CustomSelect 
                 value={bulan} 
                 onChange={setBulan} 
@@ -153,7 +153,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
       {hasSearched && (
         <div className="space-y-4">
           {filteredPakets.length === 0 ? (
-            <div className="col-span-full p-8 text-center text-gray-400 bg-white/5 rounded-lg border border-white/10 backdrop-blur-sm">
+            <div className="col-span-full p-8 text-center text-white bg-white/5 rounded-lg border border-white/10 backdrop-blur-sm">
               Tidak ada estimasi paket yang cocok dengan kriteria pencarian Anda.
             </div>
           ) : (
@@ -169,9 +169,9 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                   const stars = Array(numStars).fill(0).map((_, i) => (
                     <svg key={i} className="w-3.5 h-3.5 text-yellow-400 inline-block" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                   ));
-                  return <span className="inline-flex items-center gap-0.5">{stars} <span className="text-gray-400 text-xs ml-1 font-normal">/Setaraf</span></span>;
+                  return <span className="inline-flex items-center gap-0.5">{stars} <span className="text-white/80 text-xs ml-1 font-normal">/Setaraf</span></span>;
                 }
-                return <span className="text-gray-300">{hotelString.replace(/\s*\(Atau Setaraf\)/i, "/Setaraf")}</span>;
+                return <span className="text-white/80">{hotelString.replace(/\s*\(Atau Setaraf\)/i, "/Setaraf")}</span>;
               };
 
               return (
@@ -204,7 +204,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                             <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                           </div>
                           <div>
-                            <p className="text-[11px] text-gray-400 mb-0.5 uppercase tracking-wider font-bold">Bulan Keberangkatan</p>
+                            <p className="text-[11px] text-white/90 mb-0.5 uppercase tracking-wider font-bold">Bulan Keberangkatan</p>
                             <p className="text-sm font-semibold text-white">{new Date(paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' })}</p>
                           </div>
                         </div>
@@ -215,7 +215,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                             <svg className="w-4 h-4 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                           </div>
                           <div>
-                            <p className="text-[11px] text-gray-400 mb-0.5 uppercase tracking-wider font-bold">Hotel (/Setaraf)</p>
+                            <p className="text-[11px] text-white/90 mb-0.5 uppercase tracking-wider font-bold">Hotel (/Setaraf)</p>
                             <div className="text-sm font-medium text-white flex items-center gap-1">Makkah: {renderStars(paket.hotel_makkah || "Bintang 4 (Atau Setaraf)")}</div>
                             <div className="text-sm font-medium text-white flex items-center gap-1">Madinah: {renderStars(paket.hotel_madinah || "Bintang 4 (Atau Setaraf)")}</div>
                           </div>
@@ -227,7 +227,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                             <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
                           </div>
                           <div>
-                            <p className="text-[11px] text-gray-400 mb-0.5 uppercase tracking-wider font-bold">Maskapai</p>
+                            <p className="text-[11px] text-white/90 mb-0.5 uppercase tracking-wider font-bold">Maskapai</p>
                             <p className="text-sm font-semibold text-white">{paket.maskapai || "Menyesuaikan"}</p>
                           </div>
                         </div>
@@ -237,8 +237,8 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                     {/* Right content (Button) */}
                     <div className="md:w-56 shrink-0 flex items-center justify-center md:border-l md:border-white/10 md:pl-6 pt-4 md:pt-0 mt-4 md:mt-0 border-t border-white/10 md:border-t-0">
                       {isAlreadySelected ? (
-                        <button disabled className="w-full bg-white/5 text-gray-400 font-bold py-3 px-4 rounded-xl cursor-not-allowed flex items-center justify-center gap-2 border border-white/10 backdrop-blur-sm">
-                          <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                        <button disabled className="w-full bg-white/5 text-white/90 font-bold py-3 px-4 rounded-xl cursor-not-allowed flex items-center justify-center gap-2 border border-white/10 backdrop-blur-sm">
+                          <svg className="w-5 h-5 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                           Sudah Dipilih
                         </button>
                       ) : (

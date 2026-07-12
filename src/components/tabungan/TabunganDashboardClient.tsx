@@ -187,29 +187,29 @@ export default function TabunganDashboardClient({
               <span className="bg-yellow-500/20 text-yellow-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-yellow-500/30">LUNAS 🎉</span>
             )}
           </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/90">
             <span className="font-semibold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded-md">
               {new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' })}
             </span>
             <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-            <span className="text-gray-300">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</span>
+            <span className="text-white">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</span>
             <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-            <span className="text-gray-300">Terkumpul: <strong className="text-emerald-400">{formatRp(totalTerkumpul)}</strong></span>
+            <span className="text-white">Terkumpul: <strong className="text-emerald-400">{formatRp(totalTerkumpul)}</strong></span>
             <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-            <span className="text-gray-300">Sisa: <strong className="text-white">{formatRp(sisaTagihan)}</strong></span>
+            <span className="text-white">Sisa: <strong className="text-white">{formatRp(sisaTagihan)}</strong></span>
           </div>
         </div>
         
         <div className="flex items-center gap-4 pl-4 ml-4 border-l border-white/10">
           <div className="hidden md:block w-32">
-            <div className="flex justify-between text-[11px] text-gray-400 mb-1 font-medium">
+            <div className="flex justify-between text-[11px] text-white/90 mb-1 font-medium">
               <span>{persentase.toFixed(1)}%</span>
             </div>
             <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
               <div className="bg-emerald-400 h-full rounded-full transition-all duration-500" style={{ width: `${persentase}%` }}></div>
             </div>
           </div>
-          <button className={`p-2 rounded-full hover:bg-white/10 text-gray-300 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+          <button className={`p-2 rounded-full hover:bg-white/10 text-white transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
           </button>
         </div>
@@ -234,8 +234,8 @@ export default function TabunganDashboardClient({
             {/* Setoran Bulanan Card */}
             <div className="bg-white/5 backdrop-blur-md p-5 rounded-xl shadow-sm border border-white/10 flex flex-col justify-between">
                <div>
-                 <h4 className="text-sm font-bold text-gray-300 mb-1">Setoran Bulanan</h4>
-                 <p className="text-xs text-gray-400 mb-4">
+                 <h4 className="text-sm font-bold text-white mb-1">Setoran Bulanan</h4>
+                 <p className="text-xs text-white/80 mb-4">
                    {!sudahBayarSemua ? `Pembayaran untuk Cicilan ke-${cicilanKe} dari ${rencana.periode_bulan}` : "Tabungan Anda telah lunas."}
                  </p>
                  <p className="text-3xl font-black text-emerald-400 mb-6">{formatRp(Number(rencana.setoran_per_bulan))}</p>
@@ -243,7 +243,7 @@ export default function TabunganDashboardClient({
                
                <div>
                  {sudahBayarSemua || sudahLunasBulanIni ? (
-                   <button disabled className="w-full bg-white/5 text-gray-500 font-bold py-2.5 px-4 rounded-lg cursor-not-allowed text-sm border border-white/10 backdrop-blur-sm">
+                   <button disabled className="w-full bg-white/5 text-white/80 font-bold py-2.5 px-4 rounded-lg cursor-not-allowed text-sm border border-white/10 backdrop-blur-sm">
                      Sudah Dibayar Bulan Ini
                    </button>
                  ) : (
@@ -263,7 +263,7 @@ export default function TabunganDashboardClient({
             {/* Riwayat Tabungan Card */}
             <div className="bg-white/5 backdrop-blur-md rounded-xl shadow-sm border border-white/10 overflow-hidden flex flex-col max-h-[250px]">
                <div className="p-4 border-b border-white/10 bg-black/20">
-                 <h4 className="text-sm font-bold text-gray-300">Riwayat Setoran</h4>
+                 <h4 className="text-sm font-bold text-white">Riwayat Setoran</h4>
                </div>
                <div className="overflow-y-auto flex-1 custom-scrollbar">
                  {rencana.RiwayatSetoran.length > 0 ? (
@@ -272,7 +272,7 @@ export default function TabunganDashboardClient({
                        <li key={setoran.id} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
                          <div>
                            <p className="text-xs font-bold text-emerald-300 mb-0.5">Cicilan Ke-{setoran.bulan_ke}</p>
-                           <p className="text-[10px] text-gray-400">{new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                           <p className="text-[10px] text-white/80">{new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                          </div>
                          <div className="text-right">
                            <p className="text-sm font-bold text-white mb-1">{formatRp(Number(setoran.nominal))}</p>
@@ -284,7 +284,7 @@ export default function TabunganDashboardClient({
                      ))}
                    </ul>
                  ) : (
-                   <div className="p-8 text-center text-sm text-gray-400">
+                   <div className="p-8 text-center text-sm text-white">
                      Belum ada riwayat setoran pembayaran.
                    </div>
                  )}
@@ -302,7 +302,7 @@ export default function TabunganDashboardClient({
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Jenis Kamar</label>
+                <label className="block text-sm font-semibold text-white mb-2">Jenis Kamar</label>
                 <select 
                   value={editKamar}
                   onChange={(e) => setEditKamar(e.target.value)}
@@ -315,7 +315,7 @@ export default function TabunganDashboardClient({
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Jumlah Jamaah</label>
+                <label className="block text-sm font-semibold text-white mb-2">Jumlah Jamaah</label>
                 <input 
                   type="number" 
                   min="1"
@@ -332,7 +332,7 @@ export default function TabunganDashboardClient({
             </div>
 
             <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/10">
-              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-gray-300 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors">
+              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors">
                 Batal
               </button>
               <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors border border-emerald-500/50">

@@ -165,8 +165,8 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
       {/* CLOSED STATE (isExpanded === false) - Black Glassmorphism Concept */}
       {!isExpanded && (
         <div className="relative rounded-[2rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-300">
-          <div className="absolute inset-0 bg-cover bg-[center_65%] z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>
+          <div className="absolute inset-0 bg-cover bg-[center_65%] z-0 opacity-40 mix-blend-luminosity" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712]/95 via-[#0f1712]/70 to-[#0f1712]/30 z-0"></div>
           
           {/* Top Right Buttons */}
           <div className="absolute top-4 right-4 z-20 flex items-center gap-2" ref={menuRef}>
@@ -220,7 +220,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
           <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-center mt-2">
             {/* Avatar Section (Left) */}
             <div className="shrink-0 relative group">
-              <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-white/20 bg-gray-900 shadow-xl overflow-hidden flex items-center justify-center relative">
+              <div className="w-24 h-24 rounded-full border-4 border-white/20 bg-gray-900 shadow-xl overflow-hidden flex items-center justify-center relative">
                 {isUploading ? (
                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                     <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
@@ -234,7 +234,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
               <button 
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="absolute bottom-1 right-1 p-1.5 bg-emerald-600 text-white rounded-full border-2 border-[#0f1712] shadow-sm hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                className="absolute bottom-0 right-0 p-1.5 bg-emerald-600 text-white rounded-full border-2 border-[#0f1712] shadow-sm hover:bg-emerald-700 transition-colors disabled:opacity-50"
                 title="Ganti Foto"
               >
                 <CameraIcon />
@@ -243,21 +243,29 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
 
             {/* Data Section (Right) */}
             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 sm:p-4 hover:bg-white/10 transition-colors shadow-sm">
-                <p className="text-[11px] uppercase tracking-wider font-medium text-emerald-400">Nama Lengkap</p>
-                <p className="text-sm font-semibold text-white mt-1 truncate">{jamaah.nama}</p>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm">
+                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400">Nama Lengkap</p>
+                <p className="text-sm font-semibold text-white mt-0.5 truncate">{jamaah.nama}</p>
               </div>
-              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 sm:p-4 hover:bg-white/10 transition-colors shadow-sm">
-                <p className="text-[11px] uppercase tracking-wider font-medium text-emerald-400">Alamat Email</p>
-                <p className="text-sm font-semibold text-white mt-1 truncate">{jamaah.email}</p>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm">
+                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400">Alamat Email</p>
+                <p className="text-sm font-semibold text-white mt-0.5 truncate">{jamaah.email}</p>
               </div>
-              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 sm:p-4 hover:bg-white/10 transition-colors shadow-sm">
-                <p className="text-[11px] uppercase tracking-wider font-medium text-emerald-400">No. HP</p>
-                <p className="text-sm font-semibold text-white mt-1 truncate">{jamaah.no_hp}</p>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm">
+                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400">No. HP</p>
+                <p className="text-sm font-semibold text-white mt-0.5 truncate">{jamaah.no_hp}</p>
               </div>
-              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 sm:p-4 hover:bg-white/10 transition-colors shadow-sm">
-                <p className="text-[11px] uppercase tracking-wider font-medium text-emerald-400">NIK</p>
-                <p className="text-sm font-semibold text-white mt-1 truncate">{jamaah.nik}</p>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm">
+                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400">NIK</p>
+                <p className="text-sm font-semibold text-white mt-0.5 truncate">{jamaah.nik}</p>
+              </div>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm sm:col-span-2 flex flex-col h-[70px]">
+                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400 shrink-0">Alamat Lengkap</p>
+                <div className="overflow-y-auto custom-scrollbar mt-0.5 pr-1">
+                  <p className="text-sm font-semibold text-white leading-relaxed">
+                    {jamaah.alamat || <span className="text-gray-400 italic font-normal">Belum diisi</span>}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

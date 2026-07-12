@@ -44,7 +44,7 @@ export default function DashboardLayout({
     navigation.forEach(item => {
       if (item.children) {
         const isChildActive = item.children.some(child => 
-          pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'))
+          pathname === child.href
         );
         if (isChildActive && !openMenus.includes(item.name)) {
           setOpenMenus(prev => [...prev, item.name]);
@@ -119,7 +119,7 @@ export default function DashboardLayout({
                       >
                         <div className="pl-2 pr-2 space-y-1">
                           {item.children.map((child) => {
-                            const isChildActive = pathname.startsWith(child.href);
+                            const isChildActive = pathname === child.href;
                             return (
                               <Link
                                 key={child.name}
@@ -233,7 +233,7 @@ export default function DashboardLayout({
                       {isOpen && (
                         <div className="pl-6 pr-1 space-y-2 mt-2">
                           {item.children.map(child => {
-                            const isChildCurrent = pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'));
+                            const isChildCurrent = pathname === child.href;
                             return (
                               <Link
                                 key={child.name}

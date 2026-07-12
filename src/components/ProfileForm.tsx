@@ -151,15 +151,16 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   };
 
   return (
-    <div 
-      className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-cover bg-[center_65%]" 
-      style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
-    >
-      <div className="absolute inset-0 bg-black/20"></div>
+  return (
+    <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-[#111814]/90 backdrop-blur-xl border border-white/5">
 
-      {/* Header/Cover Image Area (Transparent top section) */}
-      <div className="h-40 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent"></div>
+      {/* Header/Cover Image Area */}
+      <div 
+        className="h-36 relative bg-cover bg-[center_65%]" 
+        style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-[#111814]/90"></div>
+        
         {/* Dropdown Menu */}
         <div className="absolute top-4 right-4 z-20" ref={menuRef}>
           <button
@@ -223,12 +224,12 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
         className="hidden" 
       />
 
-      {/* Bottom Area (Glassmorphism Overlay) */}
-      <div className="relative z-10 bg-black/40 backdrop-blur-xl border-t border-white/10 px-6 sm:px-8 pb-8 pt-0">
+      {/* Bottom Area (Glassmorphism Data) */}
+      <div className="relative z-10 px-6 sm:px-8 pb-8 pt-0">
         {/* Avatar Section */}
-        <div className="flex justify-between items-end -mt-16 mb-8 relative">
+        <div className="flex justify-between items-end -mt-14 mb-7 relative">
           <div className="relative group">
-            <div className="w-28 h-28 rounded-full border-4 border-[#111814]/80 bg-gray-50 shadow-2xl overflow-hidden flex items-center justify-center relative">
+            <div className="w-24 h-24 rounded-full border-4 border-[#111814] bg-gray-50 shadow-2xl overflow-hidden flex items-center justify-center relative">
               {isUploading ? (
                 <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
                   <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
@@ -253,67 +254,67 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
 
         {/* Data Section */}
         {isEditing ? (
-          <form onSubmit={handleSubmit} className="space-y-5 animate-in fade-in duration-300">
-            <div className="grid grid-cols-1 gap-y-5 gap-x-6 sm:grid-cols-2">
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-                <label className="block text-sm font-medium text-gray-300 mb-1.5">Email (Tidak bisa diubah)</label>
+          <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
+            <div className="grid grid-cols-1 gap-y-4 gap-x-6 sm:grid-cols-2">
+              <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-3.5">
+                <label className="block text-xs font-medium text-gray-400 mb-1">Email (Tidak bisa diubah)</label>
                 <input
                   type="text"
                   disabled
                   value={jamaah.email}
-                  className="block w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-gray-400 sm:text-sm cursor-not-allowed"
+                  className="block w-full px-3 py-2 bg-white/5 border border-white/5 rounded-lg text-gray-500 sm:text-sm cursor-not-allowed"
                 />
               </div>
 
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-                <label htmlFor="nama" className="block text-sm font-medium text-gray-300 mb-1.5">Nama Lengkap</label>
+              <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-3.5">
+                <label htmlFor="nama" className="block text-xs font-medium text-gray-400 mb-1">Nama Lengkap</label>
                 <input
                   type="text"
                   id="nama"
                   required
                   value={form.nama}
                   onChange={(e) => setForm({ ...form, nama: e.target.value })}
-                  className="block w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-                <label htmlFor="no_hp" className="block text-sm font-medium text-gray-300 mb-1.5">No. HP / WhatsApp</label>
+              <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-3.5">
+                <label htmlFor="no_hp" className="block text-xs font-medium text-gray-400 mb-1">No. HP / WhatsApp</label>
                 <input
                   type="text"
                   id="no_hp"
                   required
                   value={form.no_hp}
                   onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
-                  className="block w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-                <label htmlFor="nik" className="block text-sm font-medium text-gray-300 mb-1.5">NIK</label>
+              <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-3.5">
+                <label htmlFor="nik" className="block text-xs font-medium text-gray-400 mb-1">NIK</label>
                 <input
                   type="text"
                   id="nik"
                   required
                   value={form.nik}
                   onChange={(e) => setForm({ ...form, nik: e.target.value })}
-                  className="block w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="sm:col-span-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-                <label htmlFor="alamat" className="block text-sm font-medium text-gray-300 mb-1.5">Alamat Lengkap</label>
+              <div className="sm:col-span-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-3.5">
+                <label htmlFor="alamat" className="block text-xs font-medium text-gray-400 mb-1">Alamat Lengkap</label>
                 <textarea
                   id="alamat"
-                  rows={3}
+                  rows={2}
                   value={form.alamat}
                   onChange={(e) => setForm({ ...form, alamat: e.target.value })}
-                  className="block w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all resize-none"
+                  className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all resize-none"
                 />
               </div>
             </div>
             
-            <div className="flex justify-end gap-3 pt-4 border-t border-white/10 mt-6">
+            <div className="flex justify-end gap-3 pt-3 border-t border-white/10 mt-5">
               <button
                 type="button"
                 onClick={() => {
@@ -325,41 +326,41 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                     alamat: jamaah.alamat || "",
                   });
                 }}
-                className="px-5 py-2.5 border border-white/20 rounded-lg text-sm font-medium text-white bg-white/5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors backdrop-blur-sm"
+                className="px-4 py-2 border border-white/20 rounded-lg text-sm font-medium text-white bg-white/5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors backdrop-blur-sm"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex justify-center items-center px-5 py-2.5 border border-transparent rounded-lg text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 shadow-sm transition-all"
+                className="inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 shadow-sm transition-all"
               >
                 {loading ? "Menyimpan..." : "Simpan Perubahan"}
               </button>
             </div>
           </form>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 animate-in fade-in duration-300">
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-5 hover:bg-white/15 transition-colors shadow-lg">
-              <p className="text-sm font-medium text-gray-300">Nama Lengkap</p>
-              <p className="text-lg font-semibold text-white mt-1">{jamaah.nama}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4 animate-in fade-in duration-300">
+            <div className="bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl p-3.5 sm:p-4 hover:bg-white/15 transition-colors shadow-lg">
+              <p className="text-xs font-medium text-gray-400">Nama Lengkap</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.nama}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-5 hover:bg-white/15 transition-colors shadow-lg">
-              <p className="text-sm font-medium text-gray-300">Alamat Email</p>
-              <p className="text-lg font-semibold text-white mt-1">{jamaah.email}</p>
+            <div className="bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl p-3.5 sm:p-4 hover:bg-white/15 transition-colors shadow-lg">
+              <p className="text-xs font-medium text-gray-400">Alamat Email</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.email}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-5 hover:bg-white/15 transition-colors shadow-lg">
-              <p className="text-sm font-medium text-gray-300">No. HP / WhatsApp</p>
-              <p className="text-lg font-semibold text-white mt-1">{jamaah.no_hp}</p>
+            <div className="bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl p-3.5 sm:p-4 hover:bg-white/15 transition-colors shadow-lg">
+              <p className="text-xs font-medium text-gray-400">No. HP / WhatsApp</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.no_hp}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-5 hover:bg-white/15 transition-colors shadow-lg">
-              <p className="text-sm font-medium text-gray-300">Nomor Induk Kependudukan (NIK)</p>
-              <p className="text-lg font-semibold text-white mt-1">{jamaah.nik}</p>
+            <div className="bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl p-3.5 sm:p-4 hover:bg-white/15 transition-colors shadow-lg">
+              <p className="text-xs font-medium text-gray-400">Nomor Induk Kependudukan (NIK)</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.nik}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-5 md:col-span-2 hover:bg-white/15 transition-colors shadow-lg">
-              <p className="text-sm font-medium text-gray-300">Alamat Lengkap</p>
-              <p className="text-lg font-semibold text-white mt-1 leading-relaxed">
-                {jamaah.alamat || <span className="text-white/50 italic">Belum diisi</span>}
+            <div className="bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl p-3.5 sm:p-4 md:col-span-2 hover:bg-white/15 transition-colors shadow-lg">
+              <p className="text-xs font-medium text-gray-400">Alamat Lengkap</p>
+              <p className="text-sm font-semibold text-white mt-0.5 leading-relaxed">
+                {jamaah.alamat || <span className="text-white/40 italic">Belum diisi</span>}
               </p>
             </div>
           </div>

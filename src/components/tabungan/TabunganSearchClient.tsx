@@ -180,7 +180,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                   className="relative rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/10 overflow-hidden group flex flex-col bg-cover bg-center"
                   style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}
                 >
-                  <div className={`absolute inset-0 ${isAlreadySelected ? 'bg-[#111814]/80 backdrop-blur-xl' : 'bg-[#111814]/40 backdrop-blur-sm'}`}></div>
+                  <div className="absolute inset-0 bg-[#111814]/40 backdrop-blur-sm"></div>
                   
                   <div className="relative z-10 p-6 md:pl-8 flex flex-col md:flex-row md:items-center gap-6">
                     {/* Left content (Title & Details) */}
@@ -191,7 +191,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                           <svg className="w-3.5 h-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                           Estimasi Tabungan
                         </div>
-                        <h3 className="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">
+                        <h3 className="text-lg font-bold text-white transition-colors leading-snug">
                           {paket.nama_paket}
                         </h3>
                       </div>
@@ -216,8 +216,8 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                           </div>
                           <div>
                             <p className="text-[11px] text-gray-400 mb-0.5 uppercase tracking-wider font-bold">Hotel (/Setaraf)</p>
-                            <div className="text-sm font-medium text-gray-300 flex items-center gap-1">Makkah: {renderStars(paket.hotel_makkah || "Bintang 4 (Atau Setaraf)")}</div>
-                            <div className="text-sm font-medium text-gray-300 flex items-center gap-1">Madinah: {renderStars(paket.hotel_madinah || "Bintang 4 (Atau Setaraf)")}</div>
+                            <div className="text-sm font-medium text-white flex items-center gap-1">Makkah: {renderStars(paket.hotel_makkah || "Bintang 4 (Atau Setaraf)")}</div>
+                            <div className="text-sm font-medium text-white flex items-center gap-1">Madinah: {renderStars(paket.hotel_madinah || "Bintang 4 (Atau Setaraf)")}</div>
                           </div>
                         </div>
                         

@@ -89,7 +89,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
     <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
       {/* Header/Cover Image Area */}
       <div 
-        className="h-32 bg-emerald-800 relative bg-cover bg-[center_80%]" 
+        className="h-32 bg-emerald-800 relative bg-cover bg-[center_65%]" 
         style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
       >
         <div className="absolute inset-0 bg-black/30"></div>

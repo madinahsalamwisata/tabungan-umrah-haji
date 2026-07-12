@@ -3,7 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function DashboardLayout({
   children,
@@ -14,8 +14,20 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMenus, setOpenMenus] = useState<string[]>([]);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [userProfile, setUserProfile] = useState<{ foto_url?: string | null } | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsCollapsed(false);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsCollapsed(true);
+    }, 400);
+  };
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -69,7 +81,11 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-white flex text-black">
       {/* Sidebar for desktop */}
       <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'}`}>
-        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/10 backdrop-blur-md">
+        <div 
+          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/10 backdrop-blur-md"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -78,13 +94,6 @@ export default function DashboardLayout({
           </div>
           
           <div className="relative z-10 flex flex-col flex-1 min-h-0 bg-white/5 backdrop-blur-sm">
-            {/* Toggle Sidebar Button */}
-            <button 
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="absolute -right-4 top-8 flex items-center justify-center w-8 h-8 bg-white/20 backdrop-blur-md border border-white/40 text-white rounded-full shadow-lg z-50 hover:bg-white/30 transition-all hidden md:flex cursor-pointer"
-            >
-              <ChevronDownIcon className={`w-4 h-4 transition-transform duration-300 ${isCollapsed ? '-rotate-90' : 'rotate-90'}`} />
-            </button>
 
             <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-5 border-b border-white/30 bg-white/20 backdrop-blur-md rounded-b-lg transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3.5'}`}>
               <img src="/images/ms-wisata-new-logo.png" alt="Logo" className={`${isCollapsed ? 'h-10' : 'h-14'} w-auto drop-shadow-md shrink-0 transition-all duration-300`} />

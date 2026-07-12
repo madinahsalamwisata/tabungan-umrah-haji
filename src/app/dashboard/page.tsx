@@ -33,7 +33,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen relative overflow-hidden py-8 px-4 sm:px-6 lg:px-8">
       {/* Background Image */}
-      <div className="fixed inset-0 z-0">
+      <div className="absolute inset-0 z-0">
         <img 
           src="/images/bg/makkah_thumbnail.webp" 
           alt="Makkah Background" 

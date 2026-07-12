@@ -165,8 +165,8 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
       {/* CLOSED STATE (isExpanded === false) - Black Glassmorphism Concept */}
       {!isExpanded && (
         <div className="relative rounded-[2rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-300">
-          <div className="absolute inset-0 bg-cover bg-[center_65%] z-0 opacity-40 mix-blend-luminosity" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712]/95 via-[#0f1712]/70 to-[#0f1712]/30 z-0"></div>
+          <div className="absolute inset-0 bg-cover bg-[center_65%] z-0" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
+          <div className="absolute inset-0 bg-[#111814]/50 backdrop-blur-[2px] z-0"></div>
           
           {/* Top Right Buttons */}
           <div className="absolute top-4 right-4 z-20 flex items-center gap-2" ref={menuRef}>

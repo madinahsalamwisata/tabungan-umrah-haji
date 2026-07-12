@@ -73,12 +73,12 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen relative flex flex-col justify-center py-12 sm:px-6 lg:px-8 overflow-hidden">
       {/* Logos Header */}
-      <div className="absolute top-0 left-0 w-full flex justify-between items-start p-4 sm:p-6 z-20 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full flex justify-between items-start px-4 sm:px-6 pt-2 sm:pt-4 z-20 pointer-events-none">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src="/images/logo_.png" 
           alt="Madinah Salam Wisata Logo" 
-          className="h-16 sm:h-24 md:h-28 w-auto object-contain pointer-events-auto drop-shadow-lg"
+          className="h-16 sm:h-24 md:h-28 w-auto object-contain pointer-events-auto drop-shadow-lg ml-2 sm:ml-8"
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 

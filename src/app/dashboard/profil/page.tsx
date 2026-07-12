@@ -110,11 +110,9 @@ export default async function ProfilPage() {
       <ProfileForm jamaah={serializedJamaah} />
 
       {/* Seksi Riwayat Tabungan */}
-      <div 
-        className="relative shadow-xl rounded-2xl overflow-hidden mt-8 bg-cover bg-[center_top]"
-        style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}
-      >
-        <div className="absolute -inset-2 bg-[#111814]/40 backdrop-blur-sm"></div>
+      <div className="relative shadow-xl rounded-2xl overflow-hidden mt-8">
+        <div className="absolute inset-0 bg-cover bg-[center_top] z-0" style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}></div>
+        <div className="absolute inset-0 bg-[#111814]/40 backdrop-blur-sm z-0"></div>
         <div className="relative z-10 px-6 py-6 sm:px-8 flex justify-between items-center border-b border-white/10">
           <div>
             <h3 className="text-xl leading-6 font-bold text-white">

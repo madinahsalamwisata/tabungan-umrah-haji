@@ -110,35 +110,39 @@ export default async function ProfilPage() {
       <ProfileForm jamaah={serializedJamaah} />
 
       {/* Seksi Riwayat Tabungan */}
-      <div className="bg-white shadow-xl rounded-2xl border border-gray-100 overflow-hidden mt-8">
-        <div className="px-6 py-6 sm:px-8 flex justify-between items-center border-b border-gray-100">
+      <div 
+        className="relative shadow-xl rounded-2xl overflow-hidden mt-8 bg-cover bg-[center_top]"
+        style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}
+      >
+        <div className="absolute inset-0 bg-[#111814]/40 backdrop-blur-sm"></div>
+        <div className="relative z-10 px-6 py-6 sm:px-8 flex justify-between items-center border-b border-white/10">
           <div>
-            <h3 className="text-xl leading-6 font-bold text-gray-900">
+            <h3 className="text-xl leading-6 font-bold text-white">
               Riwayat Tabungan Saya
             </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            <p className="mt-1 max-w-2xl text-sm text-gray-400">
               Daftar paket umrah yang sedang atau pernah Anda ikuti.
             </p>
           </div>
         </div>
         
-        <div className="p-0 sm:p-6 bg-gray-50/50">
-          <div className="overflow-x-auto sm:rounded-xl sm:border sm:border-gray-100 sm:shadow-sm">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-white">
+        <div className="relative z-10 p-0 sm:p-6 bg-transparent">
+          <div className="overflow-x-auto sm:rounded-xl sm:border sm:border-white/10 sm:shadow-sm">
+            <table className="min-w-full divide-y divide-white/10">
+              <thead className="bg-white/10 backdrop-blur-md">
                 <tr>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
                     Nama Paket
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
                     Status
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
                     Total Terkumpul
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-100">
+              <tbody className="bg-white/5 backdrop-blur-sm divide-y divide-white/10">
                 {rencanaAktif.map((rencana: any) => {
                   // Hitung total dari riwayat setoran yang berhasil
                   const totalTerkumpul = rencana.RiwayatSetoran
@@ -147,20 +151,20 @@ export default async function ProfilPage() {
                     : 0;
 
                   return (
-                    <tr key={rencana.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                    <tr key={rencana.id} className="hover:bg-white/10 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-white">
                         {rencana.paket?.nama_paket}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full shadow-sm ${
                           rencana.status === 'Lunas' 
-                            ? 'bg-green-100 text-green-700 border border-green-200' 
-                            : 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                            ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
+                            : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                         }`}>
                           {rencana.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-emerald-700 font-bold">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-emerald-400 font-bold">
                         {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalTerkumpul)}
                       </td>
                     </tr>

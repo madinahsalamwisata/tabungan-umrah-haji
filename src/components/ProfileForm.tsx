@@ -384,7 +384,8 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
           </div>
         )}
         {/* End of isExpanded block */}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

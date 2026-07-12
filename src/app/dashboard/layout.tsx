@@ -132,14 +132,14 @@ export default function DashboardLayout({
                             }`}
                             aria-hidden="true"
                           />
-                          <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[150px] opacity-100 ml-3'}`}>
+                          <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'w-0 opacity-0 ml-0' : 'w-[150px] opacity-100 ml-3 text-left'}`}>
                             {item.name}
                           </span>
                         </div>
                         <ChevronDownIcon
-                          className={`h-4 w-4 flex-shrink-0 transition-all duration-300 ease-in-out ${
+                          className={`flex-shrink-0 transition-all duration-300 ease-in-out ${
                             isOpen ? "rotate-180 text-white" : "text-gray-400 group-hover:text-white"
-                          } ${isCollapsed ? 'w-0 opacity-0 ml-0' : 'w-4 opacity-100 ml-3'}`}
+                          } ${isCollapsed ? 'w-0 opacity-0 ml-0 border-none' : 'w-4 opacity-100 ml-3'}`}
                           aria-hidden="true"
                         />
                       </button>
@@ -147,26 +147,23 @@ export default function DashboardLayout({
                       {/* Submenu Dropdown */}
                       <div
                         className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                          isOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
+                          (isOpen && !isCollapsed) ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
                         }`}
                       >
-                        <div className={`space-y-1 ${isCollapsed ? 'px-0' : 'pl-2 pr-2'}`}>
+                        <div className="space-y-1 pl-2 pr-2">
                           {item.children.map((child: any) => {
                             const isChildActive = pathname === child.href;
                             return (
                               <Link
                                 key={child.name}
                                 href={child.href}
-                                className={`group flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-300 backdrop-blur-sm ${
-                                  isCollapsed ? 'px-0 justify-center font-bold text-xs' : 'px-4'
-                                } ${
+                                className={`group flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-300 backdrop-blur-sm px-4 ${
                                   isChildActive
                                     ? "text-white bg-white/20 shadow-md font-bold"
                                     : "text-gray-300 bg-white/5 hover:text-white hover:bg-white/10"
                                 }`}
-                                title={isCollapsed ? child.name : undefined}
                               >
-                                {isCollapsed ? child.short : child.name}
+                                {child.name}
                               </Link>
                             );
                           })}
@@ -196,7 +193,7 @@ export default function DashboardLayout({
                       }`}
                       aria-hidden="true"
                     />
-                    <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[150px] opacity-100 ml-3'}`}>
+                    <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'w-0 opacity-0 ml-0' : 'w-[150px] opacity-100 ml-3 text-left'}`}>
                       {item.name}
                     </span>
                   </Link>

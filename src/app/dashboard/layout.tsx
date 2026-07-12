@@ -117,7 +117,7 @@ export default function DashboardLayout({
                       <button
                         onClick={() => toggleMenu(item.name)}
                         className={`group w-full flex items-center justify-between py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
-                          isCollapsed ? 'px-0 justify-center' : 'px-4'
+                          isCollapsed ? 'px-0 justify-center' : 'px-4 justify-between'
                         } ${
                           isOpen 
                             ? "text-white bg-white/10" 
@@ -125,14 +125,14 @@ export default function DashboardLayout({
                         }`}
                         title={isCollapsed ? item.name : undefined}
                       >
-                        <div className={`flex items-center ${isCollapsed ? 'w-full justify-center' : ''}`}>
+                        <div className="flex items-center">
                           <item.icon
-                            className={`${isCollapsed ? 'mx-auto' : 'mr-3'} h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
+                            className={`h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
                               isOpen ? "text-white" : "text-gray-300 group-hover:text-white"
                             }`}
                             aria-hidden="true"
                           />
-                          <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[150px] opacity-100'}`}>
+                          <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[150px] opacity-100 ml-3'}`}>
                             {item.name}
                           </span>
                         </div>
@@ -191,12 +191,12 @@ export default function DashboardLayout({
                     title={isCollapsed ? item.name : undefined}
                   >
                     <item.icon
-                      className={`${isCollapsed ? 'mx-auto' : 'mr-3'} h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
+                      className={`h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
                         isActive ? "text-white" : "text-gray-300 group-hover:text-white"
                       }`}
                       aria-hidden="true"
                     />
-                    <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[150px] opacity-100'}`}>
+                    <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[150px] opacity-100 ml-3'}`}>
                       {item.name}
                     </span>
                   </Link>
@@ -212,20 +212,20 @@ export default function DashboardLayout({
                     session?.user?.name?.charAt(0) || "U"
                   )}
                 </div>
-                <div className={`ml-3 truncate transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[200px] opacity-100'}`}>
+                <div className={`truncate transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[200px] opacity-100 ml-3'}`}>
                   <p className="text-sm font-medium text-white truncate drop-shadow-md">{session?.user?.name}</p>
                   <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">{session?.user?.email}</p>
                 </div>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className={`w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 rounded-md text-sm font-bold transition-colors shadow-sm ${
+                className={`w-full flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 rounded-md text-sm font-bold transition-colors shadow-sm ${
                   isCollapsed ? 'p-2 mt-4' : 'px-4 py-2'
                 }`}
                 title="Keluar"
               >
                 <ArrowLeftOnRectangleIcon className="w-5 h-5" />
-                <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[100px] opacity-100'}`}>
+                <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[100px] opacity-100 ml-2'}`}>
                   Keluar
                 </span>
               </button>

@@ -63,11 +63,11 @@ export default function DashboardLayout({
           <div className="absolute inset-0 z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/bg-sidebar-new.jpeg" alt="Sidebar Background" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/70"></div>
           </div>
           
           <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-sm">
-            <div className="flex flex-col items-center justify-center pt-1 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-3xl">
+            <div className="flex flex-col items-center justify-center pt-1 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-2xl">
               <img src="/images/logo_.png" alt="Logo" className="h-24 w-auto drop-shadow-md -mb-1" />
               <div className="text-center space-y-0">
                 <h1 className="text-base font-extrabold text-white drop-shadow-sm leading-tight">

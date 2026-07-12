@@ -15,6 +15,7 @@ model Jamaah {
   no_hp           String
   nik             String            @unique
   alamat          String?
+  foto_url        String?
   password_hash   String
   created_at      DateTime          @default(now())
   RencanaTabungan RencanaTabungan[]

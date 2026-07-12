@@ -40,6 +40,7 @@ export default async function ProfilPage() {
     no_hp: jamaah.no_hp,
     nik: jamaah.nik,
     alamat: jamaah.alamat,
+    foto_url: jamaah.foto_url,
   };
 
   let rencanaAktif = jamaah.RencanaTabungan;

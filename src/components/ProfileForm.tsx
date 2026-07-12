@@ -30,6 +30,7 @@ type Jamaah = {
   no_hp: string;
   nik: string;
   alamat: string | null;
+  foto_url: string | null;
 };
 
 export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
@@ -39,7 +40,9 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState({
     nama: jamaah.nama,
@@ -58,6 +61,41 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      setError("Ukuran foto maksimal 2MB");
+      return;
+    }
+
+    setIsUploading(true);
+    setError("");
+    setSuccess("");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/profil/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Gagal mengunggah foto");
+
+      setSuccess("Foto profil berhasil diperbarui!");
+      router.refresh();
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,7 +172,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                 )}
                 <button
                   onClick={() => {
-                    alert("Fitur ganti foto profil saat ini sedang dalam pengembangan.");
+                    fileInputRef.current?.click();
                     setMenuOpen(false);
                   }}
                   className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors border-t border-gray-50"
@@ -147,17 +185,35 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
         </div>
       </div>
 
+      {/* Hidden File Input */}
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        onChange={handleFileChange} 
+        accept="image/jpeg, image/png, image/webp" 
+        className="hidden" 
+      />
+
       <div className="px-6 sm:px-8 pb-8 relative">
         {/* Avatar Section */}
         <div className="flex justify-between items-end -mt-12 mb-6">
           <div className="relative group">
-            <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-50 shadow-md overflow-hidden flex items-center justify-center">
-              <UserCircleIcon />
+            <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-50 shadow-md overflow-hidden flex items-center justify-center relative">
+              {isUploading ? (
+                <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              ) : jamaah.foto_url ? (
+                <img src={jamaah.foto_url} alt={jamaah.nama} className="w-full h-full object-cover" />
+              ) : (
+                <UserCircleIcon />
+              )}
             </div>
             {/* Camera Overlay Button */}
             <button 
-              onClick={() => alert("Fitur ganti foto profil saat ini sedang dalam pengembangan.")}
-              className="absolute bottom-0 right-0 p-1.5 bg-emerald-600 text-white rounded-full border-2 border-white shadow-sm hover:bg-emerald-700 transition-colors"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="absolute bottom-0 right-0 p-1.5 bg-emerald-600 text-white rounded-full border-2 border-white shadow-sm hover:bg-emerald-700 transition-colors disabled:opacity-50"
               title="Ganti Foto"
             >
               <CameraIcon />

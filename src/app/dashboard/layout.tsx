@@ -68,7 +68,7 @@ export default function DashboardLayout({
           
           <div className="relative z-10 flex flex-col flex-1 min-h-0 bg-white/5 backdrop-blur-sm">
             <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-5 border-b border-white/30 bg-white/20 backdrop-blur-md gap-3.5 rounded-b-lg">
-              <img src="/images/logo_.png" alt="Logo" className="h-14 w-auto drop-shadow-md shrink-0" />
+              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-14 w-auto drop-shadow-md shrink-0" />
               <div className="text-left flex flex-col justify-center">
                 <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight">
                   Tabungan Umrah & Haji
@@ -189,7 +189,7 @@ export default function DashboardLayout({
       <div className="md:hidden fixed top-0 w-full z-20">
         <div className="flex items-center justify-between bg-black/70 backdrop-blur-sm h-16 px-4 shadow-md border-b border-white/10">
           <div className="flex items-center gap-3">
-            <img src="/images/logo_.png" alt="Logo" className="h-9 w-auto" />
+            <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <div className="flex flex-col">
               <h1 className="text-sm font-bold text-white drop-shadow-md leading-tight">
                 Tabungan Umrah & Haji

@@ -154,7 +154,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   return (
     <div 
       className={`relative rounded-[2rem] shadow-xl overflow-hidden transition-all duration-300 ${
-        isExpanded ? 'bg-white border border-gray-100' : 'border border-white/10'
+        isExpanded ? 'bg-[#0f1712] border border-white/10' : 'bg-transparent border border-white/10'
       }`}
     >
       {/* Background Image Layer for Collapsed State */}
@@ -169,57 +169,69 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
       >
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent z-0"></div>
         
-        {/* Dropdown Menu */}
-        <div className="absolute top-4 right-4 z-20" ref={menuRef}>
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 rounded-full bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm transition-all focus:outline-none border border-white/10"
+        {/* Dropdown Menu & Expand Button */}
+        <div className="absolute top-4 right-4 z-20 flex items-center gap-2" ref={menuRef}>
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="p-2 rounded-full bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm transition-all focus:outline-none border border-white/10 shadow-sm"
           >
-            <DotsVerticalIcon />
+            <svg className={`w-5 h-5 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
-          
-          {menuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-              <div className="py-1">
-                {!isEditing ? (
+
+          <div className="relative">
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="p-2 rounded-full bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm transition-all focus:outline-none border border-white/10"
+            >
+              <DotsVerticalIcon />
+            </button>
+            
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                <div className="py-1">
+                  {!isEditing ? (
+                    <button
+                      onClick={() => {
+                        setIsEditing(true);
+                        setIsExpanded(true);
+                        setMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                    >
+                      Edit Profil
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setIsEditing(false);
+                        setMenuOpen(false);
+                        setForm({
+                          nama: jamaah.nama,
+                          no_hp: jamaah.no_hp,
+                          nik: jamaah.nik,
+                          alamat: jamaah.alamat || "",
+                        });
+                      }}
+                      className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      Batal Edit
+                    </button>
+                  )}
                   <button
                     onClick={() => {
-                      setIsEditing(true);
+                      fileInputRef.current?.click();
                       setMenuOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                    className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors border-t border-gray-50"
                   >
-                    Edit Profil
+                    Ganti Foto
                   </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setIsEditing(false);
-                      setMenuOpen(false);
-                      setForm({
-                        nama: jamaah.nama,
-                        no_hp: jamaah.no_hp,
-                        nik: jamaah.nik,
-                        alamat: jamaah.alamat || "",
-                      });
-                    }}
-                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                  >
-                    Batal Edit
-                  </button>
-                )}
-                <button
-                  onClick={() => {
-                    fileInputRef.current?.click();
-                    setMenuOpen(false);
-                  }}
-                  className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors border-t border-gray-50"
-                >
-                  Ganti Foto
-                </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
@@ -232,115 +244,99 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
         className="hidden" 
       />
 
-      {/* Bottom Area (White Data Section) */}
-      <div className="relative z-10 px-6 sm:px-8 pb-8 pt-0">
+      {/* Bottom Area (Data Section) */}
+      <div className={`relative z-10 px-6 sm:px-8 pt-0 transition-all duration-300 ${isExpanded ? 'pb-8' : 'pb-0 h-0 overflow-visible'}`}>
         {/* Avatar Section */}
-        <div className="flex justify-between items-end -mt-14 mb-7 relative">
-          <div className="flex items-end gap-5">
-            <div className="relative group shrink-0">
-              <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-50 shadow-md overflow-hidden flex items-center justify-center relative">
-                {isUploading ? (
-                  <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
-                    <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
-                  </div>
-                ) : jamaah.foto_url ? (
-                  <img src={jamaah.foto_url} alt={jamaah.nama} className="w-full h-full object-cover" />
-                ) : (
-                  <UserCircleIcon />
-                )}
-              </div>
-              {/* Camera Overlay Button */}
-              <button 
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
-                className="absolute bottom-0 right-0 p-1.5 bg-emerald-600 text-white rounded-full border-2 border-white shadow-sm hover:bg-emerald-700 transition-colors disabled:opacity-50"
-                title="Ganti Foto"
-              >
-                <CameraIcon />
-              </button>
+        <div className={`flex items-end relative transition-all duration-300 ${isExpanded ? '-mt-14 mb-7' : '-mt-[120px] mb-0'}`}>
+          <div className="relative group shrink-0">
+            <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-50 shadow-md overflow-hidden flex items-center justify-center relative">
+              {isUploading ? (
+                <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              ) : jamaah.foto_url ? (
+                <img src={jamaah.foto_url} alt={jamaah.nama} className="w-full h-full object-cover" />
+              ) : (
+                <UserCircleIcon />
+              )}
             </div>
-            
+            {/* Camera Overlay Button */}
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="absolute bottom-0 right-0 p-1.5 bg-emerald-600 text-white rounded-full border-2 border-white shadow-sm hover:bg-emerald-700 transition-colors disabled:opacity-50"
+              title="Ganti Foto"
+            >
+              <CameraIcon />
+            </button>
           </div>
-          
-          <button 
-            onClick={() => setIsExpanded(!isExpanded)}
-            className={`mb-3 p-2 rounded-full transition-colors shadow-sm ${
-              isExpanded 
-                ? 'hover:bg-gray-100 border border-gray-200' 
-                : 'bg-white hover:bg-gray-50 border border-transparent'
-            }`}
-          >
-            <svg className={`w-5 h-5 text-gray-600 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
         </div>
 
         {/* Data Section */}
         {isExpanded && (
-          <div className="animate-in slide-in-from-top-4 fade-in duration-300">
+          <div className="animate-in slide-in-from-top-4 fade-in duration-300 relative z-20">
             {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
             <div className="grid grid-cols-1 gap-y-4 gap-x-6 sm:grid-cols-2">
-              <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Email (Tidak bisa diubah)</label>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label className="block text-xs font-medium text-gray-300 mb-1">Email (Tidak bisa diubah)</label>
                 <input
                   type="text"
                   disabled
                   value={jamaah.email}
-                  className="block w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 sm:text-sm cursor-not-allowed"
+                  className="block w-full px-3 py-2 bg-black/40 border border-white/5 rounded-lg text-gray-400 sm:text-sm cursor-not-allowed"
                 />
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label htmlFor="nama" className="block text-xs font-medium text-gray-700 mb-1">Nama Lengkap</label>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label htmlFor="nama" className="block text-xs font-medium text-gray-300 mb-1">Nama Lengkap</label>
                 <input
                   type="text"
                   id="nama"
                   required
                   value={form.nama}
                   onChange={(e) => setForm({ ...form, nama: e.target.value })}
-                  className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label htmlFor="no_hp" className="block text-xs font-medium text-gray-700 mb-1">No. HP / WhatsApp</label>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label htmlFor="no_hp" className="block text-xs font-medium text-gray-300 mb-1">No. HP / WhatsApp</label>
                 <input
                   type="text"
                   id="no_hp"
                   required
                   value={form.no_hp}
                   onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
-                  className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label htmlFor="nik" className="block text-xs font-medium text-gray-700 mb-1">NIK</label>
+              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label htmlFor="nik" className="block text-xs font-medium text-gray-300 mb-1">NIK</label>
                 <input
                   type="text"
                   id="nik"
                   required
                   value={form.nik}
                   onChange={(e) => setForm({ ...form, nik: e.target.value })}
-                  className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  className="block w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
                 />
               </div>
 
-              <div className="sm:col-span-2 bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm">
-                <label htmlFor="alamat" className="block text-xs font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+              <div className="sm:col-span-2 bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
+                <label htmlFor="alamat" className="block text-xs font-medium text-gray-300 mb-1">Alamat Lengkap</label>
                 <textarea
                   id="alamat"
                   rows={2}
                   value={form.alamat}
                   onChange={(e) => setForm({ ...form, alamat: e.target.value })}
-                  className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all resize-none"
+                  className="block w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all resize-none"
                 />
               </div>
             </div>
             
-            <div className="flex justify-end gap-3 pt-3 border-t border-gray-100 mt-5">
+            <div className="flex justify-end gap-3 pt-3 border-t border-white/10 mt-5">
               <button
                 type="button"
                 onClick={() => {
@@ -352,14 +348,14 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                     alamat: jamaah.alamat || "",
                   });
                 }}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors"
+                className="px-4 py-2 border border-white/20 rounded-lg text-sm font-medium text-gray-300 bg-white/5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:ring-offset-[#0f1712] transition-colors"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 shadow-sm transition-all"
+                className="inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:ring-offset-[#0f1712] disabled:opacity-50 shadow-sm transition-all"
               >
                 {loading ? "Menyimpan..." : "Simpan Perubahan"}
               </button>
@@ -367,26 +363,26 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
           </form>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4 animate-in fade-in duration-300">
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Nama Lengkap</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">{jamaah.nama}</p>
+            <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-emerald-500/50 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-gray-400">Nama Lengkap</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.nama}</p>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Alamat Email</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">{jamaah.email}</p>
+            <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-emerald-500/50 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-gray-400">Alamat Email</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.email}</p>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">No. HP / WhatsApp</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">{jamaah.no_hp}</p>
+            <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-emerald-500/50 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-gray-400">No. HP / WhatsApp</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.no_hp}</p>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Nomor Induk Kependudukan (NIK)</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">{jamaah.nik}</p>
+            <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-emerald-500/50 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-gray-400">Nomor Induk Kependudukan (NIK)</p>
+              <p className="text-sm font-semibold text-white mt-0.5">{jamaah.nik}</p>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3.5 sm:p-4 md:col-span-2 hover:border-emerald-200 transition-colors shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Alamat Lengkap</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5 leading-relaxed">
-                {jamaah.alamat || <span className="text-gray-400 italic">Belum diisi</span>}
+            <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 md:col-span-2 hover:border-emerald-500/50 transition-colors shadow-sm">
+              <p className="text-xs font-medium text-gray-400">Alamat Lengkap</p>
+              <p className="text-sm font-semibold text-white mt-0.5 leading-relaxed">
+                {jamaah.alamat || <span className="text-gray-500 italic">Belum diisi</span>}
               </p>
             </div>
           </div>

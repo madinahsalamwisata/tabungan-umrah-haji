@@ -151,13 +151,13 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
+    <div className="bg-[#0b1310]/80 backdrop-blur-md border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden relative">
       {/* Header/Cover Image Area */}
       <div 
-        className="h-32 bg-emerald-800 relative bg-cover bg-[center_65%]" 
+        className="h-40 relative bg-cover bg-[center_65%]" 
         style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
       >
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-[#0b1310]/80"></div>
         {/* Dropdown Menu */}
         <div className="absolute top-4 right-4 z-10" ref={menuRef}>
           <button
@@ -221,11 +221,11 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
         className="hidden" 
       />
 
-      <div className="px-6 sm:px-8 pb-8 relative">
+      <div className="px-6 sm:px-8 pb-8 relative z-10">
         {/* Avatar Section */}
-        <div className="flex justify-between items-end -mt-12 mb-6">
+        <div className="flex justify-between items-end -mt-16 mb-8 relative">
           <div className="relative group">
-            <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-50 shadow-md overflow-hidden flex items-center justify-center relative">
+            <div className="w-28 h-28 rounded-full border-4 border-[#0b1310]/90 bg-gray-50 shadow-2xl overflow-hidden flex items-center justify-center relative">
               {isUploading ? (
                 <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
                   <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
@@ -248,9 +248,8 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
           </div>
         </div>
 
-        {/* Status Messages removed in favor of SweetAlert2 */}
-
-        {isEditing ? (
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-inner border border-white/20">
+          {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-5 animate-in fade-in duration-300">
             <div className="grid grid-cols-1 gap-y-5 gap-x-6 sm:grid-cols-2">
               <div>
@@ -360,8 +359,9 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                 {jamaah.alamat || <span className="text-gray-400 italic">Belum diisi</span>}
               </p>
             </div>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

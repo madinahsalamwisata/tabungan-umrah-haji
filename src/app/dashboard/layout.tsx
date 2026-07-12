@@ -66,9 +66,9 @@ export default function DashboardLayout({
             <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/70"></div>
           </div>
           
-          <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-sm">
-            <div className="flex flex-col items-center justify-start -mt-3 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-lg">
-              <img src="/images/logo_.png" alt="Logo" className="h-24 w-auto drop-shadow-md -mb-1" />
+          <div className="relative z-10 flex flex-col flex-1 min-h-0 bg-white/5 backdrop-blur-sm">
+            <div className="flex flex-col items-center justify-start -mt-5 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-lg">
+              <img src="/images/logo_.png" alt="Logo" className="h-20 w-auto drop-shadow-md -mb-2" />
               <div className="text-center space-y-0">
                 <h1 className="text-base font-extrabold text-white drop-shadow-sm leading-tight">
                   Tabungan Umrah & Haji

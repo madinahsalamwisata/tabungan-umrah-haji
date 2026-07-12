@@ -49,7 +49,12 @@ export default async function PaketPage() {
     if (uniqueNames.has(baseName)) return false;
     uniqueNames.add(baseName);
     return true;
-  });
+  }).map(paket => ({
+    ...paket,
+    harga_quad: paket.harga_quad.toString(),
+    harga_triple: paket.harga_triple.toString(),
+    harga_double: paket.harga_double.toString(),
+  }));
 
   const rencanaTabunganList = await prisma.rencanaTabungan.findMany({
     where: {

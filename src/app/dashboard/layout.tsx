@@ -62,7 +62,7 @@ export default function DashboardLayout({
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/bg-sidebar.jpeg" alt="Sidebar Background" className="w-full h-full object-cover" />
+            <img src="/images/bg-sidebar-new.jpeg" alt="Sidebar Background" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/40"></div>
           </div>
           

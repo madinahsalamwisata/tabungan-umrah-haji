@@ -54,12 +54,12 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden py-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <div className="relative z-10 max-w-5xl mx-auto space-y-8 pb-12">
+      <div className="relative z-10 max-w-5xl mx-auto space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
         
         {/* Header Title */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-emerald-900 drop-shadow-sm">Beranda Dashboard</h1>
-          <p className="mt-2 text-emerald-700 font-medium">Selamat datang di sistem tabungan Umrah dan Haji Anda.</p>
+        <div>
+          <h1 className="text-2xl font-bold text-emerald-900">Beranda Dashboard</h1>
+          <p className="mt-1 text-sm text-emerald-600">Selamat datang di sistem tabungan Umrah dan Haji Anda.</p>
         </div>
 
         {/* Section 1: Notifications */}
@@ -97,58 +97,56 @@ export default function DashboardPage() {
         </GlassCard>
 
         {/* Section 2: About & Vision Mission */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <GlassCard>
-            <div className="flex items-center gap-3 mb-4">
-              <Info className="text-emerald-400 w-6 h-6" />
-              <h2 className="text-xl font-bold text-white">Tentang Kami</h2>
-            </div>
-            <p className="text-gray-200 leading-relaxed text-sm">
-              PT Madinah Salam Wisata adalah penyelenggara perjalanan ibadah Umrah dan Haji yang berfokus pada layanan yang amanah, profesional, dan sesuai dengan tuntunan syariat. Kami memiliki komitmen untuk memberikan pengalaman ibadah terbaik bagi jamaah.
-            </p>
-            <div className="mt-4 inline-block bg-black/40 border border-white/10 rounded-lg px-4 py-2">
-              <span className="text-xs text-gray-400 block">Izin PPIU No:</span>
-              <span className="text-sm font-bold text-emerald-400">03012400173490004</span>
-            </div>
-          </GlassCard>
+        <GlassCard>
+          <div className="flex items-center gap-3 mb-4">
+            <Info className="text-emerald-400 w-6 h-6" />
+            <h2 className="text-xl font-bold text-white">Tentang Kami</h2>
+          </div>
+          <p className="text-gray-200 leading-relaxed text-sm">
+            PT Madinah Salam Wisata adalah penyelenggara perjalanan ibadah Umrah dan Haji yang berfokus pada layanan yang amanah, profesional, dan sesuai dengan tuntunan syariat. Kami memiliki komitmen untuk memberikan pengalaman ibadah terbaik bagi jamaah.
+          </p>
+          <div className="mt-4 inline-block bg-black/40 border border-white/10 rounded-lg px-4 py-2">
+            <span className="text-xs text-gray-400 block">Izin PPIU No:</span>
+            <span className="text-sm font-bold text-emerald-400">03012400173490004</span>
+          </div>
+        </GlassCard>
 
-          <GlassCard>
-            <h2 className="text-xl font-bold text-white mb-4">Visi & Misi</h2>
-            
-            <div className="mb-4">
-              <h3 className="text-yellow-400 font-bold mb-2">Visi:</h3>
-              <p className="text-sm text-gray-200 italic">
-                &quot;Menjadi penyelenggara perjalanan ibadah Umrah, Haji, dan wisata terpercaya yang berkomitmen menghadirkan layanan sesuai tuntunan sunnah Rasulullah ﷺ.&quot;
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="text-yellow-400 font-bold mb-2">Misi:</h3>
-              <ul className="space-y-2 text-sm text-gray-200">
-                <li className="flex gap-2 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                  <span>Menyelenggarakan perjalanan ibadah Umrah dan Haji yang sesuai dengan tuntunan syariat dan sunnah.</span>
-                </li>
-                <li className="flex gap-2 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                  <span>Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian kepada jamaah.</span>
-                </li>
-                <li className="flex gap-2 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                  <span>Membimbing jamaah secara ruhiyah dan teknis agar meraih ibadah yang sah, khusyuk, dan mabrur.</span>
-                </li>
-                <li className="flex gap-2 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                  <span>Menghadirkan pengalaman berwisata yang edukatif, berkesan, dan memperkuat iman.</span>
-                </li>
-                <li className="flex gap-2 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                  <span>Menjalin kemitraan yang transparan dan berkelanjutan dengan stakeholder lokal dan internasional.</span>
-                </li>
-              </ul>
-            </div>
-          </GlassCard>
-        </div>
+        <GlassCard>
+          <h2 className="text-xl font-bold text-white mb-4">Visi & Misi</h2>
+          
+          <div className="mb-4">
+            <h3 className="text-yellow-400 font-bold mb-2">Visi:</h3>
+            <p className="text-sm text-gray-200 italic">
+              &quot;Menjadi penyelenggara perjalanan ibadah Umrah, Haji, dan wisata terpercaya yang berkomitmen menghadirkan layanan sesuai tuntunan sunnah Rasulullah ﷺ.&quot;
+            </p>
+          </div>
+          
+          <div>
+            <h3 className="text-yellow-400 font-bold mb-2">Misi:</h3>
+            <ul className="space-y-2 text-sm text-gray-200">
+              <li className="flex gap-2 items-start">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                <span>Menyelenggarakan perjalanan ibadah Umrah dan Haji yang sesuai dengan tuntunan syariat dan sunnah.</span>
+              </li>
+              <li className="flex gap-2 items-start">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                <span>Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian kepada jamaah.</span>
+              </li>
+              <li className="flex gap-2 items-start">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                <span>Membimbing jamaah secara ruhiyah dan teknis agar meraih ibadah yang sah, khusyuk, dan mabrur.</span>
+              </li>
+              <li className="flex gap-2 items-start">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                <span>Menghadirkan pengalaman berwisata yang edukatif, berkesan, dan memperkuat iman.</span>
+              </li>
+              <li className="flex gap-2 items-start">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                <span>Menjalin kemitraan yang transparan dan berkelanjutan dengan stakeholder lokal dan internasional.</span>
+              </li>
+            </ul>
+          </div>
+        </GlassCard>
 
         {/* Section 3: Information Accordion */}
         <GlassCard>

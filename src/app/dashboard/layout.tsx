@@ -79,46 +79,63 @@ export default function DashboardLayout({
               </div>
             </div>
           <div className="flex-1 flex flex-col overflow-y-auto">
-            <nav className="flex-1 px-3 py-6 space-y-3 overflow-y-auto">
+            <nav className="flex-1 px-2 py-6 space-y-2">
               {navigation.map((item) => {
                 if (item.children) {
                   const isOpen = openMenus.includes(item.name);
+                  // Parent menu without active highlight
                   return (
-                    <div key={item.name} className="space-y-2">
+                    <div key={item.name} className="space-y-1 relative">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`group flex items-center justify-between w-full px-4 py-3 text-sm font-medium rounded-xl transition-all border backdrop-blur-sm shadow-sm ${isOpen ? 'bg-white/40 border-white/50 text-emerald-900 scale-[0.98]' : 'bg-white/20 border-white/30 text-emerald-800 hover:bg-white/30 hover:text-emerald-900 hover:shadow-md'}`}
+                        className={`group w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
+                          isOpen 
+                            ? "text-white bg-white/10" 
+                            : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
+                        }`}
                       >
                         <div className="flex items-center">
                           <item.icon
-                            className={`${
-                              isOpen ? "text-emerald-900" : "text-emerald-700 group-hover:text-emerald-900"
-                            } flex-shrink-0 -ml-1 mr-3 h-5 w-5`}
+                            className={`mr-3 h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
+                              isOpen ? "text-white" : "text-gray-300 group-hover:text-white"
+                            }`}
+                            aria-hidden="true"
                           />
-                          <span className="drop-shadow-sm font-bold">{item.name}</span>
+                          {item.name}
                         </div>
-                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180 text-emerald-900' : 'text-emerald-800'}`} />
+                        <ChevronDownIcon
+                          className={`ml-3 h-4 w-4 flex-shrink-0 transition-transform duration-300 ${
+                            isOpen ? "rotate-180 text-white" : "text-gray-400 group-hover:text-white"
+                          }`}
+                          aria-hidden="true"
+                        />
                       </button>
-                      {isOpen && (
-                        <div className="pl-6 pr-1 space-y-2 mt-2">
-                          {item.children.map(child => {
-                            const isChildCurrent = pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'));
+                      
+                      {/* Submenu Dropdown */}
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                          isOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
+                        }`}
+                      >
+                        <div className="pl-11 pr-2 space-y-1">
+                          {item.children.map((child) => {
+                            const isChildActive = pathname.startsWith(child.href);
                             return (
                               <Link
                                 key={child.name}
                                 href={child.href}
-                                className={`${
-                                  isChildCurrent
-                                    ? "bg-white/50 text-emerald-900 font-bold border-white/60 shadow-md scale-[0.98]"
-                                    : "bg-white/10 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/20 hover:shadow-md"
-                                } flex items-center px-4 py-2.5 text-xs md:text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm`}
+                                className={`group flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 ${
+                                  isChildActive
+                                    ? "text-white bg-white/20 shadow-md font-bold border-l-[3px] border-yellow-400"
+                                    : "text-gray-300 hover:text-white hover:bg-white/10"
+                                }`}
                               >
                                 {child.name}
                               </Link>
                             );
                           })}
                         </div>
-                      )}
+                      </div>
                     </div>
                   );
                 }
@@ -128,18 +145,19 @@ export default function DashboardLayout({
                   <Link
                     key={item.name}
                     href={item.href!}
-                    className={`${
+                    className={`group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
                       isActive
-                        ? "bg-white/40 text-emerald-900 border-white/50 font-bold shadow-md scale-[0.98]"
-                        : "bg-white/20 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/30 hover:shadow-md"
-                    } group flex items-center px-4 py-3 text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm`}
+                        ? "text-white bg-white/20 shadow-md font-bold border-l-[3px] border-yellow-400"
+                        : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
+                    }`}
                   >
                     <item.icon
-                      className={`${
-                        isActive ? "text-emerald-900" : "text-emerald-700 group-hover:text-emerald-900"
-                      } flex-shrink-0 -ml-1 mr-3 h-5 w-5`}
+                      className={`mr-3 h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
+                        isActive ? "text-white" : "text-gray-300 group-hover:text-white"
+                      }`}
+                      aria-hidden="true"
                     />
-                    <span className={isActive ? "font-bold" : "font-semibold"}>{item.name}</span>
+                    {item.name}
                   </Link>
                 );
               })}

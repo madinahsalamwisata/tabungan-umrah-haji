@@ -13,6 +13,28 @@ import {
   Briefcase 
 } from "lucide-react";
 
+// Helper component untuk kotak dengan background makkah + glassmorphism
+const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+  <div className={`relative overflow-hidden rounded-2xl shadow-xl ${className}`}>
+    {/* Background Image Layer */}
+    <div className="absolute inset-0 z-0">
+      <img 
+        src="/images/bg/makkah_thumbnail.webp" 
+        alt="Background Makkah" 
+        className="w-full h-full object-cover" 
+      />
+      {/* Dark & Glass Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-emerald-950/80 to-black/90"></div>
+      <div className="absolute inset-0 backdrop-blur-[4px] border border-white/10 rounded-2xl"></div>
+    </div>
+    
+    {/* Content Layer */}
+    <div className="relative z-10 p-6">
+      {children}
+    </div>
+  </div>
+);
+
 export default function DashboardPage() {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
 
@@ -31,26 +53,17 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden py-8 px-4 sm:px-6 lg:px-8">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="/images/bg/makkah_thumbnail.webp" 
-          alt="Makkah Background" 
-          className="w-full h-full object-cover" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90"></div>
-      </div>
-
+    <div className="min-h-screen relative overflow-hidden py-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="relative z-10 max-w-5xl mx-auto space-y-8 pb-12">
+        
         {/* Header Title */}
         <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white drop-shadow-md">Beranda Dashboard</h1>
-          <p className="mt-2 text-gray-300">Selamat datang di sistem tabungan Umrah dan Haji Anda.</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-emerald-900 drop-shadow-sm">Beranda Dashboard</h1>
+          <p className="mt-2 text-emerald-700 font-medium">Selamat datang di sistem tabungan Umrah dan Haji Anda.</p>
         </div>
 
         {/* Section 1: Notifications */}
-        <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+        <GlassCard>
           <div className="flex items-center gap-3 mb-4">
             <Bell className="text-yellow-400 w-6 h-6" />
             <h2 className="text-xl font-bold text-white">Informasi & Update</h2>
@@ -81,11 +94,11 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
-        </div>
+        </GlassCard>
 
         {/* Section 2: About & Vision Mission */}
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="backdrop-blur-md bg-emerald-900/40 border border-emerald-500/30 rounded-2xl p-6 shadow-2xl">
+          <GlassCard>
             <div className="flex items-center gap-3 mb-4">
               <Info className="text-emerald-400 w-6 h-6" />
               <h2 className="text-xl font-bold text-white">Tentang Kami</h2>
@@ -97,9 +110,9 @@ export default function DashboardPage() {
               <span className="text-xs text-gray-400 block">Izin PPIU No:</span>
               <span className="text-sm font-bold text-emerald-400">03012400173490004</span>
             </div>
-          </div>
+          </GlassCard>
 
-          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+          <GlassCard>
             <h2 className="text-xl font-bold text-white mb-4">Visi & Misi</h2>
             
             <div className="mb-4">
@@ -134,16 +147,16 @@ export default function DashboardPage() {
                 </li>
               </ul>
             </div>
-          </div>
+          </GlassCard>
         </div>
 
         {/* Section 3: Information Accordion */}
-        <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+        <GlassCard>
           <h2 className="text-xl font-bold text-white mb-6">Informasi & Ketentuan Penting</h2>
           
           <div className="space-y-4">
             {/* Accordion 1: Syarat & Ketentuan Pendaftaran */}
-            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30">
+            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm">
               <button 
                 onClick={() => toggleAccordion('syarat_daftar')}
                 className="w-full px-6 py-4 flex justify-between items-center hover:bg-white/5 transition-colors"
@@ -170,7 +183,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Accordion 2: Syarat & Ketentuan Pembatalan */}
-            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30">
+            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm">
               <button 
                 onClick={() => toggleAccordion('syarat_batal')}
                 className="w-full px-6 py-4 flex justify-between items-center hover:bg-white/5 transition-colors"
@@ -213,7 +226,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Accordion 3: Ketentuan Khusus */}
-            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30">
+            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm">
               <button 
                 onClick={() => toggleAccordion('ketentuan_khusus')}
                 className="w-full px-6 py-4 flex justify-between items-center hover:bg-white/5 transition-colors"
@@ -239,7 +252,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Accordion 4: Alur Pembayaran */}
-            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30">
+            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm">
               <button 
                 onClick={() => toggleAccordion('alur_bayar')}
                 className="w-full px-6 py-4 flex justify-between items-center hover:bg-white/5 transition-colors"
@@ -263,7 +276,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Accordion 5: Perlengkapan Umrah */}
-            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30">
+            <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm">
               <button 
                 onClick={() => toggleAccordion('perlengkapan')}
                 className="w-full px-6 py-4 flex justify-between items-center hover:bg-white/5 transition-colors"
@@ -287,10 +300,10 @@ export default function DashboardPage() {
               )}
             </div>
           </div>
-        </div>
+        </GlassCard>
 
         {/* Section 4: Address and Map */}
-        <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+        <GlassCard>
           <div className="flex items-center gap-3 mb-6">
             <MapPin className="text-red-400 w-6 h-6" />
             <h2 className="text-xl font-bold text-white">Alamat Kantor Kami</h2>
@@ -328,7 +341,7 @@ export default function DashboardPage() {
               ></iframe>
             </div>
           </div>
-        </div>
+        </GlassCard>
 
       </div>
       

@@ -67,7 +67,7 @@ export default function DashboardLayout({
           </div>
           
           <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-sm">
-            <div className="flex flex-col items-center justify-start -mt-2 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-lg">
+            <div className="flex flex-col items-center justify-start -mt-3 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-lg">
               <img src="/images/logo_.png" alt="Logo" className="h-24 w-auto drop-shadow-md -mb-1" />
               <div className="text-center space-y-0">
                 <h1 className="text-base font-extrabold text-white drop-shadow-sm leading-tight">
@@ -78,8 +78,8 @@ export default function DashboardLayout({
                 </p>
               </div>
             </div>
-          <div className="flex-1 flex flex-col overflow-y-auto">
-            <nav className="flex-1 px-2 py-6 space-y-2">
+          <div className="flex flex-col flex-1 min-h-0">
+            <nav className="overflow-y-auto flex-1 px-2 py-6 space-y-2">
               {navigation.map((item) => {
                 if (item.children) {
                   const isOpen = openMenus.includes(item.name);
@@ -117,17 +117,17 @@ export default function DashboardLayout({
                           isOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
                         }`}
                       >
-                        <div className="pl-11 pr-2 space-y-1">
+                        <div className="pl-2 pr-2 space-y-1">
                           {item.children.map((child) => {
                             const isChildActive = pathname.startsWith(child.href);
                             return (
                               <Link
                                 key={child.name}
                                 href={child.href}
-                                className={`group flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 ${
+                                className={`group flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-300 backdrop-blur-sm ${
                                   isChildActive
                                     ? "text-white bg-white/20 shadow-md font-bold border-l-[3px] border-yellow-400"
-                                    : "text-gray-300 hover:text-white hover:bg-white/10"
+                                    : "text-gray-300 bg-white/5 hover:text-white hover:bg-white/10"
                                 }`}
                               >
                                 {child.name}
@@ -162,7 +162,7 @@ export default function DashboardLayout({
                 );
               })}
             </nav>
-            <div className="p-4 border-t border-white/10 bg-black/20">
+            <div className="flex-shrink-0 p-4 border-t border-white/10 bg-black/20">
               <div className="flex items-center mb-4">
                 <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md">
                   {session?.user?.name?.charAt(0) || "U"}

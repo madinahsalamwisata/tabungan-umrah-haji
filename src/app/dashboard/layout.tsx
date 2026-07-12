@@ -63,10 +63,10 @@ export default function DashboardLayout({
           <div className="absolute inset-0 z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/bg-sidebar.jpeg" alt="Sidebar Background" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
           </div>
           
-          <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-md">
+          <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-sm">
             <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-white/10 bg-black/20">
               <h1 className="text-xl font-bold text-white truncate drop-shadow-md">
                 Tabungan Umrah
@@ -164,7 +164,7 @@ export default function DashboardLayout({
 
       {/* Mobile Header & Nav */}
       <div className="md:hidden fixed top-0 w-full z-20">
-        <div className="flex items-center justify-between bg-black/90 backdrop-blur-md h-16 px-4 shadow-md border-b border-white/10">
+        <div className="flex items-center justify-between bg-black/70 backdrop-blur-sm h-16 px-4 shadow-md border-b border-white/10">
           <h1 className="text-lg font-bold text-white drop-shadow-md">
             Tabungan Umrah
           </h1>
@@ -182,7 +182,7 @@ export default function DashboardLayout({
         
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="relative bg-black/90 backdrop-blur-xl shadow-xl border-b border-white/10">
+          <div className="relative bg-black/70 backdrop-blur-md shadow-xl border-b border-white/10">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => {
                 if (item.children) {

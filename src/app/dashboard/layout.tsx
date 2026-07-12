@@ -3,7 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function DashboardLayout({
   children,
@@ -13,27 +13,46 @@ export default function DashboardLayout({
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openMenus, setOpenMenus] = useState<string[]>([]);
 
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen bg-emerald-50 flex items-center justify-center">
-        <p className="text-emerald-900 font-medium text-lg flex items-center gap-2">
-          <svg className="animate-spin h-5 w-5 text-emerald-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          Memuat...
-        </p>
-      </div>
-    );
-  }
+  const toggleMenu = (name: string) => {
+    setOpenMenus(prev => prev.includes(name) ? prev.filter(m => m !== name) : [...prev, name]);
+  };
 
   const navigation = [
     { name: "Beranda", href: "/dashboard", icon: HomeIcon },
     { name: "Profil Saya", href: "/dashboard/profil", icon: UserIcon },
-    { name: "Tabungan", href: "/dashboard/tabungan", icon: WalletIcon },
-    { name: "Paket Umrah", href: "/dashboard/paket", icon: MapIcon },
+    { 
+      name: "Tabungan", 
+      icon: WalletIcon,
+      children: [
+        { name: "Tabungan Umrah", href: "/dashboard/tabungan" },
+        { name: "Tabungan Haji", href: "/dashboard/tabungan/haji" },
+      ]
+    },
+    { 
+      name: "Paket", 
+      icon: MapIcon,
+      children: [
+        { name: "Paket Umrah", href: "/dashboard/paket" },
+        { name: "Paket Haji", href: "/dashboard/paket/haji" },
+      ]
+    },
   ];
+
+  useEffect(() => {
+    navigation.forEach(item => {
+      if (item.children) {
+        const isChildActive = item.children.some(child => 
+          pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'))
+        );
+        if (isChildActive && !openMenus.includes(item.name)) {
+          setOpenMenus(prev => [...prev, item.name]);
+        }
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   return (
     <div className="min-h-screen bg-white flex text-black">
@@ -48,11 +67,58 @@ export default function DashboardLayout({
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-6 space-y-1">
               {navigation.map((item) => {
-                const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+                if (item.children) {
+                  const isOpen = openMenus.includes(item.name);
+                  const isChildActive = item.children.some(child => pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/')));
+                  return (
+                    <div key={item.name} className="space-y-1">
+                      <button
+                        onClick={() => toggleMenu(item.name)}
+                        className={`${
+                          isChildActive
+                            ? "bg-emerald-800 text-white"
+                            : "text-gray-300 hover:bg-emerald-800 hover:text-white"
+                        } group flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-r-md transition-colors border-l-4 border-transparent ${isChildActive ? 'border-white' : ''}`}
+                      >
+                        <div className="flex items-center">
+                          <item.icon
+                            className={`${
+                              isChildActive ? "text-white" : "text-gray-400 group-hover:text-white"
+                            } flex-shrink-0 -ml-1 mr-3 h-6 w-6`}
+                          />
+                          {item.name}
+                        </div>
+                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                      </button>
+                      {isOpen && (
+                        <div className="pl-11 pr-2 space-y-1">
+                          {item.children.map(child => {
+                            const isChildCurrent = pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'));
+                            return (
+                              <Link
+                                key={child.name}
+                                href={child.href}
+                                className={`${
+                                  isChildCurrent
+                                    ? "bg-emerald-800 text-white font-semibold"
+                                    : "text-gray-300 hover:bg-emerald-700 hover:text-white"
+                                } flex items-center px-3 py-2 text-xs md:text-sm rounded-md transition-colors`}
+                              >
+                                {child.name}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href + '/'));
                 return (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={item.href!}
                     className={`${
                       isActive
                         ? "bg-emerald-800 text-white border-l-4 border-white"
@@ -114,11 +180,55 @@ export default function DashboardLayout({
           <div className="bg-emerald-900 shadow-xl border-b border-emerald-800">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => {
-                const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+                if (item.children) {
+                  const isOpen = openMenus.includes(item.name);
+                  const isChildActive = item.children.some(child => pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/')));
+                  return (
+                    <div key={item.name} className="space-y-1">
+                      <button
+                        onClick={() => toggleMenu(item.name)}
+                        className={`${
+                          isChildActive
+                            ? "bg-emerald-800 text-white"
+                            : "text-gray-300 hover:bg-emerald-800 hover:text-white"
+                        } flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <item.icon className={`h-5 w-5 ${isChildActive ? "text-white" : "text-gray-400"}`} />
+                          {item.name}
+                        </div>
+                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                      </button>
+                      {isOpen && (
+                        <div className="pl-11 pr-2 space-y-1">
+                          {item.children.map(child => {
+                            const isChildCurrent = pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'));
+                            return (
+                              <Link
+                                key={child.name}
+                                href={child.href}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`${
+                                  isChildCurrent
+                                    ? "bg-emerald-800 text-white font-semibold"
+                                    : "text-gray-300 hover:bg-emerald-700 hover:text-white"
+                                } block px-3 py-2 text-sm rounded-md transition-colors`}
+                              >
+                                {child.name}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href + '/'));
                 return (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={item.href!}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`${
                       isActive
@@ -206,6 +316,14 @@ function ArrowLeftOnRectangleIcon(props: any) {
   return (
     <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon(props: any) {
+  return (
+    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
     </svg>
   );
 }

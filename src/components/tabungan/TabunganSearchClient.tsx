@@ -177,7 +177,10 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                   key={paket.id} 
                   className="relative rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/10 overflow-hidden group flex flex-col h-full"
                 >
-                  <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}></div>
+                  <div 
+                    className="absolute inset-0 bg-cover bg-center z-0" 
+                    style={{ backgroundImage: `url('${paket.poster_url || '/images/bg/bg-paket.jpeg'}')` }}
+                  ></div>
                   <div className="absolute inset-0 bg-[#111814]/80 backdrop-blur-md z-0"></div>
                   
                   <div className="relative z-10 p-5 flex flex-col h-full">

@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import RealtimeAutoRefresh from "@/components/RealtimeAutoRefresh";
 
 export default function DashboardLayout({
   children,
@@ -85,6 +86,7 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-white flex text-black">
+      <RealtimeAutoRefresh intervalMs={3000} />
       {/* Sidebar for desktop */}
       <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'}`}>
         <div 

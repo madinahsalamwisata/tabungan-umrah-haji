@@ -170,7 +170,10 @@ export default function TabunganDashboardClient({
 
   return (
     <div className="relative rounded-2xl shadow-xl border border-white/10 overflow-hidden transition-all duration-300">
-      <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}></div>
+      <div 
+        className="absolute inset-0 bg-cover bg-center z-0" 
+        style={{ backgroundImage: `url('${rencana.paket.poster_url || '/images/bg/bg-paket.jpeg'}')` }}
+      ></div>
       <div className="absolute inset-0 bg-[#111814]/40 backdrop-blur-sm z-0"></div>
       
       {/* Header / Summary (Always Visible) */}

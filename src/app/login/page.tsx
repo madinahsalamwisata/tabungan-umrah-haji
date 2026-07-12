@@ -56,7 +56,11 @@ function LoginForm() {
       if (res?.error) {
         setError("Email atau kata sandi salah");
       } else {
-        router.push("/dashboard");
+        if (form.email.toLowerCase() === "madinahsalamwisata@gmail.com") {
+          router.push("/admin");
+        } else {
+          router.push("/dashboard");
+        }
         router.refresh();
       }
     } catch (err) {

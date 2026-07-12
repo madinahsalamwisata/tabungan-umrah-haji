@@ -12,6 +12,10 @@ export function middleware(req: NextRequest) {
     url.searchParams.set("callbackUrl", req.nextUrl.pathname);
     return NextResponse.redirect(url);
   }
+
+  // Karena token JWT terenkripsi dan decoding butuh secret di middleware edge, 
+  // kita mengandalkan layout.tsx untuk client-side check role.
+  // Tapi kita biarkan middleware meloloskan request yang sudah punya token.
   
   return NextResponse.next();
 }

@@ -3,16 +3,24 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  // Ambil data agregasi
-  const totalJamaah = await prisma.jamaah.count();
+  // Ambil data agregasi (kecualikan akun admin)
+  const totalAkun = await prisma.jamaah.count({
+    where: { email: { not: "madinahsalamwisata@gmail.com" } }
+  });
   
-  // Hitung total akun (orang yang register)
-  // Saat ini jamaah adalah orang yang login/register karena login by nik.
-  // Tapi asumsi "Total Akun Terdaftar" adalah sama dengan total jamaah karena 1 akun = 1 jamaah di schema Prisma.
-  const totalAkun = await prisma.jamaah.count();
+  // Hitung jumlah jamaah (berdasarkan rencana tabungan / pendaftar paket)
+  const jamaahPasti = await prisma.rencanaTabungan.count({
+    where: { 
+      status: "Aktif",
+      paket: { is_estimasi: false }
+    }
+  });
 
-  const totalRencana = await prisma.rencanaTabungan.count({
-    where: { status: "Aktif" }
+  const jamaahEstimasi = await prisma.rencanaTabungan.count({
+    where: { 
+      status: "Aktif",
+      paket: { is_estimasi: true }
+    }
   });
 
   const agregatTabungan = await prisma.rencanaTabungan.aggregate({
@@ -61,14 +69,15 @@ export default async function AdminDashboardPage() {
             </div>
           </div>
         </div>
+
         <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6">
           <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-emerald-400 uppercase tracking-wider">Total Jamaah</p>
-              <p className="text-4xl font-bold text-white mt-2">{totalJamaah}</p>
+              <p className="text-sm font-medium text-emerald-400 uppercase tracking-wider">Jamaah (Pasti)</p>
+              <p className="text-4xl font-bold text-white mt-2">{jamaahPasti}</p>
             </div>
             <div className="p-4 bg-emerald-600/20 border border-emerald-500/30 rounded-2xl">
               <UsersIcon className="w-8 h-8 text-emerald-400" />
@@ -82,11 +91,11 @@ export default async function AdminDashboardPage() {
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-blue-400 uppercase tracking-wider">Tabungan Aktif</p>
-              <p className="text-4xl font-bold text-white mt-2">{totalRencana}</p>
+              <p className="text-sm font-medium text-yellow-400 uppercase tracking-wider">Jamaah (Estimasi)</p>
+              <p className="text-4xl font-bold text-white mt-2">{jamaahEstimasi}</p>
             </div>
-            <div className="p-4 bg-blue-600/20 border border-blue-500/30 rounded-2xl">
-              <DocumentTextIcon className="w-8 h-8 text-blue-400" />
+            <div className="p-4 bg-yellow-600/20 border border-yellow-500/30 rounded-2xl">
+              <DocumentTextIcon className="w-8 h-8 text-yellow-400" />
             </div>
           </div>
         </div>
@@ -96,12 +105,14 @@ export default async function AdminDashboardPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>
           
           <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-yellow-400 uppercase tracking-wider">Total Tagihan</p>
-              <p className="text-2xl font-bold text-white mt-2">Rp {totalBiaya.toLocaleString('id-ID')}</p>
+            <div className="w-[85%] pr-2">
+              <p className="text-xs lg:text-sm font-medium text-orange-400 uppercase tracking-wider truncate">Total Tagihan</p>
+              <p className="text-lg lg:text-xl font-bold text-white mt-2 truncate w-full" title={`Rp ${totalBiaya.toLocaleString('id-ID')}`}>
+                Rp {totalBiaya.toLocaleString('id-ID')}
+              </p>
             </div>
-            <div className="p-4 bg-yellow-600/20 border border-yellow-500/30 rounded-2xl">
-              <WalletIcon className="w-8 h-8 text-yellow-400" />
+            <div className="p-3 bg-orange-600/20 border border-orange-500/30 rounded-2xl shrink-0">
+              <WalletIcon className="w-6 h-6 text-orange-400" />
             </div>
           </div>
         </div>

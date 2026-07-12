@@ -39,10 +39,20 @@ export default function DashboardPage() {
   const [pengumumanList, setPengumumanList] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("/api/admin/pengumuman")
-      .then(res => res.json())
-      .then(data => setPengumumanList(data))
-      .catch(err => console.error("Gagal load pengumuman", err));
+    const fetchPengumuman = () => {
+      fetch("/api/admin/pengumuman")
+        .then(res => res.json())
+        .then(data => setPengumumanList(data))
+        .catch(err => console.error("Gagal load pengumuman", err));
+    };
+
+    // Panggil pertama kali
+    fetchPengumuman();
+
+    // Polling setiap 3 detik (3000 ms)
+    const interval = setInterval(fetchPengumuman, 3000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const toggleAccordion = (id: string) => {

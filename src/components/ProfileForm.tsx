@@ -151,7 +151,6 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   };
 
   return (
-  return (
     <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-[#111814]/90 backdrop-blur-xl border border-white/5">
 
       {/* Header/Cover Image Area */}

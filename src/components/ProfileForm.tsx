@@ -88,7 +88,11 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   return (
     <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
       {/* Header/Cover Image Area */}
-      <div className="h-32 bg-gradient-to-r from-emerald-800 to-emerald-600 relative">
+      <div 
+        className="h-32 bg-emerald-800 relative bg-cover bg-center" 
+        style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
+      >
+        <div className="absolute inset-0 bg-black/30"></div>
         {/* Dropdown Menu */}
         <div className="absolute top-4 right-4 z-10" ref={menuRef}>
           <button
@@ -159,13 +163,6 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
               <CameraIcon />
             </button>
           </div>
-          
-          {!isEditing && (
-            <div className="mb-2 hidden sm:block">
-              <h3 className="text-xl font-bold text-gray-900">{jamaah.nama}</h3>
-              <p className="text-sm text-gray-500">{jamaah.email}</p>
-            </div>
-          )}
         </div>
 
         {/* Status Messages */}
@@ -253,14 +250,14 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
                     alamat: jamaah.alamat || "",
                   });
                 }}
-                className="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors"
+                className="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex justify-center items-center px-5 py-2.5 border border-transparent rounded-lg text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-600 disabled:opacity-50 shadow-sm transition-all"
+                className="inline-flex justify-center items-center px-5 py-2.5 border border-transparent rounded-lg text-sm font-medium text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-600 disabled:opacity-50 shadow-sm transition-all"
               >
                 {loading ? "Menyimpan..." : "Simpan Perubahan"}
               </button>
@@ -268,31 +265,25 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
           </form>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 animate-in fade-in duration-300">
-            {/* Mobile Title (hidden on sm) */}
-            <div className="sm:hidden border-b border-gray-100 pb-4 mb-2">
-              <h3 className="text-xl font-bold text-gray-900">{jamaah.nama}</h3>
-              <p className="text-sm text-gray-500">{jamaah.email}</p>
-            </div>
-
             <div className="space-y-1">
               <p className="text-sm font-medium text-gray-500">Nama Lengkap</p>
-              <p className="text-base font-semibold text-gray-900">{jamaah.nama}</p>
+              <p className="text-base font-medium text-gray-900">{jamaah.nama}</p>
             </div>
             <div className="space-y-1">
               <p className="text-sm font-medium text-gray-500">Alamat Email</p>
-              <p className="text-base font-semibold text-gray-900">{jamaah.email}</p>
+              <p className="text-base font-medium text-gray-900">{jamaah.email}</p>
             </div>
             <div className="space-y-1">
               <p className="text-sm font-medium text-gray-500">No. HP / WhatsApp</p>
-              <p className="text-base font-semibold text-gray-900">{jamaah.no_hp}</p>
+              <p className="text-base font-medium text-gray-900">{jamaah.no_hp}</p>
             </div>
             <div className="space-y-1">
               <p className="text-sm font-medium text-gray-500">Nomor Induk Kependudukan (NIK)</p>
-              <p className="text-base font-semibold text-gray-900">{jamaah.nik}</p>
+              <p className="text-base font-medium text-gray-900">{jamaah.nik}</p>
             </div>
             <div className="space-y-1 md:col-span-2">
               <p className="text-sm font-medium text-gray-500">Alamat Lengkap</p>
-              <p className="text-base font-semibold text-gray-900 leading-relaxed">
+              <p className="text-base font-medium text-gray-900 leading-relaxed">
                 {jamaah.alamat || <span className="text-gray-400 italic">Belum diisi</span>}
               </p>
             </div>

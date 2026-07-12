@@ -158,7 +158,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
         className="h-36 relative bg-cover bg-[center_65%]"
         style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-white"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent"></div>
         
         {/* Dropdown Menu */}
         <div className="absolute top-4 right-4 z-20" ref={menuRef}>

@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
 
 export async function POST(req: Request) {
   try {
@@ -25,40 +23,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Format foto harus JPG, PNG, atau WEBP" }, { status: 400 });
     }
 
-    // Convert file to buffer
+    // Convert file to base64 data URI to avoid local filesystem issues on Vercel/serverless
     const buffer = Buffer.from(await file.arrayBuffer());
-
-    // Generate unique filename
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const extension = file.name.split(".").pop();
-    const filename = `avatar-${session.user.email.split('@')[0]}-${uniqueSuffix}.${extension}`;
-
-    // Define upload directory
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "profiles");
-
-    // Ensure directory exists
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-      // ignore if exists
-    }
-
-    // Write file to disk
-    const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, buffer);
-
-    // Generate public URL
-    const publicUrl = `/uploads/profiles/${filename}`;
+    const base64 = buffer.toString('base64');
+    const dataURI = `data:${file.type};base64,${base64}`;
 
     // Update database
     await prisma.jamaah.update({
       where: { email: session.user.email },
-      data: { foto_url: publicUrl },
+      data: { foto_url: dataURI },
     });
 
     return NextResponse.json({ 
       message: "Foto berhasil diunggah", 
-      url: publicUrl 
+      url: dataURI 
     }, { status: 200 });
 
   } catch (error: any) {

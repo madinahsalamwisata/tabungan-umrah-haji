@@ -2,6 +2,15 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+
+const SmallSwal = Swal.mixin({
+  width: '360px',
+  customClass: {
+    title: 'text-lg font-bold text-gray-900',
+    htmlContainer: 'text-sm max-h-32 overflow-y-auto custom-scrollbar text-gray-600',
+  }
+});
 
 // SVG Icons
 const CameraIcon = () => (
@@ -37,8 +46,6 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -73,8 +80,6 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
     }
 
     setIsUploading(true);
-    setError("");
-    setSuccess("");
 
     const formData = new FormData();
     formData.append("file", file);
@@ -88,10 +93,22 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Gagal mengunggah foto");
 
-      setSuccess("Foto profil berhasil diperbarui!");
+      SmallSwal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        html: 'Foto profil berhasil diperbarui.',
+        confirmButtonColor: '#059669', // emerald-600
+        confirmButtonText: 'Tutup'
+      });
       router.refresh();
     } catch (err: any) {
-      setError(err.message);
+      SmallSwal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        html: err.message || 'Terjadi kesalahan.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Tutup'
+      });
     } finally {
       setIsUploading(false);
     }
@@ -100,8 +117,6 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-    setSuccess("");
 
     try {
       const res = await fetch("/api/profil", {
@@ -113,11 +128,23 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Gagal memperbarui profil");
 
-      setSuccess("Profil berhasil diperbarui!");
+      SmallSwal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        html: 'Profil berhasil diperbarui.',
+        confirmButtonColor: '#059669',
+        confirmButtonText: 'Tutup'
+      });
       setIsEditing(false);
       router.refresh();
     } catch (err: any) {
-      setError(err.message);
+      SmallSwal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        html: err.message || 'Terjadi kesalahan saat menyimpan.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Tutup'
+      });
     } finally {
       setLoading(false);
     }
@@ -221,17 +248,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
           </div>
         </div>
 
-        {/* Status Messages */}
-        {error && (
-          <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md">
-            <p className="text-sm text-red-700 font-medium">{error}</p>
-          </div>
-        )}
-        {success && (
-          <div className="mb-6 bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-md">
-            <p className="text-sm text-emerald-700 font-medium">{success}</p>
-          </div>
-        )}
+        {/* Status Messages removed in favor of SweetAlert2 */}
 
         {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-5 animate-in fade-in duration-300">

@@ -67,7 +67,7 @@ export default function DashboardLayout({
           </div>
           
           <div className="relative z-10 flex flex-col flex-1 bg-white/5 backdrop-blur-sm">
-            <div className="flex flex-col items-center justify-center pt-0 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-lg">
+            <div className="flex flex-col items-center justify-start pt-0 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-lg">
               <img src="/images/logo_.png" alt="Logo" className="h-24 w-auto drop-shadow-md -mb-1" />
               <div className="text-center space-y-0">
                 <h1 className="text-base font-extrabold text-white drop-shadow-sm leading-tight">

@@ -1,6 +1,5 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Bell, 
   ChevronDown, 
@@ -37,6 +36,14 @@ const GlassCard = ({ children, className = "" }: { children: React.ReactNode, cl
 
 export default function DashboardPage() {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [pengumumanList, setPengumumanList] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/admin/pengumuman")
+      .then(res => res.json())
+      .then(data => setPengumumanList(data))
+      .catch(err => console.error("Gagal load pengumuman", err));
+  }, []);
 
   const toggleAccordion = (id: string) => {
     if (openAccordion === id) {
@@ -45,12 +52,6 @@ export default function DashboardPage() {
       setOpenAccordion(id);
     }
   };
-
-  const notifications = [
-    { id: 1, title: "Pembaruan Jadwal Manasik", date: "10 Okt 2026", isRead: false },
-    { id: 2, title: "Informasi Pembayaran Tahap 1", date: "05 Okt 2026", isRead: true },
-    { id: 3, title: "Dokumen Persyaratan Tambahan", date: "28 Sep 2026", isRead: true },
-  ];
 
   return (
     <div className="min-h-screen relative overflow-hidden py-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -62,37 +63,48 @@ export default function DashboardPage() {
           <p className="mt-1 text-sm text-emerald-600">Selamat datang di sistem tabungan Umrah dan Haji Anda.</p>
         </div>
 
-        {/* Section 1: Notifications */}
+        {/* Section 1: Notifications (Dynamic from Database) */}
         <GlassCard>
           <div className="flex items-center gap-3 mb-4">
             <Bell className="text-yellow-400 w-6 h-6" />
             <h2 className="text-xl font-bold text-white">Informasi & Update</h2>
           </div>
-          <div className="max-h-48 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-            {notifications.map((notif) => (
-              <div 
-                key={notif.id} 
-                className={`p-4 rounded-xl border transition-all ${
-                  notif.isRead 
-                    ? "bg-black/30 border-white/10" 
-                    : "bg-yellow-400/20 border-yellow-400/50"
-                }`}
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className={`font-medium ${notif.isRead ? "text-gray-300" : "text-white"}`}>
-                      {notif.title}
-                    </h3>
-                    <span className="text-xs text-gray-400 mt-1 block">{notif.date}</span>
+          <div className="max-h-64 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+            {pengumumanList.length > 0 ? (
+              pengumumanList.map((item) => (
+                <div 
+                  key={item.id} 
+                  className={`relative p-4 rounded-xl border transition-all ${
+                    item.is_penting 
+                      ? "bg-yellow-900/20 border-yellow-500/30" 
+                      : "bg-black/30 border-white/10 hover:bg-white/5"
+                  }`}
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className={`font-medium ${item.is_penting ? "text-yellow-400" : "text-white"}`}>
+                        {item.judul}
+                      </h3>
+                      <span className="text-xs text-gray-400 mt-1 block">
+                        {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+                      </span>
+                      <p className="text-sm text-gray-300 mt-2 leading-relaxed">
+                        {item.konten}
+                      </p>
+                    </div>
+                    {item.is_penting && (
+                      <span className="bg-yellow-500 text-yellow-950 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider absolute top-4 right-4">
+                        Penting
+                      </span>
+                    )}
                   </div>
-                  {!notif.isRead && (
-                    <span className="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full">
-                      Baru
-                    </span>
-                  )}
                 </div>
+              ))
+            ) : (
+              <div className="p-4 text-center text-gray-400 italic bg-black/20 rounded-xl border border-white/10">
+                Belum ada pengumuman terbaru saat ini.
               </div>
-            ))}
+            )}
           </div>
         </GlassCard>
 

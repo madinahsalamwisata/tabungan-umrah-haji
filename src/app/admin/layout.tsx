@@ -41,7 +41,10 @@ export default function AdminLayout({
   const navigation = [
     { name: "Admin Dashboard", href: "/admin", icon: HomeIcon },
     { name: "Data Jamaah", href: "/admin/jamaah", icon: UsersIcon },
+    { name: "Pengumuman", href: "/admin/pengumuman", icon: MegaphoneIcon },
+    { name: "Manajemen Paket", href: "/admin/paket", icon: MapIcon },
   ];
+
 
   if (status === "loading" || session?.user?.email !== "madinahsalamwisata@gmail.com") {
     return (
@@ -156,21 +159,51 @@ export default function AdminLayout({
         {mobileMenuOpen && (
           <div className="absolute top-16 left-0 w-full bg-[#0f1712] border-b border-white/10 shadow-xl">
             <div className="px-3 pt-4 pb-6 space-y-2">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href!}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                    pathname === item.href
-                      ? "bg-emerald-600/20 border border-emerald-500/30 text-white"
-                      : "bg-white/5 border border-transparent text-gray-300 hover:bg-white/10"
-                  }`}
-                >
-                  <item.icon className={`h-5 w-5 ${pathname === item.href ? "text-emerald-400" : "text-gray-400"}`} />
-                  {item.name}
+              <div className="space-y-2 mt-2">
+                <Link href="/admin">
+                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium ${
+                    pathname === '/admin' 
+                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
+                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                  }`}>
+                    <HomeIcon className="w-5 h-5" />
+                    <span className="text-sm">Dashboard</span>
+                  </div>
                 </Link>
-              ))}
+                
+                <Link href="/admin/jamaah">
+                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium ${
+                    pathname.startsWith('/admin/jamaah') 
+                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
+                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                  }`}>
+                    <UsersIcon className="w-5 h-5" />
+                    <span className="text-sm">Data Jamaah</span>
+                  </div>
+                </Link>
+
+                <Link href="/admin/pengumuman">
+                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium ${
+                    pathname.startsWith('/admin/pengumuman') 
+                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
+                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                  }`}>
+                    <MegaphoneIcon className="w-5 h-5" />
+                    <span className="text-sm">Pengumuman</span>
+                  </div>
+                </Link>
+
+                <Link href="/admin/paket">
+                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium ${
+                    pathname.startsWith('/admin/paket') 
+                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
+                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                  }`}>
+                    <MapIcon className="w-5 h-5" />
+                    <span className="text-sm">Manajemen Paket</span>
+                  </div>
+                </Link>
+              </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 className="w-full text-left mt-4 text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3"
@@ -229,6 +262,22 @@ function ArrowLeftOnRectangleIcon(props: any) {
   return (
     <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+    </svg>
+  );
+}
+
+function MegaphoneIcon(props: any) {
+  return (
+    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+    </svg>
+  );
+}
+
+function MapIcon(props: any) {
+  return (
+    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
     </svg>
   );
 }

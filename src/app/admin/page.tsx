@@ -6,6 +6,11 @@ export default async function AdminDashboardPage() {
   // Ambil data agregasi
   const totalJamaah = await prisma.jamaah.count();
   
+  // Hitung total akun (orang yang register)
+  // Saat ini jamaah adalah orang yang login/register karena login by nik.
+  // Tapi asumsi "Total Akun Terdaftar" adalah sama dengan total jamaah karena 1 akun = 1 jamaah di schema Prisma.
+  const totalAkun = await prisma.jamaah.count();
+
   const totalRencana = await prisma.rencanaTabungan.count({
     where: { status: "Aktif" }
   });
@@ -41,7 +46,21 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6">
+          <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>
+          
+          <div className="relative z-10 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-purple-400 uppercase tracking-wider">Total Akun</p>
+              <p className="text-4xl font-bold text-white mt-2">{totalAkun}</p>
+            </div>
+            <div className="p-4 bg-purple-600/20 border border-purple-500/30 rounded-2xl">
+              <UsersIcon className="w-8 h-8 text-purple-400" />
+            </div>
+          </div>
+        </div>
         <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6">
           <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>

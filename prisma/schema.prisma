@@ -34,8 +34,19 @@ model Paket {
   harga_triple          Decimal
   kuota                 Int
   deskripsi_fasilitas   String?
+  poster_url            String?
+  is_estimasi           Boolean           @default(false)
   RencanaTabungan       RencanaTabungan[]
 }
+
+model Pengumuman {
+  id         String   @id @default(uuid())
+  judul      String
+  konten     String
+  is_penting Boolean  @default(false)
+  created_at DateTime @default(now())
+}
+
 
 model RencanaTabungan {
   id                String           @id @default(uuid())

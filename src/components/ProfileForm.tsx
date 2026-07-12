@@ -159,7 +159,7 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
     >
       {/* Background Image Layer for Collapsed State */}
       {!isExpanded && (
-        <div className="absolute inset-0 bg-cover bg-[center_top] z-0" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
+        <div className="absolute inset-0 bg-cover bg-[center_65%] z-0" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
       )}
 
       {/* Header/Cover Image Area */}

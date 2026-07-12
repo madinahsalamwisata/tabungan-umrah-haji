@@ -67,13 +67,13 @@ export default function DashboardLayout({
           </div>
           
           <div className="relative z-10 flex flex-col flex-1 min-h-0 bg-white/5 backdrop-blur-sm">
-            <div className="flex flex-col items-center justify-start -mt-5 pb-4 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-lg">
-              <img src="/images/logo_.png" alt="Logo" className="h-20 w-auto drop-shadow-md -mb-2" />
-              <div className="text-center space-y-0">
-                <h1 className="text-base font-extrabold text-white drop-shadow-sm leading-tight">
+            <div className="flex flex-col items-start justify-start pt-4 pb-4 flex-shrink-0 px-6 border-b border-white/30 bg-white/20 backdrop-blur-md space-y-0 rounded-b-lg">
+              <img src="/images/logo_.png" alt="Logo" className="h-20 w-auto drop-shadow-md -mb-1" />
+              <div className="text-left space-y-0 mt-1">
+                <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight">
                   Tabungan Umrah & Haji
                 </h1>
-                <p className="text-xs font-bold text-yellow-300 drop-shadow-sm">
+                <p className="text-[11px] font-bold text-yellow-300 drop-shadow-sm">
                   Madinah Salam Wisata
                 </p>
               </div>

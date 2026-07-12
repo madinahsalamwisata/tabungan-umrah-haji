@@ -81,7 +81,7 @@ export default function DashboardLayout({
             {/* Toggle Sidebar Button */}
             <button 
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="absolute -right-3 top-6 bg-emerald-600 text-white rounded-full p-1 shadow-md border-2 border-white z-50 hover:bg-emerald-700 transition-colors hidden md:block"
+              className="absolute -right-4 top-8 flex items-center justify-center w-8 h-8 bg-white/20 backdrop-blur-md border border-white/40 text-white rounded-full shadow-lg z-50 hover:bg-white/30 transition-all hidden md:flex cursor-pointer"
             >
               <ChevronDownIcon className={`w-4 h-4 transition-transform duration-300 ${isCollapsed ? '-rotate-90' : 'rotate-90'}`} />
             </button>
@@ -154,7 +154,7 @@ export default function DashboardLayout({
                                   isCollapsed ? 'px-0 justify-center font-bold text-xs' : 'px-4'
                                 } ${
                                   isChildActive
-                                    ? "text-white bg-white/20 shadow-md font-bold border-l-[3px] border-yellow-400"
+                                    ? "text-white bg-white/20 shadow-md font-bold"
                                     : "text-gray-300 bg-white/5 hover:text-white hover:bg-white/10"
                                 }`}
                                 title={isCollapsed ? child.name : undefined}
@@ -178,7 +178,7 @@ export default function DashboardLayout({
                       isCollapsed ? 'px-0 justify-center' : 'px-4'
                     } ${
                       isActive
-                        ? "text-white bg-white/20 shadow-md font-bold border-l-[3px] border-yellow-400"
+                        ? "text-white bg-white/20 shadow-md font-bold"
                         : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
                     }`}
                     title={isCollapsed ? item.name : undefined}

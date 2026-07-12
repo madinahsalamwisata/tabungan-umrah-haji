@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 
 export default function DashboardLayout({
@@ -12,6 +12,7 @@ export default function DashboardLayout({
 }) {
   const { data: session, status } = useSession();
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -31,6 +32,11 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (status === "authenticated") {
+      if (session?.user?.email === "madinahsalamwisata@gmail.com") {
+        router.replace("/admin");
+        return;
+      }
+
       fetch("/api/profil/me")
         .then(res => res.json())
         .then(data => setUserProfile(data))

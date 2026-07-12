@@ -180,10 +180,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                   className="relative rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/10 overflow-hidden group flex flex-col bg-cover bg-center"
                   style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}
                 >
-                  <div className="absolute inset-0 bg-[#111814]/80 backdrop-blur-xl"></div>
-                  
-                  {/* Decorative Left/Top Accent */}
-                  <div className="h-1.5 md:h-auto md:w-1.5 w-full absolute top-0 left-0 right-0 md:bottom-0 bg-gradient-to-r md:bg-gradient-to-b from-emerald-600 via-emerald-500 to-yellow-400 z-20"></div>
+                  <div className={`absolute inset-0 ${isAlreadySelected ? 'bg-[#111814]/80 backdrop-blur-xl' : 'bg-[#111814]/40 backdrop-blur-sm'}`}></div>
                   
                   <div className="relative z-10 p-6 md:pl-8 flex flex-col md:flex-row md:items-center gap-6">
                     {/* Left content (Title & Details) */}

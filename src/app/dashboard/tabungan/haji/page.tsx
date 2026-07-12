@@ -11,14 +11,17 @@ export default async function TabunganHajiDashboard() {
 
   return (
     <div className="space-y-6 mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-      <div className="bg-emerald-50 rounded-xl p-8 border border-emerald-100 shadow-sm text-center">
-        <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-          <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="relative rounded-2xl p-8 md:p-12 shadow-xl overflow-hidden text-center border border-white/10 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}></div>
+        <div className="absolute inset-0 bg-[#111814]/40 backdrop-blur-sm z-0"></div>
+        
+        <div className="relative z-10 mx-auto w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center mb-5">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-emerald-900 mb-4">Tabungan Haji Segera Hadir</h2>
-        <p className="text-emerald-700 max-w-2xl mx-auto leading-relaxed text-lg italic">
+        <h2 className="relative z-10 text-lg md:text-xl font-semibold text-white mb-3">Tabungan Haji Segera Hadir</h2>
+        <p className="relative z-10 text-white/80 max-w-2xl mx-auto leading-relaxed text-sm md:text-base italic font-light">
           "Semoga Allah <i>Subhanahu Wa Ta'ala</i> memudahkan kami untuk segera menyelenggarakan program Haji dan memudahkan langkah jamaah kami untuk menunaikan ibadah Haji ke Baitullah. Amin Ya Rabbal 'Alamin."
         </p>
       </div>

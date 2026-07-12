@@ -97,16 +97,14 @@ export default function DashboardLayout({
 
             <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md rounded-b-lg transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
               <img src="/images/ms-wisata-new-logo.png" alt="Logo" className={`${isCollapsed ? 'h-10' : 'h-14'} w-auto drop-shadow-md shrink-0 transition-all duration-300`} />
-              {!isCollapsed && (
-                <div className="text-left flex flex-col justify-center overflow-hidden transition-all duration-300">
-                  <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight">
-                    Tabungan Umrah & Haji
+                <div className={`text-left flex flex-col justify-center overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[200px] opacity-100'}`}>
+                  <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
+                    Tabungan Umrah dan Haji
                   </h1>
-                  <p className="text-[11px] font-bold text-yellow-300 drop-shadow-sm mt-0.5">
+                  <p className="text-[11px] font-bold text-yellow-300 drop-shadow-sm mt-0.5 w-[140px]">
                     Madinah Salam Wisata
                   </p>
                 </div>
-              )}
             </div>
           <div className="flex flex-col flex-1 min-h-0">
             <nav className="custom-scrollbar overflow-y-auto flex-1 px-2 py-6 space-y-2">
@@ -134,16 +132,16 @@ export default function DashboardLayout({
                             }`}
                             aria-hidden="true"
                           />
-                          {!isCollapsed && <span className="whitespace-nowrap">{item.name}</span>}
+                          <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[150px] opacity-100'}`}>
+                            {item.name}
+                          </span>
                         </div>
-                        {!isCollapsed && (
-                          <ChevronDownIcon
-                            className={`ml-3 h-4 w-4 flex-shrink-0 transition-transform duration-300 ${
-                              isOpen ? "rotate-180 text-white" : "text-gray-400 group-hover:text-white"
-                            }`}
-                            aria-hidden="true"
-                          />
-                        )}
+                        <ChevronDownIcon
+                          className={`h-4 w-4 flex-shrink-0 transition-all duration-300 ease-in-out ${
+                            isOpen ? "rotate-180 text-white" : "text-gray-400 group-hover:text-white"
+                          } ${isCollapsed ? 'w-0 opacity-0 ml-0' : 'w-4 opacity-100 ml-3'}`}
+                          aria-hidden="true"
+                        />
                       </button>
                       
                       {/* Submenu Dropdown */}
@@ -198,7 +196,9 @@ export default function DashboardLayout({
                       }`}
                       aria-hidden="true"
                     />
-                    {!isCollapsed && <span className="whitespace-nowrap">{item.name}</span>}
+                    <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[150px] opacity-100'}`}>
+                      {item.name}
+                    </span>
                   </Link>
                 );
               })}
@@ -212,12 +212,10 @@ export default function DashboardLayout({
                     session?.user?.name?.charAt(0) || "U"
                   )}
                 </div>
-                {!isCollapsed && (
-                  <div className="ml-3 truncate">
-                    <p className="text-sm font-medium text-white truncate drop-shadow-md">{session?.user?.name}</p>
-                    <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">{session?.user?.email}</p>
-                  </div>
-                )}
+                <div className={`ml-3 truncate transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[200px] opacity-100'}`}>
+                  <p className="text-sm font-medium text-white truncate drop-shadow-md">{session?.user?.name}</p>
+                  <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">{session?.user?.email}</p>
+                </div>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
@@ -227,7 +225,9 @@ export default function DashboardLayout({
                 title="Keluar"
               >
                 <ArrowLeftOnRectangleIcon className="w-5 h-5" />
-                {!isCollapsed && <span>Keluar</span>}
+                <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[100px] opacity-100'}`}>
+                  Keluar
+                </span>
               </button>
             </div>
           </div>

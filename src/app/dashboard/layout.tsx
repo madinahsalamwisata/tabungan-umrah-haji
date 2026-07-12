@@ -58,7 +58,7 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-white flex text-black">
       {/* Sidebar for desktop */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-xl border-r border-white/10">
+        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 rounded-tr-[40px] rounded-bl-[40px] bg-white/10 backdrop-blur-md">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -73,29 +73,28 @@ export default function DashboardLayout({
               </h1>
             </div>
           <div className="flex-1 flex flex-col overflow-y-auto">
-            <nav className="flex-1 px-2 py-6 space-y-2">
+            <nav className="flex-1 px-3 py-6 space-y-3 overflow-y-auto">
               {navigation.map((item) => {
                 if (item.children) {
                   const isOpen = openMenus.includes(item.name);
-                  // We only highlight the child, the parent just acts as a toggle without strong background
                   return (
-                    <div key={item.name} className="space-y-1">
+                    <div key={item.name} className="space-y-2">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`group flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-r-md transition-colors border-l-4 border-transparent ${isOpen ? 'text-emerald-900' : 'text-emerald-800 hover:bg-white/30 hover:text-emerald-900'}`}
+                        className={`group flex items-center justify-between w-full px-4 py-3 text-sm font-medium rounded-xl transition-all border backdrop-blur-sm shadow-sm ${isOpen ? 'bg-white/40 border-white/50 text-emerald-900 scale-[0.98]' : 'bg-white/20 border-white/30 text-emerald-800 hover:bg-white/30 hover:text-emerald-900 hover:shadow-md'}`}
                       >
                         <div className="flex items-center">
                           <item.icon
                             className={`${
                               isOpen ? "text-emerald-900" : "text-emerald-700 group-hover:text-emerald-900"
-                            } flex-shrink-0 -ml-1 mr-3 h-6 w-6`}
+                            } flex-shrink-0 -ml-1 mr-3 h-5 w-5`}
                           />
                           <span className="drop-shadow-sm font-bold">{item.name}</span>
                         </div>
                         <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180 text-emerald-900' : 'text-emerald-800'}`} />
                       </button>
                       {isOpen && (
-                        <div className="pl-11 pr-2 space-y-1 mt-1">
+                        <div className="pl-6 pr-1 space-y-2 mt-2">
                           {item.children.map(child => {
                             const isChildCurrent = pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'));
                             return (
@@ -104,9 +103,9 @@ export default function DashboardLayout({
                                 href={child.href}
                                 className={`${
                                   isChildCurrent
-                                    ? "bg-white/30 text-emerald-900 font-bold border-l-4 border-emerald-900"
-                                    : "text-emerald-800 font-medium hover:bg-white/30 hover:text-emerald-900 border-l-4 border-transparent"
-                                } flex items-center px-3 py-2 text-xs md:text-sm rounded-r-md transition-colors drop-shadow-sm`}
+                                    ? "bg-white/50 text-emerald-900 font-bold border-white/60 shadow-md scale-[0.98]"
+                                    : "bg-white/10 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/20 hover:shadow-md"
+                                } flex items-center px-4 py-2.5 text-xs md:text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm`}
                               >
                                 {child.name}
                               </Link>
@@ -125,14 +124,14 @@ export default function DashboardLayout({
                     href={item.href!}
                     className={`${
                       isActive
-                        ? "bg-white/30 text-emerald-900 border-l-4 border-emerald-900 font-bold"
-                        : "text-emerald-800 font-medium hover:bg-white/30 hover:text-emerald-900 border-l-4 border-transparent"
-                    } group flex items-center px-3 py-3 text-sm rounded-r-md transition-colors drop-shadow-sm`}
+                        ? "bg-white/40 text-emerald-900 border-white/50 font-bold shadow-md scale-[0.98]"
+                        : "bg-white/20 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/30 hover:shadow-md"
+                    } group flex items-center px-4 py-3 text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm`}
                   >
                     <item.icon
                       className={`${
                         isActive ? "text-emerald-900" : "text-emerald-700 group-hover:text-emerald-900"
-                      } flex-shrink-0 -ml-1 mr-3 h-6 w-6`}
+                      } flex-shrink-0 -ml-1 mr-3 h-5 w-5`}
                     />
                     <span className={isActive ? "font-bold" : "font-semibold"}>{item.name}</span>
                   </Link>
@@ -183,15 +182,15 @@ export default function DashboardLayout({
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
           <div className="relative bg-black/70 backdrop-blur-md shadow-xl border-b border-white/10">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="px-3 pt-4 pb-4 space-y-3">
               {navigation.map((item) => {
                 if (item.children) {
                   const isOpen = openMenus.includes(item.name);
                   return (
-                    <div key={item.name} className="space-y-1">
+                    <div key={item.name} className="space-y-2">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium ${isOpen ? 'text-emerald-900' : 'text-emerald-800 hover:bg-white/30 hover:text-emerald-900'}`}
+                        className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-base font-medium transition-all border backdrop-blur-sm shadow-sm ${isOpen ? 'bg-white/40 border-white/50 text-emerald-900 scale-[0.98]' : 'bg-white/20 border-white/30 text-emerald-800 hover:bg-white/30 hover:text-emerald-900'}`}
                       >
                         <div className="flex items-center gap-3">
                           <item.icon className={`h-5 w-5 ${isOpen ? "text-emerald-900" : "text-emerald-700"}`} />
@@ -200,7 +199,7 @@ export default function DashboardLayout({
                         <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180 text-emerald-900' : 'text-emerald-800'}`} />
                       </button>
                       {isOpen && (
-                        <div className="pl-11 pr-2 space-y-1 mt-1">
+                        <div className="pl-6 pr-1 space-y-2 mt-2">
                           {item.children.map(child => {
                             const isChildCurrent = pathname === child.href || (child.href !== '/dashboard' && pathname.startsWith(child.href + '/'));
                             return (
@@ -210,9 +209,9 @@ export default function DashboardLayout({
                                 onClick={() => setMobileMenuOpen(false)}
                                 className={`${
                                   isChildCurrent
-                                    ? "bg-white/30 text-emerald-900 font-bold border-l-4 border-emerald-900"
-                                    : "text-emerald-800 font-medium hover:bg-white/30 hover:text-emerald-900 border-l-4 border-transparent"
-                                } block px-3 py-2 text-sm rounded-r-md transition-colors drop-shadow-sm`}
+                                    ? "bg-white/50 text-emerald-900 font-bold border-white/60 shadow-md scale-[0.98]"
+                                    : "bg-white/10 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/20 hover:shadow-md"
+                                } block px-4 py-2.5 text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm`}
                               >
                                 {child.name}
                               </Link>
@@ -232,9 +231,9 @@ export default function DashboardLayout({
                     onClick={() => setMobileMenuOpen(false)}
                     className={`${
                       isActive
-                        ? "bg-white/30 text-emerald-900 font-bold border-l-4 border-emerald-900"
-                        : "text-emerald-800 font-medium hover:bg-white/30 hover:text-emerald-900 border-l-4 border-transparent"
-                    } block px-3 py-2 rounded-r-md text-base flex items-center gap-3 drop-shadow-sm`}
+                        ? "bg-white/40 text-emerald-900 font-bold border-white/50 shadow-md scale-[0.98]"
+                        : "bg-white/20 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/30 hover:shadow-md"
+                    } block px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm`}
                   >
                     <item.icon className={`h-5 w-5 ${isActive ? "text-emerald-900" : "text-emerald-700"}`} />
                     <span className={isActive ? "font-bold" : "font-semibold"}>{item.name}</span>

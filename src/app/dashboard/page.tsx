@@ -11,6 +11,7 @@ import {
   CreditCard, 
   Briefcase 
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 // Helper component untuk kotak glassmorphism murni
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
@@ -48,6 +49,29 @@ export default function DashboardPage() {
     } else {
       setOpenAccordion(id);
     }
+  };
+
+  const showPengumumanPopup = (item: any) => {
+    Swal.fire({
+      title: `<div class="text-left"><h3 class="font-bold text-lg ${item.is_penting ? 'text-yellow-600' : 'text-emerald-700'}">${item.judul}</h3></div>`,
+      html: `
+        <div class="text-xs text-gray-500 mb-3 pb-3 border-b text-left flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          ${new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+          ${item.is_penting ? '<span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Penting</span>' : ''}
+        </div>
+        <div class="text-sm text-gray-700 text-left whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style="scrollbar-width: thin;">
+          ${item.konten}
+        </div>
+      `,
+      confirmButtonColor: '#059669',
+      confirmButtonText: 'Tutup',
+      customClass: {
+        popup: 'rounded-2xl shadow-2xl',
+        htmlContainer: '!m-0 !mt-2',
+        title: '!m-0 !p-0'
+      }
+    });
   };
 
   return (
@@ -129,9 +153,10 @@ export default function DashboardPage() {
               <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
                 {pengumumanList.length > 0 ? (
                   pengumumanList.map((item) => (
-                    <div 
+                    <button 
                       key={item.id} 
-                      className={`relative p-4 rounded-xl border transition-all hover:shadow-lg ${
+                      onClick={() => showPengumumanPopup(item)}
+                      className={`w-full text-left relative p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
                         item.is_penting 
                           ? "bg-gradient-to-br from-yellow-900/30 to-black/30 border-yellow-500/40" 
                           : "bg-black/30 border-white/10 hover:bg-white/5"
@@ -148,15 +173,12 @@ export default function DashboardPage() {
                             </span>
                           )}
                         </div>
-                        <span className="text-[10px] font-medium text-gray-400 mb-2 uppercase tracking-wide flex items-center gap-1">
+                        <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wide flex items-center gap-1">
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                           {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
                         </span>
-                        <p className="text-xs text-gray-300 leading-relaxed border-t border-white/10 pt-2">
-                          {item.konten}
-                        </p>
                       </div>
-                    </div>
+                    </button>
                   ))
                 ) : (
                   <div className="p-6 flex flex-col items-center justify-center text-center h-full text-gray-400 bg-black/20 rounded-xl border border-white/10">

@@ -54,18 +54,18 @@ export default function AdminLayout({
 
   if (status === "loading" || session?.user?.email !== "madinahsalamwisata@gmail.com") {
     return (
-      <div className="min-h-screen bg-[#0f1712] flex items-center justify-center">
+      <div className="min-h-screen bg-white/60 flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0f0c] flex text-white font-sans">
+    <div className="min-h-screen bg-emerald-50 flex text-emerald-950 font-sans">
       {/* Sidebar for desktop */}
       <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'} z-30`}>
         <div 
-          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/10 bg-[#0f1712]"
+          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/60 bg-white/60"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -74,13 +74,13 @@ export default function AdminLayout({
           <div className="absolute inset-0 bg-gradient-to-b from-[#0f1712]/90 via-[#0f1712]/80 to-[#0f1712] z-0"></div>
           
           <div className="relative z-10 flex flex-col flex-1 min-h-0">
-            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/10 bg-black/20 backdrop-blur-md rounded-b-lg transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/60 bg-white/40 backdrop-blur-md rounded-b-lg transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
               <img src="/images/ms-wisata-new-logo.png" alt="Logo" className={`${isCollapsed ? 'h-10' : 'h-12'} w-auto drop-shadow-md shrink-0 transition-all duration-300`} />
               <div className={`text-left flex flex-col justify-center overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[200px] opacity-100'}`}>
-                <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
+                <h1 className="text-sm font-extrabold text-emerald-950 drop-shadow-sm leading-tight w-[140px]">
                   Admin Panel
                 </h1>
-                <p className="text-[10px] font-bold text-emerald-400 drop-shadow-sm mt-0.5 w-[140px] uppercase tracking-wider">
+                <p className="text-[10px] font-bold text-emerald-700 drop-shadow-sm mt-0.5 w-[140px] uppercase tracking-wider">
                   Madinah Salam Wisata
                 </p>
               </div>
@@ -103,14 +103,14 @@ export default function AdminLayout({
                         isCollapsed ? 'px-0 justify-center' : 'px-4'
                       } ${
                         isActive
-                          ? "text-white bg-emerald-600/20 border border-emerald-500/30 shadow-md font-bold"
-                          : "text-gray-300 bg-white/5 hover:bg-white/10 hover:text-white border border-transparent"
+                          ? "text-emerald-950 bg-emerald-600/20 border border-emerald-500/40 shadow-md font-bold"
+                          : "text-gray-700 bg-white/40 hover:bg-white/50 hover:text-emerald-950 border border-transparent"
                       }`}
                       title={isCollapsed ? item.name : undefined}
                     >
                       <item.icon
                         className={`h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
-                          isActive ? "text-emerald-400" : "text-gray-400 group-hover:text-emerald-300"
+                          isActive ? "text-emerald-700" : "text-gray-600 group-hover:text-emerald-700"
                         }`}
                         aria-hidden="true"
                       />
@@ -122,14 +122,14 @@ export default function AdminLayout({
                 })}
               </nav>
 
-              <div className="flex-shrink-0 p-4 border-t border-white/10 bg-black/30 backdrop-blur-md">
+              <div className="flex-shrink-0 p-4 border-t border-white/60 bg-white/50 backdrop-blur-md">
                 <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'mb-4'}`}>
-                  <div className="w-10 h-10 rounded-full bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold uppercase overflow-hidden shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-emerald-600/20 border border-emerald-500/40 flex items-center justify-center text-emerald-700 font-bold uppercase overflow-hidden shrink-0">
                     A
                   </div>
                   <div className={`truncate transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[200px] opacity-100 ml-3'}`}>
-                    <p className="text-sm font-semibold text-white truncate">Administrator</p>
-                    <p className="text-[10px] text-gray-400 truncate">Sistem Pusat</p>
+                    <p className="text-sm font-semibold text-emerald-950 truncate">Administrator</p>
+                    <p className="text-[10px] text-gray-600 truncate">Sistem Pusat</p>
                   </div>
                 </div>
                 <button
@@ -152,30 +152,30 @@ export default function AdminLayout({
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 w-full z-40">
-        <div className="flex items-center justify-between bg-[#0f1712]/90 backdrop-blur-md h-16 px-4 shadow-md border-b border-white/10">
+        <div className="flex items-center justify-between bg-white/60/90 backdrop-blur-md h-16 px-4 shadow-md border-b border-white/60">
           <div className="flex items-center gap-3">
             <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <div className="flex flex-col">
-              <h1 className="text-sm font-bold text-white drop-shadow-md leading-tight">Admin Panel</h1>
+              <h1 className="text-sm font-bold text-emerald-950 drop-shadow-md leading-tight">Admin Panel</h1>
             </div>
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-white hover:text-gray-200 p-2"
+            className="text-emerald-950 hover:text-gray-800 p-2"
           >
             {mobileMenuOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
           </button>
         </div>
         
         {mobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-[#0f1712] border-b border-white/10 shadow-xl">
+          <div className="absolute top-16 left-0 w-full bg-white/60 border-b border-white/60 shadow-xl">
             <div className="px-3 pt-4 pb-6 space-y-2">
               <div className="space-y-2 mt-2">
                 <Link href="/admin" prefetch={true} onClick={() => { if (pathname !== '/admin') setIsNavigating(true); setMobileMenuOpen(false); }}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname === '/admin' 
-                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                      ? 'bg-emerald-600/20 text-emerald-700 border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
+                      : 'text-gray-600 hover:text-emerald-950 hover:bg-white/40 border border-transparent'
                   }`}>
                     <HomeIcon className="w-5 h-5" />
                     <span className="text-sm">Dashboard</span>
@@ -185,8 +185,8 @@ export default function AdminLayout({
                 <Link href="/admin/jamaah" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/jamaah')) setIsNavigating(true); setMobileMenuOpen(false); }}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/jamaah') 
-                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                      ? 'bg-emerald-600/20 text-emerald-700 border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
+                      : 'text-gray-600 hover:text-emerald-950 hover:bg-white/40 border border-transparent'
                   }`}>
                     <UsersIcon className="w-5 h-5" />
                     <span className="text-sm">Data Jamaah</span>
@@ -196,8 +196,8 @@ export default function AdminLayout({
                 <Link href="/admin/pengumuman" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/pengumuman')) setIsNavigating(true); setMobileMenuOpen(false); }}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/pengumuman') 
-                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                      ? 'bg-emerald-600/20 text-emerald-700 border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
+                      : 'text-gray-600 hover:text-emerald-950 hover:bg-white/40 border border-transparent'
                   }`}>
                     <MegaphoneIcon className="w-5 h-5" />
                     <span className="text-sm">Pengumuman</span>
@@ -207,8 +207,8 @@ export default function AdminLayout({
                 <Link href="/admin/paket" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/paket')) setIsNavigating(true); setMobileMenuOpen(false); }}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/paket') 
-                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                      ? 'bg-emerald-600/20 text-emerald-700 border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
+                      : 'text-gray-600 hover:text-emerald-950 hover:bg-white/40 border border-transparent'
                   }`}>
                     <MapIcon className="w-5 h-5" />
                     <span className="text-sm">Manajemen Paket</span>
@@ -231,17 +231,17 @@ export default function AdminLayout({
       <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative`}>
         {/* Instant Loading Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#0a0f0c]/60 backdrop-blur-sm">
-            <div className="flex flex-col items-center gap-4 p-8 bg-[#0f1712]/90 rounded-2xl shadow-2xl border border-emerald-500/20 backdrop-blur-md">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-emerald-50/60 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-4 p-8 bg-white/60/90 rounded-2xl shadow-2xl border border-emerald-500/20 backdrop-blur-md">
               <div className="relative w-12 h-12">
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin"></div>
               </div>
-              <p className="text-sm font-medium text-emerald-400 animate-pulse">Memuat halaman...</p>
+              <p className="text-sm font-medium text-emerald-700 animate-pulse">Memuat halaman...</p>
             </div>
           </div>
         )}
-        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none bg-[#0a0f0c] p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none bg-emerald-50 p-4 sm:p-6 lg:p-8">
           {children}
         </main>
       </div>

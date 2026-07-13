@@ -60,24 +60,24 @@ export default function LupaPasswordPage() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/60 z-0"></div>
 
       <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-white drop-shadow-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-emerald-950 drop-shadow-md">
           Lupa Kata Sandi?
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-200 drop-shadow">
+        <p className="mt-2 text-center text-sm text-gray-800 drop-shadow">
           Masukkan alamat email Anda yang terdaftar. Kami akan mengirimkan tautan untuk mengatur ulang kata sandi.
         </p>
       </div>
 
       <div className="relative z-10 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="backdrop-blur-md bg-white/10 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/20">
+        <div className="backdrop-blur-md bg-white/50 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/70">
           {success ? (
             <div className="text-center space-y-6">
               <div className="bg-emerald-500/20 backdrop-blur-sm border border-emerald-500 p-4 rounded-xl">
-                <p className="text-emerald-100 font-medium">
-                  Tautan pemulihan telah dikirim ke <span className="font-bold text-white">{email}</span>
+                <p className="text-emerald-900 font-medium">
+                  Tautan pemulihan telah dikirim ke <span className="font-bold text-emerald-950">{email}</span>
                 </p>
               </div>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-gray-700">
                 Silakan periksa kotak masuk (atau folder spam) Anda.
               </p>
               <Link
@@ -101,7 +101,7 @@ export default function LupaPasswordPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
+                    className="appearance-none block w-full px-3 py-2 bg-white/40 border border-white/70 rounded-md shadow-sm placeholder-gray-400 text-emerald-950 focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-white/60 sm:text-sm transition-all"
                     placeholder="email@anda.com"
                   />
                 </div>
@@ -120,7 +120,7 @@ export default function LupaPasswordPage() {
               <div className="text-center">
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+                  className="text-sm font-medium text-gray-700 hover:text-emerald-950 transition-colors"
                 >
                   Batal dan kembali ke Login
                 </Link>

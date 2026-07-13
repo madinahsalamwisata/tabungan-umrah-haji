@@ -106,10 +106,10 @@ function LoginForm() {
 
       {/* Content Container (z-10 puts it above the background) */}
       <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-white drop-shadow-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-emerald-950 drop-shadow-md">
           Masuk ke Akun Anda
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-200 drop-shadow">
+        <p className="mt-2 text-center text-sm text-gray-800 drop-shadow">
           Atau{" "}
           <Link
             href="/register"
@@ -122,7 +122,7 @@ function LoginForm() {
 
       <div className="relative z-10 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         {/* Glassmorphism Container */}
-        <div className="backdrop-blur-md bg-white/10 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/20">
+        <div className="backdrop-blur-md bg-white/50 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/70">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
               <div className="bg-red-500/20 backdrop-blur-sm border-l-4 border-red-500 p-4 rounded-md">
@@ -138,7 +138,7 @@ function LoginForm() {
               <div className="bg-emerald-500/20 backdrop-blur-sm border-l-4 border-emerald-500 p-4 rounded-md">
                 <div className="flex">
                   <div className="ml-3">
-                    <p className="text-sm text-emerald-100 font-medium">{success}</p>
+                    <p className="text-sm text-emerald-900 font-medium">{success}</p>
                   </div>
                 </div>
               </div>
@@ -159,7 +159,7 @@ function LoginForm() {
                   required
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
+                  className="appearance-none block w-full px-3 py-2 bg-white/40 border border-white/70 rounded-md shadow-sm placeholder-gray-400 text-emerald-950 focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-white/60 sm:text-sm transition-all"
                   placeholder="email@anda.com"
                 />
               </div>
@@ -192,7 +192,7 @@ function LoginForm() {
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
-                  className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
+                  className="appearance-none block w-full px-3 py-2 bg-white/40 border border-white/70 rounded-md shadow-sm placeholder-gray-400 text-emerald-950 focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-white/60 sm:text-sm transition-all"
                   placeholder="••••••••"
                 />
               </div>

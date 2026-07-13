@@ -79,7 +79,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
       <div className="flex justify-end">
         <button 
           onClick={handleOpenAdd}
-          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-lg"
+          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-emerald-950 px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-lg"
         >
           <svg fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -90,24 +90,24 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {data.map(item => (
-          <div key={item.id} className={`relative rounded-2xl p-6 shadow-xl border ${item.is_penting ? 'bg-yellow-900/20 border-yellow-500/30' : 'bg-[#0f1712] border-white/10'}`}>
+          <div key={item.id} className={`relative rounded-2xl p-6 shadow-xl border ${item.is_penting ? 'bg-yellow-900/20 border-yellow-500/30' : 'bg-white/60 border-white/60'}`}>
             {item.is_penting && (
               <span className="absolute top-4 right-4 bg-yellow-500/20 text-yellow-500 text-xs px-2 py-1 rounded-full font-bold border border-yellow-500/30">
                 Penting
               </span>
             )}
-            <h3 className="text-xl font-bold text-white pr-20">{item.judul}</h3>
+            <h3 className="text-xl font-bold text-emerald-950 pr-20">{item.judul}</h3>
             <p className="text-xs text-gray-500 mt-1 mb-4">{new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}</p>
-            <p className="text-sm text-gray-300 line-clamp-3">{item.konten}</p>
+            <p className="text-sm text-gray-700 line-clamp-3">{item.konten}</p>
             
-            <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/10">
+            <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/60">
               <button onClick={() => handleOpenEdit(item)} className="text-blue-400 hover:text-blue-300 text-sm font-semibold">Edit</button>
               <button onClick={() => handleDelete(item.id)} className="text-red-400 hover:text-red-300 text-sm font-semibold">Hapus</button>
             </div>
           </div>
         ))}
         {data.length === 0 && (
-          <div className="col-span-1 md:col-span-2 text-center py-12 text-gray-500 italic bg-white/5 rounded-2xl border border-white/10">
+          <div className="col-span-1 md:col-span-2 text-center py-12 text-gray-500 italic bg-white/40 rounded-2xl border border-white/60">
             Belum ada pengumuman yang disebar.
           </div>
         )}
@@ -115,30 +115,30 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-lg bg-[#0f1712] border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
-            <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">
+          <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
+          <div className="relative w-full max-w-lg bg-white/60 border border-white/60 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
+            <h2 className="text-xl font-bold text-emerald-950 mb-6 border-b border-white/60 pb-4">
               {editingData ? "Edit Pengumuman" : "Buat Pengumuman Baru"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Judul Pengumuman</label>
-                <input name="judul" defaultValue={editingData?.judul} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Contoh: Pembaruan Jadwal Manasik" />
+                <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Judul Pengumuman</label>
+                <input name="judul" defaultValue={editingData?.judul} required className="w-full bg-white/60 border border-white/60 rounded-xl px-4 py-2.5 text-emerald-950 focus:outline-none focus:border-emerald-500" placeholder="Contoh: Pembaruan Jadwal Manasik" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Isi Pesan</label>
-                <textarea name="konten" defaultValue={editingData?.konten} required rows={5} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none" placeholder="Tuliskan isi pengumuman lengkap di sini..."></textarea>
+                <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Isi Pesan</label>
+                <textarea name="konten" defaultValue={editingData?.konten} required rows={5} className="w-full bg-white/60 border border-white/60 rounded-xl px-4 py-2.5 text-emerald-950 focus:outline-none focus:border-emerald-500 resize-none" placeholder="Tuliskan isi pengumuman lengkap di sini..."></textarea>
               </div>
               <div className="flex items-center gap-2 mt-2">
-                <input type="checkbox" name="is_penting" id="is_penting" defaultChecked={editingData?.is_penting} className="w-4 h-4 rounded bg-black/40 border-white/10 text-emerald-500 focus:ring-emerald-500" />
-                <label htmlFor="is_penting" className="text-sm font-medium text-gray-300">Tandai sebagai Informasi Penting (Sorotan Kuning)</label>
+                <input type="checkbox" name="is_penting" id="is_penting" defaultChecked={editingData?.is_penting} className="w-4 h-4 rounded bg-white/60 border-white/60 text-emerald-500 focus:ring-emerald-500" />
+                <label htmlFor="is_penting" className="text-sm font-medium text-gray-700">Tandai sebagai Informasi Penting (Sorotan Kuning)</label>
               </div>
 
-              <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-white/10">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-300 bg-white/5 hover:bg-white/10 transition-colors">
+              <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-white/60">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-700 bg-white/40 hover:bg-white/50 transition-colors">
                   Batal
                 </button>
-                <button type="submit" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg">
+                <button type="submit" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-emerald-950 bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg">
                   {editingData ? "Simpan Perubahan" : "Sebarkan"}
                 </button>
               </div>

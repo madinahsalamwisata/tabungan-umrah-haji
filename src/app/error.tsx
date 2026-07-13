@@ -21,20 +21,20 @@ export default function GlobalError({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Oops! Terjadi Kesalahan</h2>
-        <p className="text-gray-400 mb-8">
+        <h2 className="text-2xl font-bold text-emerald-950 mb-2">Oops! Terjadi Kesalahan</h2>
+        <p className="text-gray-600 mb-8">
           Halaman gagal dimuat. Ini mungkin karena sesi Anda telah berakhir atau terjadi gangguan koneksi.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => reset()}
-            className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 w-full sm:w-auto"
+            className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-emerald-950 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 w-full sm:w-auto"
           >
             Coba Lagi (Muat Ulang)
           </button>
           <button
             onClick={() => window.location.href = "/"}
-            className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all border border-white/20 w-full sm:w-auto"
+            className="px-6 py-3 bg-white/50 hover:bg-white/70 text-emerald-950 font-bold rounded-xl transition-all border border-white/70 w-full sm:w-auto"
           >
             Ke Beranda
           </button>

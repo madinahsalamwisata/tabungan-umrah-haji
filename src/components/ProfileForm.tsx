@@ -27,7 +27,7 @@ const DotsVerticalIcon = () => (
 );
 
 const UserCircleIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-300">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-700">
     <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
   </svg>
 );
@@ -169,16 +169,16 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
 
         {/* KOLOM KIRI: ID Card Profile (Lebih ringkas dan inovatif) */}
         <div className="lg:col-span-4">
-          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500 flex flex-col justify-center">
+          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-white/60 backdrop-blur-xl border border-white/60 animate-in fade-in zoom-in-95 duration-500 flex flex-col justify-center">
           {/* Subtle Gradient Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/40 via-transparent to-teal-900/40 opacity-80 z-0"></div>
           
           <div className="relative z-10 p-6 flex flex-col items-center text-center">
             {/* Avatar */}
             <div className="relative group mb-4">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-[3px] border-emerald-500/30 bg-black/60 backdrop-blur-md shadow-lg overflow-hidden flex items-center justify-center relative">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-[3px] border-emerald-500/40 bg-white/80 backdrop-blur-md shadow-lg overflow-hidden flex items-center justify-center relative">
                 {isUploading ? (
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
                     <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
                   </div>
                 ) : jamaah.foto_url ? (
@@ -190,7 +190,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
               <button 
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="absolute bottom-1 right-1 p-2 bg-emerald-600 text-white rounded-full border-2 border-[#1a231f] shadow-md hover:bg-emerald-500 hover:scale-110 transition-all disabled:opacity-50"
+                className="absolute bottom-1 right-1 p-2 bg-emerald-600 text-emerald-950 rounded-full border-2 border-[#1a231f] shadow-md hover:bg-emerald-500 hover:scale-110 transition-all disabled:opacity-50"
                 title="Ganti Foto"
               >
                 <CameraIcon />
@@ -198,17 +198,17 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
             </div>
 
             {/* User Info */}
-            <h2 className="text-xl font-bold text-white drop-shadow-md leading-tight mb-1">{jamaah.nama}</h2>
-            <p className="text-emerald-400 font-medium text-xs sm:text-sm bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{jamaah.email}</p>
+            <h2 className="text-xl font-bold text-emerald-950 drop-shadow-md leading-tight mb-1">{jamaah.nama}</h2>
+            <p className="text-emerald-700 font-medium text-xs sm:text-sm bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{jamaah.email}</p>
 
             {/* Action Buttons */}
             <div className="w-full mt-6 space-y-2">
               {!isEditing ? (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="w-full py-2.5 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-semibold text-white transition-all shadow-sm flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-4 bg-white/40 hover:bg-white/50 border border-white/60 rounded-xl text-sm font-semibold text-emerald-950 transition-all shadow-sm flex items-center justify-center gap-2"
                 >
-                  <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                  <svg className="w-4 h-4 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                   Edit Profil
                 </button>
               ) : (
@@ -235,10 +235,10 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
 
       {/* KOLOM KANAN: Detail Informasi */}
         <div className="lg:col-span-8">
-          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500 delay-75 flex flex-col justify-center">
+          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-white/60 backdrop-blur-xl border border-white/60 animate-in fade-in zoom-in-95 duration-500 delay-75 flex flex-col justify-center">
           <div className="px-6 py-5 border-b border-white/5">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" /></svg>
+            <h3 className="text-lg font-bold text-emerald-950 flex items-center gap-2">
+              <svg className="w-5 h-5 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" /></svg>
               Detail Informasi Pribadi
             </h3>
           </div>
@@ -248,45 +248,45 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
               <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold text-emerald-400 uppercase tracking-wider">Nama Lengkap</label>
+                    <label className="block text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Nama Lengkap</label>
                     <input
                       type="text"
                       required
                       value={form.nama}
                       onChange={(e) => setForm({ ...form, nama: e.target.value })}
-                      className="block w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
+                      className="block w-full px-3.5 py-2.5 bg-white/40 border border-white/60 rounded-xl text-emerald-950 placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold text-emerald-400 uppercase tracking-wider">No. HP / WhatsApp</label>
+                    <label className="block text-[11px] font-bold text-emerald-700 uppercase tracking-wider">No. HP / WhatsApp</label>
                     <input
                       type="text"
                       required
                       value={form.no_hp}
                       onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
-                      className="block w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
+                      className="block w-full px-3.5 py-2.5 bg-white/40 border border-white/60 rounded-xl text-emerald-950 placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold text-emerald-400 uppercase tracking-wider">NIK</label>
+                    <label className="block text-[11px] font-bold text-emerald-700 uppercase tracking-wider">NIK</label>
                     <input
                       type="text"
                       required
                       value={form.nik}
                       onChange={(e) => setForm({ ...form, nik: e.target.value })}
-                      className="block w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
+                      className="block w-full px-3.5 py-2.5 bg-white/40 border border-white/60 rounded-xl text-emerald-950 placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
                     />
                   </div>
 
                   <div className="sm:col-span-2 space-y-1.5">
-                    <label className="block text-[11px] font-bold text-emerald-400 uppercase tracking-wider">Alamat Lengkap</label>
+                    <label className="block text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Alamat Lengkap</label>
                     <textarea
                       rows={3}
                       value={form.alamat}
                       onChange={(e) => setForm({ ...form, alamat: e.target.value })}
-                      className="block w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all resize-none shadow-inner"
+                      className="block w-full px-3.5 py-2.5 bg-white/40 border border-white/60 rounded-xl text-emerald-950 placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all resize-none shadow-inner"
                     />
                   </div>
                 </div>
@@ -295,7 +295,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
                   <button
                     type="submit"
                     disabled={loading}
-                    className="inline-flex justify-center items-center px-6 py-2.5 border border-emerald-500 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-emerald-500 disabled:opacity-50 shadow-lg shadow-emerald-900/50 transition-all"
+                    className="inline-flex justify-center items-center px-6 py-2.5 border border-emerald-500 rounded-xl text-sm font-bold text-emerald-950 bg-emerald-600 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-emerald-500 disabled:opacity-50 shadow-lg shadow-emerald-900/50 transition-all"
                   >
                     {loading ? "Menyimpan..." : "Simpan Perubahan"}
                   </button>
@@ -303,24 +303,24 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
               </form>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
-                <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/10 transition-colors">
+                <div className="bg-white/40 border border-white/5 rounded-2xl p-4 hover:bg-white/50 transition-colors">
                   <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Nama Lengkap</p>
-                  <p className="text-sm font-semibold text-white">{jamaah.nama}</p>
+                  <p className="text-sm font-semibold text-emerald-950">{jamaah.nama}</p>
                 </div>
 
-                <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/10 transition-colors">
+                <div className="bg-white/40 border border-white/5 rounded-2xl p-4 hover:bg-white/50 transition-colors">
                   <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">No. HP / WhatsApp</p>
-                  <p className="text-sm font-semibold text-white">{jamaah.no_hp}</p>
+                  <p className="text-sm font-semibold text-emerald-950">{jamaah.no_hp}</p>
                 </div>
 
-                <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/10 transition-colors md:col-span-2">
+                <div className="bg-white/40 border border-white/5 rounded-2xl p-4 hover:bg-white/50 transition-colors md:col-span-2">
                   <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Nomor Induk Kependudukan (NIK)</p>
-                  <p className="text-sm font-semibold text-white">{jamaah.nik}</p>
+                  <p className="text-sm font-semibold text-emerald-950">{jamaah.nik}</p>
                 </div>
 
-                <div className="bg-white/5 border border-white/5 rounded-2xl p-4 md:col-span-2 hover:bg-white/10 transition-colors">
+                <div className="bg-white/40 border border-white/5 rounded-2xl p-4 md:col-span-2 hover:bg-white/50 transition-colors">
                   <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Alamat Lengkap</p>
-                  <p className="text-sm font-medium text-gray-300 leading-relaxed">
+                  <p className="text-sm font-medium text-gray-700 leading-relaxed">
                     {jamaah.alamat || <span className="text-gray-500 italic font-normal">Belum diisi</span>}
                   </p>
                 </div>

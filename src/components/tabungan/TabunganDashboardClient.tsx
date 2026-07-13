@@ -169,42 +169,42 @@ export default function TabunganDashboardClient({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="relative rounded-2xl shadow-2xl border border-white/20 bg-white/10 backdrop-blur-xl overflow-hidden transition-all duration-300">
+    <div className="relative rounded-2xl shadow-2xl border border-white/70 bg-white/50 backdrop-blur-xl overflow-hidden transition-all duration-300">
       {/* Header / Summary (Always Visible) */}
       <div 
-        className="relative z-10 p-5 cursor-pointer hover:bg-white/5 transition-colors flex items-center justify-between"
+        className="relative z-10 p-5 cursor-pointer hover:bg-white/40 transition-colors flex items-center justify-between"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-1.5">
-            <h3 className="font-bold text-lg text-white">{rencana.paket.nama_paket}</h3>
+            <h3 className="font-bold text-lg text-emerald-950">{rencana.paket.nama_paket}</h3>
             {sudahBayarSemua && (
               <span className="bg-yellow-500/20 text-yellow-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-yellow-500/30">LUNAS 🎉</span>
             )}
           </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/90">
-            <span className="font-semibold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded-md">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-emerald-950/90">
+            <span className="font-semibold text-emerald-700 bg-emerald-500/20 border border-emerald-500/40 px-2 py-0.5 rounded-md">
               {new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' })}
             </span>
             <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-            <span className="text-white">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</span>
+            <span className="text-emerald-950">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</span>
             <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-            <span className="text-white">Terkumpul: <strong className="text-emerald-400">{formatRp(totalTerkumpul)}</strong></span>
+            <span className="text-emerald-950">Terkumpul: <strong className="text-emerald-700">{formatRp(totalTerkumpul)}</strong></span>
             <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-            <span className="text-white">Sisa: <strong className="text-white">{formatRp(sisaTagihan)}</strong></span>
+            <span className="text-emerald-950">Sisa: <strong className="text-emerald-950">{formatRp(sisaTagihan)}</strong></span>
           </div>
         </div>
         
-        <div className="flex items-center gap-4 pl-4 ml-4 border-l border-white/10">
+        <div className="flex items-center gap-4 pl-4 ml-4 border-l border-white/60">
           <div className="hidden md:block w-32">
-            <div className="flex justify-between text-[11px] text-white/90 mb-1 font-medium">
+            <div className="flex justify-between text-[11px] text-emerald-950/90 mb-1 font-medium">
               <span>{persentase.toFixed(1)}%</span>
             </div>
-            <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+            <div className="w-full bg-white/50 rounded-full h-1.5 overflow-hidden">
               <div className="bg-emerald-400 h-full rounded-full transition-all duration-500" style={{ width: `${persentase}%` }}></div>
             </div>
           </div>
-          <button className={`p-2 rounded-full hover:bg-white/10 text-white transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+          <button className={`p-2 rounded-full hover:bg-white/50 text-emerald-950 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
           </button>
         </div>
@@ -212,33 +212,33 @@ export default function TabunganDashboardClient({
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="relative z-10 border-t border-white/20 bg-black/20 p-5 sm:p-6 animate-in slide-in-from-top-2 duration-300">
+        <div className="relative z-10 border-t border-white/70 bg-white/40 p-5 sm:p-6 animate-in slide-in-from-top-2 duration-300">
           {/* Action Buttons */}
           <div className="flex justify-end gap-2 mb-6">
             {!sudahBayarSemua && (
-                <button onClick={() => setIsEditing(true)} className="bg-white/5 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 font-medium px-3 py-1.5 rounded shadow-sm text-xs transition-colors backdrop-blur-sm">
+                <button onClick={() => setIsEditing(true)} className="bg-white/40 border border-emerald-500/40 text-emerald-700 hover:bg-emerald-500/20 font-medium px-3 py-1.5 rounded shadow-sm text-xs transition-colors backdrop-blur-sm">
                     Edit Rencana
                 </button>
             )}
-            <button onClick={handleDelete} disabled={isDeleting} className="bg-white/5 border border-red-500/30 text-red-400 hover:bg-red-500/20 font-medium px-3 py-1.5 rounded shadow-sm text-xs transition-colors backdrop-blur-sm">
+            <button onClick={handleDelete} disabled={isDeleting} className="bg-white/40 border border-red-500/30 text-red-400 hover:bg-red-500/20 font-medium px-3 py-1.5 rounded shadow-sm text-xs transition-colors backdrop-blur-sm">
                 {isDeleting ? "Menghapus..." : "Hapus Tabungan"}
             </button>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Setoran Bulanan Card */}
-            <div className="bg-white/5 backdrop-blur-md p-5 rounded-xl shadow-sm border border-white/10 flex flex-col justify-between">
+            <div className="bg-white/40 backdrop-blur-md p-5 rounded-xl shadow-sm border border-white/60 flex flex-col justify-between">
                <div>
-                 <h4 className="text-sm font-bold text-white mb-1">Setoran Bulanan</h4>
-                 <p className="text-xs text-white/80 mb-4">
+                 <h4 className="text-sm font-bold text-emerald-950 mb-1">Setoran Bulanan</h4>
+                 <p className="text-xs text-emerald-950/80 mb-4">
                    {!sudahBayarSemua ? `Pembayaran untuk Cicilan ke-${cicilanKe} dari ${rencana.periode_bulan}` : "Tabungan Anda telah lunas."}
                  </p>
-                 <p className="text-3xl font-black text-emerald-400 mb-6">{formatRp(Number(rencana.setoran_per_bulan))}</p>
+                 <p className="text-3xl font-black text-emerald-700 mb-6">{formatRp(Number(rencana.setoran_per_bulan))}</p>
                </div>
                
                <div>
                  {sudahBayarSemua || sudahLunasBulanIni ? (
-                   <button disabled className="w-full bg-white/5 text-white/80 font-bold py-2.5 px-4 rounded-lg cursor-not-allowed text-sm border border-white/10 backdrop-blur-sm">
+                   <button disabled className="w-full bg-white/40 text-emerald-950/80 font-bold py-2.5 px-4 rounded-lg cursor-not-allowed text-sm border border-white/60 backdrop-blur-sm">
                      Sudah Dibayar Bulan Ini
                    </button>
                  ) : (
@@ -246,7 +246,7 @@ export default function TabunganDashboardClient({
                      onClick={handleBayar}
                      disabled={isPaying}
                      className={`w-full font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm ${
-                         isPaying ? "bg-emerald-400/50 text-white cursor-wait" : "bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500/50"
+                         isPaying ? "bg-emerald-400/50 text-emerald-950 cursor-wait" : "bg-emerald-600 hover:bg-emerald-700 text-emerald-950 border border-emerald-500/50"
                      }`}
                    >
                      {isPaying ? "Memproses..." : "Bayar Setoran Ini"}
@@ -256,22 +256,22 @@ export default function TabunganDashboardClient({
             </div>
 
             {/* Riwayat Tabungan Card */}
-            <div className="bg-white/5 backdrop-blur-md rounded-xl shadow-sm border border-white/10 overflow-hidden flex flex-col max-h-[250px]">
-               <div className="p-4 border-b border-white/10 bg-black/20">
-                 <h4 className="text-sm font-bold text-white">Riwayat Setoran</h4>
+            <div className="bg-white/40 backdrop-blur-md rounded-xl shadow-sm border border-white/60 overflow-hidden flex flex-col max-h-[250px]">
+               <div className="p-4 border-b border-white/60 bg-white/40">
+                 <h4 className="text-sm font-bold text-emerald-950">Riwayat Setoran</h4>
                </div>
                <div className="overflow-y-auto flex-1 custom-scrollbar">
                  {rencana.RiwayatSetoran.length > 0 ? (
                    <ul className="divide-y divide-white/5">
                      {rencana.RiwayatSetoran.map((setoran: any) => (
-                       <li key={setoran.id} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+                       <li key={setoran.id} className="p-4 flex items-center justify-between hover:bg-white/40 transition-colors">
                          <div>
-                           <p className="text-xs font-bold text-emerald-300 mb-0.5">Cicilan Ke-{setoran.bulan_ke}</p>
-                           <p className="text-[10px] text-white/80">{new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                           <p className="text-xs font-bold text-emerald-700 mb-0.5">Cicilan Ke-{setoran.bulan_ke}</p>
+                           <p className="text-[10px] text-emerald-950/80">{new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                          </div>
                          <div className="text-right">
-                           <p className="text-sm font-bold text-white mb-1">{formatRp(Number(setoran.nominal))}</p>
-                           <span className="px-2 py-0.5 inline-flex text-[10px] font-semibold rounded-md bg-emerald-500/20 text-emerald-300 uppercase border border-emerald-500/30">
+                           <p className="text-sm font-bold text-emerald-950 mb-1">{formatRp(Number(setoran.nominal))}</p>
+                           <span className="px-2 py-0.5 inline-flex text-[10px] font-semibold rounded-md bg-emerald-500/20 text-emerald-700 uppercase border border-emerald-500/40">
                              {setoran.status_pembayaran}
                            </span>
                          </div>
@@ -279,7 +279,7 @@ export default function TabunganDashboardClient({
                      ))}
                    </ul>
                  ) : (
-                   <div className="p-8 text-center text-sm text-white">
+                   <div className="p-8 text-center text-sm text-emerald-950">
                      Belum ada riwayat setoran pembayaran.
                    </div>
                  )}
@@ -292,16 +292,16 @@ export default function TabunganDashboardClient({
       {/* Modal Edit */}
       {isEditing && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="bg-white/10 backdrop-blur-2xl rounded-2xl shadow-2xl p-6 max-w-md w-full border border-white/20">
-            <h3 className="text-lg font-bold text-white mb-4">Edit Rencana Tabungan</h3>
+          <div className="bg-white/50 backdrop-blur-2xl rounded-2xl shadow-2xl p-6 max-w-md w-full border border-white/70">
+            <h3 className="text-lg font-bold text-emerald-950 mb-4">Edit Rencana Tabungan</h3>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-white mb-2">Jenis Kamar</label>
+                <label className="block text-sm font-semibold text-emerald-950 mb-2">Jenis Kamar</label>
                 <select 
                   value={editKamar}
                   onChange={(e) => setEditKamar(e.target.value)}
-                  className="w-full bg-black/50 border border-white/20 rounded-md shadow-sm text-white focus:border-emerald-500 focus:ring-emerald-500"
+                  className="w-full bg-black/50 border border-white/70 rounded-md shadow-sm text-emerald-950 focus:border-emerald-500 focus:ring-emerald-500"
                 >
                   <option value="Quad">Quad (Ber-4)</option>
                   <option value="Triple">Triple (Ber-3)</option>
@@ -310,27 +310,27 @@ export default function TabunganDashboardClient({
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-white mb-2">Jumlah Jamaah</label>
+                <label className="block text-sm font-semibold text-emerald-950 mb-2">Jumlah Jamaah</label>
                 <input 
                   type="number" 
                   min="1"
                   max={rencana.paket.kuota}
                   value={editJamaah}
                   onChange={(e) => setEditJamaah(Number(e.target.value))}
-                  className="w-full bg-black/50 border border-white/20 rounded-md shadow-sm text-white focus:border-emerald-500 focus:ring-emerald-500"
+                  className="w-full bg-black/50 border border-white/70 rounded-md shadow-sm text-emerald-950 focus:border-emerald-500 focus:ring-emerald-500"
                 />
               </div>
 
-              <div className="bg-emerald-900/40 border border-emerald-800 p-3 rounded text-sm text-emerald-300">
+              <div className="bg-emerald-900/40 border border-emerald-800 p-3 rounded text-sm text-emerald-700">
                 Pembaruan ini akan otomatis menyesuaikan total biaya paket dan sisa tagihan bulanan Anda ke depan.
               </div>
             </div>
 
-            <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/10">
-              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors">
+            <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/60">
+              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-emerald-950 bg-white/40 hover:bg-white/50 border border-white/60 rounded-lg transition-colors">
                 Batal
               </button>
-              <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors border border-emerald-500/50">
+              <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-sm font-medium text-emerald-950 bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors border border-emerald-500/50">
                 {isSubmittingEdit ? "Menyimpan..." : "Simpan Perubahan"}
               </button>
             </div>

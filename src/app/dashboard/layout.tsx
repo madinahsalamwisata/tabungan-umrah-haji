@@ -107,6 +107,7 @@ export default function DashboardLayout({
           className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/5 backdrop-blur-xl"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+        >
           <div className="relative z-10 flex flex-col flex-1 min-h-0">
 
             <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>

@@ -163,6 +163,7 @@ export default function DashboardLayout({
                               <Link
                                 key={child.name}
                                 href={child.href}
+                                prefetch={true}
                                 className={`group flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-300 backdrop-blur-sm px-4 ${
                                   isChildActive
                                     ? "text-white bg-white/20 shadow-md font-bold"
@@ -184,6 +185,7 @@ export default function DashboardLayout({
                   <Link
                     key={item.name}
                     href={item.href!}
+                    prefetch={true}
                     className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
                       isCollapsed ? 'px-0 justify-center' : 'px-4'
                     } ${
@@ -292,6 +294,7 @@ export default function DashboardLayout({
                                 key={child.name}
                                 href={child.href}
                                 onClick={() => setMobileMenuOpen(false)}
+                                prefetch={true}
                                 className={`${
                                   isChildCurrent
                                     ? "bg-white/50 text-emerald-900 font-bold border-white/60 shadow-md scale-[0.98]"
@@ -314,6 +317,7 @@ export default function DashboardLayout({
                     key={item.name}
                     href={item.href!}
                     onClick={() => setMobileMenuOpen(false)}
+                    prefetch={true}
                     className={`${
                       isActive
                         ? "bg-white/40 text-emerald-900 font-bold border-white/50 shadow-md scale-[0.98]"

@@ -88,6 +88,7 @@ export default function AdminLayout({
                     <Link
                       key={item.name}
                       href={item.href!}
+                      prefetch={true}
                       className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
                         isCollapsed ? 'px-0 justify-center' : 'px-4'
                       } ${
@@ -160,7 +161,7 @@ export default function AdminLayout({
           <div className="absolute top-16 left-0 w-full bg-[#0f1712] border-b border-white/10 shadow-xl">
             <div className="px-3 pt-4 pb-6 space-y-2">
               <div className="space-y-2 mt-2">
-                <Link href="/admin">
+                <Link href="/admin" prefetch={true}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname === '/admin' 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
@@ -171,7 +172,7 @@ export default function AdminLayout({
                   </div>
                 </Link>
                 
-                <Link href="/admin/jamaah">
+                <Link href="/admin/jamaah" prefetch={true}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/jamaah') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
@@ -182,7 +183,7 @@ export default function AdminLayout({
                   </div>
                 </Link>
 
-                <Link href="/admin/pengumuman">
+                <Link href="/admin/pengumuman" prefetch={true}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/pengumuman') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
@@ -193,7 +194,7 @@ export default function AdminLayout({
                   </div>
                 </Link>
 
-                <Link href="/admin/paket">
+                <Link href="/admin/paket" prefetch={true}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/paket') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 

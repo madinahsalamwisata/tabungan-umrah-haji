@@ -90,7 +90,7 @@ export default function DashboardLayout({
   }, [pathname]);
 
   return (
-    <div className="min-h-screen flex text-white relative font-sans">
+    <div className="h-screen flex text-white relative font-sans overflow-hidden">
       {/* Global Background Layer */}
       <div className="fixed inset-0 z-0">
         <img 
@@ -363,7 +363,7 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content area */}
-      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative z-10`}>
+      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative z-10 h-screen`}>
         {/* Instant Loading Overlay */}
         {isNavigating && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">

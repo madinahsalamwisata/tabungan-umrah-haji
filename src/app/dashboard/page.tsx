@@ -53,23 +53,26 @@ export default function DashboardPage() {
 
   const showPengumumanPopup = (item: any) => {
     Swal.fire({
-      title: `<div class="text-left"><h3 class="font-bold text-lg ${item.is_penting ? 'text-yellow-600' : 'text-emerald-700'}">${item.judul}</h3></div>`,
+      title: `<div class="text-left"><h3 class="font-bold text-lg ${item.is_penting ? 'text-yellow-400 drop-shadow-sm' : 'text-emerald-300 drop-shadow-sm'}">${item.judul}</h3></div>`,
       html: `
-        <div class="text-xs text-gray-500 mb-3 pb-3 border-b text-left flex items-center gap-2">
+        <div class="text-xs text-gray-400 mb-3 pb-3 border-b border-white/10 text-left flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           ${new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
-          ${item.is_penting ? '<span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Penting</span>' : ''}
+          ${item.is_penting ? '<span class="bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Penting</span>' : ''}
         </div>
-        <div class="text-sm text-gray-700 text-left whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style="scrollbar-width: thin;">
+        <div class="text-sm text-gray-200 text-left whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style="scrollbar-width: thin;">
           ${item.konten}
         </div>
       `,
+      background: 'rgba(10, 20, 15, 0.7)',
+      color: '#fff',
       confirmButtonColor: '#059669',
       confirmButtonText: 'Tutup',
       customClass: {
-        popup: 'rounded-2xl shadow-2xl',
+        popup: 'rounded-3xl shadow-2xl border border-white/10 backdrop-blur-2xl',
         htmlContainer: '!m-0 !mt-2',
-        title: '!m-0 !p-0'
+        title: '!m-0 !p-0',
+        confirmButton: 'rounded-xl shadow-lg hover:shadow-emerald-900/50 transition-all font-bold'
       }
     });
   };

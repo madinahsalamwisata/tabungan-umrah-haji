@@ -94,22 +94,22 @@ function ResetPasswordForm() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/60 z-0"></div>
 
       <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-emerald-950 drop-shadow-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-white drop-shadow-md">
           Buat Kata Sandi Baru
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-800 drop-shadow">
+        <p className="mt-2 text-center text-sm text-gray-200 drop-shadow">
           Silakan masukkan kata sandi baru Anda. Pastikan mudah diingat dan aman.
         </p>
       </div>
 
       <div className="relative z-10 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="backdrop-blur-md bg-white/50 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/70">
+        <div className="backdrop-blur-md bg-white/10 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/20">
           {!token ? (
             <div className="text-center space-y-6">
               <div className="bg-red-500/20 backdrop-blur-sm border border-red-500 p-4 rounded-xl">
                 <p className="text-red-100 font-medium">Token Reset Tidak Ditemukan</p>
               </div>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-300">
                 URL yang Anda kunjungi tidak memiliki token yang valid.
               </p>
               <Link
@@ -133,7 +133,7 @@ function ResetPasswordForm() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 bg-white/40 border border-white/70 rounded-md shadow-sm placeholder-gray-400 text-emerald-950 focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-white/60 sm:text-sm transition-all"
+                    className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
                     placeholder="••••••••"
                   />
                 </div>
@@ -151,7 +151,7 @@ function ResetPasswordForm() {
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 bg-white/40 border border-white/70 rounded-md shadow-sm placeholder-gray-400 text-emerald-950 focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-white/60 sm:text-sm transition-all"
+                    className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
                     placeholder="••••••••"
                   />
                 </div>
@@ -170,7 +170,7 @@ function ResetPasswordForm() {
               <div className="text-center">
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-gray-700 hover:text-emerald-950 transition-colors"
+                  className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
                 >
                   Batal dan kembali ke Login
                 </Link>
@@ -185,7 +185,7 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-emerald-950">Memuat...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-white">Memuat...</div>}>
       <ResetPasswordForm />
     </Suspense>
   );

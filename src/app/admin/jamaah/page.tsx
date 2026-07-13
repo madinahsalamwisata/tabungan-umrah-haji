@@ -37,8 +37,8 @@ export default async function AdminJamaahPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-emerald-950 drop-shadow-md">Data Jamaah</h1>
-        <p className="text-sm text-gray-600 mt-1">Kelola seluruh data jamaah dan pantau tabungan mereka.</p>
+        <h1 className="text-2xl font-bold text-white drop-shadow-md">Data Jamaah</h1>
+        <p className="text-sm text-gray-400 mt-1">Kelola seluruh data jamaah dan pantau tabungan mereka.</p>
       </div>
 
       <AdminJamaahClient initialData={serializedJamaahs} />

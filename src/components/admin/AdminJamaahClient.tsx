@@ -95,11 +95,11 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="relative w-full sm:w-96">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-600" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-3 py-2 border border-white/60 rounded-xl leading-5 bg-white/60/50 backdrop-blur-md text-emerald-950 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all sm:text-sm shadow-xl"
+            className="block w-full pl-10 pr-3 py-2 border border-white/10 rounded-xl leading-5 bg-[#0f1712]/50 backdrop-blur-md text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all sm:text-sm shadow-xl"
             placeholder="Cari nama, email, atau NIK..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -109,7 +109,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
           onClick={() => {
             alert("Fitur tambah manual jamaah sedang dalam pengembangan.");
           }}
-          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-emerald-950 px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-lg"
+          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-lg"
         >
           <UserPlusIcon className="w-5 h-5" />
           Tambah Jamaah Baru
@@ -117,13 +117,13 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       </div>
 
       {/* Glassmorphism Table Container */}
-      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-white/60 border border-white/60 animate-in fade-in zoom-in-95 duration-500">
+      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-[#0f1712] border border-white/10 animate-in fade-in zoom-in-95 duration-500">
         <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-10" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
-        <div className="absolute inset-0 bg-white/60/60 backdrop-blur-md z-0"></div>
+        <div className="absolute inset-0 bg-[#0f1712]/60 backdrop-blur-md z-0"></div>
         
         <div className="relative z-10 overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-700">
-            <thead className="text-xs uppercase bg-white/60 text-gray-600 border-b border-white/60 backdrop-blur-md">
+          <table className="w-full text-left text-sm text-gray-300">
+            <thead className="text-xs uppercase bg-black/40 text-gray-400 border-b border-white/10 backdrop-blur-md">
               <tr>
                 <th scope="col" className="px-6 py-5 font-bold tracking-wider">Info Jamaah</th>
                 <th scope="col" className="px-6 py-5 font-bold tracking-wider">Kontak & NIK</th>
@@ -133,23 +133,23 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
             </thead>
             <tbody className="divide-y divide-white/10">
               {filteredData.map((jamaah) => (
-                <tr key={jamaah.id} className="hover:bg-white/40 transition-colors group">
+                <tr key={jamaah.id} className="hover:bg-white/5 transition-colors group">
                   <td className="px-6 py-4">
-                    <div className="font-bold text-emerald-950 text-base">{jamaah.nama}</div>
-                    <div className="text-gray-600 text-xs mt-1">Terdaftar: {new Date(jamaah.created_at).toLocaleDateString('id-ID')}</div>
+                    <div className="font-bold text-white text-base">{jamaah.nama}</div>
+                    <div className="text-gray-400 text-xs mt-1">Terdaftar: {new Date(jamaah.created_at).toLocaleDateString('id-ID')}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="font-medium text-emerald-700">{jamaah.email}</div>
-                    <div className="text-gray-600 text-xs mt-1">{jamaah.no_hp} • NIK: {jamaah.nik}</div>
+                    <div className="font-medium text-emerald-400">{jamaah.email}</div>
+                    <div className="text-gray-400 text-xs mt-1">{jamaah.no_hp} • NIK: {jamaah.nik}</div>
                   </td>
                   <td className="px-6 py-4">
                     {jamaah.rencana_tabungan.length > 0 ? (
                       <div className="space-y-2">
                         {jamaah.rencana_tabungan.map(rt => (
-                          <div key={rt.id} className="flex flex-col gap-1 bg-white/40 p-2 rounded-lg border border-white/5">
-                            <span className="text-xs font-semibold text-emerald-950">{rt.paket_nama}</span>
+                          <div key={rt.id} className="flex flex-col gap-1 bg-white/5 p-2 rounded-lg border border-white/5">
+                            <span className="text-xs font-semibold text-white">{rt.paket_nama}</span>
                             <div className="flex items-center gap-2">
-                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${rt.status === 'Aktif' ? 'bg-emerald-500/20 text-emerald-700' : 'bg-gray-500/20 text-gray-600'}`}>
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${rt.status === 'Aktif' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-500/20 text-gray-400'}`}>
                                 {rt.status}
                               </span>
                             </div>
@@ -182,7 +182,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
               ))}
               {filteredData.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-gray-600">
+                  <td colSpan={4} className="px-6 py-12 text-center text-gray-400">
                     <div className="flex flex-col items-center gap-2">
                       <MagnifyingGlassIcon className="w-10 h-10 text-gray-600" />
                       <p>Tidak ada data jamaah yang ditemukan.</p>
@@ -199,41 +199,41 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       {isEditModalOpen && editingJamaah && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" onClick={() => setIsEditModalOpen(false)}></div>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsEditModalOpen(false)}></div>
           
           {/* Modal Container */}
-          <div className="relative w-full max-w-2xl bg-white/60/90 backdrop-blur-xl border border-white/60 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
-            <h2 className="text-xl font-bold text-emerald-950 mb-6 border-b border-white/60 pb-4">Edit Data Jamaah</h2>
+          <div className="relative w-full max-w-2xl bg-[#0f1712]/90 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
+            <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Edit Data Jamaah</h2>
             
             <form onSubmit={handleSaveEdit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Nama Lengkap</label>
-                  <input name="nama" defaultValue={editingJamaah.nama} required className="w-full bg-white/60 border border-white/60 rounded-xl px-4 py-2.5 text-emerald-950 focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                  <input name="nama" defaultValue={editingJamaah.nama} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Email</label>
-                  <input name="email" type="email" defaultValue={editingJamaah.email} required className="w-full bg-white/60 border border-white/60 rounded-xl px-4 py-2.5 text-emerald-950 focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email</label>
+                  <input name="email" type="email" defaultValue={editingJamaah.email} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">NIK</label>
-                  <input name="nik" defaultValue={editingJamaah.nik} required className="w-full bg-white/60 border border-white/60 rounded-xl px-4 py-2.5 text-emerald-950 focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">NIK</label>
+                  <input name="nik" defaultValue={editingJamaah.nik} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Nomor HP</label>
-                  <input name="no_hp" defaultValue={editingJamaah.no_hp} required className="w-full bg-white/60 border border-white/60 rounded-xl px-4 py-2.5 text-emerald-950 focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nomor HP</label>
+                  <input name="no_hp" defaultValue={editingJamaah.no_hp} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Alamat Lengkap</label>
-                  <textarea name="alamat" defaultValue={editingJamaah.alamat || ""} rows={3} className="w-full bg-white/60 border border-white/60 rounded-xl px-4 py-2.5 text-emerald-950 focus:outline-none focus:border-emerald-500 resize-none"></textarea>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Alamat Lengkap</label>
+                  <textarea name="alamat" defaultValue={editingJamaah.alamat || ""} rows={3} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none"></textarea>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-white/60">
-                <button type="button" onClick={() => setIsEditModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-700 bg-white/40 hover:bg-white/50 transition-colors">
+              <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-white/10">
+                <button type="button" onClick={() => setIsEditModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-300 bg-white/5 hover:bg-white/10 transition-colors">
                   Batal
                 </button>
-                <button type="submit" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-emerald-950 bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg">
+                <button type="submit" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg">
                   Simpan Perubahan
                 </button>
               </div>

@@ -71,7 +71,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen relative flex flex-col justify-center py-12 sm:px-6 lg:px-8 overflow-hidden">
+    <div className="min-h-screen relative flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Logos Header */}
       <div className="absolute top-0 left-0 w-full flex justify-between items-start px-4 sm:px-6 pt-2 sm:pt-4 z-20 pointer-events-none">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -105,7 +105,7 @@ function LoginForm() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/60 z-0"></div>
 
       {/* Content Container (z-10 puts it above the background) */}
-      <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-white drop-shadow-md">
           Masuk ke Akun Anda
         </h2>
@@ -120,9 +120,9 @@ function LoginForm() {
         </p>
       </div>
 
-      <div className="relative z-10 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="relative z-10 mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
         {/* Glassmorphism Container */}
-        <div className="backdrop-blur-md bg-white/10 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/20">
+        <div className="backdrop-blur-md bg-white/10 py-6 px-4 shadow-2xl rounded-2xl sm:px-10 border border-white/20">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
               <div className="bg-red-500/20 backdrop-blur-sm border-l-4 border-red-500 p-4 rounded-md">

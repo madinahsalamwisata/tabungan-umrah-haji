@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 // Helper component untuk kotak glassmorphism murni
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
   <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-black/40 backdrop-blur-xl border border-white/10 transition-all duration-300 hover:bg-black/50 hover:border-white/20 ${className}`}>
-    <div className="relative z-10 p-6">
+    <div className="relative z-10 p-4 sm:p-6">
       {children}
     </div>
   </div>
@@ -79,13 +79,13 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden py-8 px-4 sm:px-6 lg:px-8">
-      <div className="relative z-10 max-w-7xl mx-auto space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
+    <div className="min-h-screen relative overflow-hidden py-6 sm:py-8 px-3 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto space-y-4 sm:space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           
           {/* Kolom Kiri: Header + Tentang Kami + Visi Misi */}
-          <div className="lg:col-span-2 space-y-6 flex flex-col">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6 flex flex-col">
             
             {/* Header Welcome Card */}
             <GlassCard className="bg-gradient-to-br from-emerald-900/60 to-black/40 border-emerald-500/30">
@@ -96,7 +96,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
             </GlassCard>
 
             {/* Tentang Kami & Visi */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 flex-1">
               <GlassCard className="h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <Info className="text-emerald-400 w-6 h-6" />
@@ -154,13 +154,13 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 <Bell className="text-yellow-400 w-6 h-6 animate-pulse" />
                 <h2 className="text-lg font-bold text-white">Informasi & Update</h2>
               </div>
-              <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
+              <div className="flex-1 overflow-y-auto pr-2 space-y-3 sm:space-y-4 custom-scrollbar">
                 {pengumumanList.length > 0 ? (
                   pengumumanList.map((item) => (
                     <button 
                       key={item.id} 
                       onClick={() => showPengumumanPopup(item)}
-                      className={`w-full text-left relative p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
+                      className={`w-full text-left relative p-3 sm:p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
                         item.is_penting 
                           ? "bg-gradient-to-br from-yellow-900/30 to-black/30 border-yellow-500/40" 
                           : "bg-black/30 border-white/10 hover:bg-white/5"
@@ -195,7 +195,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
           </div>
 
           {/* Baris Bawah: Accordion dan Maps */}
-          <div className="lg:col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="lg:col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             
             {/* Accordion */}
             <GlassCard>

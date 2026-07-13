@@ -12,21 +12,12 @@ export default function IdleSessionHandler() {
     // Hanya aktifkan timer jika user sudah login
     if (status !== "authenticated") return;
 
-    // Waktu idle 20 menit (dalam milidetik)
-    const timeoutDuration = 20 * 60 * 1000;
+    // Waktu idle 15 menit (dalam milidetik)
+    const timeoutDuration = 15 * 60 * 1000;
 
     const handleIdleTimeout = () => {
-      // Tampilkan popup dan langsung logout
-      Swal.fire({
-        title: "Sesi Berakhir",
-        text: "Anda otomatis keluar karena tidak ada aktivitas selama 20 menit.",
-        icon: "info",
-        confirmButtonText: "Login Kembali",
-        confirmButtonColor: "#059669",
-        allowOutsideClick: false,
-      }).then(() => {
-        signOut({ callbackUrl: "/login" });
-      });
+      // Langsung logout tanpa popup
+      signOut({ callbackUrl: "/login" });
     };
 
     const resetTimeout = () => {

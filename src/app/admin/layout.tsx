@@ -161,7 +161,7 @@ export default function AdminLayout({
             <div className="px-3 pt-4 pb-6 space-y-2">
               <div className="space-y-2 mt-2">
                 <Link href="/admin">
-                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium ${
+                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname === '/admin' 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
                       : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
@@ -172,7 +172,7 @@ export default function AdminLayout({
                 </Link>
                 
                 <Link href="/admin/jamaah">
-                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium ${
+                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/jamaah') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
                       : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
@@ -183,7 +183,7 @@ export default function AdminLayout({
                 </Link>
 
                 <Link href="/admin/pengumuman">
-                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium ${
+                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/pengumuman') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
                       : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
@@ -194,7 +194,7 @@ export default function AdminLayout({
                 </Link>
 
                 <Link href="/admin/paket">
-                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium ${
+                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/paket') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
                       : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
@@ -206,7 +206,7 @@ export default function AdminLayout({
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full text-left mt-4 text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3"
+                className="w-full text-left mt-4 text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 active:scale-95 transition-transform"
               >
                 <ArrowLeftOnRectangleIcon className="h-5 w-5" />
                 Keluar Admin

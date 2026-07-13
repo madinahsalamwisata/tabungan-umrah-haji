@@ -4,7 +4,6 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import RealtimeAutoRefresh from "@/components/RealtimeAutoRefresh";
 
 export default function DashboardLayout({
   children,
@@ -86,7 +85,6 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-white flex text-black">
-      <RealtimeAutoRefresh intervalMs={3000} />
       {/* Sidebar for desktop */}
       <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'}`}>
         <div 
@@ -277,7 +275,7 @@ export default function DashboardLayout({
                     <div key={item.name} className="space-y-2">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-base font-medium transition-all border backdrop-blur-sm shadow-sm ${isOpen ? 'bg-white/40 border-white/50 text-emerald-900 scale-[0.98]' : 'bg-white/20 border-white/30 text-emerald-800 hover:bg-white/30 hover:text-emerald-900'}`}
+                        className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-base font-medium transition-all border backdrop-blur-sm shadow-sm active:scale-95 ${isOpen ? 'bg-white/40 border-white/50 text-emerald-900 scale-[0.98]' : 'bg-white/20 border-white/30 text-emerald-800 hover:bg-white/30 hover:text-emerald-900'}`}
                       >
                         <div className="flex items-center gap-3">
                           <item.icon className={`h-5 w-5 ${isOpen ? "text-emerald-900" : "text-emerald-700"}`} />
@@ -298,7 +296,7 @@ export default function DashboardLayout({
                                   isChildCurrent
                                     ? "bg-white/50 text-emerald-900 font-bold border-white/60 shadow-md scale-[0.98]"
                                     : "bg-white/10 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/20 hover:shadow-md"
-                                } block px-4 py-2.5 text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm`}
+                                } flex items-center px-4 py-2.5 text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
                               >
                                 {child.name}
                               </Link>
@@ -320,7 +318,7 @@ export default function DashboardLayout({
                       isActive
                         ? "bg-white/40 text-emerald-900 font-bold border-white/50 shadow-md scale-[0.98]"
                         : "bg-white/20 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/30 hover:shadow-md"
-                    } block px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm`}
+                    } px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
                   >
                     <item.icon className={`h-5 w-5 ${isActive ? "text-emerald-900" : "text-emerald-700"}`} />
                     <span className={isActive ? "font-bold" : "font-semibold"}>{item.name}</span>
@@ -329,7 +327,7 @@ export default function DashboardLayout({
               })}
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full text-left text-gray-300 hover:bg-white/10 hover:text-white block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3 drop-shadow-sm"
+                className="w-full text-left text-gray-300 hover:bg-white/10 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-3 drop-shadow-sm active:scale-95 transition-transform"
               >
                 <ArrowLeftOnRectangleIcon className="h-5 w-5 text-gray-400" />
                 Keluar

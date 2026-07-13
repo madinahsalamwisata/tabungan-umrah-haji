@@ -15,7 +15,13 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isNavigating, setIsNavigating] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Matikan loading saat pathname berubah (selesai navigasi)
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -89,6 +95,10 @@ export default function AdminLayout({
                       key={item.name}
                       href={item.href!}
                       prefetch={true}
+                      onClick={(e) => {
+                        if (pathname !== item.href) setIsNavigating(true);
+                        setMobileMenuOpen(false);
+                      }}
                       className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
                         isCollapsed ? 'px-0 justify-center' : 'px-4'
                       } ${
@@ -161,7 +171,7 @@ export default function AdminLayout({
           <div className="absolute top-16 left-0 w-full bg-[#0f1712] border-b border-white/10 shadow-xl">
             <div className="px-3 pt-4 pb-6 space-y-2">
               <div className="space-y-2 mt-2">
-                <Link href="/admin" prefetch={true}>
+                <Link href="/admin" prefetch={true} onClick={() => { if (pathname !== '/admin') setIsNavigating(true); setMobileMenuOpen(false); }}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname === '/admin' 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
@@ -172,7 +182,7 @@ export default function AdminLayout({
                   </div>
                 </Link>
                 
-                <Link href="/admin/jamaah" prefetch={true}>
+                <Link href="/admin/jamaah" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/jamaah')) setIsNavigating(true); setMobileMenuOpen(false); }}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/jamaah') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
@@ -183,7 +193,7 @@ export default function AdminLayout({
                   </div>
                 </Link>
 
-                <Link href="/admin/pengumuman" prefetch={true}>
+                <Link href="/admin/pengumuman" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/pengumuman')) setIsNavigating(true); setMobileMenuOpen(false); }}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/pengumuman') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
@@ -194,7 +204,7 @@ export default function AdminLayout({
                   </div>
                 </Link>
 
-                <Link href="/admin/paket" prefetch={true}>
+                <Link href="/admin/paket" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/paket')) setIsNavigating(true); setMobileMenuOpen(false); }}>
                   <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
                     pathname.startsWith('/admin/paket') 
                       ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
@@ -218,7 +228,19 @@ export default function AdminLayout({
       </div>
 
       {/* Main content area */}
-      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
+      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative`}>
+        {/* Instant Loading Overlay */}
+        {isNavigating && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#0a0f0c]/60 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-4 p-8 bg-[#0f1712]/90 rounded-2xl shadow-2xl border border-emerald-500/20 backdrop-blur-md">
+              <div className="relative w-12 h-12">
+                <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin"></div>
+              </div>
+              <p className="text-sm font-medium text-emerald-400 animate-pulse">Memuat halaman...</p>
+            </div>
+          </div>
+        )}
         <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none bg-[#0a0f0c] p-4 sm:p-6 lg:p-8">
           {children}
         </main>

@@ -17,7 +17,13 @@ export default function DashboardLayout({
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [userProfile, setUserProfile] = useState<{ foto_url?: string | null } | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Matikan loading saat pathname berubah (selesai navigasi)
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [pathname]);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -164,6 +170,9 @@ export default function DashboardLayout({
                                 key={child.name}
                                 href={child.href}
                                 prefetch={true}
+                                onClick={(e) => {
+                                  if (pathname !== child.href) setIsNavigating(true);
+                                }}
                                 className={`group flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-300 backdrop-blur-sm px-4 ${
                                   isChildActive
                                     ? "text-white bg-white/20 shadow-md font-bold"
@@ -186,6 +195,9 @@ export default function DashboardLayout({
                     key={item.name}
                     href={item.href!}
                     prefetch={true}
+                    onClick={(e) => {
+                      if (pathname !== item.href) setIsNavigating(true);
+                    }}
                     className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
                       isCollapsed ? 'px-0 justify-center' : 'px-4'
                     } ${
@@ -290,12 +302,15 @@ export default function DashboardLayout({
                           {item.children.map(child => {
                             const isChildCurrent = pathname === child.href;
                             return (
-                              <Link
-                                key={child.name}
-                                href={child.href}
-                                onClick={() => setMobileMenuOpen(false)}
-                                prefetch={true}
-                                className={`${
+                                <Link
+                                  key={child.name}
+                                  href={child.href}
+                                  onClick={() => {
+                                    if (pathname !== child.href) setIsNavigating(true);
+                                    setMobileMenuOpen(false);
+                                  }}
+                                  prefetch={true}
+                                  className={`${
                                   isChildCurrent
                                     ? "bg-white/50 text-emerald-900 font-bold border-white/60 shadow-md scale-[0.98]"
                                     : "bg-white/10 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/20 hover:shadow-md"
@@ -316,7 +331,10 @@ export default function DashboardLayout({
                   <Link
                     key={item.name}
                     href={item.href!}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => {
+                      if (pathname !== item.href) setIsNavigating(true);
+                      setMobileMenuOpen(false);
+                    }}
                     prefetch={true}
                     className={`${
                       isActive
@@ -342,7 +360,19 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content area */}
-      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
+      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative`}>
+        {/* Instant Loading Overlay */}
+        {isNavigating && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-gray-50/60 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-4 p-8 bg-white/90 rounded-2xl shadow-xl border border-emerald-100/50 backdrop-blur-md">
+              <div className="relative w-12 h-12">
+                <div className="absolute inset-0 rounded-full border-4 border-emerald-100"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-emerald-600 border-t-transparent animate-spin"></div>
+              </div>
+              <p className="text-sm font-medium text-emerald-600/80 animate-pulse">Memuat halaman...</p>
+            </div>
+          </div>
+        )}
         <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none p-4 sm:p-6 lg:p-8">
           {children}
         </main>

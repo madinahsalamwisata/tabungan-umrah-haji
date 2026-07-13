@@ -20,7 +20,6 @@ export default async function DashboardPage() {
   const serializedPengumuman = pengumuman.map(p => ({
     ...p,
     created_at: p.created_at.toISOString(),
-    updated_at: p.updated_at.toISOString(),
   }));
 
   return <DashboardClient initialPengumuman={serializedPengumuman} />;

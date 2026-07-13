@@ -100,8 +100,8 @@ export default async function ProfilPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
       <div>
-        <h1 className="text-2xl font-bold text-emerald-900">Profil Saya</h1>
-        <p className="mt-1 text-sm text-emerald-600">
+        <h1 className="text-2xl font-bold text-white drop-shadow-md">Profil Saya</h1>
+        <p className="mt-1 text-sm text-emerald-300 drop-shadow-sm">
           Kelola informasi data diri dan riwayat tabungan Anda.
         </p>
       </div>
@@ -110,32 +110,30 @@ export default async function ProfilPage() {
       <ProfileForm jamaah={serializedJamaah} />
 
       {/* Seksi Riwayat Tabungan */}
-      <div className="relative shadow-xl rounded-2xl overflow-hidden mt-8">
-        <div className="absolute inset-0 bg-cover bg-[center_top] z-0" style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}></div>
-        <div className="absolute inset-0 bg-[#111814]/40 backdrop-blur-sm z-0"></div>
-        <div className="relative z-10 px-6 py-6 sm:px-8 flex justify-between items-center border-b border-white/10">
+      <div className="relative shadow-2xl rounded-2xl overflow-hidden mt-8 bg-white/10 backdrop-blur-xl border border-white/20">
+        <div className="relative z-10 px-6 py-6 sm:px-8 flex justify-between items-center border-b border-white/20">
           <div>
             <h3 className="text-xl leading-6 font-bold text-white">
               Riwayat Tabungan Saya
             </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-400">
+            <p className="mt-1 max-w-2xl text-sm text-gray-300">
               Daftar paket umrah yang sedang atau pernah Anda ikuti.
             </p>
           </div>
         </div>
         
         <div className="relative z-10 p-0 sm:p-6 bg-transparent">
-          <div className="overflow-x-auto sm:rounded-xl sm:border sm:border-white/10 sm:shadow-sm">
-            <table className="min-w-full divide-y divide-white/10">
+          <div className="overflow-x-auto sm:rounded-xl sm:border sm:border-white/20 shadow-xl">
+            <table className="min-w-full divide-y divide-white/20">
               <thead className="bg-white/10 backdrop-blur-md">
                 <tr>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                     Nama Paket
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                     Status
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                     Total Terkumpul
                   </th>
                 </tr>

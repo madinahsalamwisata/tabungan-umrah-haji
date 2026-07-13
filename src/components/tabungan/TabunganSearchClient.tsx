@@ -106,9 +106,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
 
   return (
     <div className="space-y-6">
-      <div className="relative p-6 rounded-2xl shadow-xl border border-white/10 overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}></div>
-        <div className="absolute inset-0 bg-[#111814]/80 backdrop-blur-xl z-0"></div>
+      <div className="relative p-6 rounded-[2rem] shadow-2xl border border-white/20 bg-white/10 backdrop-blur-xl overflow-hidden">
         <div className="relative z-10">
           <h3 className="text-lg font-bold text-white mb-4">Cari Estimasi Paket Tabungan</h3>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
@@ -175,13 +173,8 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
               return (
                 <div 
                   key={paket.id} 
-                  className="relative rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/10 overflow-hidden group flex flex-col h-full"
+                  className="relative rounded-[2rem] shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 border border-white/20 bg-white/10 backdrop-blur-xl overflow-hidden group flex flex-col h-full hover:border-white/40"
                 >
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center z-0" 
-                    style={{ backgroundImage: `url('${paket.poster_url || '/images/bg/bg-paket.jpeg'}')` }}
-                  ></div>
-                  <div className="absolute inset-0 bg-[#111814]/80 backdrop-blur-md z-0"></div>
                   
                   <div className="relative z-10 p-5 flex flex-col h-full">
                     {/* Title Section */}

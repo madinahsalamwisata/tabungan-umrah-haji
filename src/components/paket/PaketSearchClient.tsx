@@ -34,20 +34,20 @@ function CustomSelect({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm h-[38px]"
+        className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm h-[38px] text-white hover:bg-white/15 transition-colors"
       >
         <span className="block truncate">{selectedOption ? selectedOption.label : placeholder}</span>
         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-          <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <svg className="h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         </span>
       </button>
 
       {isOpen && (
-        <div className="absolute z-20 mt-1 w-full bg-white shadow-lg max-h-48 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+        <div className="absolute z-20 mt-1 w-full bg-[#111814]/95 backdrop-blur-xl border border-white/10 shadow-xl max-h-48 rounded-md py-1 text-base overflow-auto focus:outline-none sm:text-sm">
           <div
-            className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-50 hover:text-emerald-900 ${value === "" ? "bg-emerald-100 text-emerald-900 font-semibold" : "text-gray-900"}`}
+            className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-500/20 hover:text-emerald-300 ${value === "" ? "bg-emerald-500/20 text-emerald-300 font-semibold" : "text-gray-300"}`}
             onClick={() => { onChange(""); setIsOpen(false); }}
           >
             <span className="block truncate">{placeholder}</span>
@@ -55,7 +55,7 @@ function CustomSelect({
           {options.map((opt) => (
             <div
               key={opt.value}
-              className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-50 hover:text-emerald-900 ${value === opt.value ? "bg-emerald-100 text-emerald-900 font-semibold" : "text-gray-900"}`}
+              className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-500/20 hover:text-emerald-300 ${value === opt.value ? "bg-emerald-500/20 text-emerald-300 font-semibold" : "text-gray-300"}`}
               onClick={() => { onChange(opt.value); setIsOpen(false); }}
             >
               <span className="block truncate">{opt.label}</span>
@@ -95,14 +95,14 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
   return (
     <div className="space-y-6">
       {/* Search Engine */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-emerald-100 mb-6">
-        <h3 className="text-lg font-bold text-emerald-900 mb-4 flex items-center gap-2">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+      <div className="bg-white/10 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-white/20 mb-6">
+        <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2 drop-shadow-md">
+          <svg className="w-5 h-5 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           Cari Paket Umrah
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tipe Paket</label>
+            <label className="block text-sm font-medium text-emerald-100 mb-1">Tipe Paket</label>
             <CustomSelect 
               value={tipePaket} 
               onChange={setTipePaket} 
@@ -111,7 +111,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Bulan & Tahun</label>
+            <label className="block text-sm font-medium text-emerald-100 mb-1">Bulan & Tahun</label>
             <CustomSelect 
               value={bulanTahun} 
               onChange={setBulanTahun} 
@@ -120,7 +120,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Durasi Umrah</label>
+            <label className="block text-sm font-medium text-emerald-100 mb-1">Durasi Umrah</label>
             <CustomSelect 
               value={durasi} 
               onChange={setDurasi} 

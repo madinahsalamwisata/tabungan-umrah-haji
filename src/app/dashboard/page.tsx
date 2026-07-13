@@ -12,22 +12,9 @@ import {
   Briefcase 
 } from "lucide-react";
 
-// Helper component untuk kotak dengan background makkah + glassmorphism
+// Helper component untuk kotak glassmorphism murni
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <div className={`relative overflow-hidden rounded-2xl shadow-xl ${className}`}>
-    {/* Background Image Layer */}
-    <div className="absolute inset-0 z-0">
-      <img 
-        src="/images/bg/makkah_thumbnail.webp" 
-        alt="Background Makkah" 
-        className="w-full h-full object-cover" 
-      />
-      {/* Dark & Glass Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-emerald-950/80 to-black/90"></div>
-      <div className="absolute inset-0 backdrop-blur-[4px] border border-white/10 rounded-2xl"></div>
-    </div>
-    
-    {/* Content Layer */}
+  <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-white/10 backdrop-blur-xl border border-white/20 transition-all duration-300 hover:bg-white/15 hover:border-white/30 ${className}`}>
     <div className="relative z-10 p-6">
       {children}
     </div>
@@ -64,13 +51,13 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden py-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div className="min-h-screen relative overflow-hidden py-8 px-4 sm:px-6 lg:px-8">
       <div className="relative z-10 max-w-5xl mx-auto space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
         
         {/* Header Title */}
         <div>
-          <h1 className="text-2xl font-bold text-emerald-900">Beranda Dashboard</h1>
-          <p className="mt-1 text-sm text-emerald-600">Selamat datang di sistem tabungan Umrah dan Haji Anda.</p>
+          <h1 className="text-2xl font-bold text-white drop-shadow-md">Beranda Dashboard</h1>
+          <p className="mt-1 text-sm text-emerald-300 drop-shadow-sm">Selamat datang di sistem tabungan Umrah dan Haji Anda.</p>
         </div>
 
         {/* Section 1: Notifications (Dynamic from Database) */}

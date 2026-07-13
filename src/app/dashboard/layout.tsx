@@ -90,24 +90,26 @@ export default function DashboardLayout({
   }, [pathname]);
 
   return (
-    <div className="min-h-screen bg-white flex text-black">
+    <div className="min-h-screen flex text-white relative font-sans">
+      {/* Global Background Layer */}
+      <div className="fixed inset-0 z-0">
+        <img 
+          src="/images/bg/makkah_thumbnail.webp" 
+          alt="Background Makkah" 
+          className="w-full h-full object-cover opacity-60" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-emerald-950/70 to-black/90"></div>
+      </div>
+
       {/* Sidebar for desktop */}
-      <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'}`}>
+      <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'} z-30`}>
         <div 
-          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/10 backdrop-blur-md"
+          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/5 backdrop-blur-xl"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-        >
-          {/* Background Image */}
-          <div className="absolute inset-0 z-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/bg-sidebar-new.jpeg" alt="Sidebar Background" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/70"></div>
-          </div>
-          
-          <div className="relative z-10 flex flex-col flex-1 min-h-0 bg-white/5 backdrop-blur-sm">
+          <div className="relative z-10 flex flex-col flex-1 min-h-0">
 
-            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/30 bg-white/20 backdrop-blur-md rounded-b-lg transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
               <img src="/images/ms-wisata-new-logo.png" alt="Logo" className={`${isCollapsed ? 'h-10' : 'h-14'} w-auto drop-shadow-md shrink-0 transition-all duration-300`} />
                 <div className={`text-left flex flex-col justify-center overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[200px] opacity-100'}`}>
                   <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
@@ -220,7 +222,7 @@ export default function DashboardLayout({
                 );
               })}
             </nav>
-            <div className="flex-shrink-0 p-4 border-t border-white/10 bg-black/20">
+            <div className="flex-shrink-0 p-4 border-t border-white/20 bg-black/20 backdrop-blur-md">
               <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'mb-4'}`}>
                 <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md overflow-hidden shrink-0">
                   {userProfile?.foto_url ? (
@@ -236,8 +238,8 @@ export default function DashboardLayout({
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className={`w-full flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 rounded-md text-sm font-bold transition-colors shadow-sm ${
-                  isCollapsed ? 'p-2 mt-4' : 'px-4 py-2'
+                className={`w-full flex items-center justify-center bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md text-red-100 hover:text-white border border-red-500/30 rounded-xl text-sm font-bold transition-all shadow-sm ${
+                  isCollapsed ? 'p-2 mt-4' : 'px-4 py-2.5'
                 }`}
                 title="Keluar"
               >
@@ -253,8 +255,8 @@ export default function DashboardLayout({
       </div>
 
       {/* Mobile Header & Nav */}
-      <div className="md:hidden fixed top-0 w-full z-20">
-        <div className="flex items-center justify-between bg-black/70 backdrop-blur-sm h-16 px-4 shadow-md border-b border-white/10">
+      <div className="md:hidden fixed top-0 w-full z-40">
+        <div className="flex items-center justify-between bg-black/40 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/20">
           <div className="flex items-center gap-3">
             <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <div className="flex flex-col">
@@ -280,8 +282,8 @@ export default function DashboardLayout({
         
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="relative bg-black/70 backdrop-blur-md shadow-xl border-b border-white/10">
-            <div className="px-3 pt-4 pb-4 space-y-3">
+          <div className="absolute top-16 left-0 w-full bg-black/60 backdrop-blur-2xl shadow-2xl border-b border-white/20">
+            <div className="px-3 pt-4 pb-6 space-y-3">
               {navigation.map((item) => {
                 if (item.children) {
                   const isOpen = openMenus.includes(item.name);
@@ -360,16 +362,16 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content area */}
-      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative`}>
+      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative z-10`}>
         {/* Instant Loading Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-gray-50/60 backdrop-blur-sm">
-            <div className="flex flex-col items-center gap-4 p-8 bg-white/90 rounded-2xl shadow-xl border border-emerald-100/50 backdrop-blur-md">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-4 p-8 bg-white/10 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
               <div className="relative w-12 h-12">
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-100"></div>
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-600 border-t-transparent animate-spin"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>
               </div>
-              <p className="text-sm font-medium text-emerald-600/80 animate-pulse">Memuat halaman...</p>
+              <p className="text-sm font-medium text-emerald-300 animate-pulse">Memuat halaman...</p>
             </div>
           </div>
         )}

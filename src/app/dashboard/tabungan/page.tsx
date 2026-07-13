@@ -56,9 +56,9 @@ export default async function TabunganDashboard() {
   if (rencanaTabunganList.length === 0) {
     return (
       <div className="space-y-6 mt-6">
-        <div className="bg-emerald-50 rounded-lg p-6 border border-emerald-100">
-          <h2 className="text-xl font-bold text-emerald-900 mb-2">Belum Ada Rencana Tabungan</h2>
-          <p className="text-emerald-700">Pilih estimasi paket umrah di bawah ini untuk mulai menabung.</p>
+        <div className="bg-emerald-900/40 backdrop-blur-md rounded-xl p-6 border border-emerald-500/30 shadow-xl">
+          <h2 className="text-xl font-bold text-white mb-2">Belum Ada Rencana Tabungan</h2>
+          <p className="text-emerald-200">Pilih estimasi paket umrah di bawah ini untuk mulai menabung.</p>
         </div>
         <TabunganSearchClient pakets={estimasiPakets} activePaketIds={activePaketIds} />
       </div>
@@ -68,12 +68,12 @@ export default async function TabunganDashboard() {
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
       <div>
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Rencana Tabungan Aktif Anda</h3>
+        <h3 className="text-xl font-bold text-white drop-shadow-md mb-4">Rencana Tabungan Aktif Anda</h3>
         
-        <div className="bg-yellow-50 border border-yellow-200 px-4 py-3 rounded-lg mb-6 shadow-sm flex gap-3 items-start">
-          <svg className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <p className="text-sm text-yellow-800 leading-relaxed">
-            <strong>Penting:</strong> Kalkulasi biaya di bawah adalah estimasi. Harga final menyesuaikan dengan harga tiket, hotel, dan visa pada tahun keberangkatan.
+        <div className="bg-yellow-500/20 backdrop-blur-md border border-yellow-400/30 px-4 py-3 rounded-xl mb-6 shadow-xl flex gap-3 items-start">
+          <svg className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <p className="text-sm text-yellow-100 leading-relaxed">
+            <strong className="text-yellow-400">Penting:</strong> Kalkulasi biaya di bawah adalah estimasi. Harga final menyesuaikan dengan harga tiket, hotel, dan visa pada tahun keberangkatan.
           </p>
         </div>
 
@@ -117,8 +117,8 @@ export default async function TabunganDashboard() {
         </div>
       </div>
 
-      <div className="pt-8 border-t border-gray-200">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Cari & Tambah Rencana Tabungan Baru</h3>
+      <div className="pt-8 border-t border-white/20">
+        <h3 className="text-xl font-bold text-white drop-shadow-md mb-6">Cari & Tambah Rencana Tabungan Baru</h3>
         <TabunganSearchClient pakets={estimasiPakets} activePaketIds={activePaketIds} />
       </div>
     </div>

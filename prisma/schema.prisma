@@ -14,11 +14,13 @@ model Jamaah {
   email           String            @unique
   no_hp           String
   nik             String            @unique
-  alamat          String?
-  foto_url        String?
-  password_hash   String
-  created_at      DateTime          @default(now())
-  RencanaTabungan RencanaTabungan[]
+  alamat             String?
+  foto_url           String?
+  password_hash      String
+  reset_token        String?
+  reset_token_expiry DateTime?
+  created_at         DateTime          @default(now())
+  RencanaTabungan    RencanaTabungan[]
 }
 
 model Paket {

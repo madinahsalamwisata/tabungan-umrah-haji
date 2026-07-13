@@ -166,12 +166,22 @@ function LoginForm() {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-100"
-              >
-                Kata Sandi
-              </label>
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-100"
+                >
+                  Kata Sandi
+                </label>
+                <div className="text-sm">
+                  <Link
+                    href="/lupa-password"
+                    className="font-medium text-yellow-400 hover:text-yellow-300"
+                  >
+                    Lupa Kata Sandi?
+                  </Link>
+                </div>
+              </div>
               <div className="mt-1">
                 <input
                   id="password"

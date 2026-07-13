@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   // Check for NextAuth session cookie (works for both dev HTTP and prod HTTPS)
   const hasSessionToken = 
     req.cookies.has("next-auth.session-token") || 

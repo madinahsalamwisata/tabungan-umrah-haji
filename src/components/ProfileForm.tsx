@@ -166,49 +166,59 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
         className="hidden" 
       />
 
-      {/* CLOSED STATE (isExpanded === false) - Glassmorphism Concept */}
-      {!isExpanded && (
-        <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-white/10 backdrop-blur-xl border border-white/20 p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-300">
+      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/20 animate-in fade-in zoom-in-95 duration-500">
+        
+        {/* Cover Area */}
+        <div className="h-40 sm:h-48 relative w-full overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-900 via-teal-900 to-black opacity-90 z-10"></div>
+          <img src="/images/bg/makkah_thumbnail.webp" alt="Cover" className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 z-0" />
           
-          {/* Top Right Buttons */}
-          <div className="absolute top-4 right-4 z-20 flex items-center gap-2" ref={menuRef}>
-            <button 
-              onClick={() => setIsExpanded(true)}
-              className="p-2 rounded-full bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm transition-all focus:outline-none border border-white/10 shadow-sm"
-              title="Buka Detail"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
+          {/* Top Right Menu */}
+          <div className="absolute top-4 right-4 z-20" ref={menuRef}>
             <div className="relative">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="p-2 rounded-full bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm transition-all focus:outline-none border border-white/10 shadow-sm"
+                className="p-2.5 rounded-full bg-black/40 text-white hover:bg-black/60 backdrop-blur-md transition-all focus:outline-none border border-white/20 shadow-lg"
               >
                 <DotsVerticalIcon />
               </button>
               
               {menuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white/10 backdrop-blur-2xl rounded-xl shadow-2xl border border-white/20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
                   <div className="py-1">
-                    <button
-                      onClick={() => {
-                        setIsEditing(true);
-                        setIsExpanded(true);
-                        setMenuOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
-                    >
-                      Edit Profil
-                    </button>
+                    {!isEditing ? (
+                      <button
+                        onClick={() => {
+                          setIsEditing(true);
+                          setMenuOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-3 text-sm font-medium text-emerald-100 hover:bg-white/10 transition-colors"
+                      >
+                        Edit Profil
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setIsEditing(false);
+                          setMenuOpen(false);
+                          setForm({
+                            nama: jamaah.nama,
+                            no_hp: jamaah.no_hp,
+                            nik: jamaah.nik,
+                            alamat: jamaah.alamat || "",
+                          });
+                        }}
+                        className="w-full text-left px-4 py-3 text-sm font-medium text-red-300 hover:bg-red-500/20 transition-colors"
+                      >
+                        Batal Edit
+                      </button>
+                    )}
                     <button
                       onClick={() => {
                         fileInputRef.current?.click();
                         setMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors border-t border-gray-50"
+                      className="w-full text-left px-4 py-3 text-sm font-medium text-emerald-100 hover:bg-white/10 transition-colors border-t border-white/10"
                     >
                       Ganti Foto
                     </button>
@@ -217,15 +227,18 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
               )}
             </div>
           </div>
+        </div>
 
-          {/* Content Layout (Horizontal) */}
-          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-center mt-2">
-            {/* Avatar Section (Left) */}
-            <div className="shrink-0 relative group">
-              <div className="w-24 h-24 rounded-full border-4 border-white/20 bg-gray-900 shadow-xl overflow-hidden flex items-center justify-center relative">
+        {/* Content Area */}
+        <div className="relative z-10 px-6 sm:px-10 pb-10 pt-0">
+          
+          {/* Avatar Section Overlapping Cover */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between relative -mt-16 sm:-mt-20 mb-8 gap-4">
+            <div className="relative group shrink-0 inline-block">
+              <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-[#1a231f] bg-black/60 backdrop-blur-xl shadow-2xl overflow-hidden flex items-center justify-center relative">
                 {isUploading ? (
                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                    <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
                   </div>
                 ) : jamaah.foto_url ? (
                   <img src={jamaah.foto_url} alt={jamaah.nama} className="w-full h-full object-cover" />
@@ -236,263 +249,164 @@ export default function ProfileForm({ jamaah }: { jamaah: Jamaah }) {
               <button 
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="absolute bottom-0 right-0 p-1.5 bg-emerald-600 text-white rounded-full border-2 border-[#0f1712] shadow-sm hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                className="absolute bottom-2 right-2 p-2 sm:p-2.5 bg-emerald-500 text-white rounded-full border-[3px] border-[#1a231f] shadow-lg hover:bg-emerald-400 hover:scale-110 transition-all disabled:opacity-50 disabled:hover:scale-100"
                 title="Ganti Foto"
               >
                 <CameraIcon />
               </button>
             </div>
-
-            {/* Data Section (Right) */}
-            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm">
-                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400">Nama Lengkap</p>
-                <p className="text-sm font-semibold text-white mt-0.5 truncate">{jamaah.nama}</p>
-              </div>
-              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm">
-                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400">Alamat Email</p>
-                <p className="text-sm font-semibold text-white mt-0.5 truncate">{jamaah.email}</p>
-              </div>
-              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm">
-                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400">No. HP</p>
-                <p className="text-sm font-semibold text-white mt-0.5 truncate">{jamaah.no_hp}</p>
-              </div>
-              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm">
-                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400">NIK</p>
-                <p className="text-sm font-semibold text-white mt-0.5 truncate">{jamaah.nik}</p>
-              </div>
-              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-2.5 sm:p-3 hover:bg-white/10 transition-colors shadow-sm sm:col-span-2 flex flex-col h-[70px]">
-                <p className="text-[10px] uppercase tracking-wider font-medium text-emerald-400 shrink-0">Alamat Lengkap</p>
-                <div className="overflow-y-auto custom-scrollbar mt-0.5 pr-1">
-                  <p className="text-sm font-semibold text-white leading-relaxed">
-                    {jamaah.alamat || <span className="text-gray-400 italic font-normal">Belum diisi</span>}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* OPENED STATE (isExpanded === true) - Glassmorphism Concept */}
-      {isExpanded && (
-        <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-white/10 backdrop-blur-xl border border-white/20 animate-in fade-in zoom-in-95 duration-300">
-          {/* Header/Cover Area */}
-          <div className="h-32 relative">
             
-            {/* Top Right Buttons */}
-            <div className="absolute top-4 right-4 z-20 flex items-center gap-2" ref={menuRef}>
-              <button 
-                onClick={() => {
-                  setIsExpanded(false);
-                  setIsEditing(false); // Cancel edit if closing
-                }}
-                className="p-2 rounded-full bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm transition-all focus:outline-none border border-white/10 shadow-sm"
-                title="Tutup Detail"
-              >
-                <svg className="w-5 h-5 rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
+            <div className="mb-2 sm:mb-6 sm:text-right">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg leading-tight">{jamaah.nama}</h2>
+              <p className="text-emerald-300 font-medium drop-shadow-md text-sm sm:text-base">{jamaah.email}</p>
+            </div>
+          </div>
 
-              <div className="relative">
+          {/* Data Section */}
+          {isEditing ? (
+            <form onSubmit={handleSubmit} className="space-y-5 animate-in fade-in duration-500">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-inner">
+                  <label className="block text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wider">Email (Terkunci)</label>
+                  <input
+                    type="text"
+                    disabled
+                    value={jamaah.email}
+                    className="block w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-gray-400 sm:text-sm cursor-not-allowed"
+                  />
+                </div>
+
+                <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-inner">
+                  <label htmlFor="nama" className="block text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wider">Nama Lengkap</label>
+                  <input
+                    type="text"
+                    id="nama"
+                    required
+                    value={form.nama}
+                    onChange={(e) => setForm({ ...form, nama: e.target.value })}
+                    className="block w-full px-4 py-2.5 bg-black/40 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  />
+                </div>
+
+                <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-inner">
+                  <label htmlFor="no_hp" className="block text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wider">No. HP / WhatsApp</label>
+                  <input
+                    type="text"
+                    id="no_hp"
+                    required
+                    value={form.no_hp}
+                    onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
+                    className="block w-full px-4 py-2.5 bg-black/40 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  />
+                </div>
+
+                <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-inner">
+                  <label htmlFor="nik" className="block text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wider">NIK</label>
+                  <input
+                    type="text"
+                    id="nik"
+                    required
+                    value={form.nik}
+                    onChange={(e) => setForm({ ...form, nik: e.target.value })}
+                    className="block w-full px-4 py-2.5 bg-black/40 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
+                  />
+                </div>
+
+                <div className="sm:col-span-2 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-inner">
+                  <label htmlFor="alamat" className="block text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wider">Alamat Lengkap</label>
+                  <textarea
+                    id="alamat"
+                    rows={3}
+                    value={form.alamat}
+                    onChange={(e) => setForm({ ...form, alamat: e.target.value })}
+                    className="block w-full px-4 py-3 bg-black/40 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all resize-none"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex justify-end gap-3 pt-6 border-t border-white/10 mt-6">
                 <button
-                  onClick={() => setMenuOpen(!menuOpen)}
-                  className="p-2 rounded-full bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm transition-all focus:outline-none border border-white/10 shadow-sm"
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setForm({
+                      nama: jamaah.nama,
+                      no_hp: jamaah.no_hp,
+                      nik: jamaah.nik,
+                      alamat: jamaah.alamat || "",
+                    });
+                  }}
+                  className="px-5 py-2.5 border border-white/20 rounded-xl text-sm font-bold text-white bg-white/5 hover:bg-white/10 focus:outline-none transition-all shadow-sm"
                 >
-                  <DotsVerticalIcon />
+                  Batal
                 </button>
-                
-                {menuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                    <div className="py-1">
-                      {!isEditing ? (
-                        <button
-                          onClick={() => {
-                            setIsEditing(true);
-                            setMenuOpen(false);
-                          }}
-                          className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
-                        >
-                          Edit Profil
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            setIsEditing(false);
-                            setMenuOpen(false);
-                            setForm({
-                              nama: jamaah.nama,
-                              no_hp: jamaah.no_hp,
-                              nik: jamaah.nik,
-                              alamat: jamaah.alamat || "",
-                            });
-                          }}
-                          className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                        >
-                          Batal Edit
-                        </button>
-                      )}
-                      <button
-                        onClick={() => {
-                          fileInputRef.current?.click();
-                          setMenuOpen(false);
-                        }}
-                        className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors border-t border-gray-50"
-                      >
-                        Ganti Foto
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Area (White Data Section) */}
-          <div className="relative z-10 px-6 sm:px-8 pb-8 pt-0">
-            {/* Avatar Section */}
-            <div className="flex items-end relative -mt-14 mb-7">
-              <div className="relative group shrink-0">
-                <div className="w-24 h-24 rounded-full border-4 border-white/20 bg-black/40 backdrop-blur-md shadow-xl overflow-hidden flex items-center justify-center relative">
-                  {isUploading ? (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                      <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                  ) : jamaah.foto_url ? (
-                    <img src={jamaah.foto_url} alt={jamaah.nama} className="w-full h-full object-cover" />
-                  ) : (
-                    <UserCircleIcon />
-                  )}
-                </div>
-                {/* Camera Overlay Button */}
-                <button 
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={isUploading}
-                  className="absolute bottom-0 right-0 p-1.5 bg-emerald-600 text-white rounded-full border-2 border-white shadow-sm hover:bg-emerald-700 transition-colors disabled:opacity-50"
-                  title="Ganti Foto"
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="inline-flex justify-center items-center px-5 py-2.5 border border-emerald-500 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-emerald-500 disabled:opacity-50 shadow-lg shadow-emerald-900/50 transition-all"
                 >
-                  <CameraIcon />
+                  {loading ? "Menyimpan..." : "Simpan Perubahan"}
                 </button>
               </div>
-            </div>
-
-            {/* Data Section */}
-            {isEditing ? (
-              <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
-                <div className="grid grid-cols-1 gap-y-4 gap-x-6 sm:grid-cols-2">
-                  <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
-                    <label className="block text-xs font-medium text-emerald-400 mb-1">Email (Tidak bisa diubah)</label>
-                    <input
-                      type="text"
-                      disabled
-                      value={jamaah.email}
-                      className="block w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-400 sm:text-sm cursor-not-allowed"
-                    />
+            </form>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-500">
+              <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-5 hover:bg-white/10 hover:border-white/20 transition-all shadow-md group">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-emerald-500/20 rounded-lg text-emerald-400 group-hover:scale-110 transition-transform">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                   </div>
-
-                  <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
-                    <label htmlFor="nama" className="block text-xs font-medium text-emerald-400 mb-1">Nama Lengkap</label>
-                    <input
-                      type="text"
-                      id="nama"
-                      required
-                      value={form.nama}
-                      onChange={(e) => setForm({ ...form, nama: e.target.value })}
-                      className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
-                    />
-                  </div>
-
-                  <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
-                    <label htmlFor="no_hp" className="block text-xs font-medium text-emerald-400 mb-1">No. HP / WhatsApp</label>
-                    <input
-                      type="text"
-                      id="no_hp"
-                      required
-                      value={form.no_hp}
-                      onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
-                      className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
-                    />
-                  </div>
-
-                  <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
-                    <label htmlFor="nik" className="block text-xs font-medium text-emerald-400 mb-1">NIK</label>
-                    <input
-                      type="text"
-                      id="nik"
-                      required
-                      value={form.nik}
-                      onChange={(e) => setForm({ ...form, nik: e.target.value })}
-                      className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all"
-                    />
-                  </div>
-
-                  <div className="sm:col-span-2 bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 shadow-sm">
-                    <label htmlFor="alamat" className="block text-xs font-medium text-emerald-400 mb-1">Alamat Lengkap</label>
-                    <textarea
-                      id="alamat"
-                      rows={2}
-                      value={form.alamat}
-                      onChange={(e) => setForm({ ...form, alamat: e.target.value })}
-                      className="block w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-all resize-none"
-                    />
-                  </div>
+                  <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Nama Lengkap</p>
                 </div>
-                
-                <div className="flex justify-end gap-3 pt-3 border-t border-gray-100 mt-5">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsEditing(false);
-                      setForm({
-                        nama: jamaah.nama,
-                        no_hp: jamaah.no_hp,
-                        nik: jamaah.nik,
-                        alamat: jamaah.alamat || "",
-                      });
-                    }}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors"
-                  >
-                    Batal
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 shadow-sm transition-all"
-                  >
-                    {loading ? "Menyimpan..." : "Simpan Perubahan"}
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4 animate-in fade-in duration-300">
-                <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-white/20 transition-colors shadow-sm">
-                  <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider">Nama Lengkap</p>
-                  <p className="text-sm font-semibold text-white mt-0.5">{jamaah.nama}</p>
-                </div>
-                <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-white/20 transition-colors shadow-sm">
-                  <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider">Alamat Email</p>
-                  <p className="text-sm font-semibold text-white mt-0.5">{jamaah.email}</p>
-                </div>
-                <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-white/20 transition-colors shadow-sm">
-                  <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider">No. HP / WhatsApp</p>
-                  <p className="text-sm font-semibold text-white mt-0.5">{jamaah.no_hp}</p>
-                </div>
-                <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 hover:border-white/20 transition-colors shadow-sm">
-                  <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider">Nomor Induk Kependudukan (NIK)</p>
-                  <p className="text-sm font-semibold text-white mt-0.5">{jamaah.nik}</p>
-                </div>
-                <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-3.5 sm:p-4 md:col-span-2 hover:border-white/20 transition-colors shadow-sm">
-                  <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider">Alamat Lengkap</p>
-                  <p className="text-sm font-semibold text-white mt-0.5 leading-relaxed">
-                    {jamaah.alamat || <span className="text-gray-400 italic font-normal">Belum diisi</span>}
-                  </p>
-                </div>
+                <p className="text-lg font-bold text-white pl-11">{jamaah.nama}</p>
               </div>
-            )}
-          </div>
+
+              <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-5 hover:bg-white/10 hover:border-white/20 transition-all shadow-md group">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-emerald-500/20 rounded-lg text-emerald-400 group-hover:scale-110 transition-transform">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                  </div>
+                  <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Alamat Email</p>
+                </div>
+                <p className="text-lg font-bold text-white pl-11">{jamaah.email}</p>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-5 hover:bg-white/10 hover:border-white/20 transition-all shadow-md group">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-emerald-500/20 rounded-lg text-emerald-400 group-hover:scale-110 transition-transform">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                  </div>
+                  <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">No. HP / WhatsApp</p>
+                </div>
+                <p className="text-lg font-bold text-white pl-11">{jamaah.no_hp}</p>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-5 hover:bg-white/10 hover:border-white/20 transition-all shadow-md group">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-emerald-500/20 rounded-lg text-emerald-400 group-hover:scale-110 transition-transform">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" /></svg>
+                  </div>
+                  <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">NIK</p>
+                </div>
+                <p className="text-lg font-bold text-white pl-11">{jamaah.nik}</p>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-5 md:col-span-2 hover:bg-white/10 hover:border-white/20 transition-all shadow-md group">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-emerald-500/20 rounded-lg text-emerald-400 group-hover:scale-110 transition-transform">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  </div>
+                  <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Alamat Lengkap</p>
+                </div>
+                <p className="text-base font-semibold text-white pl-11 leading-relaxed">
+                  {jamaah.alamat || <span className="text-gray-400 italic font-normal">Belum diisi</span>}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
+

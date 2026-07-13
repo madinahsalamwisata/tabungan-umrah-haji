@@ -117,9 +117,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       </div>
 
       {/* Glassmorphism Table Container */}
-      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-[#0f1712] border border-white/10 animate-in fade-in zoom-in-95 duration-500">
-        <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-10" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
-        <div className="absolute inset-0 bg-[#0f1712]/60 backdrop-blur-md z-0"></div>
+      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/20 animate-in fade-in zoom-in-95 duration-500">
         
         <div className="relative z-10 overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
@@ -202,7 +200,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsEditModalOpen(false)}></div>
           
           {/* Modal Container */}
-          <div className="relative w-full max-w-2xl bg-[#0f1712]/90 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-2xl bg-black/60 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
             <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Edit Data Jamaah</h2>
             
             <form onSubmit={handleSaveEdit} className="space-y-4">

@@ -55,9 +55,7 @@ export default async function AdminDashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6">
-          <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-white/10 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-white/20 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -70,9 +68,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6">
-          <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-white/10 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-white/20 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -85,9 +81,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6">
-          <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-white/10 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-white/20 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -100,9 +94,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10 p-6">
-          <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')" }}></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1712] via-[#0f1712]/90 to-transparent z-0"></div>
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-white/10 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-white/20 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div className="w-[85%] pr-2">
@@ -119,9 +111,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Setoran Terbaru */}
-      <div className="relative rounded-[2rem] shadow-xl overflow-hidden bg-[#0f1712] border border-white/10">
-        <div className="absolute inset-0 bg-cover bg-[center_top] z-0 opacity-10" style={{ backgroundImage: "url('/images/bg/bg-paket.jpeg')" }}></div>
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-md z-0"></div>
+      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/40 border border-white/20 backdrop-blur-xl">
         
         <div className="relative z-10 px-6 py-6 border-b border-white/10 flex justify-between items-center">
           <div>

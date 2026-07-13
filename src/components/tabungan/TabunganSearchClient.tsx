@@ -106,7 +106,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
 
   return (
     <div className="space-y-6">
-      <div className="relative p-6 rounded-[2rem] shadow-2xl border border-white/20 bg-black/40 backdrop-blur-xl">
+      <div className="relative z-30 p-6 rounded-[2rem] shadow-2xl border border-white/20 bg-black/40 backdrop-blur-xl">
         <div className="relative z-10">
           <h3 className="text-lg font-bold text-white mb-4">Cari Estimasi Paket Tabungan</h3>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">

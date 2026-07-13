@@ -95,7 +95,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
   return (
     <div className="space-y-6">
       {/* Search Engine */}
-      <div className="bg-black/40 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-white/20 mb-6">
+      <div className="relative z-30 bg-black/40 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-white/20 mb-6">
         <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2 drop-shadow-md">
           <svg className="w-5 h-5 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           Cari Paket Umrah

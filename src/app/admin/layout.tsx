@@ -61,21 +61,25 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0f0c] flex text-white font-sans">
+    <div className="h-screen flex text-white relative font-sans overflow-hidden">
+      <div className="fixed inset-0 z-0 bg-black">
+        <img 
+          src="/images/bg/madinah_thumbnail.webp" 
+          alt="Background Madinah" 
+          className="w-full h-full object-cover opacity-60" 
+        />
+      </div>
+
       {/* Sidebar for desktop */}
       <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'} z-30`}>
         <div 
-          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/10 bg-[#0f1712]"
+          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/5 backdrop-blur-xl"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Background Image */}
-          <div className="absolute inset-0 z-0 opacity-20" style={{ backgroundImage: "url('/images/bg/madinah_thumbnail.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0f1712]/90 via-[#0f1712]/80 to-[#0f1712] z-0"></div>
-          
           <div className="relative z-10 flex flex-col flex-1 min-h-0">
-            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/10 bg-black/20 backdrop-blur-md rounded-b-lg transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
-              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className={`${isCollapsed ? 'h-10' : 'h-12'} w-auto drop-shadow-md shrink-0 transition-all duration-300`} />
+            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className={`${isCollapsed ? 'h-10' : 'h-14'} w-auto drop-shadow-md shrink-0 transition-all duration-300`} />
               <div className={`text-left flex flex-col justify-center overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[200px] opacity-100'}`}>
                 <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
                   Admin Panel
@@ -87,9 +91,9 @@ export default function AdminLayout({
             </div>
 
             <div className="flex flex-col flex-1 min-h-0">
-              <nav className="custom-scrollbar overflow-y-auto flex-1 px-3 py-6 space-y-2">
+              <nav className="custom-scrollbar overflow-y-auto flex-1 px-2 py-6 space-y-2">
                 {navigation.map((item) => {
-                  const isActive = pathname === item.href;
+                  const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href + '/'));
                   return (
                     <Link
                       key={item.name}
@@ -103,14 +107,14 @@ export default function AdminLayout({
                         isCollapsed ? 'px-0 justify-center' : 'px-4'
                       } ${
                         isActive
-                          ? "text-white bg-emerald-600/20 border border-emerald-500/30 shadow-md font-bold"
-                          : "text-gray-300 bg-white/5 hover:bg-white/10 hover:text-white border border-transparent"
+                          ? "text-white bg-white/20 shadow-md font-bold"
+                          : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
                       }`}
                       title={isCollapsed ? item.name : undefined}
                     >
                       <item.icon
                         className={`h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
-                          isActive ? "text-emerald-400" : "text-gray-400 group-hover:text-emerald-300"
+                          isActive ? "text-white" : "text-gray-300 group-hover:text-white"
                         }`}
                         aria-hidden="true"
                       />
@@ -122,19 +126,19 @@ export default function AdminLayout({
                 })}
               </nav>
 
-              <div className="flex-shrink-0 p-4 border-t border-white/10 bg-black/30 backdrop-blur-md">
+              <div className="flex-shrink-0 p-4 border-t border-white/20 bg-black/20 backdrop-blur-md">
                 <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'mb-4'}`}>
-                  <div className="w-10 h-10 rounded-full bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold uppercase overflow-hidden shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md overflow-hidden shrink-0">
                     A
                   </div>
                   <div className={`truncate transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[200px] opacity-100 ml-3'}`}>
-                    <p className="text-sm font-semibold text-white truncate">Administrator</p>
-                    <p className="text-[10px] text-gray-400 truncate">Sistem Pusat</p>
+                    <p className="text-sm font-medium text-white truncate drop-shadow-md">Administrator</p>
+                    <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">Sistem Pusat</p>
                   </div>
                 </div>
                 <button
                   onClick={() => signOut({ callbackUrl: "/login" })}
-                  className={`w-full flex items-center justify-center bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl text-sm font-bold transition-colors shadow-sm ${
+                  className={`w-full flex items-center justify-center bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md text-red-100 hover:text-white border border-red-500/30 rounded-xl text-sm font-bold transition-all shadow-sm ${
                     isCollapsed ? 'p-2 mt-4' : 'px-4 py-2.5'
                   }`}
                   title="Keluar"
@@ -152,7 +156,7 @@ export default function AdminLayout({
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 w-full z-40">
-        <div className="flex items-center justify-between bg-[#0f1712]/90 backdrop-blur-md h-16 px-4 shadow-md border-b border-white/10">
+        <div className="flex items-center justify-between bg-black/40 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/20">
           <div className="flex items-center gap-3">
             <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <div className="flex flex-col">
@@ -168,56 +172,33 @@ export default function AdminLayout({
         </div>
         
         {mobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-[#0f1712] border-b border-white/10 shadow-xl">
-            <div className="px-3 pt-4 pb-6 space-y-2">
-              <div className="space-y-2 mt-2">
-                <Link href="/admin" prefetch={true} onClick={() => { if (pathname !== '/admin') setIsNavigating(true); setMobileMenuOpen(false); }}>
-                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
-                    pathname === '/admin' 
-                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
-                  }`}>
-                    <HomeIcon className="w-5 h-5" />
-                    <span className="text-sm">Dashboard</span>
-                  </div>
-                </Link>
-                
-                <Link href="/admin/jamaah" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/jamaah')) setIsNavigating(true); setMobileMenuOpen(false); }}>
-                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
-                    pathname.startsWith('/admin/jamaah') 
-                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
-                  }`}>
-                    <UsersIcon className="w-5 h-5" />
-                    <span className="text-sm">Data Jamaah</span>
-                  </div>
-                </Link>
-
-                <Link href="/admin/pengumuman" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/pengumuman')) setIsNavigating(true); setMobileMenuOpen(false); }}>
-                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
-                    pathname.startsWith('/admin/pengumuman') 
-                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
-                  }`}>
-                    <MegaphoneIcon className="w-5 h-5" />
-                    <span className="text-sm">Pengumuman</span>
-                  </div>
-                </Link>
-
-                <Link href="/admin/paket" prefetch={true} onClick={() => { if (!pathname.startsWith('/admin/paket')) setIsNavigating(true); setMobileMenuOpen(false); }}>
-                  <div className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-medium active:scale-95 ${
-                    pathname.startsWith('/admin/paket') 
-                      ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
-                  }`}>
-                    <MapIcon className="w-5 h-5" />
-                    <span className="text-sm">Manajemen Paket</span>
-                  </div>
-                </Link>
-              </div>
+          <div className="absolute top-16 left-0 w-full bg-black/60 backdrop-blur-2xl shadow-2xl border-b border-white/20">
+            <div className="px-3 pt-4 pb-6 space-y-3">
+              {navigation.map((item) => {
+                const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href + '/'));
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href!}
+                    onClick={() => {
+                      if (pathname !== item.href) setIsNavigating(true);
+                      setMobileMenuOpen(false);
+                    }}
+                    prefetch={true}
+                    className={`${
+                      isActive
+                        ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
+                        : "bg-white/5 text-gray-200 font-medium hover:bg-white/10 hover:text-white border-white/10 hover:shadow-md"
+                    } px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
+                  >
+                    <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-300"}`} />
+                    <span className={isActive ? "font-bold" : "font-medium"}>{item.name}</span>
+                  </Link>
+                );
+              })}
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full text-left mt-4 text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 active:scale-95 transition-transform"
+                className="w-full text-left mt-4 text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 active:scale-95 transition-all"
               >
                 <ArrowLeftOnRectangleIcon className="h-5 w-5" />
                 Keluar Admin
@@ -228,20 +209,20 @@ export default function AdminLayout({
       </div>
 
       {/* Main content area */}
-      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative`}>
+      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative z-10 h-screen`}>
         {/* Instant Loading Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#0a0f0c]/60 backdrop-blur-sm">
-            <div className="flex flex-col items-center gap-4 p-8 bg-[#0f1712]/90 rounded-2xl shadow-2xl border border-emerald-500/20 backdrop-blur-md">
-              <div className="relative w-12 h-12">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-white/10 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12">
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>
               </div>
-              <p className="text-sm font-medium text-emerald-400 animate-pulse">Memuat halaman...</p>
+              <p className="text-sm font-medium text-emerald-300 animate-pulse">Memuat halaman...</p>
             </div>
           </div>
         )}
-        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none bg-[#0a0f0c] p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none p-4 sm:p-6 lg:p-8">
           {children}
         </main>
       </div>

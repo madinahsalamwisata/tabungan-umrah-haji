@@ -111,7 +111,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const paketEstimasi = data.filter(item => item.is_estimasi);
 
   const renderPaketCard = (item: PaketData) => (
-    <div key={item.id} className="relative bg-[#0f1712] border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row group">
+    <div key={item.id} className="relative bg-black/40 backdrop-blur-xl border border-white/20 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row group">
       {!item.is_estimasi && (
         <div className="md:w-2/5 h-48 md:h-auto relative bg-black/50">
           {item.poster_url ? (
@@ -204,7 +204,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-[#0f1712] border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200 custom-scrollbar">
+          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-black/60 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200 custom-scrollbar">
             <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">
               {editingData ? "Edit Paket" : "Buat Paket Baru"}
             </h2>

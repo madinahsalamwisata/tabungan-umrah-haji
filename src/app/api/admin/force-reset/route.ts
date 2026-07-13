@@ -6,6 +6,14 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
+    // 1. Paksa buat kolom di database produksi (Vercel) menggunakan eksekusi SQL mentah
+    try {
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Jamaah" ADD COLUMN IF NOT EXISTS "reset_token" TEXT;`);
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Jamaah" ADD COLUMN IF NOT EXISTS "reset_token_expiry" TIMESTAMP(3);`);
+    } catch (sqlError) {
+      console.error("SQL Alter Table Error (mungkin sudah ada):", sqlError);
+    }
+
     const hash = await bcrypt.hash('MSwisata2024', 10);
     
     // Pastikan admin ada

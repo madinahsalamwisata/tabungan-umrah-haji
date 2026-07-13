@@ -95,9 +95,9 @@ export default function DashboardLayout({
         <img 
           src="/images/bg/makkah_thumbnail.webp" 
           alt="Background Makkah" 
-          className="w-full h-full object-cover opacity-30" 
+          className="w-full h-full object-cover opacity-50" 
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-black/70 to-black/95"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/50 to-black/80"></div>
       </div>
 
       {/* Sidebar for desktop */}

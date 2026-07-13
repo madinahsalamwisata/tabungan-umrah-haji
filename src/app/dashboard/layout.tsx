@@ -91,14 +91,13 @@ export default function DashboardLayout({
 
   return (
     <div className="h-screen flex text-white relative font-sans overflow-hidden">
-      {/* Global Background Layer */}
-      <div className="fixed inset-0 z-0">
+      <div className="fixed inset-0 z-0 bg-black">
         <img 
           src="/images/bg/makkah_thumbnail.webp" 
           alt="Background Makkah" 
-          className="w-full h-full object-cover opacity-60" 
+          className="w-full h-full object-cover opacity-30" 
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-emerald-950/70 to-black/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-black/70 to-black/95"></div>
       </div>
 
       {/* Sidebar for desktop */}

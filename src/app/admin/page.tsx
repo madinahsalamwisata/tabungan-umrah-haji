@@ -55,7 +55,7 @@ export default async function AdminDashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-white/10 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-white/20 transition-all duration-300">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/40 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-black/50 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -68,7 +68,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-white/10 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-white/20 transition-all duration-300">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/40 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-black/50 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -81,7 +81,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-white/10 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-white/20 transition-all duration-300">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/40 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-black/50 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -94,7 +94,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-white/10 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-white/20 transition-all duration-300">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/40 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-black/50 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div className="w-[85%] pr-2">

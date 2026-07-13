@@ -73,7 +73,7 @@ export default function AdminLayout({
       {/* Sidebar for desktop */}
       <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'} z-30`}>
         <div 
-          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/5 backdrop-blur-xl"
+          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-black/40 backdrop-blur-xl"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -108,7 +108,7 @@ export default function AdminLayout({
                       } ${
                         isActive
                           ? "text-white bg-white/20 shadow-md font-bold"
-                          : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
+                          : "text-gray-200 bg-black/20 hover:bg-black/40 hover:text-white"
                       }`}
                       title={isCollapsed ? item.name : undefined}
                     >
@@ -188,7 +188,7 @@ export default function AdminLayout({
                     className={`${
                       isActive
                         ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
-                        : "bg-white/5 text-gray-200 font-medium hover:bg-white/10 hover:text-white border-white/10 hover:shadow-md"
+                        : "bg-black/20 text-gray-200 font-medium hover:bg-black/40 hover:text-white border-white/10 hover:shadow-md"
                     } px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
                   >
                     <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-300"}`} />
@@ -213,7 +213,7 @@ export default function AdminLayout({
         {/* Instant Loading Overlay */}
         {isNavigating && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-white/10 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-black/40 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
               <div className="relative w-10 h-10 sm:w-12 sm:h-12">
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>

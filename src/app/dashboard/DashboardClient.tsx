@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 
 // Helper component untuk kotak glassmorphism murni
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-white/10 backdrop-blur-xl border border-white/20 transition-all duration-300 hover:bg-white/15 hover:border-white/30 ${className}`}>
+  <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-black/40 backdrop-blur-xl border border-white/10 transition-all duration-300 hover:bg-black/50 hover:border-white/20 ${className}`}>
     <div className="relative z-10 p-6">
       {children}
     </div>

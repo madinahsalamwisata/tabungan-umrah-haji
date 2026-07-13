@@ -134,12 +134,12 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
       {/* Package List */}
       <div className="space-y-6">
         {filteredPakets.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border border-emerald-100 p-12 text-center">
-            <svg className="mx-auto h-12 w-12 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="bg-black/30 backdrop-blur-md rounded-[2rem] shadow-xl border border-white/10 p-12 text-center">
+            <svg className="mx-auto h-12 w-12 text-emerald-400 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
-            <h3 className="mt-2 text-sm font-medium text-emerald-900">Paket Tidak Ditemukan</h3>
-            <p className="mt-1 text-sm text-emerald-500">
+            <h3 className="mt-2 text-sm font-bold text-white drop-shadow-sm">Paket Tidak Ditemukan</h3>
+            <p className="mt-1 text-sm text-gray-300">
               Coba sesuaikan kriteria pencarian Anda untuk melihat lebih banyak paket.
             </p>
           </div>
@@ -167,50 +167,50 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                 ];
 
             return (
-              <div key={paket.id} className="bg-white rounded-xl shadow border border-gray-200 overflow-hidden flex flex-col md:flex-row hover:shadow-lg transition-shadow relative w-full">
+              <div key={paket.id} className="bg-white/10 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden flex flex-col md:flex-row hover:shadow-[0_0_25px_rgba(255,255,255,0.15)] transition-all duration-300 relative w-full group">
                 
                 {isAlreadySelected && (
-                  <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-bl-lg z-20">
+                  <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-3 py-1 rounded-bl-xl z-20 shadow-md">
                     Terdaftar
                   </div>
                 )}
 
                 {/* Left Side: Image */}
-                <div className="w-full md:w-[280px] shrink-0 relative bg-emerald-50 min-h-[200px] md:min-h-full">
+                <div className="w-full md:w-[280px] shrink-0 relative bg-emerald-900/50 min-h-[200px] md:min-h-full">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
                     src={paket.gambar || "/images/paket-umrah-rabiul-akhir-1448-h.jpeg"} 
                     alt={paket.nama_paket}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   
                   {/* Badges */}
-                  <div className="absolute top-0 left-0 bg-emerald-900 text-white font-bold px-2 py-0.5 rounded-br-lg text-xs z-10 shadow">
+                  <div className="absolute top-0 left-0 bg-emerald-900 text-white font-bold px-3 py-1 rounded-br-xl text-xs z-10 shadow-md">
                     {durasiHari} Hari
                   </div>
-                  <div className="absolute top-0 right-0 bg-red-500 text-white font-bold px-2 py-0.5 rounded-bl-lg text-xs z-10 flex items-center gap-1 shadow">
+                  <div className="absolute top-0 right-0 bg-red-500 text-white font-bold px-3 py-1 rounded-bl-xl text-xs z-10 flex items-center gap-1 shadow-md">
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     Diskon {formatCurrency(diskon)}
                   </div>
                 </div>
                 
                 {/* Right Side: Content */}
-                <div className="w-full p-5 flex flex-col justify-between">
+                <div className="w-full p-6 flex flex-col justify-between">
                   <div>
-                    <h2 className="text-xl font-bold text-emerald-900 mb-1.5 leading-tight">
+                    <h2 className="text-xl font-bold text-white mb-1.5 leading-tight drop-shadow-md">
                       {paket.nama_paket} {paket.nama_paket.includes("Program") ? "" : `(Program ${durasiHari} Hari)`}
                     </h2>
                     
                     {/* Subtitle Info */}
-                    <div className="flex flex-wrap items-center gap-3 text-gray-500 text-xs mb-3">
-                      <span className="flex items-center gap-1">
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex flex-wrap items-center gap-4 text-gray-300 text-xs mb-4">
+                      <span className="flex items-center gap-1.5">
+                        <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
                         {paket.maskapai || "Menyesuaikan"}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <span className="flex items-center gap-1.5">
+                        <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         {depart.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -220,11 +220,11 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     </div>
 
                     <div className="mb-4">
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 mb-2">Fasilitas Utama:</p>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-1.5 gap-x-4 text-xs text-gray-600">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-300 mb-2">Fasilitas Utama:</p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-xs text-gray-300">
                         {fasilitasArray.slice(0, 4).map((f: string, i: number) => (
                           <li key={i} className="flex items-start gap-1.5">
-                            <svg className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                             <span className="line-clamp-1">{f}</span>
                           </li>
                         ))}
@@ -232,28 +232,28 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-between items-end sm:items-center gap-4 mt-2 pt-4 border-t border-gray-100">
+                  <div className="flex flex-col sm:flex-row justify-between items-end sm:items-center gap-4 mt-2 pt-5 border-t border-white/10">
                     <div className="w-full sm:w-auto">
-                      <p className="text-xs text-gray-500 mb-0.5">Mulai dari (Quad)</p>
+                      <p className="text-xs text-emerald-100/70 mb-0.5 drop-shadow-sm">Mulai dari (Quad)</p>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-black text-emerald-700">{formatShortCurrency(Number(paket.harga_quad))}</span>
+                        <span className="text-2xl font-black text-emerald-400 drop-shadow-md">{formatShortCurrency(Number(paket.harga_quad))}</span>
                         <span className="text-xs text-gray-400 line-through">{formatCurrency(originalQuad)}</span>
                       </div>
                     </div>
                     
                     <div className="flex flex-col gap-2 w-full sm:w-auto text-xs">
-                      <div className="flex flex-col gap-1 text-right">
+                      <div className="flex flex-col gap-1 text-right text-gray-300">
                         <div className="flex justify-between sm:justify-end gap-2.5">
                           <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Quad:</span>
-                          <span><strong className="text-gray-900">{formatCurrency(Number(paket.harga_quad))}</strong> <span className="text-gray-400 line-through text-[10px]">{formatCurrency(originalQuad)}</span></span>
+                          <span><strong className="text-white drop-shadow-sm">{formatCurrency(Number(paket.harga_quad))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalQuad)}</span></span>
                         </div>
                         <div className="flex justify-between sm:justify-end gap-2.5">
                           <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Triple:</span>
-                          <span><strong className="text-gray-900">{formatCurrency(Number(paket.harga_triple))}</strong> <span className="text-gray-400 line-through text-[10px]">{formatCurrency(originalTriple)}</span></span>
+                          <span><strong className="text-white drop-shadow-sm">{formatCurrency(Number(paket.harga_triple))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalTriple)}</span></span>
                         </div>
                         <div className="flex justify-between sm:justify-end gap-2.5">
                           <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> Double:</span>
-                          <span><strong className="text-gray-900">{formatCurrency(Number(paket.harga_double))}</strong> <span className="text-gray-400 line-through text-[10px]">{formatCurrency(originalDouble)}</span></span>
+                          <span><strong className="text-white drop-shadow-sm">{formatCurrency(Number(paket.harga_double))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalDouble)}</span></span>
                         </div>
                       </div>
 
@@ -266,14 +266,14 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                         const isMoreThanOneYear = depart > oneYearFromNow;
 
                         return (
-                          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto mt-3">
+                          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-4">
                             {isMoreThanOneYear && !isAlreadySelected && (
-                              <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}&source=paket`} className="w-full sm:w-auto bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold py-2 px-5 text-sm rounded-full shadow-sm transition-colors text-center whitespace-nowrap">
+                              <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}&source=paket`} className="w-full sm:w-auto bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 font-bold py-2.5 px-6 text-sm rounded-full shadow-sm transition-all text-center whitespace-nowrap backdrop-blur-md">
                                 Mulai Tabungan
                               </Link>
                             )}
-                            <Link href={`https://madinahsalamwisata.com`} target="_blank" className="w-full sm:w-auto bg-emerald-900 hover:bg-emerald-800 text-white font-bold py-2 px-5 text-sm rounded-full shadow transition-colors text-center whitespace-nowrap">
-                              Booking Langsung
+                            <Link href={`https://madinahsalamwisata.com`} target="_blank" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 text-sm rounded-full shadow-lg hover:shadow-[0_0_15px_rgba(16,185,129,0.5)] transition-all text-center whitespace-nowrap border border-emerald-500">
+                                Booking Langsung
                             </Link>
                           </div>
                         );

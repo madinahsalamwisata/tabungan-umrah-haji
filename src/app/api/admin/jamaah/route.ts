@@ -2,12 +2,64 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import bcrypt from "bcryptjs";
 
 // Verifikasi Admin
 async function isAdmin() {
   const session = await getServerSession(authOptions);
   return session?.user?.email === "madinahsalamwisata@gmail.com";
 }
+
+export async function POST(req: Request) {
+  try {
+    if (!(await isAdmin())) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const { nama, email, nik, no_hp, alamat, password } = body;
+
+    if (!nama || !email || !nik || !no_hp || !password) {
+      return NextResponse.json({ message: "Semua field (nama, email, nik, no_hp, password) wajib diisi" }, { status: 400 });
+    }
+
+    const existingUser = await prisma.jamaah.findFirst({
+      where: {
+        OR: [
+          { email },
+          { nik }
+        ]
+      }
+    });
+
+    if (existingUser) {
+      return NextResponse.json({ message: "Email atau NIK sudah terdaftar" }, { status: 409 });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newJamaah = await prisma.jamaah.create({
+      data: {
+        nama,
+        email,
+        nik,
+        no_hp,
+        alamat: alamat || "",
+        password_hash: hashedPassword
+      },
+      include: {
+        rencana_tabungan: true
+      }
+    });
+
+    const { password_hash, ...jamaahWithoutPassword } = newJamaah;
+    return NextResponse.json(jamaahWithoutPassword, { status: 201 });
+  } catch (error: any) {
+    console.error("Create Jamaah Error:", error);
+    return NextResponse.json({ message: error.message || "Internal server error" }, { status: 500 });
+  }
+}
+
 
 export async function PUT(req: Request) {
   try {

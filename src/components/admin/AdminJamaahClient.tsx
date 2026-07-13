@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 type JamaahData = {
   id: string;
@@ -22,7 +23,27 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
   const [data, setData] = useState<JamaahData[]>(initialData);
   const [search, setSearch] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingJamaah, setEditingJamaah] = useState<JamaahData | null>(null);
+
+  // Helper Swal Notifications
+  const showNotification = (title: string, text: string, icon: 'success' | 'error' | 'warning') => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+      background: 'rgba(15, 23, 42, 0.85)',
+      color: '#fff',
+      backdrop: 'rgba(0,0,0,0.6)',
+      confirmButtonColor: '#059669',
+      customClass: {
+        popup: 'rounded-2xl border border-white/10 shadow-2xl backdrop-blur-xl',
+        title: 'text-lg text-emerald-400 font-bold',
+        htmlContainer: 'text-sm text-gray-200',
+        confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2'
+      }
+    });
+  };
 
   // Filter pencarian
   const filteredData = data.filter(j => 
@@ -37,18 +58,39 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
   };
 
   const handleDelete = async (id: string, nama: string) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus jamaah ${nama} secara permanen? Semua data tabungan akan ikut terhapus!`)) {
+    const result = await Swal.fire({
+      title: 'Hapus Jamaah?',
+      text: `Apakah Anda yakin ingin menghapus jamaah ${nama} secara permanen? Semua data tabungan akan ikut terhapus!`,
+      icon: 'warning',
+      showCancelButton: true,
+      background: 'rgba(15, 23, 42, 0.85)',
+      color: '#fff',
+      backdrop: 'rgba(0,0,0,0.6)',
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#4b5563',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal',
+      customClass: {
+        popup: 'rounded-2xl border border-white/10 shadow-2xl backdrop-blur-xl',
+        title: 'text-lg text-red-400 font-bold',
+        htmlContainer: 'text-sm text-gray-200',
+        confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2',
+        cancelButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2',
+      }
+    });
+
+    if (result.isConfirmed) {
       try {
         const res = await fetch(`/api/admin/jamaah?id=${id}`, { method: 'DELETE' });
         if (res.ok) {
           setData(prev => prev.filter(j => j.id !== id));
-          alert("Data berhasil dihapus!");
+          showNotification('Berhasil', 'Data berhasil dihapus!', 'success');
         } else {
           const error = await res.json();
-          alert(`Gagal: ${error.message}`);
+          showNotification('Gagal', error.message, 'error');
         }
       } catch (err) {
-        alert("Terjadi kesalahan sistem.");
+        showNotification('Gagal', 'Terjadi kesalahan sistem.', 'error');
       }
     }
   };
@@ -79,13 +121,47 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
         // Update tabel
         setData(prev => prev.map(j => j.id === result.id ? { ...j, ...updatedData } : j));
         setIsEditModalOpen(false);
-        alert("Data berhasil diperbarui!");
+        showNotification('Berhasil', 'Data berhasil diperbarui!', 'success');
       } else {
         const error = await res.json();
-        alert(`Gagal: ${error.message}`);
+        showNotification('Gagal', error.message, 'error');
       }
     } catch (err) {
-      alert("Terjadi kesalahan saat menyimpan data.");
+      showNotification('Gagal', 'Terjadi kesalahan saat menyimpan data.', 'error');
+    }
+  };
+
+  const handleSaveNew = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const newData = {
+      nama: formData.get("nama") as string,
+      email: formData.get("email") as string,
+      no_hp: formData.get("no_hp") as string,
+      nik: formData.get("nik") as string,
+      alamat: formData.get("alamat") as string,
+      password: formData.get("password") as string,
+    };
+
+    try {
+      const res = await fetch("/api/admin/jamaah", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newData)
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        // Update tabel
+        setData(prev => [result, ...prev]);
+        setIsAddModalOpen(false);
+        showNotification('Berhasil', 'Jamaah baru berhasil ditambahkan!', 'success');
+      } else {
+        const error = await res.json();
+        showNotification('Gagal', error.message, 'error');
+      }
+    } catch (err) {
+      showNotification('Gagal', 'Terjadi kesalahan saat menyimpan data.', 'error');
     }
   };
 
@@ -106,9 +182,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
           />
         </div>
         <button 
-          onClick={() => {
-            alert("Fitur tambah manual jamaah sedang dalam pengembangan.");
-          }}
+          onClick={() => setIsAddModalOpen(true)}
           className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-lg"
         >
           <UserPlusIcon className="w-5 h-5" />
@@ -141,7 +215,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
                     <div className="text-gray-400 text-xs mt-1">{jamaah.no_hp} • NIK: {jamaah.nik}</div>
                   </td>
                   <td className="px-6 py-4">
-                    {jamaah.rencana_tabungan.length > 0 ? (
+                    {jamaah.rencana_tabungan && jamaah.rencana_tabungan.length > 0 ? (
                       <div className="space-y-2">
                         {jamaah.rencana_tabungan.map(rt => (
                           <div key={rt.id} className="flex flex-col gap-1 bg-white/5 p-2 rounded-lg border border-white/5">
@@ -159,7 +233,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
                     )}
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <div className="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-center gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
                       <button 
                         onClick={() => handleEdit(jamaah)}
                         className="p-2 bg-blue-500/10 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-colors border border-blue-500/20"
@@ -196,10 +270,8 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       {/* Edit Modal (Glassmorphism Style) */}
       {isEditModalOpen && editingJamaah && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsEditModalOpen(false)}></div>
           
-          {/* Modal Container */}
           <div className="relative w-full max-w-2xl bg-black/60 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
             <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Edit Data Jamaah</h2>
             
@@ -233,6 +305,56 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
                 </button>
                 <button type="submit" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg">
                   Simpan Perubahan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Modal (Glassmorphism Style) */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsAddModalOpen(false)}></div>
+          
+          <div className="relative w-full max-w-2xl bg-black/60 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
+            <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Tambah Jamaah Baru</h2>
+            
+            <form onSubmit={handleSaveNew} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                  <input name="nama" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email</label>
+                  <input name="email" type="email" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">NIK</label>
+                  <input name="nik" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nomor HP</label>
+                  <input name="no_hp" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Password Awal</label>
+                  <input name="password" type="password" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <p className="text-[10px] text-gray-400 mt-1">Jamaah dapat mengubah password setelah berhasil login.</p>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Alamat Lengkap</label>
+                  <textarea name="alamat" rows={2} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none"></textarea>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-white/10">
+                <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-300 bg-white/5 hover:bg-white/10 transition-colors">
+                  Batal
+                </button>
+                <button type="submit" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg">
+                  Simpan Jamaah
                 </button>
               </div>
             </form>
@@ -274,3 +396,4 @@ function TrashIcon(props: any) {
     </svg>
   );
 }
+

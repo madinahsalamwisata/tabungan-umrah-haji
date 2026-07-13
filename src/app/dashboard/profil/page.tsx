@@ -119,7 +119,7 @@ export default async function ProfilPage() {
             </h3>
           </div>
           
-          <div className="relative z-10 p-6">
+          <div className="relative z-10 p-6 max-h-[320px] overflow-y-auto custom-scrollbar">
             {rencanaAktif.length > 0 ? (
               <div className="grid grid-cols-1 gap-4">
                 {rencanaAktif.map((rencana: any) => {

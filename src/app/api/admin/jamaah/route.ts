@@ -46,14 +46,15 @@ export async function POST(req: Request) {
         no_hp,
         alamat: alamat || "",
         password_hash: hashedPassword
-      },
-      include: {
-        rencana_tabungan: true
       }
     });
 
     const { password_hash, ...jamaahWithoutPassword } = newJamaah;
-    return NextResponse.json(jamaahWithoutPassword, { status: 201 });
+    const responseData = {
+      ...jamaahWithoutPassword,
+      rencana_tabungan: []
+    };
+    return NextResponse.json(responseData, { status: 201 });
   } catch (error: any) {
     console.error("Create Jamaah Error:", error);
     return NextResponse.json({ message: error.message || "Internal server error" }, { status: 500 });

@@ -30,7 +30,7 @@ function CustomSelect({
   const selectedOption = options.find(opt => opt.value === value);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className={`relative ${isOpen ? 'z-50' : ''}`} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -45,7 +45,7 @@ function CustomSelect({
       </button>
 
       {isOpen && (
-        <div className="absolute z-20 mt-1 w-full bg-[#111814]/95 backdrop-blur-xl border border-white/10 shadow-xl max-h-48 rounded-md py-1 text-base overflow-auto focus:outline-none sm:text-sm">
+        <div className="absolute z-50 mt-1 w-full bg-[#111814]/95 backdrop-blur-xl border border-white/10 shadow-xl max-h-48 rounded-md py-1 text-base overflow-auto focus:outline-none sm:text-sm">
           <div
             className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-500/20 hover:text-emerald-300 ${value === "" ? "bg-emerald-500/20 text-emerald-300 font-semibold" : "text-gray-300"}`}
             onClick={() => { onChange(""); setIsOpen(false); }}
@@ -106,7 +106,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
 
   return (
     <div className="space-y-6">
-      <div className="relative p-6 rounded-[2rem] shadow-2xl border border-white/20 bg-black/40 backdrop-blur-xl overflow-hidden">
+      <div className="relative p-6 rounded-[2rem] shadow-2xl border border-white/20 bg-black/40 backdrop-blur-xl">
         <div className="relative z-10">
           <h3 className="text-lg font-bold text-white mb-4">Cari Estimasi Paket Tabungan</h3>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">

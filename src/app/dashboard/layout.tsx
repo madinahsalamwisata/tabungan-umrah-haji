@@ -291,13 +291,13 @@ export default function DashboardLayout({
                     <div key={item.name} className="space-y-2">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-base font-medium transition-all border backdrop-blur-sm shadow-sm active:scale-95 ${isOpen ? 'bg-white/40 border-white/50 text-emerald-900 scale-[0.98]' : 'bg-white/20 border-white/30 text-emerald-800 hover:bg-white/30 hover:text-emerald-900'}`}
+                        className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-base font-medium transition-all border backdrop-blur-sm shadow-sm active:scale-95 ${isOpen ? 'bg-white/20 border-white/30 text-white font-bold scale-[0.98]' : 'bg-white/5 border-white/10 text-gray-200 hover:bg-white/10 hover:text-white'}`}
                       >
                         <div className="flex items-center gap-3">
-                          <item.icon className={`h-5 w-5 ${isOpen ? "text-emerald-900" : "text-emerald-700"}`} />
-                          <span className="drop-shadow-sm font-bold">{item.name}</span>
+                          <item.icon className={`h-5 w-5 ${isOpen ? "text-white" : "text-gray-300"}`} />
+                          <span className="drop-shadow-sm">{item.name}</span>
                         </div>
-                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180 text-emerald-900' : 'text-emerald-800'}`} />
+                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180 text-white' : 'text-gray-400'}`} />
                       </button>
                       {isOpen && (
                         <div className="pl-6 pr-1 space-y-2 mt-2">
@@ -314,8 +314,8 @@ export default function DashboardLayout({
                                   prefetch={true}
                                   className={`${
                                   isChildCurrent
-                                    ? "bg-white/50 text-emerald-900 font-bold border-white/60 shadow-md scale-[0.98]"
-                                    : "bg-white/10 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/20 hover:shadow-md"
+                                    ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
+                                    : "bg-white/5 text-gray-300 font-medium hover:bg-white/10 hover:text-white border-white/10 hover:shadow-md"
                                 } flex items-center px-4 py-2.5 text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
                               >
                                 {child.name}
@@ -340,12 +340,12 @@ export default function DashboardLayout({
                     prefetch={true}
                     className={`${
                       isActive
-                        ? "bg-white/40 text-emerald-900 font-bold border-white/50 shadow-md scale-[0.98]"
-                        : "bg-white/20 text-emerald-800 font-semibold hover:bg-white/30 hover:text-emerald-900 border-white/30 hover:shadow-md"
+                        ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
+                        : "bg-white/5 text-gray-200 font-medium hover:bg-white/10 hover:text-white border-white/10 hover:shadow-md"
                     } px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
                   >
-                    <item.icon className={`h-5 w-5 ${isActive ? "text-emerald-900" : "text-emerald-700"}`} />
-                    <span className={isActive ? "font-bold" : "font-semibold"}>{item.name}</span>
+                    <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-300"}`} />
+                    <span className={isActive ? "font-bold" : "font-medium"}>{item.name}</span>
                   </Link>
                 );
               })}
@@ -365,9 +365,9 @@ export default function DashboardLayout({
       <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative z-10 h-screen`}>
         {/* Instant Loading Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="flex flex-col items-center gap-4 p-8 bg-white/10 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
-              <div className="relative w-12 h-12">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-white/10 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12">
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>
               </div>

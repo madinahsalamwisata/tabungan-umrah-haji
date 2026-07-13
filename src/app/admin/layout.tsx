@@ -68,6 +68,7 @@ export default function AdminLayout({
           alt="Background Madinah" 
           className="w-full h-full object-cover opacity-60" 
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/10 to-black/30 pointer-events-none"></div>
       </div>
 
       {/* Sidebar for desktop */}

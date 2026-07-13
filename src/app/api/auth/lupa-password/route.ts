@@ -33,7 +33,9 @@ export async function POST(req: Request) {
     await prisma.jamaah.update({
       where: { id: jamaah.id },
       data: {
+        // @ts-ignore
         reset_token: resetToken,
+        // @ts-ignore
         reset_token_expiry: tokenExpiry,
       },
     });

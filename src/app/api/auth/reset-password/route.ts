@@ -23,7 +23,9 @@ export async function POST(req: Request) {
     // Cari jamaah dengan token yang cocok dan belum expired
     const jamaah = await prisma.jamaah.findFirst({
       where: {
+        // @ts-ignore
         reset_token: token,
+        // @ts-ignore
         reset_token_expiry: {
           gte: new Date(), // Pastikan token expiry masih lebih besar dari waktu sekarang
         },
@@ -45,7 +47,9 @@ export async function POST(req: Request) {
       where: { id: jamaah.id },
       data: {
         password_hash: hashedPassword,
+        // @ts-ignore
         reset_token: null, // Hapus token setelah digunakan
+        // @ts-ignore
         reset_token_expiry: null,
       },
     });

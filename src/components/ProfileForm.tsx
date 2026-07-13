@@ -231,8 +231,9 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
             </div>
           </div>
         </div>
+      </div>
 
-        {/* KOLOM KANAN: Detail Informasi */}
+      {/* KOLOM KANAN: Detail Informasi */}
         <div className="lg:col-span-8">
           <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500 delay-75 flex flex-col justify-center">
           <div className="px-6 py-5 border-b border-white/5">
@@ -328,6 +329,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
           </div>
         </div>
       </div>
+    </div>
 
       {/* Riwayat Tabungan dirender di luar kolom agar memanjang ke samping penuh */}
       {children}

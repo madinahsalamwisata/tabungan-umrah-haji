@@ -19,9 +19,9 @@ export default async function AdminPaketPage() {
 
   return (
     <div className="space-y-6">
-      <div className="inline-block px-6 py-3 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10 shadow-lg">
-        <h1 className="text-2xl font-bold text-white drop-shadow-md">Manajemen Paket</h1>
-        <p className="text-sm text-gray-300 mt-1">Kelola daftar paket perjalanan, status keberangkatan, dan poster.</p>
+      <div className="inline-block px-6 py-3 rounded-2xl bg-white/90 backdrop-blur-md border border-emerald-100 shadow-lg">
+        <h1 className="text-2xl font-bold text-emerald-900 drop-shadow-md">Manajemen Paket</h1>
+        <p className="text-sm text-emerald-800 mt-1">Kelola daftar paket perjalanan, status keberangkatan, dan poster.</p>
       </div>
 
       <AdminPaketClient initialData={serialized} />

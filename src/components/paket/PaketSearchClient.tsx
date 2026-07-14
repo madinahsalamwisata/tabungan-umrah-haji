@@ -34,7 +34,7 @@ function CustomSelect({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-black/80 backdrop-blur-xl border border-white/10 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm h-[38px] text-white hover:bg-white/15 transition-colors"
+        className="w-full bg-white/90 backdrop-blur-md border border-emerald-100 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm h-[38px] text-white hover:bg-white/15 transition-colors"
       >
         <span className="block truncate">{selectedOption ? selectedOption.label : placeholder}</span>
         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -96,7 +96,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
     <div className="space-y-6">
       {/* Search Engine */}
       <div className="relative z-30 bg-black/80 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-white/20 mb-6">
-        <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2 drop-shadow-md">
+        <h3 className="text-lg font-bold text-emerald-900 mb-4 flex items-center gap-2 drop-shadow-md">
           <svg className="w-5 h-5 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           Cari Paket Umrah
         </h3>
@@ -135,11 +135,11 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
       <div className="space-y-6">
         {filteredPakets.length === 0 ? (
           <div className="bg-black/30 backdrop-blur-md rounded-[2rem] shadow-xl border border-white/10 p-12 text-center">
-            <svg className="mx-auto h-12 w-12 text-emerald-400 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="mx-auto h-12 w-12 text-emerald-700 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
-            <h3 className="mt-2 text-sm font-bold text-white drop-shadow-sm">Paket Tidak Ditemukan</h3>
-            <p className="mt-1 text-sm text-gray-300">
+            <h3 className="mt-2 text-sm font-bold text-emerald-900 drop-shadow-sm">Paket Tidak Ditemukan</h3>
+            <p className="mt-1 text-sm text-emerald-800">
               Coba sesuaikan kriteria pencarian Anda untuk melihat lebih banyak paket.
             </p>
           </div>
@@ -197,20 +197,20 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                 {/* Right Side: Content */}
                 <div className="w-full p-6 flex flex-col justify-between">
                   <div>
-                    <h2 className="text-xl font-bold text-white mb-1.5 leading-tight drop-shadow-md">
+                    <h2 className="text-xl font-bold text-emerald-900 mb-1.5 leading-tight drop-shadow-md">
                       {paket.nama_paket} {paket.nama_paket.includes("Program") ? "" : `(Program ${durasiHari} Hari)`}
                     </h2>
                     
                     {/* Subtitle Info */}
-                    <div className="flex flex-wrap items-center gap-4 text-gray-300 text-xs mb-4">
+                    <div className="flex flex-wrap items-center gap-4 text-emerald-800 text-xs mb-4">
                       <span className="flex items-center gap-1.5">
-                        <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-4 h-4 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
                         {paket.maskapai || "Menyesuaikan"}
                       </span>
                       <span className="flex items-center gap-1.5">
-                        <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-4 h-4 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         {depart.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -236,24 +236,24 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     <div className="w-full sm:w-auto">
                       <p className="text-xs text-emerald-100/70 mb-0.5 drop-shadow-sm">Mulai dari (Quad)</p>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-black text-emerald-400 drop-shadow-md">{formatShortCurrency(Number(paket.harga_quad))}</span>
+                        <span className="text-2xl font-black text-emerald-700 drop-shadow-md">{formatShortCurrency(Number(paket.harga_quad))}</span>
                         <span className="text-xs text-gray-400 line-through">{formatCurrency(originalQuad)}</span>
                       </div>
                     </div>
                     
                     <div className="flex flex-col gap-2 w-full sm:w-auto text-xs">
-                      <div className="flex flex-col gap-1 text-right text-gray-300">
+                      <div className="flex flex-col gap-1 text-right text-emerald-800">
                         <div className="flex justify-between sm:justify-end gap-2.5">
                           <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Quad:</span>
-                          <span><strong className="text-white drop-shadow-sm">{formatCurrency(Number(paket.harga_quad))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalQuad)}</span></span>
+                          <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_quad))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalQuad)}</span></span>
                         </div>
                         <div className="flex justify-between sm:justify-end gap-2.5">
                           <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Triple:</span>
-                          <span><strong className="text-white drop-shadow-sm">{formatCurrency(Number(paket.harga_triple))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalTriple)}</span></span>
+                          <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_triple))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalTriple)}</span></span>
                         </div>
                         <div className="flex justify-between sm:justify-end gap-2.5">
                           <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> Double:</span>
-                          <span><strong className="text-white drop-shadow-sm">{formatCurrency(Number(paket.harga_double))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalDouble)}</span></span>
+                          <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_double))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalDouble)}</span></span>
                         </div>
                       </div>
 

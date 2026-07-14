@@ -68,8 +68,8 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
 
   return (
     <div className="bg-black/80 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden">
-      <div className="bg-emerald-900/40 backdrop-blur-md px-6 py-5 border-b border-white/10">
-        <h2 className="text-xl font-bold text-white drop-shadow-md">Rencanakan Tabungan</h2>
+      <div className="bg-emerald-900/40 backdrop-blur-md px-6 py-5 border-b border-emerald-100">
+        <h2 className="text-xl font-bold text-emerald-900 drop-shadow-md">Rencanakan Tabungan</h2>
         <p className="text-emerald-100/90 text-sm mt-1">{paket.nama_paket}</p>
       </div>
 
@@ -93,7 +93,7 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
                       cursor-pointer border-2 rounded-xl p-3 text-center transition-all backdrop-blur-sm
                       ${jenisKamar === kamar 
                         ? "border-emerald-400 bg-emerald-500/20 text-emerald-300 shadow-[0_0_15px_rgba(52,211,153,0.2)]" 
-                        : "border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:bg-white/5"
+                        : "border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:bg-emerald-50"
                       }
                     `}
                   >
@@ -157,10 +157,10 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
                     onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
                     className="w-16 text-center border-b-2 bg-transparent border-emerald-500/50 font-bold text-xl text-white focus:outline-none focus:border-emerald-400"
                   />
-                  <span className="text-sm text-emerald-400 font-medium ml-1">Bulan</span>
+                  <span className="text-sm text-emerald-700 font-medium ml-1">Bulan</span>
                 </div>
               </div>
-              <div className="flex justify-between text-xs text-gray-400 mt-2">
+              <div className="flex justify-between text-xs text-emerald-700 mt-2">
                 <span>3 Bulan</span>
                 <span>{maxBulan} Bulan</span>
               </div>
@@ -169,26 +169,26 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
           </div>
 
           <div className="bg-black/30 backdrop-blur-md rounded-xl p-5 border border-white/10 space-y-3">
-            <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">Estimasi Biaya</h3>
+            <h3 className="text-sm font-bold text-emerald-700 uppercase tracking-wider mb-2">Estimasi Biaya</h3>
             
             <div className="flex justify-between items-center text-sm">
               <span className="text-gray-300">Harga per Orang (Kamar {jenisKamar})</span>
-              <span className="font-semibold text-white">{formatRp(hargaPerOrang)}</span>
+              <span className="font-semibold text-emerald-900">{formatRp(hargaPerOrang)}</span>
             </div>
 
-            <div className="flex justify-between items-center text-sm border-b border-white/10 pb-3">
+            <div className="flex justify-between items-center text-sm border-b border-emerald-100 pb-3">
               <span className="text-gray-300">Total Jamaah</span>
-              <span className="font-semibold text-white">{jumlahJamaah} Orang</span>
+              <span className="font-semibold text-emerald-900">{jumlahJamaah} Orang</span>
             </div>
 
             <div className="flex justify-between items-center pt-1">
               <span className="text-emerald-300 font-medium">Total Keseluruhan</span>
-              <span className="text-lg font-bold text-white">{formatRp(totalBiaya)}</span>
+              <span className="text-lg font-bold text-emerald-900">{formatRp(totalBiaya)}</span>
             </div>
             
             <div className="flex justify-between items-center bg-black/80 p-3 rounded-lg border border-white/10 mt-3">
               <span className="text-emerald-300 font-bold">Setoran per Bulan</span>
-              <span className="text-2xl font-black text-emerald-400">{formatRp(setoranBulanan)}</span>
+              <span className="text-2xl font-black text-emerald-700">{formatRp(setoranBulanan)}</span>
             </div>
           </div>
 

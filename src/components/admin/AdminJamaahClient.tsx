@@ -38,7 +38,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       confirmButtonColor: '#059669',
       customClass: {
         popup: 'rounded-2xl border border-white/10 shadow-2xl backdrop-blur-xl',
-        title: 'text-lg text-emerald-400 font-bold',
+        title: 'text-lg text-emerald-700 font-bold',
         htmlContainer: 'text-sm text-gray-200',
         confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2'
       }
@@ -191,11 +191,11 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       </div>
 
       {/* Glassmorphism Table Container */}
-      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/80 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500">
+      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-white/90 backdrop-blur-md border border-emerald-100 animate-in fade-in zoom-in-95 duration-500">
         
         <div className="relative z-10 overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
-            <thead className="text-xs uppercase bg-black/80 text-gray-400 border-b border-white/10 backdrop-blur-md">
+            <thead className="text-xs uppercase bg-black/80 text-gray-400 border-b border-emerald-100 backdrop-blur-md">
               <tr>
                 <th scope="col" className="px-6 py-5 font-bold tracking-wider">Info Jamaah</th>
                 <th scope="col" className="px-6 py-5 font-bold tracking-wider">Kontak & NIK</th>
@@ -205,23 +205,23 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
             </thead>
             <tbody className="divide-y divide-white/10">
               {filteredData.map((jamaah) => (
-                <tr key={jamaah.id} className="hover:bg-white/5 transition-colors group">
+                <tr key={jamaah.id} className="hover:bg-emerald-50 transition-colors group">
                   <td className="px-6 py-4">
                     <div className="font-bold text-white text-base">{jamaah.nama}</div>
-                    <div className="text-gray-400 text-xs mt-1">Terdaftar: {new Date(jamaah.created_at).toLocaleDateString('id-ID')}</div>
+                    <div className="text-emerald-700 text-xs mt-1">Terdaftar: {new Date(jamaah.created_at).toLocaleDateString('id-ID')}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="font-medium text-emerald-400">{jamaah.email}</div>
-                    <div className="text-gray-400 text-xs mt-1">{jamaah.no_hp} • NIK: {jamaah.nik}</div>
+                    <div className="font-medium text-emerald-700">{jamaah.email}</div>
+                    <div className="text-emerald-700 text-xs mt-1">{jamaah.no_hp} • NIK: {jamaah.nik}</div>
                   </td>
                   <td className="px-6 py-4">
                     {jamaah.rencana_tabungan && jamaah.rencana_tabungan.length > 0 ? (
                       <div className="space-y-2">
                         {jamaah.rencana_tabungan.map(rt => (
-                          <div key={rt.id} className="flex flex-col gap-1 bg-white/5 p-2 rounded-lg border border-white/5">
-                            <span className="text-xs font-semibold text-white">{rt.paket_nama}</span>
+                          <div key={rt.id} className="flex flex-col gap-1 bg-white/5 p-2 rounded-lg border border-emerald-100">
+                            <span className="text-xs font-semibold text-emerald-900">{rt.paket_nama}</span>
                             <div className="flex items-center gap-2">
-                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${rt.status === 'Aktif' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-500/20 text-gray-400'}`}>
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${rt.status === 'Aktif' ? 'bg-emerald-500/20 text-emerald-700' : 'bg-gray-500/20 text-gray-400'}`}>
                                 {rt.status}
                               </span>
                             </div>
@@ -273,28 +273,28 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsEditModalOpen(false)}></div>
           
           <div className="relative w-full max-w-2xl bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
-            <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Edit Data Jamaah</h2>
+            <h2 className="text-xl font-bold text-emerald-900 mb-6 border-b border-emerald-100 pb-4">Edit Data Jamaah</h2>
             
             <form onSubmit={handleSaveEdit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Nama Lengkap</label>
                   <input name="nama" defaultValue={editingJamaah.nama} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Email</label>
                   <input name="email" type="email" defaultValue={editingJamaah.email} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">NIK</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">NIK</label>
                   <input name="nik" defaultValue={editingJamaah.nik} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nomor HP</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Nomor HP</label>
                   <input name="no_hp" defaultValue={editingJamaah.no_hp} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Alamat Lengkap</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Alamat Lengkap</label>
                   <textarea name="alamat" defaultValue={editingJamaah.alamat || ""} rows={3} className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none"></textarea>
                 </div>
               </div>
@@ -318,33 +318,33 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsAddModalOpen(false)}></div>
           
           <div className="relative w-full max-w-2xl bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
-            <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Tambah Jamaah Baru</h2>
+            <h2 className="text-xl font-bold text-emerald-900 mb-6 border-b border-emerald-100 pb-4">Tambah Jamaah Baru</h2>
             
             <form onSubmit={handleSaveNew} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Nama Lengkap</label>
                   <input name="nama" required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Email</label>
                   <input name="email" type="email" required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">NIK</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">NIK</label>
                   <input name="nik" required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nomor HP</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Nomor HP</label>
                   <input name="no_hp" required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Password Awal</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Password Awal</label>
                   <input name="password" type="password" required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-                  <p className="text-[10px] text-gray-400 mt-1">Jamaah dapat mengubah password setelah berhasil login.</p>
+                  <p className="text-[10px] text-emerald-700 mt-1">Jamaah dapat mengubah password setelah berhasil login.</p>
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Alamat Lengkap</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Alamat Lengkap</label>
                   <textarea name="alamat" rows={2} className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none"></textarea>
                 </div>
               </div>

@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 
 // Helper component untuk kotak glassmorphism murni
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-black/80 backdrop-blur-xl border border-white/10 transition-all duration-300 hover:bg-black/80 hover:border-white/20 ${className}`}>
+  <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-white/90 backdrop-blur-md border border-emerald-100 transition-all duration-300 hover:bg-black/80 hover:border-white/20 ${className}`}>
     <div className="relative z-10 p-4 sm:p-6">
       {children}
     </div>
@@ -55,7 +55,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
     Swal.fire({
       title: item.judul,
       html: `
-        <div class="text-xs text-emerald-300 mb-4 pb-3 border-b border-white/10 text-left flex items-center gap-2">
+        <div class="text-xs text-emerald-300 mb-4 pb-3 border-b border-emerald-100 text-left flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           ${new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
           ${item.is_penting ? '<span class="bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Penting</span>' : ''}
@@ -71,7 +71,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
       confirmButtonText: 'Tutup',
       customClass: {
         popup: 'rounded-3xl border border-white/10 shadow-2xl backdrop-blur-xl',
-        title: 'text-left text-xl text-emerald-400 font-bold',
+        title: 'text-left text-xl text-emerald-700 font-bold',
         htmlContainer: 'text-left !m-0 !mt-2',
         confirmButton: 'rounded-xl shadow-lg hover:shadow-emerald-900/50 transition-all font-bold px-8'
       }
@@ -89,7 +89,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
             
             {/* Header Welcome Card */}
             <GlassCard className="bg-gradient-to-br from-emerald-900/60 to-black/40 border-emerald-500/30">
-              <h1 className="text-3xl font-bold text-white drop-shadow-lg mb-2">Ahlan wa Sahlan!</h1>
+              <h1 className="text-3xl font-bold text-emerald-900 drop-shadow-lg mb-2">Ahlan wa Sahlan!</h1>
               <p className="text-emerald-100/90 text-sm lg:text-base drop-shadow-md">
                 Selamat datang di sistem tabungan Umrah dan Haji Madinah Salam Wisata. Kami siap mendampingi perjalanan ibadah Anda.
               </p>
@@ -99,22 +99,22 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 flex-1">
               <GlassCard className="h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
-                  <Info className="text-emerald-400 w-6 h-6" />
-                  <h2 className="text-lg font-bold text-white">Tentang Kami</h2>
+                  <Info className="text-emerald-700 w-6 h-6" />
+                  <h2 className="text-lg font-bold text-emerald-900">Tentang Kami</h2>
                 </div>
                 <p className="text-gray-200 leading-relaxed text-sm flex-1">
                   PT Madinah Salam Wisata adalah penyelenggara perjalanan ibadah Umrah dan Haji yang berfokus pada layanan yang amanah, profesional, dan sesuai dengan tuntunan syariat. Kami berkomitmen memberikan pengalaman ibadah terbaik bagi jamaah.
                 </p>
                 <div className="mt-5 inline-block bg-black/80 border border-white/10 rounded-lg px-4 py-2 w-max shadow-inner">
                   <span className="text-[11px] text-gray-400 block uppercase tracking-wider">Izin PPIU No:</span>
-                  <span className="text-sm font-bold text-emerald-400">03012400173490004</span>
+                  <span className="text-sm font-bold text-emerald-700">03012400173490004</span>
                 </div>
               </GlassCard>
 
               <GlassCard className="h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <CheckCircle2 className="text-yellow-400 w-6 h-6" />
-                  <h2 className="text-lg font-bold text-white">Visi Kami</h2>
+                  <h2 className="text-lg font-bold text-emerald-900">Visi Kami</h2>
                 </div>
                 <p className="text-sm text-gray-200 italic leading-relaxed flex-1">
                   &quot;Menjadi penyelenggara perjalanan ibadah Umrah, Haji, dan wisata terpercaya yang berkomitmen menghadirkan layanan sesuai tuntunan sunnah Rasulullah ï·º.&quot;
@@ -124,22 +124,22 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
 
             {/* Misi */}
             <GlassCard>
-              <h2 className="text-lg font-bold text-white mb-4">Misi Kami</h2>
+              <h2 className="text-lg font-bold text-emerald-900 mb-4">Misi Kami</h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm text-gray-200">
                 <li className="flex gap-2.5 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
                   <span>Menyelenggarakan perjalanan ibadah Umrah dan Haji sesuai syariat dan sunnah.</span>
                 </li>
                 <li className="flex gap-2.5 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
                   <span>Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian.</span>
                 </li>
                 <li className="flex gap-2.5 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
                   <span>Membimbing jamaah agar meraih ibadah yang sah, khusyuk, dan mabrur.</span>
                 </li>
                 <li className="flex gap-2.5 items-start">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
                   <span>Menghadirkan pengalaman berwisata yang edukatif dan memperkuat iman.</span>
                 </li>
               </ul>
@@ -152,7 +152,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
             <GlassCard className="h-full min-h-[450px] flex flex-col">
               <div className="flex items-center gap-3 mb-5">
                 <Bell className="text-yellow-400 w-6 h-6 animate-pulse" />
-                <h2 className="text-lg font-bold text-white">Informasi & Update</h2>
+                <h2 className="text-lg font-bold text-emerald-900">Informasi & Update</h2>
               </div>
               <div className="flex-1 overflow-y-auto pr-2 space-y-3 sm:space-y-4 custom-scrollbar">
                 {pengumumanList.length > 0 ? (
@@ -163,7 +163,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                       className={`w-full text-left relative p-3 sm:p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
                         item.is_penting 
                           ? "bg-gradient-to-br from-yellow-900/30 to-black/30 border-yellow-500/40" 
-                          : "bg-black/30 border-white/10 hover:bg-white/5"
+                          : "bg-black/30 border-white/10 hover:bg-emerald-50"
                       }`}
                     >
                       <div className="flex flex-col">
@@ -185,7 +185,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     </button>
                   ))
                 ) : (
-                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-gray-400 bg-black/20 rounded-xl border border-white/10">
+                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-emerald-700 bg-black/20 rounded-xl border border-white/10">
                     <Bell className="w-8 h-8 text-white/20 mb-3" />
                     <span className="text-sm">Belum ada pengumuman terbaru saat ini.</span>
                   </div>
@@ -199,7 +199,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
             
             {/* Accordion */}
             <GlassCard>
-              <h2 className="text-lg font-bold text-white mb-6">Informasi & Ketentuan Penting</h2>
+              <h2 className="text-lg font-bold text-emerald-900 mb-6">Informasi & Ketentuan Penting</h2>
               
               <div className="space-y-3">
                 {/* Accordion 1: Syarat & Ketentuan Pendaftaran */}
@@ -209,13 +209,13 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-emerald-400" />
-                      <span className="font-bold text-sm text-white drop-shadow-sm">Syarat & Ketentuan Pendaftaran</span>
+                      <FileText className="w-5 h-5 text-emerald-700" />
+                      <span className="font-bold text-sm text-emerald-900 drop-shadow-sm">Syarat & Ketentuan Pendaftaran</span>
                     </div>
                     {openAccordion === 'syarat_daftar' ? <ChevronUp className="text-gray-400 w-5 h-5" /> : <ChevronDown className="text-gray-400 w-5 h-5" />}
                   </button>
                   {openAccordion === 'syarat_daftar' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-300 border-t border-white/10">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-800 border-t border-white/10">
                       <ul className="list-disc pl-4 space-y-1.5 mt-2">
                         <li>Paspor minimal berlaku satu tahun dan nama minimal 2 suku kata.</li>
                         <li>Soft copy KTP (PDF, PNG, atau JPG).</li>
@@ -236,13 +236,13 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-emerald-400" />
-                      <span className="font-bold text-sm text-white drop-shadow-sm">Syarat & Ketentuan Pembatalan</span>
+                      <FileText className="w-5 h-5 text-emerald-700" />
+                      <span className="font-bold text-sm text-emerald-900 drop-shadow-sm">Syarat & Ketentuan Pembatalan</span>
                     </div>
                     {openAccordion === 'syarat_batal' ? <ChevronUp className="text-gray-400 w-5 h-5" /> : <ChevronDown className="text-gray-400 w-5 h-5" />}
                   </button>
                   {openAccordion === 'syarat_batal' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-300 border-t border-white/10 space-y-3 mt-2">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-800 border-t border-white/10 space-y-3 mt-2">
                       <div>
                         <strong className="text-white block mb-0.5">A. Uang Muka (DP)</strong>
                         <p>DP yang telah diserahkan oleh calon jamaah umroh tidak bisa dikembalikan.</p>
@@ -273,13 +273,13 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <Info className="w-5 h-5 text-emerald-400" />
-                      <span className="font-bold text-sm text-white drop-shadow-sm">Ketentuan Khusus</span>
+                      <Info className="w-5 h-5 text-emerald-700" />
+                      <span className="font-bold text-sm text-emerald-900 drop-shadow-sm">Ketentuan Khusus</span>
                     </div>
                     {openAccordion === 'ketentuan_khusus' ? <ChevronUp className="text-gray-400 w-5 h-5" /> : <ChevronDown className="text-gray-400 w-5 h-5" />}
                   </button>
                   {openAccordion === 'ketentuan_khusus' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-300 border-t border-white/10 space-y-3 mt-2">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-800 border-t border-white/10 space-y-3 mt-2">
                       <div>
                         <strong className="text-white block mb-0.5">1. Klausul Force Majeure</strong>
                         <p>Dalam hal terjadi keadaan kahar (force majeure) yang berada di luar kemampuan dan kendali Para Pihak, maka Pihak Travel dibebaskan dari segala tuntutan atas kerugian atau keterlambatan.</p>
@@ -299,16 +299,16 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <CreditCard className="w-5 h-5 text-emerald-400" />
-                      <span className="font-bold text-sm text-white drop-shadow-sm">Alur Pembayaran</span>
+                      <CreditCard className="w-5 h-5 text-emerald-700" />
+                      <span className="font-bold text-sm text-emerald-900 drop-shadow-sm">Alur Pembayaran</span>
                     </div>
                     {openAccordion === 'alur_bayar' ? <ChevronUp className="text-gray-400 w-5 h-5" /> : <ChevronDown className="text-gray-400 w-5 h-5" />}
                   </button>
                   {openAccordion === 'alur_bayar' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-300 border-t border-white/10 mt-2">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-800 border-t border-white/10 mt-2">
                       <ul className="list-disc pl-4 space-y-1.5">
                         <li>Semua transaksi ditransfer ke rekening <strong>Bank Syariah Indonesia (BSI)</strong>.</li>
-                        <li>Nomor Rekening: <strong className="text-emerald-400">727 889 1326</strong>.</li>
+                        <li>Nomor Rekening: <strong className="text-emerald-700">727 889 1326</strong>.</li>
                         <li>Atas Nama: <strong>PT Madinah Salam Wisata</strong>.</li>
                         <li>Bukti transaksi wajib dikonfirmasi ke admin di nomor <strong>(+62) 822 1000 4644</strong>.</li>
                       </ul>
@@ -323,13 +323,13 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <Briefcase className="w-5 h-5 text-emerald-400" />
-                      <span className="font-bold text-sm text-white drop-shadow-sm">Perlengkapan yang Disediakan</span>
+                      <Briefcase className="w-5 h-5 text-emerald-700" />
+                      <span className="font-bold text-sm text-emerald-900 drop-shadow-sm">Perlengkapan yang Disediakan</span>
                     </div>
                     {openAccordion === 'perlengkapan' ? <ChevronUp className="text-gray-400 w-5 h-5" /> : <ChevronDown className="text-gray-400 w-5 h-5" />}
                   </button>
                   {openAccordion === 'perlengkapan' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-300 border-t border-white/10 mt-2">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-800 border-t border-white/10 mt-2">
                       <ul className="list-disc pl-4 space-y-1.5">
                         <li>Koper Bagasi 24 Inci &amp; Koper Kabin 18 Inci.</li>
                         <li>Kain Ihram Premium &amp; Sabuk (untuk laki-laki).</li>
@@ -349,10 +349,10 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <MapPin className="text-red-400 w-6 h-6 animate-bounce" />
-                    <h2 className="text-lg font-bold text-white drop-shadow-sm">Lokasi Kantor</h2>
+                    <h2 className="text-lg font-bold text-emerald-900 drop-shadow-sm">Lokasi Kantor</h2>
                   </div>
                   <p className="font-semibold text-emerald-300 mb-1 text-sm">PT Madinah Salam Wisata</p>
-                  <p className="text-xs text-gray-300 leading-relaxed">
+                  <p className="text-xs text-emerald-800 leading-relaxed">
                     Jl. Radar Auri No.9, RT.13/RW.5, Cibubur, Kec. Ciracas,<br/>
                     Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13720
                   </p>
@@ -361,7 +361,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                   href="https://maps.app.goo.gl/whYEBuoB6w5JJmBc8" 
                   target="_blank" 
                   rel="noreferrer"
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-xs font-bold text-emerald-300 transition-all shadow-sm"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-800 hover:bg-emerald-700 border border-emerald-700 rounded-lg text-xs font-bold text-emerald-300 transition-all shadow-sm"
                 >
                   Buka Maps <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                 </a>

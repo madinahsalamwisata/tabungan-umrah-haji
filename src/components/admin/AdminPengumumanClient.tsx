@@ -96,9 +96,9 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
                 Penting
               </span>
             )}
-            <h3 className="text-xl font-bold text-white pr-20">{item.judul}</h3>
+            <h3 className="text-xl font-bold text-emerald-900 pr-20">{item.judul}</h3>
             <p className="text-xs text-gray-500 mt-1 mb-4">{new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}</p>
-            <p className="text-sm text-gray-300 line-clamp-3">{item.konten}</p>
+            <p className="text-sm text-emerald-800 line-clamp-3">{item.konten}</p>
             
             <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/10">
               <button onClick={() => handleOpenEdit(item)} className="text-blue-400 hover:text-blue-300 text-sm font-semibold">Edit</button>
@@ -117,16 +117,16 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
           <div className="relative w-full max-w-lg bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
-            <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">
+            <h2 className="text-xl font-bold text-emerald-900 mb-6 border-b border-emerald-100 pb-4">
               {editingData ? "Edit Pengumuman" : "Buat Pengumuman Baru"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Judul Pengumuman</label>
+                <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Judul Pengumuman</label>
                 <input name="judul" defaultValue={editingData?.judul} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Contoh: Pembaruan Jadwal Manasik" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Isi Pesan</label>
+                <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Isi Pesan</label>
                 <textarea name="konten" defaultValue={editingData?.konten} required rows={5} className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none" placeholder="Tuliskan isi pengumuman lengkap di sini..."></textarea>
               </div>
               <div className="flex items-center gap-2 mt-2">

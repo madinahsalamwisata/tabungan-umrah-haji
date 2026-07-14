@@ -111,7 +111,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const paketEstimasi = data.filter(item => item.is_estimasi);
 
   const renderPaketCard = (item: PaketData) => (
-    <div key={item.id} className="relative bg-black/80 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row group">
+    <div key={item.id} className="relative bg-white/90 backdrop-blur-md border border-emerald-100 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row group">
       {!item.is_estimasi && (
         <div className="md:w-2/5 h-48 md:h-auto relative bg-black/80">
           {item.poster_url ? (
@@ -127,15 +127,15 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
       <div className={`p-6 flex flex-col justify-between ${item.is_estimasi ? 'w-full' : 'md:w-3/5'}`}>
         <div>
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-bold text-white">{item.nama_paket}</h3>
+            <h3 className="text-xl font-bold text-emerald-900">{item.nama_paket}</h3>
             {item.is_estimasi && (
               <span className="bg-yellow-500/10 border border-yellow-500/50 text-yellow-500 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider backdrop-blur-sm">Estimasi</span>
             )}
           </div>
-          <div className="space-y-1 text-xs text-gray-400">
+          <div className="space-y-1 text-xs text-emerald-700">
             <p>Berangkat: <span className="text-gray-200 font-medium">{new Date(item.tanggal_keberangkatan).toLocaleDateString('id-ID')}</span></p>
             <p>Maskapai: <span className="text-gray-200 font-medium">{item.maskapai}</span></p>
-            <p>Kuota: <span className="text-emerald-400 font-medium">{item.kuota} Kursi</span></p>
+            <p>Kuota: <span className="text-emerald-700 font-medium">{item.kuota} Kursi</span></p>
             <p className="pt-2 text-sm text-yellow-400 font-bold">Mulai Rp {item.harga_quad.toLocaleString('id-ID')}</p>
           </div>
         </div>
@@ -154,13 +154,13 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
         <div className="flex p-1 bg-black/80 border border-white/10 rounded-2xl w-fit">
           <button 
             onClick={() => setActiveTab('pasti')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'pasti' ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+            className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'pasti' ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-emerald-50'}`}
           >
             Paket Pasti Berangkat
           </button>
           <button 
             onClick={() => setActiveTab('estimasi')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'estimasi' ? 'bg-yellow-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+            className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'estimasi' ? 'bg-yellow-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-emerald-50'}`}
           >
             Rencana / Estimasi
           </button>
@@ -205,59 +205,59 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
           <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200 custom-scrollbar">
-            <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">
+            <h2 className="text-xl font-bold text-emerald-900 mb-6 border-b border-emerald-100 pb-4">
               {editingData ? "Edit Paket" : "Buat Paket Baru"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Paket</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Nama Paket</label>
                   <input name="nama_paket" defaultValue={editingData?.nama_paket} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Paket Umrah Spesial Ramadhan" />
                 </div>
                 
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Tanggal Keberangkatan</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Tanggal Keberangkatan</label>
                   <input type="date" name="tanggal_keberangkatan" defaultValue={editingData?.tanggal_keberangkatan.split('T')[0]} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Tanggal Kepulangan</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Tanggal Kepulangan</label>
                   <input type="date" name="tanggal_kepulangan" defaultValue={editingData?.tanggal_kepulangan.split('T')[0]} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Hotel Makkah</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Hotel Makkah</label>
                   <input name="hotel_makkah" defaultValue={editingData?.hotel_makkah} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Swissotel Makkah (*5)" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Hotel Madinah</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Hotel Madinah</label>
                   <input name="hotel_madinah" defaultValue={editingData?.hotel_madinah} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Taiba Front (*5)" />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Maskapai Penerbangan</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Maskapai Penerbangan</label>
                   <input name="maskapai" defaultValue={editingData?.maskapai} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Saudia Airlines (Direct)" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Total Kuota (Orang)</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Total Kuota (Orang)</label>
                   <input type="number" name="kuota" defaultValue={editingData?.kuota} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Harga Quad (Sekamar ber-4)</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Harga Quad (Sekamar ber-4)</label>
                   <input type="number" name="harga_quad" defaultValue={editingData?.harga_quad} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Harga Triple (Sekamar ber-3)</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Harga Triple (Sekamar ber-3)</label>
                   <input type="number" name="harga_triple" defaultValue={editingData?.harga_triple} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Harga Double (Sekamar ber-2)</label>
+                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Harga Double (Sekamar ber-2)</label>
                   <input type="number" name="harga_double" defaultValue={editingData?.harga_double} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 {!isEstimasiForm && (
                   <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">URL Poster Gambar (Opsional)</label>
+                    <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">URL Poster Gambar (Opsional)</label>
                     <input type="url" name="poster_url" defaultValue={editingData?.poster_url || ""} className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: /images/paket1.jpg atau https://..." />
                   </div>
                 )}

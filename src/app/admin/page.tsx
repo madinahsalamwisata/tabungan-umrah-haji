@@ -48,9 +48,9 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="inline-block px-6 py-3 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10 shadow-lg">
-        <h1 className="text-2xl font-bold text-white drop-shadow-md">Dashboard Admin</h1>
-        <p className="text-sm text-gray-300 mt-1">Ringkasan statistik dan aktivitas pendaftaran jamaah.</p>
+      <div className="inline-block px-6 py-3 rounded-2xl bg-white/90 backdrop-blur-md border border-emerald-100 shadow-lg">
+        <h1 className="text-2xl font-bold text-emerald-900 drop-shadow-md">Dashboard Admin</h1>
+        <p className="text-sm text-emerald-800 mt-1">Ringkasan statistik dan aktivitas pendaftaran jamaah.</p>
       </div>
 
       {/* Stats Cards */}
@@ -60,7 +60,7 @@ export default async function AdminDashboardPage() {
           <div className="relative z-10 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-purple-400 uppercase tracking-wider">Total Akun</p>
-              <p className="text-4xl font-bold text-white mt-2">{totalAkun}</p>
+              <p className="text-4xl font-bold text-emerald-900 mt-2">{totalAkun}</p>
             </div>
             <div className="p-4 bg-purple-600/20 border border-purple-500/30 rounded-2xl">
               <UsersIcon className="w-8 h-8 text-purple-400" />
@@ -72,11 +72,11 @@ export default async function AdminDashboardPage() {
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-emerald-400 uppercase tracking-wider">Jamaah (Pasti)</p>
-              <p className="text-4xl font-bold text-white mt-2">{jamaahPasti}</p>
+              <p className="text-sm font-medium text-emerald-700 uppercase tracking-wider">Jamaah (Pasti)</p>
+              <p className="text-4xl font-bold text-emerald-900 mt-2">{jamaahPasti}</p>
             </div>
             <div className="p-4 bg-emerald-600/20 border border-emerald-500/30 rounded-2xl">
-              <UsersIcon className="w-8 h-8 text-emerald-400" />
+              <UsersIcon className="w-8 h-8 text-emerald-700" />
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@ export default async function AdminDashboardPage() {
           <div className="relative z-10 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-yellow-400 uppercase tracking-wider">Jamaah (Estimasi)</p>
-              <p className="text-4xl font-bold text-white mt-2">{jamaahEstimasi}</p>
+              <p className="text-4xl font-bold text-emerald-900 mt-2">{jamaahEstimasi}</p>
             </div>
             <div className="p-4 bg-yellow-600/20 border border-yellow-500/30 rounded-2xl">
               <DocumentTextIcon className="w-8 h-8 text-yellow-400" />
@@ -99,7 +99,7 @@ export default async function AdminDashboardPage() {
           <div className="relative z-10 flex items-center justify-between">
             <div className="w-[85%] pr-2">
               <p className="text-xs lg:text-sm font-medium text-orange-400 uppercase tracking-wider truncate">Total Tagihan</p>
-              <p className="text-lg lg:text-xl font-bold text-white mt-2 truncate w-full" title={`Rp ${totalBiaya.toLocaleString('id-ID')}`}>
+              <p className="text-lg lg:text-xl font-bold text-emerald-900 mt-2 truncate w-full" title={`Rp ${totalBiaya.toLocaleString('id-ID')}`}>
                 Rp {totalBiaya.toLocaleString('id-ID')}
               </p>
             </div>
@@ -113,16 +113,16 @@ export default async function AdminDashboardPage() {
       {/* Setoran Terbaru */}
       <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/80 border border-white/10 backdrop-blur-xl">
         
-        <div className="relative z-10 px-6 py-6 border-b border-white/10 flex justify-between items-center">
+        <div className="relative z-10 px-6 py-6 border-b border-emerald-100 flex justify-between items-center">
           <div>
-            <h3 className="text-lg font-bold text-white">Aktivitas Setoran Terbaru</h3>
-            <p className="text-sm text-gray-400 mt-1">Daftar setoran tabungan terakhir dari jamaah.</p>
+            <h3 className="text-lg font-bold text-emerald-900">Aktivitas Setoran Terbaru</h3>
+            <p className="text-sm text-emerald-700 mt-1">Daftar setoran tabungan terakhir dari jamaah.</p>
           </div>
         </div>
 
         <div className="relative z-10 overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
-            <thead className="text-xs uppercase bg-black/80 text-gray-300 border-b border-white/10">
+            <thead className="text-xs uppercase bg-black/80 text-gray-300 border-b border-emerald-100">
               <tr>
                 <th scope="col" className="px-6 py-4 font-semibold">Jamaah</th>
                 <th scope="col" className="px-6 py-4 font-semibold">Paket Tujuan</th>
@@ -131,9 +131,9 @@ export default async function AdminDashboardPage() {
                 <th scope="col" className="px-6 py-4 font-semibold">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-emerald-100">
               {setoranTerbaru.map((setoran) => (
-                <tr key={setoran.id} className="hover:bg-white/5 transition-colors">
+                <tr key={setoran.id} className="hover:bg-emerald-50 transition-colors">
                   <td className="px-6 py-4 font-medium text-white">
                     {setoran.rencana_tabungan.jamaah.nama}
                   </td>
@@ -143,13 +143,13 @@ export default async function AdminDashboardPage() {
                   <td className="px-6 py-4">
                     {new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                   </td>
-                  <td className="px-6 py-4 text-emerald-400 font-semibold">
+                  <td className="px-6 py-4 text-emerald-700 font-semibold">
                     Rp {Number(setoran.nominal).toLocaleString('id-ID')}
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
                       setoran.status_pembayaran === 'Lunas' || setoran.status_pembayaran === 'settlement'
-                        ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                        ? 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30'
                         : setoran.status_pembayaran === 'pending'
                         ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
                         : 'bg-red-500/20 text-red-400 border-red-500/30'

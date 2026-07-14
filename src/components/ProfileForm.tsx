@@ -101,13 +101,6 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Gagal mengunggah foto");
 
-      SmallSwal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        html: 'Foto profil berhasil diperbarui.',
-        confirmButtonColor: '#059669', // emerald-600
-        confirmButtonText: 'Tutup'
-      });
       setLocalFotoUrl(data.url);
       window.dispatchEvent(new Event('profileUpdated'));
       router.refresh();

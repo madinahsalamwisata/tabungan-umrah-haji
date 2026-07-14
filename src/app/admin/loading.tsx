@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
     <div className="min-h-screen flex items-center justify-center relative z-50">
-      <div className="flex flex-col items-center gap-4 p-8 bg-black/60 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl">
+      <div className="flex flex-col items-center gap-4 p-8 bg-black/80 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl">
         <div className="relative w-16 h-16">
           <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
           <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>

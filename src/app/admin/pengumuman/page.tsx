@@ -15,7 +15,7 @@ export default async function AdminPengumumanPage() {
 
   return (
     <div className="space-y-6">
-      <div className="inline-block px-6 py-3 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-lg">
+      <div className="inline-block px-6 py-3 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10 shadow-lg">
         <h1 className="text-2xl font-bold text-white drop-shadow-md">Broadcast Pengumuman</h1>
         <p className="text-sm text-gray-300 mt-1">Kelola dan sebar luaskan informasi kepada seluruh jamaah di dashboard mereka.</p>
       </div>

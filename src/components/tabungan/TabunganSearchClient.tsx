@@ -106,7 +106,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
 
   return (
     <div className="space-y-6">
-      <div className="relative z-30 p-6 rounded-[2rem] shadow-2xl border border-white/20 bg-black/60 backdrop-blur-xl">
+      <div className="relative z-30 p-6 rounded-[2rem] shadow-2xl border border-white/20 bg-black/80 backdrop-blur-xl">
         <div className="relative z-10">
           <h3 className="text-lg font-bold text-white mb-4">Cari Estimasi Paket Tabungan</h3>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
@@ -173,7 +173,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
               return (
                 <div 
                   key={paket.id} 
-                  className="relative rounded-[2rem] shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 border border-white/20 bg-black/60 backdrop-blur-xl overflow-hidden group flex flex-col h-full hover:border-white/40 hover:bg-black/70"
+                  className="relative rounded-[2rem] shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 border border-white/20 bg-black/80 backdrop-blur-xl overflow-hidden group flex flex-col h-full hover:border-white/40 hover:bg-black/90"
                 >
                   
                   <div className="relative z-10 p-5 flex flex-col h-full">

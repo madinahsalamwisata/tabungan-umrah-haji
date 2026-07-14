@@ -267,7 +267,7 @@ export default function DashboardLayout({
         
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-black/60 backdrop-blur-2xl shadow-2xl border-b border-white/20">
+          <div className="absolute top-16 left-0 w-full bg-black/80 backdrop-blur-2xl shadow-2xl border-b border-white/20">
             <div className="px-3 pt-4 pb-6 space-y-3">
               {navigation.map((item) => {
                 if (item.children) {
@@ -350,7 +350,7 @@ export default function DashboardLayout({
       <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-screen">
         {/* Instant Loading Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
             <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-white/10 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
               <div className="relative w-10 h-10 sm:w-12 sm:h-12">
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>

@@ -169,7 +169,7 @@ export default function TabunganDashboardClient({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="relative rounded-2xl shadow-2xl border border-white/20 bg-black/60 backdrop-blur-xl overflow-hidden transition-all duration-300">
+    <div className="relative rounded-2xl shadow-2xl border border-white/20 bg-black/80 backdrop-blur-xl overflow-hidden transition-all duration-300">
       {/* Header / Summary (Always Visible) */}
       <div 
         className="relative z-10 p-5 cursor-pointer hover:bg-white/5 transition-colors flex items-center justify-between"
@@ -292,7 +292,7 @@ export default function TabunganDashboardClient({
       {/* Modal Edit */}
       {isEditing && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="bg-black/60 backdrop-blur-xl rounded-2xl shadow-2xl p-6 max-w-md w-full border border-white/20">
+          <div className="bg-black/80 backdrop-blur-xl rounded-2xl shadow-2xl p-6 max-w-md w-full border border-white/20">
             <h3 className="text-lg font-bold text-white mb-4">Edit Rencana Tabungan</h3>
             
             <div className="space-y-4">
@@ -301,7 +301,7 @@ export default function TabunganDashboardClient({
                 <select 
                   value={editKamar}
                   onChange={(e) => setEditKamar(e.target.value)}
-                  className="w-full bg-black/50 border border-white/20 rounded-md shadow-sm text-white focus:border-emerald-500 focus:ring-emerald-500"
+                  className="w-full bg-black/80 border border-white/20 rounded-md shadow-sm text-white focus:border-emerald-500 focus:ring-emerald-500"
                 >
                   <option value="Quad">Quad (Ber-4)</option>
                   <option value="Triple">Triple (Ber-3)</option>
@@ -317,7 +317,7 @@ export default function TabunganDashboardClient({
                   max={rencana.paket.kuota}
                   value={editJamaah}
                   onChange={(e) => setEditJamaah(Number(e.target.value))}
-                  className="w-full bg-black/50 border border-white/20 rounded-md shadow-sm text-white focus:border-emerald-500 focus:ring-emerald-500"
+                  className="w-full bg-black/80 border border-white/20 rounded-md shadow-sm text-white focus:border-emerald-500 focus:ring-emerald-500"
                 />
               </div>
 

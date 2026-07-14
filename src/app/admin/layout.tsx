@@ -49,9 +49,8 @@ export default function AdminLayout({
         <img 
           src="/images/bg/madinah_thumbnail.webp" 
           alt="Background Madinah" 
-          className="w-full h-full object-cover opacity-60" 
+          className="w-full h-full object-cover opacity-80" 
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/10 to-black/30 pointer-events-none"></div>
       </div>
 
       {/* Sidebar for desktop */}
@@ -132,7 +131,7 @@ export default function AdminLayout({
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 w-full z-40">
-        <div className="flex items-center justify-between bg-black/60 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/10">
+        <div className="flex items-center justify-between bg-black/80 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/10">
           <div className="flex items-center gap-3">
             <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <div className="flex flex-col">
@@ -148,7 +147,7 @@ export default function AdminLayout({
         </div>
         
         {mobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-black/60 backdrop-blur-2xl shadow-2xl border-b border-white/10">
+          <div className="absolute top-16 left-0 w-full bg-black/80 backdrop-blur-2xl shadow-2xl border-b border-white/10">
             <div className="px-3 pt-4 pb-6 space-y-3">
               {navigation.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href + '/'));
@@ -164,7 +163,7 @@ export default function AdminLayout({
                     className={`${
                       isActive
                         ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
-                        : "bg-black/20 text-gray-200 font-medium hover:bg-black/60 hover:text-white border-white/10 hover:shadow-md"
+                        : "bg-black/20 text-gray-200 font-medium hover:bg-black/80 hover:text-white border-white/10 hover:shadow-md"
                     } px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
                   >
                     <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-300"}`} />
@@ -188,8 +187,8 @@ export default function AdminLayout({
       <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-screen">
         {/* Instant Loading Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-black/60 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-black/80 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl">
               <div className="relative w-10 h-10 sm:w-12 sm:h-12">
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>

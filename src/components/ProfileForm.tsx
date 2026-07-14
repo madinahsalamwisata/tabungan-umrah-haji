@@ -303,25 +303,25 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
               </form>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
-                <div className="bg-white/5 border border-emerald-100 rounded-2xl p-4 hover:bg-white/10 transition-colors">
-                  <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Nama Lengkap</p>
-                  <p className="text-sm font-semibold text-emerald-900">{localNama}</p>
+                <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 hover:bg-emerald-900 transition-colors shadow-inner">
+                  <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nama Lengkap</p>
+                  <p className="text-sm font-semibold text-white">{localNama}</p>
                 </div>
 
-                <div className="bg-white/5 border border-emerald-100 rounded-2xl p-4 hover:bg-white/10 transition-colors">
-                  <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">No. HP / WhatsApp</p>
-                  <p className="text-sm font-semibold text-emerald-900">{jamaah.no_hp}</p>
+                <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 hover:bg-emerald-900 transition-colors shadow-inner">
+                  <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">No. HP / WhatsApp</p>
+                  <p className="text-sm font-semibold text-white">{jamaah.no_hp}</p>
                 </div>
 
-                <div className="bg-white/5 border border-emerald-100 rounded-2xl p-4 hover:bg-white/10 transition-colors md:col-span-2">
-                  <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Nomor Induk Kependudukan (NIK)</p>
-                  <p className="text-sm font-semibold text-emerald-900">{jamaah.nik}</p>
+                <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 hover:bg-emerald-900 transition-colors shadow-inner md:col-span-2">
+                  <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nomor Induk Kependudukan (NIK)</p>
+                  <p className="text-sm font-semibold text-white">{jamaah.nik}</p>
                 </div>
 
-                <div className="bg-white/5 border border-emerald-100 rounded-2xl p-4 md:col-span-2 hover:bg-white/10 transition-colors">
-                  <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Alamat Lengkap</p>
-                  <p className="text-sm font-medium text-emerald-800 leading-relaxed">
-                    {jamaah.alamat || <span className="text-gray-500 italic font-normal">Belum diisi</span>}
+                <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 md:col-span-2 hover:bg-emerald-900 transition-colors shadow-inner">
+                  <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Alamat Lengkap</p>
+                  <p className="text-sm font-medium text-emerald-50 leading-relaxed">
+                    {jamaah.alamat || <span className="text-gray-400 italic font-normal">Belum diisi</span>}
                   </p>
                 </div>
               </div>

@@ -106,8 +106,8 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                   PT Madinah Salam Wisata adalah penyelenggara perjalanan ibadah Umrah dan Haji yang berfokus pada layanan yang amanah, profesional, dan sesuai dengan tuntunan syariat. Kami berkomitmen memberikan pengalaman ibadah terbaik bagi jamaah.
                 </p>
                 <div className="mt-5 inline-block bg-black/80 border border-gray-200 rounded-lg px-4 py-2 w-max shadow-inner">
-                  <span className="text-[11px] text-gray-500 block uppercase tracking-wider">Izin PPIU No:</span>
-                  <span className="text-sm font-bold text-emerald-800">03012400173490004</span>
+                  <span className="text-[11px] text-emerald-200 block uppercase tracking-wider">Izin PPIU No:</span>
+                  <span className="text-sm font-bold text-white">03012400173490004</span>
                 </div>
               </GlassCard>
 
@@ -162,7 +162,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                       onClick={() => showPengumumanPopup(item)}
                       className={`w-full text-left relative p-3 sm:p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
                         item.is_penting 
-                          ? "bg-gradient-to-br from-yellow-50/90 to-white/90 border-yellow-300" 
+                          ? "bg-gradient-to-br from-yellow-600/30 to-yellow-800/50 backdrop-blur-md border-yellow-500/50 hover:from-yellow-600/40 hover:to-yellow-800/60" 
                           : "bg-black/80 border-gray-200 hover:bg-white/10"
                       }`}
                     >
@@ -177,7 +177,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                             </span>
                           )}
                         </div>
-                        <span className="text-[10px] font-medium text-gray-500 uppercase tracking-wide flex items-center gap-1">
+                        <span className="text-[10px] font-medium text-emerald-200/70 uppercase tracking-wide flex items-center gap-1">
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                           {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
                         </span>
@@ -185,8 +185,8 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     </button>
                   ))
                 ) : (
-                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-gray-500 bg-white/90 rounded-xl border border-gray-200">
-                    <Bell className="w-8 h-8 text-gray-900/20 mb-3" />
+                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-emerald-200 bg-emerald-900/80 backdrop-blur-md rounded-xl border border-emerald-700/50">
+                    <Bell className="w-8 h-8 text-emerald-500/50 mb-3" />
                     <span className="text-sm">Belum ada pengumuman terbaru saat ini.</span>
                   </div>
                 )}
@@ -203,19 +203,19 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
               
               <div className="space-y-3">
                 {/* Accordion 1: Syarat & Ketentuan Pendaftaran */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm shadow-sm transition-all hover:bg-white">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
                   <button 
                     onClick={() => toggleAccordion('syarat_daftar')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-emerald-800" />
-                      <span className="font-bold text-sm text-gray-900">Syarat & Ketentuan Pendaftaran</span>
+                      <FileText className="w-5 h-5 text-white" />
+                      <span className="font-bold text-sm text-white">Syarat & Ketentuan Pendaftaran</span>
                     </div>
-                    {openAccordion === 'syarat_daftar' ? <ChevronUp className="text-gray-500 w-5 h-5" /> : <ChevronDown className="text-gray-500 w-5 h-5" />}
+                    {openAccordion === 'syarat_daftar' ? <ChevronUp className="text-emerald-200 w-5 h-5" /> : <ChevronDown className="text-emerald-200 w-5 h-5" />}
                   </button>
                   {openAccordion === 'syarat_daftar' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-600 border-t border-gray-200">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-100 border-t border-emerald-700/50">
                       <ul className="list-disc pl-4 space-y-1.5 mt-2">
                         <li>Paspor minimal berlaku satu tahun dan nama minimal 2 suku kata.</li>
                         <li>Soft copy KTP (PDF, PNG, atau JPG).</li>
@@ -230,31 +230,31 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 2: Syarat & Ketentuan Pembatalan */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm shadow-sm transition-all hover:bg-white">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
                   <button 
                     onClick={() => toggleAccordion('syarat_batal')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-emerald-800" />
-                      <span className="font-bold text-sm text-gray-900">Syarat & Ketentuan Pembatalan</span>
+                      <FileText className="w-5 h-5 text-white" />
+                      <span className="font-bold text-sm text-white">Syarat & Ketentuan Pembatalan</span>
                     </div>
-                    {openAccordion === 'syarat_batal' ? <ChevronUp className="text-gray-500 w-5 h-5" /> : <ChevronDown className="text-gray-500 w-5 h-5" />}
+                    {openAccordion === 'syarat_batal' ? <ChevronUp className="text-emerald-200 w-5 h-5" /> : <ChevronDown className="text-emerald-200 w-5 h-5" />}
                   </button>
                   {openAccordion === 'syarat_batal' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-600 border-t border-gray-200 space-y-3 mt-2">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-100 border-t border-emerald-700/50 space-y-3 mt-2">
                       <div>
-                        <strong className="text-gray-900 block mb-0.5">A. Uang Muka (DP)</strong>
+                        <strong className="text-white block mb-0.5">A. Uang Muka (DP)</strong>
                         <p>DP yang telah diserahkan oleh calon jamaah umroh tidak bisa dikembalikan.</p>
                       </div>
                       <div>
-                        <strong className="text-gray-900 block mb-0.5">B. Pelunasan</strong>
+                        <strong className="text-white block mb-0.5">B. Pelunasan</strong>
                         <ul className="list-disc pl-4">
                           <li>Calon jamaah wajib melakukan pelunasan selambat-lambatnya H-30.</li>
                         </ul>
                       </div>
                       <div>
-                        <strong className="text-gray-900 block mb-0.5">C. Pembatalan</strong>
+                        <strong className="text-white block mb-0.5">C. Pembatalan</strong>
                         <ul className="list-disc pl-4 space-y-1">
                           <li>Pembatalan diatas 30 hari sebelum keberangkatan maka dikenakan pemotongan administrasi Rp 6.000.000.</li>
                           <li>Pembatalan 30 hari sebelum keberangkatan maka dikenakan pemotongan 50% dari harga paket.</li>
@@ -267,25 +267,25 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 3: Ketentuan Khusus */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm shadow-sm transition-all hover:bg-white">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
                   <button 
                     onClick={() => toggleAccordion('ketentuan_khusus')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <Info className="w-5 h-5 text-emerald-800" />
-                      <span className="font-bold text-sm text-gray-900">Ketentuan Khusus</span>
+                      <Info className="w-5 h-5 text-white" />
+                      <span className="font-bold text-sm text-white">Ketentuan Khusus</span>
                     </div>
-                    {openAccordion === 'ketentuan_khusus' ? <ChevronUp className="text-gray-500 w-5 h-5" /> : <ChevronDown className="text-gray-500 w-5 h-5" />}
+                    {openAccordion === 'ketentuan_khusus' ? <ChevronUp className="text-emerald-200 w-5 h-5" /> : <ChevronDown className="text-emerald-200 w-5 h-5" />}
                   </button>
                   {openAccordion === 'ketentuan_khusus' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-600 border-t border-gray-200 space-y-3 mt-2">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-100 border-t border-emerald-700/50 space-y-3 mt-2">
                       <div>
-                        <strong className="text-gray-900 block mb-0.5">1. Klausul Force Majeure</strong>
+                        <strong className="text-white block mb-0.5">1. Klausul Force Majeure</strong>
                         <p>Dalam hal terjadi keadaan kahar (force majeure) yang berada di luar kemampuan dan kendali Para Pihak, maka Pihak Travel dibebaskan dari segala tuntutan atas kerugian atau keterlambatan.</p>
                       </div>
                       <div>
-                        <strong className="text-gray-900 block mb-0.5">2. Klausul Penyesuaian Harga</strong>
+                        <strong className="text-white block mb-0.5">2. Klausul Penyesuaian Harga</strong>
                         <p>Pihak Travel berhak melakukan penyesuaian harga paket apabila terjadi kenaikan biaya dari pihak ketiga, seperti kenaikan harga tiket penerbangan maskapai.</p>
                       </div>
                     </div>
@@ -293,22 +293,22 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 4: Alur Pembayaran */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm shadow-sm transition-all hover:bg-white">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
                   <button 
                     onClick={() => toggleAccordion('alur_bayar')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <CreditCard className="w-5 h-5 text-emerald-800" />
-                      <span className="font-bold text-sm text-gray-900">Alur Pembayaran</span>
+                      <CreditCard className="w-5 h-5 text-white" />
+                      <span className="font-bold text-sm text-white">Alur Pembayaran</span>
                     </div>
-                    {openAccordion === 'alur_bayar' ? <ChevronUp className="text-gray-500 w-5 h-5" /> : <ChevronDown className="text-gray-500 w-5 h-5" />}
+                    {openAccordion === 'alur_bayar' ? <ChevronUp className="text-emerald-200 w-5 h-5" /> : <ChevronDown className="text-emerald-200 w-5 h-5" />}
                   </button>
                   {openAccordion === 'alur_bayar' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-600 border-t border-gray-200 mt-2">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-100 border-t border-emerald-700/50 mt-2">
                       <ul className="list-disc pl-4 space-y-1.5">
                         <li>Semua transaksi ditransfer ke rekening <strong>Bank Syariah Indonesia (BSI)</strong>.</li>
-                        <li>Nomor Rekening: <strong className="text-emerald-800">727 889 1326</strong>.</li>
+                        <li>Nomor Rekening: <strong className="text-yellow-400">727 889 1326</strong>.</li>
                         <li>Atas Nama: <strong>PT Madinah Salam Wisata</strong>.</li>
                         <li>Bukti transaksi wajib dikonfirmasi ke admin di nomor <strong>(+62) 822 1000 4644</strong>.</li>
                       </ul>
@@ -317,19 +317,19 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 5: Perlengkapan Umrah */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm shadow-sm transition-all hover:bg-white">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
                   <button 
                     onClick={() => toggleAccordion('perlengkapan')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
                   >
                     <div className="flex items-center gap-3">
-                      <Briefcase className="w-5 h-5 text-emerald-800" />
-                      <span className="font-bold text-sm text-gray-900">Perlengkapan yang Disediakan</span>
+                      <Briefcase className="w-5 h-5 text-white" />
+                      <span className="font-bold text-sm text-white">Perlengkapan yang Disediakan</span>
                     </div>
-                    {openAccordion === 'perlengkapan' ? <ChevronUp className="text-gray-500 w-5 h-5" /> : <ChevronDown className="text-gray-500 w-5 h-5" />}
+                    {openAccordion === 'perlengkapan' ? <ChevronUp className="text-emerald-200 w-5 h-5" /> : <ChevronDown className="text-emerald-200 w-5 h-5" />}
                   </button>
                   {openAccordion === 'perlengkapan' && (
-                    <div className="px-5 pb-4 pt-1 text-xs text-gray-600 border-t border-gray-200 mt-2">
+                    <div className="px-5 pb-4 pt-1 text-xs text-emerald-100 border-t border-emerald-700/50 mt-2">
                       <ul className="list-disc pl-4 space-y-1.5">
                         <li>Koper Bagasi 24 Inci &amp; Koper Kabin 18 Inci.</li>
                         <li>Kain Ihram Premium &amp; Sabuk (untuk laki-laki).</li>

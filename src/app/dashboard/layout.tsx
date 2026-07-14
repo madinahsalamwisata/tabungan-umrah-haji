@@ -97,7 +97,7 @@ export default function DashboardLayout({
 
       {/* Sidebar for desktop */}
       <div tabIndex={0} className="peer group outline-none hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 focus-within:md:w-64 z-30">
-        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl">
+        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-emerald-950 backdrop-blur-xl border-emerald-800">
           <div className="relative z-10 flex flex-col flex-1 min-h-0">
 
             <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-200 justify-center group-hover:justify-start group-focus-within:justify-start group-hover:gap-3 group-focus-within:gap-3">
@@ -241,7 +241,7 @@ export default function DashboardLayout({
 
       {/* Mobile Header & Nav */}
       <div className="md:hidden fixed top-0 w-full z-40">
-        <div className="flex items-center justify-between bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/20">
+        <div className="flex items-center justify-between bg-emerald-950 backdrop-blur-xl border-emerald-800 h-16 px-4 shadow-md border-b">
           <div className="flex items-center gap-3">
             <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <div className="flex flex-col">
@@ -267,7 +267,7 @@ export default function DashboardLayout({
         
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-black/80 backdrop-blur-2xl shadow-2xl border-b border-white/20">
+          <div className="absolute top-16 left-0 w-full bg-emerald-950 backdrop-blur-2xl shadow-2xl border-b border-emerald-800">
             <div className="px-3 pt-4 pb-6 space-y-3">
               {navigation.map((item) => {
                 if (item.children) {

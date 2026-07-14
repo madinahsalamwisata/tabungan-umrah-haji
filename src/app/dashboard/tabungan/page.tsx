@@ -67,8 +67,11 @@ export default async function TabunganDashboard() {
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-      <div>
-        <h3 className="text-xl font-bold text-white drop-shadow-md mb-4">Rencana Tabungan Aktif Anda</h3>
+      <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-br from-emerald-900/60 to-black/40 backdrop-blur-xl border border-emerald-500/30 p-6 sm:p-8">
+        <h3 className="text-xl font-bold text-white drop-shadow-md mb-6 flex items-center gap-2">
+          <svg className="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+          Rencana Tabungan Aktif Anda
+        </h3>
         
         <div className="bg-yellow-900/40 backdrop-blur-xl border border-yellow-500/40 px-4 py-3 rounded-xl mb-6 shadow-2xl flex gap-3 items-start">
           <svg className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -118,7 +121,12 @@ export default async function TabunganDashboard() {
       </div>
 
       <div className="pt-8 border-t border-white/20">
-        <h3 className="text-xl font-bold text-white drop-shadow-md mb-6">Cari & Tambah Rencana Tabungan Baru</h3>
+        <div className="inline-block relative overflow-hidden rounded-2xl shadow-xl bg-gradient-to-br from-emerald-900/60 to-black/40 backdrop-blur-xl border border-emerald-500/30 px-5 py-3 mb-6">
+          <h3 className="text-xl font-bold text-white drop-shadow-md flex items-center gap-2">
+            <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            Cari & Tambah Rencana Tabungan Baru
+          </h3>
+        </div>
         <TabunganSearchClient pakets={estimasiPakets} activePaketIds={activePaketIds} />
       </div>
     </div>

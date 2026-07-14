@@ -91,11 +91,11 @@ export default function DashboardLayout({
 
   return (
     <div className="h-screen flex text-white relative font-sans overflow-hidden">
-      <div className="fixed inset-0 z-0 bg-black">
+      <div className="fixed inset-0 z-0">
         <img 
           src="/images/bg/makkah_thumbnail.webp" 
           alt="Background Makkah" 
-          className="w-full h-full object-cover opacity-60" 
+          className="w-full h-full object-cover" 
         />
 
       </div>

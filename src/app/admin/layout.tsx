@@ -14,9 +14,7 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Matikan loading saat pathname berubah (selesai navigasi)
   useEffect(() => {
@@ -24,25 +22,10 @@ export default function AdminLayout({
   }, [pathname]);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.replace("/login");
-    } else if (status === "authenticated") {
-      if (session?.user?.email !== "madinahsalamwisata@gmail.com") {
-        router.replace("/dashboard");
-      }
+    if (status === "authenticated" && session?.user?.email !== "madinahsalamwisata@gmail.com") {
+      router.replace("/dashboard");
     }
-  }, [status, session, router]);
-
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setIsCollapsed(false);
-  };
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setIsCollapsed(true);
-    }, 400);
-  };
+  }, [status]);
 
   const navigation = [
     { name: "Admin Dashboard", href: "/admin", icon: HomeIcon },
@@ -72,16 +55,12 @@ export default function AdminLayout({
       </div>
 
       {/* Sidebar for desktop */}
-      <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'} z-30`}>
-        <div 
-          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-black/40 backdrop-blur-xl"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+      <div className="peer group hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 z-30">
+        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl">
           <div className="relative z-10 flex flex-col flex-1 min-h-0">
-            <div className={`flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-300 ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
-              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className={`${isCollapsed ? 'h-10' : 'h-14'} w-auto drop-shadow-md shrink-0 transition-all duration-300`} />
-              <div className={`text-left flex flex-col justify-center overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[200px] opacity-100'}`}>
+            <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-200 justify-center group-hover:justify-start group-hover:gap-3">
+              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-10 group-hover:h-14 w-auto drop-shadow-md shrink-0 transition-all duration-200" />
+              <div className="text-left flex flex-col justify-center overflow-hidden transition-all duration-200 ease-in-out max-w-0 opacity-0 group-hover:max-w-[200px] group-hover:opacity-100">
                 <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
                   Admin Panel
                 </h1>
@@ -104,22 +83,20 @@ export default function AdminLayout({
                         if (pathname !== item.href) setIsNavigating(true);
                         setMobileMenuOpen(false);
                       }}
-                      className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
-                        isCollapsed ? 'px-0 justify-center' : 'px-4'
-                      } ${
+                      className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden backdrop-blur-sm px-0 justify-center group-hover:px-4 group-hover:justify-start ${
                         isActive
                           ? "text-white bg-white/20 shadow-md font-bold"
-                          : "text-gray-200 bg-black/20 hover:bg-black/40 hover:text-white"
+                          : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
                       }`}
-                      title={isCollapsed ? item.name : undefined}
+                      title={item.name}
                     >
                       <item.icon
-                        className={`h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
+                        className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
                           isActive ? "text-white" : "text-gray-300 group-hover:text-white"
                         }`}
                         aria-hidden="true"
                       />
-                      <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'w-0 opacity-0 ml-0' : 'w-[150px] opacity-100 ml-3 text-left'}`}>
+                      <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap w-0 opacity-0 ml-0 group-hover:w-[150px] group-hover:opacity-100 group-hover:ml-3 text-left">
                         {item.name}
                       </span>
                     </Link>
@@ -128,20 +105,18 @@ export default function AdminLayout({
               </nav>
 
               <div className="flex-shrink-0 p-4 border-t border-white/20 bg-black/20 backdrop-blur-md">
-                <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'mb-4'}`}>
+                <div className="flex items-center justify-center group-hover:justify-start group-hover:mb-4">
                   <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md overflow-hidden shrink-0">
-                    A
+                    <span className="text-sm">A</span>
                   </div>
-                  <div className={`truncate transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[200px] opacity-100 ml-3'}`}>
+                  <div className="truncate transition-all duration-200 ease-in-out overflow-hidden max-w-0 opacity-0 ml-0 group-hover:max-w-[200px] group-hover:opacity-100 group-hover:ml-3">
                     <p className="text-sm font-medium text-white truncate drop-shadow-md">Administrator</p>
-                    <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">Sistem Pusat</p>
+                    <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">admin@mswisata.com</p>
                   </div>
                 </div>
                 <button
                   onClick={() => signOut({ callbackUrl: "/login" })}
-                  className={`w-full flex items-center justify-center bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md text-red-100 hover:text-white border border-red-500/30 rounded-xl text-sm font-bold transition-all shadow-sm ${
-                    isCollapsed ? 'p-2 mt-4' : 'px-4 py-2.5'
-                  }`}
+                  className="w-full flex items-center justify-center bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md text-red-100 hover:text-white border border-red-500/30 rounded-xl text-sm font-bold transition-all shadow-sm p-2 mt-4 group-hover:px-4 group-hover:py-2.5 group-hover:mt-0"
                   title="Keluar"
                 >
                   <ArrowLeftOnRectangleIcon className="w-5 h-5" />
@@ -210,7 +185,7 @@ export default function AdminLayout({
       </div>
 
       {/* Main content area */}
-      <div className={`flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} relative z-10 h-screen`}>
+      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 relative z-10 h-screen">
         {/* Instant Loading Overlay */}
         {isNavigating && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">

@@ -52,6 +52,9 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
   const menuRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [localFotoUrl, setLocalFotoUrl] = useState(jamaah.foto_url);
+  const [localNama, setLocalNama] = useState(jamaah.nama);
+  
   const [form, setForm] = useState({
     nama: jamaah.nama,
     no_hp: jamaah.no_hp,
@@ -105,6 +108,8 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
         confirmButtonColor: '#059669', // emerald-600
         confirmButtonText: 'Tutup'
       });
+      setLocalFotoUrl(data.url);
+      window.dispatchEvent(new Event('profileUpdated'));
       router.refresh();
     } catch (err: any) {
       SmallSwal.fire({
@@ -141,6 +146,8 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
         confirmButtonText: 'Tutup'
       });
       setIsEditing(false);
+      setLocalNama(form.nama);
+      window.dispatchEvent(new Event('profileUpdated'));
       router.refresh();
     } catch (err: any) {
       SmallSwal.fire({
@@ -181,8 +188,8 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                     <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
                   </div>
-                ) : jamaah.foto_url ? (
-                  <img src={jamaah.foto_url} alt={jamaah.nama} className="w-full h-full object-cover" />
+                ) : localFotoUrl ? (
+                  <img src={localFotoUrl} alt={localNama} className="w-full h-full object-cover" />
                 ) : (
                   <UserCircleIcon />
                 )}
@@ -198,7 +205,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
             </div>
 
             {/* User Info */}
-            <h2 className="text-xl font-bold text-white drop-shadow-md leading-tight mb-1">{jamaah.nama}</h2>
+            <h2 className="text-xl font-bold text-white drop-shadow-md leading-tight mb-1">{localNama}</h2>
             <p className="text-emerald-400 font-medium text-xs sm:text-sm bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{jamaah.email}</p>
 
             {/* Action Buttons */}
@@ -305,7 +312,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
                 <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/10 transition-colors">
                   <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Nama Lengkap</p>
-                  <p className="text-sm font-semibold text-white">{jamaah.nama}</p>
+                  <p className="text-sm font-semibold text-white">{localNama}</p>
                 </div>
 
                 <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/10 transition-colors">

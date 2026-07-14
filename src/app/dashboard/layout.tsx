@@ -96,13 +96,13 @@ export default function DashboardLayout({
       </div>
 
       {/* Sidebar for desktop */}
-      <div className="peer group hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 z-30">
+      <div tabIndex={0} className="peer group outline-none hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 focus-within:md:w-64 z-30">
         <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl">
           <div className="relative z-10 flex flex-col flex-1 min-h-0">
 
-            <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-200 justify-center group-hover:justify-start group-hover:gap-3">
-              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-10 group-hover:h-14 w-auto drop-shadow-md shrink-0 transition-all duration-200" />
-                <div className="text-left flex flex-col justify-center overflow-hidden transition-all duration-200 ease-in-out max-w-0 opacity-0 group-hover:max-w-[200px] group-hover:opacity-100">
+            <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-200 justify-center group-hover:justify-start group-focus-within:justify-start group-hover:gap-3 group-focus-within:gap-3">
+              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-10 group-hover:h-14 group-focus-within:h-14 w-auto drop-shadow-md shrink-0 transition-all duration-200" />
+                <div className="text-left flex flex-col justify-center overflow-hidden transition-all duration-200 ease-in-out max-w-0 opacity-0 group-hover:max-w-[200px] group-focus-within:max-w-[200px] group-hover:opacity-100 group-focus-within:opacity-100">
                   <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
                     Tabungan Umrah dan Haji
                   </h1>
@@ -121,7 +121,7 @@ export default function DashboardLayout({
                     <div key={item.name} className="space-y-1 relative">
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={`group w-full flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden backdrop-blur-sm px-0 justify-center group-hover:px-4 group-hover:justify-between ${
+                        className={`group w-full flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden backdrop-blur-sm px-0 justify-center group-hover:px-4 group-focus-within:px-4 group-hover:justify-between group-focus-within:justify-between ${
                           isOpen 
                             ? "text-white bg-white/10" 
                             : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
@@ -131,18 +131,18 @@ export default function DashboardLayout({
                         <div className="flex items-center">
                           <item.icon
                             className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
-                              isOpen ? "text-white" : "text-gray-300 group-hover:text-white"
+                              isOpen ? "text-white" : "text-gray-300 group-hover:text-white group-focus-within:text-white"
                             }`}
                             aria-hidden="true"
                           />
-                          <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap w-0 opacity-0 ml-0 group-hover:w-[150px] group-hover:opacity-100 group-hover:ml-3 text-left">
+                          <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap w-0 opacity-0 ml-0 group-hover:w-[150px] group-focus-within:w-[150px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3 text-left">
                             {item.name}
                           </span>
                         </div>
                         <ChevronDownIcon
                           className={`flex-shrink-0 transition-all duration-200 ease-in-out ${
-                            isOpen ? "rotate-180 text-white" : "text-gray-400 group-hover:text-white"
-                          } w-0 opacity-0 ml-0 border-none group-hover:w-4 group-hover:opacity-100 group-hover:ml-3`}
+                            isOpen ? "rotate-180 text-white" : "text-gray-400 group-hover:text-white group-focus-within:text-white"
+                          } w-0 opacity-0 ml-0 border-none group-hover:w-4 group-focus-within:w-4 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3`}
                           aria-hidden="true"
                         />
                       </button>
@@ -150,7 +150,7 @@ export default function DashboardLayout({
                       {/* Submenu Dropdown */}
                       <div
                         className={`overflow-hidden transition-all duration-200 ease-in-out max-h-0 opacity-0 ${
-                          isOpen ? "group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-2" : ""
+                          isOpen ? "group-hover:max-h-96 group-focus-within:max-h-96 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:mt-2 group-focus-within:mt-2" : ""
                         }`}
                       >
                         <div className="space-y-1 pl-2 pr-2">
@@ -189,7 +189,7 @@ export default function DashboardLayout({
                     onClick={(e) => {
                       if (pathname !== item.href) setIsNavigating(true);
                     }}
-                    className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden backdrop-blur-sm px-0 justify-center group-hover:px-4 group-hover:justify-start ${
+                    className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden backdrop-blur-sm px-0 justify-center group-hover:px-4 group-focus-within:px-4 group-hover:justify-start group-focus-within:justify-start ${
                       isActive
                         ? "text-white bg-white/20 shadow-md font-bold"
                         : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
@@ -198,11 +198,11 @@ export default function DashboardLayout({
                   >
                     <item.icon
                       className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
-                        isActive ? "text-white" : "text-gray-300 group-hover:text-white"
+                        isActive ? "text-white" : "text-gray-300 group-hover:text-white group-focus-within:text-white"
                       }`}
                       aria-hidden="true"
                     />
-                    <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap w-0 opacity-0 ml-0 group-hover:w-[150px] group-hover:opacity-100 group-hover:ml-3 text-left">
+                    <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap w-0 opacity-0 ml-0 group-hover:w-[150px] group-focus-within:w-[150px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3 text-left">
                       {item.name}
                     </span>
                   </Link>
@@ -210,7 +210,7 @@ export default function DashboardLayout({
               })}
             </nav>
             <div className="flex-shrink-0 p-4 border-t border-white/20 bg-black/20 backdrop-blur-md">
-              <div className="flex items-center justify-center group-hover:justify-start group-hover:mb-4">
+              <div className="flex items-center justify-center group-hover:justify-start group-focus-within:justify-start group-hover:mb-4 group-focus-within:mb-4">
                 <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md overflow-hidden shrink-0">
                   {userProfile?.foto_url ? (
                     <img src={userProfile.foto_url} alt="Profile" className="w-full h-full object-cover" />
@@ -218,18 +218,18 @@ export default function DashboardLayout({
                     session?.user?.name?.charAt(0) || "U"
                   )}
                 </div>
-                <div className="truncate transition-all duration-200 ease-in-out overflow-hidden max-w-0 opacity-0 ml-0 group-hover:max-w-[200px] group-hover:opacity-100 group-hover:ml-3">
+                <div className="truncate transition-all duration-200 ease-in-out overflow-hidden max-w-0 opacity-0 ml-0 group-hover:max-w-[200px] group-focus-within:max-w-[200px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3">
                   <p className="text-sm font-medium text-white truncate drop-shadow-md">{session?.user?.name}</p>
                   <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">{session?.user?.email}</p>
                 </div>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full flex items-center justify-center bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md text-red-100 hover:text-white border border-red-500/30 rounded-xl text-sm font-bold transition-all shadow-sm p-2 mt-4 group-hover:px-4 group-hover:py-2.5 group-hover:mt-0"
+                className="w-full flex items-center justify-center bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md text-red-100 hover:text-white border border-red-500/30 rounded-xl text-sm font-bold transition-all shadow-sm p-2 mt-4 group-hover:px-4 group-focus-within:px-4 group-hover:py-2.5 group-focus-within:py-2.5 group-hover:mt-0 group-focus-within:mt-0"
                 title="Keluar"
               >
                 <ArrowLeftOnRectangleIcon className="w-5 h-5" />
-                <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap max-w-0 opacity-0 ml-0 group-hover:max-w-[100px] group-hover:opacity-100 group-hover:ml-2">
+                <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap max-w-0 opacity-0 ml-0 group-hover:max-w-[100px] group-focus-within:max-w-[100px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-2 group-focus-within:ml-2">
                   Keluar
                 </span>
               </button>
@@ -347,7 +347,7 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 relative z-10 h-screen">
+      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-screen">
         {/* Instant Loading Overlay */}
         {isNavigating && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">

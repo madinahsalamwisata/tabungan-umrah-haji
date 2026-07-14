@@ -105,7 +105,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 <p className="text-gray-700 leading-relaxed text-sm flex-1">
                   PT Madinah Salam Wisata adalah penyelenggara perjalanan ibadah Umrah dan Haji yang berfokus pada layanan yang amanah, profesional, dan sesuai dengan tuntunan syariat. Kami berkomitmen memberikan pengalaman ibadah terbaik bagi jamaah.
                 </p>
-                <div className="mt-5 inline-block bg-emerald-700 border border-emerald-600 rounded-lg px-4 py-2 w-max shadow-inner">
+                <div className="mt-5 inline-block bg-emerald-950 border border-emerald-800 rounded-lg px-4 py-2 w-max shadow-inner">
                   <span className="text-[11px] text-emerald-100 block uppercase tracking-wider">Izin PPIU No:</span>
                   <span className="text-sm font-bold text-white">03012400173490004</span>
                 </div>
@@ -162,8 +162,8 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                       onClick={() => showPengumumanPopup(item)}
                       className={`w-full text-left relative p-3 sm:p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
                         item.is_penting 
-                          ? "bg-emerald-700 border-emerald-600 hover:bg-emerald-600" 
-                          : "bg-emerald-700 border-emerald-600 hover:bg-emerald-600"
+                          ? "bg-emerald-950 border-emerald-800 hover:bg-emerald-900" 
+                          : "bg-emerald-950 border-emerald-800 hover:bg-emerald-900"
                       }`}
                     >
                       <div className="flex flex-col">
@@ -185,7 +185,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     </button>
                   ))
                 ) : (
-                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-emerald-200 bg-emerald-700 rounded-xl border border-emerald-600">
+                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-emerald-200 bg-emerald-950 rounded-xl border border-emerald-800">
                     <Bell className="w-8 h-8 text-emerald-500/50 mb-3" />
                     <span className="text-sm">Belum ada pengumuman terbaru saat ini.</span>
                   </div>
@@ -203,7 +203,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
               
               <div className="space-y-3">
                 {/* Accordion 1: Syarat & Ketentuan Pendaftaran */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-950 shadow-sm transition-all hover:bg-emerald-900">
                   <button 
                     onClick={() => toggleAccordion('syarat_daftar')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -230,7 +230,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 2: Syarat & Ketentuan Pembatalan */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-950 shadow-sm transition-all hover:bg-emerald-900">
                   <button 
                     onClick={() => toggleAccordion('syarat_batal')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -267,7 +267,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 3: Ketentuan Khusus */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-950 shadow-sm transition-all hover:bg-emerald-900">
                   <button 
                     onClick={() => toggleAccordion('ketentuan_khusus')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -293,7 +293,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 4: Alur Pembayaran */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-950 shadow-sm transition-all hover:bg-emerald-900">
                   <button 
                     onClick={() => toggleAccordion('alur_bayar')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -317,7 +317,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 5: Perlengkapan Umrah */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-950 shadow-sm transition-all hover:bg-emerald-900">
                   <button 
                     onClick={() => toggleAccordion('perlengkapan')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"

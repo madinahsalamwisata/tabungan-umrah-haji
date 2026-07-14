@@ -120,7 +120,7 @@ export default function AdminLayout({
                   title="Keluar"
                 >
                   <ArrowLeftOnRectangleIcon className="w-5 h-5" />
-                  <span className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[100px] opacity-100 ml-2'}`}>
+                  <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap max-w-0 opacity-0 ml-0 group-hover:max-w-[100px] group-hover:opacity-100 group-hover:ml-2">
                     Keluar Admin
                   </span>
                 </button>

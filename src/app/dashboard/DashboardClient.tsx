@@ -105,8 +105,8 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 <p className="text-gray-700 leading-relaxed text-sm flex-1">
                   PT Madinah Salam Wisata adalah penyelenggara perjalanan ibadah Umrah dan Haji yang berfokus pada layanan yang amanah, profesional, dan sesuai dengan tuntunan syariat. Kami berkomitmen memberikan pengalaman ibadah terbaik bagi jamaah.
                 </p>
-                <div className="mt-5 inline-block bg-black/80 border border-gray-200 rounded-lg px-4 py-2 w-max shadow-inner">
-                  <span className="text-[11px] text-emerald-200 block uppercase tracking-wider">Izin PPIU No:</span>
+                <div className="mt-5 inline-block bg-emerald-700 border border-emerald-600 rounded-lg px-4 py-2 w-max shadow-inner">
+                  <span className="text-[11px] text-emerald-100 block uppercase tracking-wider">Izin PPIU No:</span>
                   <span className="text-sm font-bold text-white">03012400173490004</span>
                 </div>
               </GlassCard>
@@ -162,13 +162,13 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                       onClick={() => showPengumumanPopup(item)}
                       className={`w-full text-left relative p-3 sm:p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
                         item.is_penting 
-                          ? "bg-gradient-to-br from-yellow-600/30 to-yellow-800/50 backdrop-blur-md border-yellow-500/50 hover:from-yellow-600/40 hover:to-yellow-800/60" 
-                          : "bg-black/80 border-gray-200 hover:bg-white/10"
+                          ? "bg-gradient-to-br from-yellow-100 to-yellow-200 border-yellow-400 hover:from-yellow-200 hover:to-yellow-300" 
+                          : "bg-emerald-700 border-emerald-600 hover:bg-emerald-600"
                       }`}
                     >
                       <div className="flex flex-col">
                         <div className="flex justify-between items-start gap-2 mb-2">
-                          <h3 className={`font-bold text-sm leading-tight ${item.is_penting ? "text-emerald-800" : "text-gray-800"}`}>
+                          <h3 className={`font-bold text-sm leading-tight ${item.is_penting ? "text-yellow-900" : "text-white"}`}>
                             {item.judul}
                           </h3>
                           {item.is_penting && (
@@ -177,7 +177,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                             </span>
                           )}
                         </div>
-                        <span className="text-[10px] font-medium text-emerald-200/70 uppercase tracking-wide flex items-center gap-1">
+                        <span className={`text-[10px] font-medium uppercase tracking-wide flex items-center gap-1 ${item.is_penting ? "text-yellow-800" : "text-emerald-100"}`}>
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                           {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
                         </span>

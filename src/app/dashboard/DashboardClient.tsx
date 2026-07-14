@@ -185,7 +185,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     </button>
                   ))
                 ) : (
-                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-emerald-200 bg-emerald-900/80 backdrop-blur-md rounded-xl border border-emerald-700/50">
+                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-emerald-200 bg-emerald-700 rounded-xl border border-emerald-600">
                     <Bell className="w-8 h-8 text-emerald-500/50 mb-3" />
                     <span className="text-sm">Belum ada pengumuman terbaru saat ini.</span>
                   </div>
@@ -203,7 +203,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
               
               <div className="space-y-3">
                 {/* Accordion 1: Syarat & Ketentuan Pendaftaran */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
                   <button 
                     onClick={() => toggleAccordion('syarat_daftar')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -230,7 +230,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 2: Syarat & Ketentuan Pembatalan */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
                   <button 
                     onClick={() => toggleAccordion('syarat_batal')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -267,7 +267,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 3: Ketentuan Khusus */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
                   <button 
                     onClick={() => toggleAccordion('ketentuan_khusus')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -293,7 +293,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 4: Alur Pembayaran */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
                   <button 
                     onClick={() => toggleAccordion('alur_bayar')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -317,7 +317,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 5: Perlengkapan Umrah */}
-                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-900/80 backdrop-blur-sm shadow-sm transition-all hover:bg-emerald-800/80">
+                <div className="border border-emerald-700/50 rounded-xl overflow-hidden bg-emerald-700 shadow-sm transition-all hover:bg-emerald-600">
                   <button 
                     onClick={() => toggleAccordion('perlengkapan')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"

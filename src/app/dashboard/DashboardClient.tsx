@@ -89,7 +89,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
             
             {/* Header Welcome Card */}
             <GlassCard className="bg-gradient-to-br from-emerald-50/90 to-white/90 border-emerald-200">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Ahlan wa Sahlan!</h1>
+              <h1 className="text-3xl font-bold text-emerald-900 mb-2">Ahlan wa Sahlan!</h1>
               <p className="text-gray-700 text-sm md:text-base">
                 Selamat datang di sistem tabungan Umrah dan Haji Madinah Salam Wisata. Kami siap mendampingi perjalanan ibadah Anda.
               </p>
@@ -100,7 +100,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
               <GlassCard className="h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <Info className="text-emerald-800 w-6 h-6" />
-                  <h2 className="text-lg font-bold text-gray-900">Tentang Kami</h2>
+                  <h2 className="text-lg font-bold text-emerald-900">Tentang Kami</h2>
                 </div>
                 <p className="text-gray-700 leading-relaxed text-sm flex-1">
                   PT Madinah Salam Wisata adalah penyelenggara perjalanan ibadah Umrah dan Haji yang berfokus pada layanan yang amanah, profesional, dan sesuai dengan tuntunan syariat. Kami berkomitmen memberikan pengalaman ibadah terbaik bagi jamaah.
@@ -114,7 +114,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
               <GlassCard className="h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <CheckCircle2 className="text-emerald-800 w-6 h-6" />
-                  <h2 className="text-lg font-bold text-gray-900">Visi Kami</h2>
+                  <h2 className="text-lg font-bold text-emerald-900">Visi Kami</h2>
                 </div>
                 <p className="text-sm text-gray-700 italic leading-relaxed flex-1">
                   &quot;Menjadi penyelenggara perjalanan ibadah Umrah, Haji, dan wisata terpercaya yang berkomitmen menghadirkan layanan sesuai tuntunan sunnah Rasulullah ï·º.&quot;
@@ -124,7 +124,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
 
             {/* Misi */}
             <GlassCard>
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Misi Kami</h2>
+              <h2 className="text-lg font-bold text-emerald-900 mb-4">Misi Kami</h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm text-gray-700">
                 <li className="flex gap-2.5 items-start">
                   <CheckCircle2 className="w-4 h-4 text-emerald-800 mt-0.5 shrink-0" />
@@ -152,7 +152,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
             <GlassCard className="h-full min-h-[450px] flex flex-col">
               <div className="flex items-center gap-3 mb-5">
                 <Bell className="text-emerald-800 w-6 h-6 animate-pulse" />
-                <h2 className="text-lg font-bold text-gray-900">Informasi & Update</h2>
+                <h2 className="text-lg font-bold text-emerald-900">Informasi & Update</h2>
               </div>
               <div className="flex-1 overflow-y-auto pr-2 space-y-3 sm:space-y-4 custom-scrollbar">
                 {pengumumanList.length > 0 ? (
@@ -162,13 +162,13 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                       onClick={() => showPengumumanPopup(item)}
                       className={`w-full text-left relative p-3 sm:p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
                         item.is_penting 
-                          ? "bg-gradient-to-br from-yellow-100 to-yellow-200 border-yellow-400 hover:from-yellow-200 hover:to-yellow-300" 
+                          ? "bg-emerald-700 border-emerald-600 hover:bg-emerald-600" 
                           : "bg-emerald-700 border-emerald-600 hover:bg-emerald-600"
                       }`}
                     >
                       <div className="flex flex-col">
                         <div className="flex justify-between items-start gap-2 mb-2">
-                          <h3 className={`font-bold text-sm leading-tight ${item.is_penting ? "text-yellow-900" : "text-white"}`}>
+                          <h3 className={`font-bold text-sm leading-tight ${item.is_penting ? "text-white" : "text-white"}`}>
                             {item.judul}
                           </h3>
                           {item.is_penting && (
@@ -177,7 +177,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                             </span>
                           )}
                         </div>
-                        <span className={`text-[10px] font-medium uppercase tracking-wide flex items-center gap-1 ${item.is_penting ? "text-yellow-800" : "text-emerald-100"}`}>
+                        <span className={`text-[10px] font-medium uppercase tracking-wide flex items-center gap-1 ${item.is_penting ? "text-emerald-100" : "text-emerald-100"}`}>
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                           {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
                         </span>
@@ -199,7 +199,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
             
             {/* Accordion */}
             <GlassCard>
-              <h2 className="text-lg font-bold text-gray-900 mb-6">Informasi & Ketentuan Penting</h2>
+              <h2 className="text-lg font-bold text-emerald-900 mb-6">Informasi & Ketentuan Penting</h2>
               
               <div className="space-y-3">
                 {/* Accordion 1: Syarat & Ketentuan Pendaftaran */}
@@ -349,7 +349,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <MapPin className="text-emerald-800 w-6 h-6 animate-bounce" />
-                    <h2 className="text-lg font-bold text-gray-900">Lokasi Kantor</h2>
+                    <h2 className="text-lg font-bold text-emerald-900">Lokasi Kantor</h2>
                   </div>
                   <p className="font-semibold text-emerald-800 mb-1 text-sm">PT Madinah Salam Wisata</p>
                   <p className="text-xs text-gray-600 leading-relaxed">

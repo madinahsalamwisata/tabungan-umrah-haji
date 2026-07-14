@@ -103,7 +103,7 @@ export default function DashboardLayout({
       {/* Sidebar for desktop */}
       <div className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ${isCollapsed ? 'md:w-20' : 'md:w-64'} z-30`}>
         <div 
-          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-white/5 backdrop-blur-xl"
+          className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >

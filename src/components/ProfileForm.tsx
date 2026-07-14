@@ -169,7 +169,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
 
         {/* KOLOM KIRI: ID Card Profile (Lebih ringkas dan inovatif) */}
         <div className="lg:col-span-4">
-          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500 flex flex-col justify-center">
+          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-black/60 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500 flex flex-col justify-center">
           {/* Subtle Gradient Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/40 via-transparent to-teal-900/40 opacity-80 z-0"></div>
           
@@ -235,7 +235,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
 
       {/* KOLOM KANAN: Detail Informasi */}
         <div className="lg:col-span-8">
-          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500 delay-75 flex flex-col justify-center">
+          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-black/60 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500 delay-75 flex flex-col justify-center">
           <div className="px-6 py-5 border-b border-white/5">
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
               <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" /></svg>

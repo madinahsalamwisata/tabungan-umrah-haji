@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 
 // Helper component untuk kotak glassmorphism murni
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-black/40 backdrop-blur-xl border border-white/10 transition-all duration-300 hover:bg-black/50 hover:border-white/20 ${className}`}>
+  <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-black/60 backdrop-blur-xl border border-white/10 transition-all duration-300 hover:bg-black/70 hover:border-white/20 ${className}`}>
     <div className="relative z-10 p-4 sm:p-6">
       {children}
     </div>
@@ -162,8 +162,8 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                       onClick={() => showPengumumanPopup(item)}
                       className={`w-full text-left relative p-3 sm:p-4 rounded-xl border transition-all hover:shadow-lg cursor-pointer hover:-translate-y-0.5 ${
                         item.is_penting 
-                          ? "bg-gradient-to-br from-yellow-900/30 to-black/30 border-yellow-500/40" 
-                          : "bg-black/30 border-white/10 hover:bg-white/5"
+                          ? "bg-gradient-to-br from-yellow-900/30 to-black/50 border-yellow-500/40" 
+                          : "bg-black/50 border-white/10 hover:bg-white/10"
                       }`}
                     >
                       <div className="flex flex-col">
@@ -185,7 +185,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                     </button>
                   ))
                 ) : (
-                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-gray-400 bg-black/20 rounded-xl border border-white/10">
+                  <div className="p-6 flex flex-col items-center justify-center text-center h-full text-gray-400 bg-black/40 rounded-xl border border-white/10">
                     <Bell className="w-8 h-8 text-white/20 mb-3" />
                     <span className="text-sm">Belum ada pengumuman terbaru saat ini.</span>
                   </div>
@@ -203,7 +203,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
               
               <div className="space-y-3">
                 {/* Accordion 1: Syarat & Ketentuan Pendaftaran */}
-                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm shadow-sm transition-all hover:bg-black/40">
+                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/50 backdrop-blur-sm shadow-sm transition-all hover:bg-black/60">
                   <button 
                     onClick={() => toggleAccordion('syarat_daftar')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -230,7 +230,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 2: Syarat & Ketentuan Pembatalan */}
-                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm shadow-sm transition-all hover:bg-black/40">
+                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/50 backdrop-blur-sm shadow-sm transition-all hover:bg-black/60">
                   <button 
                     onClick={() => toggleAccordion('syarat_batal')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -267,7 +267,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 3: Ketentuan Khusus */}
-                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm shadow-sm transition-all hover:bg-black/40">
+                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/50 backdrop-blur-sm shadow-sm transition-all hover:bg-black/60">
                   <button 
                     onClick={() => toggleAccordion('ketentuan_khusus')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -293,7 +293,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 4: Alur Pembayaran */}
-                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm shadow-sm transition-all hover:bg-black/40">
+                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/50 backdrop-blur-sm shadow-sm transition-all hover:bg-black/60">
                   <button 
                     onClick={() => toggleAccordion('alur_bayar')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"
@@ -317,7 +317,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                 </div>
 
                 {/* Accordion 5: Perlengkapan Umrah */}
-                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm shadow-sm transition-all hover:bg-black/40">
+                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/50 backdrop-blur-sm shadow-sm transition-all hover:bg-black/60">
                   <button 
                     onClick={() => toggleAccordion('perlengkapan')}
                     className="w-full px-5 py-3.5 flex justify-between items-center transition-colors focus:outline-none"

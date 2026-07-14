@@ -90,7 +90,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {data.map(item => (
-          <div key={item.id} className={`relative rounded-2xl p-6 shadow-xl border ${item.is_penting ? 'bg-yellow-900/20 backdrop-blur-xl border-yellow-500/30' : 'bg-black/40 backdrop-blur-xl border-white/20'}`}>
+          <div key={item.id} className={`relative rounded-2xl p-6 shadow-xl border ${item.is_penting ? 'bg-yellow-900/20 backdrop-blur-xl border-yellow-500/30' : 'bg-black/60 backdrop-blur-xl border-white/10'}`}>
             {item.is_penting && (
               <span className="absolute top-4 right-4 bg-yellow-500/20 text-yellow-500 text-xs px-2 py-1 rounded-full font-bold border border-yellow-500/30">
                 Penting
@@ -116,21 +116,21 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-lg bg-black/60 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-lg bg-black/60 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
             <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">
               {editingData ? "Edit Pengumuman" : "Buat Pengumuman Baru"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Judul Pengumuman</label>
-                <input name="judul" defaultValue={editingData?.judul} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Contoh: Pembaruan Jadwal Manasik" />
+                <input name="judul" defaultValue={editingData?.judul} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Contoh: Pembaruan Jadwal Manasik" />
               </div>
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Isi Pesan</label>
-                <textarea name="konten" defaultValue={editingData?.konten} required rows={5} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none" placeholder="Tuliskan isi pengumuman lengkap di sini..."></textarea>
+                <textarea name="konten" defaultValue={editingData?.konten} required rows={5} className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none" placeholder="Tuliskan isi pengumuman lengkap di sini..."></textarea>
               </div>
               <div className="flex items-center gap-2 mt-2">
-                <input type="checkbox" name="is_penting" id="is_penting" defaultChecked={editingData?.is_penting} className="w-4 h-4 rounded bg-black/40 border-white/10 text-emerald-500 focus:ring-emerald-500" />
+                <input type="checkbox" name="is_penting" id="is_penting" defaultChecked={editingData?.is_penting} className="w-4 h-4 rounded bg-black/60 border-white/10 text-emerald-500 focus:ring-emerald-500" />
                 <label htmlFor="is_penting" className="text-sm font-medium text-gray-300">Tandai sebagai Informasi Penting (Sorotan Kuning)</label>
               </div>
 

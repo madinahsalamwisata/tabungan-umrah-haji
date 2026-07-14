@@ -48,14 +48,14 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
+      <div className="inline-block px-6 py-3 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-lg">
         <h1 className="text-2xl font-bold text-white drop-shadow-md">Dashboard Admin</h1>
-        <p className="text-sm text-gray-400 mt-1">Ringkasan statistik dan aktivitas pendaftaran jamaah.</p>
+        <p className="text-sm text-gray-300 mt-1">Ringkasan statistik dan aktivitas pendaftaran jamaah.</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/40 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-black/50 transition-all duration-300">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/60 border border-white/10 p-5 md:p-6 backdrop-blur-xl hover:bg-black/70 hover:border-white/10 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -68,7 +68,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/40 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-black/50 transition-all duration-300">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/60 border border-white/10 p-5 md:p-6 backdrop-blur-xl hover:bg-black/70 hover:border-white/10 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -81,7 +81,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/40 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-black/50 transition-all duration-300">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/60 border border-white/10 p-5 md:p-6 backdrop-blur-xl hover:bg-black/70 hover:border-white/10 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div>
@@ -94,7 +94,7 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/40 border border-white/20 p-5 md:p-6 backdrop-blur-xl hover:bg-black/50 transition-all duration-300">
+        <div className="relative rounded-[1.5rem] shadow-xl overflow-hidden bg-black/60 border border-white/10 p-5 md:p-6 backdrop-blur-xl hover:bg-black/70 hover:border-white/10 transition-all duration-300">
           
           <div className="relative z-10 flex items-center justify-between">
             <div className="w-[85%] pr-2">
@@ -111,7 +111,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Setoran Terbaru */}
-      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/40 border border-white/20 backdrop-blur-xl">
+      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/60 border border-white/10 backdrop-blur-xl">
         
         <div className="relative z-10 px-6 py-6 border-b border-white/10 flex justify-between items-center">
           <div>
@@ -122,7 +122,7 @@ export default async function AdminDashboardPage() {
 
         <div className="relative z-10 overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
-            <thead className="text-xs uppercase bg-white/5 text-gray-400 border-b border-white/10">
+            <thead className="text-xs uppercase bg-black/60 text-gray-300 border-b border-white/10">
               <tr>
                 <th scope="col" className="px-6 py-4 font-semibold">Jamaah</th>
                 <th scope="col" className="px-6 py-4 font-semibold">Paket Tujuan</th>

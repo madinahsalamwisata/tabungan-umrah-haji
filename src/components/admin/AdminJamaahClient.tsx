@@ -191,11 +191,11 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       </div>
 
       {/* Glassmorphism Table Container */}
-      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/20 animate-in fade-in zoom-in-95 duration-500">
+      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden bg-black/60 backdrop-blur-xl border border-white/10 animate-in fade-in zoom-in-95 duration-500">
         
         <div className="relative z-10 overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
-            <thead className="text-xs uppercase bg-black/40 text-gray-400 border-b border-white/10 backdrop-blur-md">
+            <thead className="text-xs uppercase bg-black/60 text-gray-400 border-b border-white/10 backdrop-blur-md">
               <tr>
                 <th scope="col" className="px-6 py-5 font-bold tracking-wider">Info Jamaah</th>
                 <th scope="col" className="px-6 py-5 font-bold tracking-wider">Kontak & NIK</th>
@@ -272,30 +272,30 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsEditModalOpen(false)}></div>
           
-          <div className="relative w-full max-w-2xl bg-black/60 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-2xl bg-black/60 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
             <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Edit Data Jamaah</h2>
             
             <form onSubmit={handleSaveEdit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Lengkap</label>
-                  <input name="nama" defaultValue={editingJamaah.nama} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="nama" defaultValue={editingJamaah.nama} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email</label>
-                  <input name="email" type="email" defaultValue={editingJamaah.email} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="email" type="email" defaultValue={editingJamaah.email} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">NIK</label>
-                  <input name="nik" defaultValue={editingJamaah.nik} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="nik" defaultValue={editingJamaah.nik} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nomor HP</label>
-                  <input name="no_hp" defaultValue={editingJamaah.no_hp} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="no_hp" defaultValue={editingJamaah.no_hp} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Alamat Lengkap</label>
-                  <textarea name="alamat" defaultValue={editingJamaah.alamat || ""} rows={3} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none"></textarea>
+                  <textarea name="alamat" defaultValue={editingJamaah.alamat || ""} rows={3} className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none"></textarea>
                 </div>
               </div>
 
@@ -317,35 +317,35 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsAddModalOpen(false)}></div>
           
-          <div className="relative w-full max-w-2xl bg-black/60 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-2xl bg-black/60 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
             <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Tambah Jamaah Baru</h2>
             
             <form onSubmit={handleSaveNew} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Lengkap</label>
-                  <input name="nama" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="nama" required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email</label>
-                  <input name="email" type="email" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="email" type="email" required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">NIK</label>
-                  <input name="nik" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="nik" required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nomor HP</label>
-                  <input name="no_hp" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="no_hp" required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Password Awal</label>
-                  <input name="password" type="password" required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input name="password" type="password" required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                   <p className="text-[10px] text-gray-400 mt-1">Jamaah dapat mengubah password setelah berhasil login.</p>
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Alamat Lengkap</label>
-                  <textarea name="alamat" rows={2} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none"></textarea>
+                  <textarea name="alamat" rows={2} className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none"></textarea>
                 </div>
               </div>
 

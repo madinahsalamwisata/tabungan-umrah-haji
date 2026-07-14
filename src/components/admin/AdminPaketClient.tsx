@@ -111,7 +111,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const paketEstimasi = data.filter(item => item.is_estimasi);
 
   const renderPaketCard = (item: PaketData) => (
-    <div key={item.id} className="relative bg-black/40 backdrop-blur-xl border border-white/20 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row group">
+    <div key={item.id} className="relative bg-black/60 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row group">
       {!item.is_estimasi && (
         <div className="md:w-2/5 h-48 md:h-auto relative bg-black/50">
           {item.poster_url ? (
@@ -151,7 +151,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Tabs */}
-        <div className="flex p-1 bg-black/40 border border-white/10 rounded-2xl w-fit">
+        <div className="flex p-1 bg-black/60 border border-white/10 rounded-2xl w-fit">
           <button 
             onClick={() => setActiveTab('pasti')}
             className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'pasti' ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
@@ -168,7 +168,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
 
         <button 
           onClick={handleOpenAdd}
-          className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold transition-colors shadow-lg"
+          className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold transition-colors shadow-lg"
         >
           <svg fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -204,7 +204,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-black/60 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200 custom-scrollbar">
+          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-black/60 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200 custom-scrollbar">
             <h2 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">
               {editingData ? "Edit Paket" : "Buat Paket Baru"}
             </h2>
@@ -213,52 +213,52 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Paket</label>
-                  <input name="nama_paket" defaultValue={editingData?.nama_paket} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Paket Umrah Spesial Ramadhan" />
+                  <input name="nama_paket" defaultValue={editingData?.nama_paket} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Paket Umrah Spesial Ramadhan" />
                 </div>
                 
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Tanggal Keberangkatan</label>
-                  <input type="date" name="tanggal_keberangkatan" defaultValue={editingData?.tanggal_keberangkatan.split('T')[0]} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input type="date" name="tanggal_keberangkatan" defaultValue={editingData?.tanggal_keberangkatan.split('T')[0]} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Tanggal Kepulangan</label>
-                  <input type="date" name="tanggal_kepulangan" defaultValue={editingData?.tanggal_kepulangan.split('T')[0]} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input type="date" name="tanggal_kepulangan" defaultValue={editingData?.tanggal_kepulangan.split('T')[0]} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Hotel Makkah</label>
-                  <input name="hotel_makkah" defaultValue={editingData?.hotel_makkah} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Swissotel Makkah (*5)" />
+                  <input name="hotel_makkah" defaultValue={editingData?.hotel_makkah} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Swissotel Makkah (*5)" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Hotel Madinah</label>
-                  <input name="hotel_madinah" defaultValue={editingData?.hotel_madinah} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Taiba Front (*5)" />
+                  <input name="hotel_madinah" defaultValue={editingData?.hotel_madinah} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Taiba Front (*5)" />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Maskapai Penerbangan</label>
-                  <input name="maskapai" defaultValue={editingData?.maskapai} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Saudia Airlines (Direct)" />
+                  <input name="maskapai" defaultValue={editingData?.maskapai} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Saudia Airlines (Direct)" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Total Kuota (Orang)</label>
-                  <input type="number" name="kuota" defaultValue={editingData?.kuota} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input type="number" name="kuota" defaultValue={editingData?.kuota} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Harga Quad (Sekamar ber-4)</label>
-                  <input type="number" name="harga_quad" defaultValue={editingData?.harga_quad} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input type="number" name="harga_quad" defaultValue={editingData?.harga_quad} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Harga Triple (Sekamar ber-3)</label>
-                  <input type="number" name="harga_triple" defaultValue={editingData?.harga_triple} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input type="number" name="harga_triple" defaultValue={editingData?.harga_triple} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Harga Double (Sekamar ber-2)</label>
-                  <input type="number" name="harga_double" defaultValue={editingData?.harga_double} required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <input type="number" name="harga_double" defaultValue={editingData?.harga_double} required className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                 </div>
                 {!isEstimasiForm && (
                   <div>
                     <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">URL Poster Gambar (Opsional)</label>
-                    <input type="url" name="poster_url" defaultValue={editingData?.poster_url || ""} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: /images/paket1.jpg atau https://..." />
+                    <input type="url" name="poster_url" defaultValue={editingData?.poster_url || ""} className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: /images/paket1.jpg atau https://..." />
                   </div>
                 )}
               </div>
@@ -270,7 +270,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                   id="is_estimasi" 
                   checked={isEstimasiForm}
                   onChange={(e) => setIsEstimasiForm(e.target.checked)}
-                  className="w-5 h-5 rounded bg-black/40 border-white/10 text-yellow-500 focus:ring-yellow-500" 
+                  className="w-5 h-5 rounded bg-black/60 border-white/10 text-yellow-500 focus:ring-yellow-500" 
                 />
                 <label htmlFor="is_estimasi" className="text-sm font-medium text-yellow-500 cursor-pointer">
                   Tandai sebagai Paket Estimasi (Harga dan Jadwal bisa berubah)

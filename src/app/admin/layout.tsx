@@ -56,9 +56,9 @@ export default function AdminLayout({
 
       {/* Sidebar for desktop */}
       <div tabIndex={0} className="peer group outline-none hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 focus-within:md:w-64 z-30">
-        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl">
+        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/10 bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl">
           <div className="relative z-10 flex flex-col flex-1 min-h-0">
-            <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-200 justify-center group-hover:justify-start group-focus-within:justify-start group-hover:gap-3 group-focus-within:gap-3">
+            <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/10 bg-white/10 backdrop-blur-sm transition-all duration-200 justify-center group-hover:justify-start group-focus-within:justify-start group-hover:gap-3 group-focus-within:gap-3">
               <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-10 group-hover:h-14 group-focus-within:h-14 w-auto drop-shadow-md shrink-0 transition-all duration-200" />
               <div className="text-left flex flex-col justify-center overflow-hidden transition-all duration-200 ease-in-out max-w-0 opacity-0 group-hover:max-w-[200px] group-focus-within:max-w-[200px] group-hover:opacity-100 group-focus-within:opacity-100">
                 <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
@@ -104,7 +104,7 @@ export default function AdminLayout({
                 })}
               </nav>
 
-              <div className="flex-shrink-0 p-4 border-t border-white/20 bg-black/20 backdrop-blur-md">
+              <div className="flex-shrink-0 p-4 border-t border-white/10 bg-black/20 backdrop-blur-md">
                 <div className="flex items-center justify-center group-hover:justify-start group-focus-within:justify-start group-hover:mb-4 group-focus-within:mb-4">
                   <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md overflow-hidden shrink-0">
                     <span className="text-sm">A</span>
@@ -132,7 +132,7 @@ export default function AdminLayout({
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 w-full z-40">
-        <div className="flex items-center justify-between bg-black/40 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/20">
+        <div className="flex items-center justify-between bg-black/60 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/10">
           <div className="flex items-center gap-3">
             <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <div className="flex flex-col">
@@ -148,7 +148,7 @@ export default function AdminLayout({
         </div>
         
         {mobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-black/60 backdrop-blur-2xl shadow-2xl border-b border-white/20">
+          <div className="absolute top-16 left-0 w-full bg-black/60 backdrop-blur-2xl shadow-2xl border-b border-white/10">
             <div className="px-3 pt-4 pb-6 space-y-3">
               {navigation.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href + '/'));
@@ -164,7 +164,7 @@ export default function AdminLayout({
                     className={`${
                       isActive
                         ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
-                        : "bg-black/20 text-gray-200 font-medium hover:bg-black/40 hover:text-white border-white/10 hover:shadow-md"
+                        : "bg-black/20 text-gray-200 font-medium hover:bg-black/60 hover:text-white border-white/10 hover:shadow-md"
                     } px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
                   >
                     <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-300"}`} />
@@ -189,7 +189,7 @@ export default function AdminLayout({
         {/* Instant Loading Overlay */}
         {isNavigating && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-black/40 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-black/60 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl">
               <div className="relative w-10 h-10 sm:w-12 sm:h-12">
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>

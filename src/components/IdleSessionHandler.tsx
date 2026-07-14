@@ -12,8 +12,8 @@ export default function IdleSessionHandler() {
     // Hanya aktifkan timer jika user sudah login
     if (status !== "authenticated") return;
 
-    // Waktu idle 15 menit (dalam milidetik)
-    const timeoutDuration = 15 * 60 * 1000;
+    // Waktu idle 10 menit (dalam milidetik)
+    const timeoutDuration = 10 * 60 * 1000;
 
     const handleIdleTimeout = () => {
       // Langsung logout tanpa popup

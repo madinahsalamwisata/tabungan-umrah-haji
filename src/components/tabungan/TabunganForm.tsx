@@ -67,7 +67,7 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
   };
 
   return (
-    <div className="bg-black/40 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden">
+    <div className="bg-black/60 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden">
       <div className="bg-emerald-900/40 backdrop-blur-md px-6 py-5 border-b border-white/10">
         <h2 className="text-xl font-bold text-white drop-shadow-md">Rencanakan Tabungan</h2>
         <p className="text-emerald-100/90 text-sm mt-1">{paket.nama_paket}</p>
@@ -186,7 +186,7 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
               <span className="text-lg font-bold text-white">{formatRp(totalBiaya)}</span>
             </div>
             
-            <div className="flex justify-between items-center bg-black/40 p-3 rounded-lg border border-white/10 mt-3">
+            <div className="flex justify-between items-center bg-black/60 p-3 rounded-lg border border-white/10 mt-3">
               <span className="text-emerald-300 font-bold">Setoran per Bulan</span>
               <span className="text-2xl font-black text-emerald-400">{formatRp(setoranBulanan)}</span>
             </div>

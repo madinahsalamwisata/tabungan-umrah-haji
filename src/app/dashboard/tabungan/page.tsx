@@ -70,7 +70,7 @@ export default async function TabunganDashboard() {
       <div>
         <h3 className="text-xl font-bold text-white drop-shadow-md mb-4">Rencana Tabungan Aktif Anda</h3>
         
-        <div className="bg-yellow-500/20 backdrop-blur-md border border-yellow-400/30 px-4 py-3 rounded-xl mb-6 shadow-xl flex gap-3 items-start">
+        <div className="bg-yellow-900/40 backdrop-blur-xl border border-yellow-500/40 px-4 py-3 rounded-xl mb-6 shadow-2xl flex gap-3 items-start">
           <svg className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
           <p className="text-sm text-yellow-100 leading-relaxed">
             <strong className="text-yellow-400">Penting:</strong> Kalkulasi biaya di bawah adalah estimasi. Harga final menyesuaikan dengan harga tiket, hotel, dan visa pada tahun keberangkatan.

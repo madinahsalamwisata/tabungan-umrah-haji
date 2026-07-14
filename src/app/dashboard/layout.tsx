@@ -256,7 +256,7 @@ export default function DashboardLayout({
 
       {/* Mobile Header & Nav */}
       <div className="md:hidden fixed top-0 w-full z-40">
-        <div className="flex items-center justify-between bg-black/40 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/20">
+        <div className="flex items-center justify-between bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/20">
           <div className="flex items-center gap-3">
             <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <div className="flex flex-col">

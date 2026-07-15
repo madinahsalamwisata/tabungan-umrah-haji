@@ -169,7 +169,7 @@ export default function TabunganDashboardClient({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="relative rounded-2xl shadow-2xl border border-white/20 bg-black/80 backdrop-blur-xl overflow-hidden transition-all duration-300">
+    <div className="relative rounded-2xl shadow-xl border border-emerald-800 bg-emerald-950 overflow-hidden transition-all duration-300">
       {/* Header / Summary (Always Visible) */}
       <div 
         className="relative z-10 p-5 cursor-pointer hover:bg-white/5 transition-colors flex items-center justify-between"
@@ -184,7 +184,7 @@ export default function TabunganDashboardClient({
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/90">
             <span className="font-semibold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-              {new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' })}
+              {new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
             </span>
             <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
             <span className="text-white">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</span>
@@ -212,7 +212,7 @@ export default function TabunganDashboardClient({
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="relative z-10 border-t border-white/20 bg-black/20 p-5 sm:p-6 animate-in slide-in-from-top-2 duration-300">
+        <div className="relative z-10 border-t border-emerald-800/50 bg-black/20 p-5 sm:p-6 animate-in slide-in-from-top-2 duration-300">
           {/* Action Buttons */}
           <div className="flex justify-end gap-2 mb-6">
             {!sudahBayarSemua && (
@@ -227,7 +227,7 @@ export default function TabunganDashboardClient({
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Setoran Bulanan Card */}
-            <div className="bg-white/5 backdrop-blur-md p-5 rounded-xl shadow-sm border border-white/10 flex flex-col justify-between">
+            <div className="bg-emerald-900/50 backdrop-blur-md p-5 rounded-xl shadow-sm border border-emerald-800 flex flex-col justify-between">
                <div>
                  <h4 className="text-sm font-bold text-white mb-1">Setoran Bulanan</h4>
                  <p className="text-xs text-white/80 mb-4">
@@ -256,13 +256,13 @@ export default function TabunganDashboardClient({
             </div>
 
             {/* Riwayat Tabungan Card */}
-            <div className="bg-white/5 backdrop-blur-md rounded-xl shadow-sm border border-white/10 overflow-hidden flex flex-col max-h-[250px]">
-               <div className="p-4 border-b border-white/10 bg-black/20">
+            <div className="bg-emerald-900/50 backdrop-blur-md rounded-xl shadow-sm border border-emerald-800 overflow-hidden flex flex-col max-h-[250px]">
+               <div className="p-4 border-b border-emerald-800 bg-black/20">
                  <h4 className="text-sm font-bold text-white">Riwayat Setoran</h4>
                </div>
                <div className="overflow-y-auto flex-1 custom-scrollbar">
                  {rencana.RiwayatSetoran.length > 0 ? (
-                   <ul className="divide-y divide-white/5">
+                   <ul className="divide-y divide-emerald-800/50">
                      {rencana.RiwayatSetoran.map((setoran: any) => (
                        <li key={setoran.id} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
                          <div>

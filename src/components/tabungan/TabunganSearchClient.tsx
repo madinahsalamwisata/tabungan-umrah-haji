@@ -34,18 +34,18 @@ function CustomSelect({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-white/10 border border-white/20 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm h-[38px] text-white backdrop-blur-sm transition-colors hover:bg-white/15"
+        className="w-full bg-emerald-950 border border-emerald-800 rounded-xl shadow-sm pl-4 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm h-[42px] text-white transition-colors hover:bg-emerald-900"
       >
-        <span className="block truncate">{selectedOption ? selectedOption.label : placeholder}</span>
-        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-          <svg className="h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <span className="block truncate font-medium">{selectedOption ? selectedOption.label : placeholder}</span>
+        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <svg className="h-5 w-5 text-emerald-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         </span>
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-full bg-[#111814]/95 backdrop-blur-xl border border-white/10 shadow-xl max-h-48 rounded-md py-1 text-base overflow-auto focus:outline-none sm:text-sm">
+        <div className="absolute z-50 mt-1 w-full bg-emerald-950/95 backdrop-blur-xl border border-emerald-800 shadow-xl max-h-48 rounded-xl py-1 text-base overflow-auto focus:outline-none sm:text-sm">
           <div
             className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-500/20 hover:text-emerald-300 ${value === "" ? "bg-emerald-500/20 text-emerald-300 font-semibold" : "text-gray-300"}`}
             onClick={() => { onChange(""); setIsOpen(false); }}
@@ -106,12 +106,12 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
 
   return (
     <div className="space-y-6">
-      <div className="relative z-30 p-6 rounded-[2rem] shadow-2xl border border-white/20 bg-black/80 backdrop-blur-xl">
+      <div className="relative z-30 p-6 rounded-[2rem] shadow-xl border border-emerald-100 bg-white/90 backdrop-blur-md">
         <div className="relative z-10">
           <h3 className="text-lg font-bold text-emerald-900 mb-4">Cari Estimasi Paket Tabungan</h3>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div>
-              <label className="block text-sm font-medium text-white mb-1">Jenis Pesawat</label>
+              <label className="block text-sm font-bold text-emerald-900 mb-1">Jenis Pesawat</label>
               <CustomSelect 
                 value={pesawat} 
                 onChange={setPesawat} 
@@ -120,7 +120,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white mb-1">Jenis Hotel</label>
+              <label className="block text-sm font-bold text-emerald-900 mb-1">Jenis Hotel</label>
               <CustomSelect 
                 value={hotel} 
                 onChange={setHotel} 
@@ -129,7 +129,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white mb-1">Bulan Keberangkatan</label>
+              <label className="block text-sm font-bold text-emerald-900 mb-1">Bulan Keberangkatan</label>
               <CustomSelect 
                 value={bulan} 
                 onChange={setBulan} 
@@ -138,7 +138,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
               />
             </div>
             <div>
-              <button type="submit" className="w-full h-[38px] bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md transition-colors border border-emerald-500/50">
+              <button type="submit" className="w-full h-[42px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transition-all border border-emerald-500/50">
                 Cari Paket
               </button>
             </div>
@@ -149,7 +149,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
       {hasSearched && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredPakets.filter(p => !activePaketIds.includes(p.id)).length === 0 ? (
-            <div className="col-span-full p-8 text-center text-white bg-white/5 rounded-lg border border-white/10 backdrop-blur-sm">
+            <div className="col-span-full p-8 text-center text-emerald-900 font-medium bg-white/90 rounded-2xl border border-emerald-100 backdrop-blur-md shadow-sm">
               Tidak ada estimasi paket yang tersedia untuk dipilih berdasarkan kriteria pencarian Anda. (Mungkin paket sudah Anda pilih sebelumnya).
             </div>
           ) : (

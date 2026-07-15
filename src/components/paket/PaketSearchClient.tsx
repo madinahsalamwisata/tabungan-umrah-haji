@@ -167,7 +167,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                 ];
 
             return (
-              <div key={paket.id} className="bg-black/80 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden flex flex-col md:flex-row hover:shadow-[0_0_25px_rgba(255,255,255,0.15)] transition-all duration-300 relative w-full group hover:bg-black/90">
+              <div key={paket.id} className="bg-white/90 backdrop-blur-md rounded-[2rem] shadow-xl border border-emerald-100 overflow-hidden flex flex-col md:flex-row hover:shadow-[0_0_25px_rgba(4,120,87,0.15)] transition-all duration-300 relative w-full group hover:bg-white shadow-emerald-900/5">
                 
                 {isAlreadySelected && (
                   <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-3 py-1 rounded-bl-xl z-20 shadow-md">
@@ -202,7 +202,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     </h2>
                     
                     {/* Subtitle Info */}
-                    <div className="flex flex-wrap items-center gap-4 text-emerald-800 text-xs mb-4">
+                    <div className="flex flex-wrap items-center gap-4 text-gray-900 text-xs mb-4">
                       <span className="flex items-center gap-1.5">
                         <svg className="w-4 h-4 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -220,8 +220,8 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     </div>
 
                     <div className="mb-4">
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-300 mb-2">Fasilitas Utama:</p>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-xs text-gray-300">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-900 mb-2">Fasilitas Utama:</p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-xs text-gray-900">
                         {fasilitasArray.slice(0, 4).map((f: string, i: number) => (
                           <li key={i} className="flex items-start gap-1.5">
                             <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
@@ -232,17 +232,17 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-between items-end sm:items-center gap-4 mt-2 pt-5 border-t border-white/10">
+                  <div className="flex flex-col sm:flex-row justify-between items-end sm:items-center gap-4 mt-2 pt-5 border-t border-emerald-100">
                     <div className="w-full sm:w-auto">
-                      <p className="text-xs text-emerald-100/70 mb-0.5 drop-shadow-sm">Mulai dari (Quad)</p>
+                      <p className="text-xs text-gray-900 mb-0.5 drop-shadow-sm font-medium">Mulai dari (Quad)</p>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-black text-emerald-700 drop-shadow-md">{formatShortCurrency(Number(paket.harga_quad))}</span>
+                        <span className="text-2xl font-black text-emerald-900 drop-shadow-md">{formatShortCurrency(Number(paket.harga_quad))}</span>
                         <span className="text-xs text-gray-400 line-through">{formatCurrency(originalQuad)}</span>
                       </div>
                     </div>
                     
                     <div className="flex flex-col gap-2 w-full sm:w-auto text-xs">
-                      <div className="flex flex-col gap-1 text-right text-emerald-800">
+                      <div className="flex flex-col gap-1 text-right text-gray-900 font-medium">
                         <div className="flex justify-between sm:justify-end gap-2.5">
                           <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Quad:</span>
                           <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_quad))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalQuad)}</span></span>
@@ -268,11 +268,11 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                         return (
                           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-4">
                             {isMoreThanOneYear && !isAlreadySelected && (
-                              <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}&source=paket`} className="w-full sm:w-auto bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 font-bold py-2.5 px-6 text-sm rounded-full shadow-sm transition-all text-center whitespace-nowrap backdrop-blur-md">
+                              <Link href={`/dashboard/tabungan/baru?paketId=${paket.id}&source=paket`} className="w-full sm:w-auto bg-emerald-950 hover:bg-emerald-900 text-white border border-emerald-900 font-bold py-2.5 px-6 text-sm rounded-full shadow-sm transition-all text-center whitespace-nowrap">
                                 Mulai Tabungan
                               </Link>
                             )}
-                            <Link href={`https://madinahsalamwisata.com`} target="_blank" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 text-sm rounded-full shadow-lg hover:shadow-[0_0_15px_rgba(16,185,129,0.5)] transition-all text-center whitespace-nowrap border border-emerald-500">
+                            <Link href={`https://madinahsalamwisata.com`} target="_blank" className="w-full sm:w-auto bg-emerald-950 hover:bg-emerald-900 text-white font-bold py-2.5 px-6 text-sm rounded-full shadow-lg hover:shadow-[0_0_15px_rgba(4,120,87,0.3)] transition-all text-center whitespace-nowrap border border-emerald-900">
                                 Booking Langsung
                             </Link>
                           </div>

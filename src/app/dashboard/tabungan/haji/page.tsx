@@ -24,18 +24,18 @@ export default async function TabunganHajiDashboard() {
       </div>
 
       <div className="pt-8 border-t border-emerald-100">
-        <div className="inline-block relative overflow-hidden rounded-2xl shadow-xl bg-white/90 backdrop-blur-md border border-emerald-100 shadow-xl shadow-emerald-900/5 px-5 py-3 mb-6">
-          <h3 className="text-xl font-bold text-emerald-900 drop-shadow-md flex items-center gap-2">
-            <svg className="w-5 h-5 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+        <div className="inline-block relative overflow-hidden rounded-2xl shadow-xl bg-emerald-950 border border-emerald-800 px-5 py-3 mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
             Paket Estimasi Haji
           </h3>
         </div>
-        <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-xl p-12 text-center shadow-sm">
-          <svg className="mx-auto h-12 w-12 text-emerald-700 mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <div className="bg-white/90 backdrop-blur-md border border-emerald-100 rounded-xl p-12 text-center shadow-sm">
+          <svg className="mx-auto h-12 w-12 text-emerald-900 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <h3 className="mt-2 text-sm font-semibold text-emerald-900">Belum ada paket estimasi</h3>
-          <p className="mt-1 text-sm text-emerald-800">Saat ini belum ada paket estimasi Haji yang tersedia untuk ditampilkan.</p>
+          <h3 className="mt-2 text-sm font-bold text-emerald-900">Belum ada paket estimasi</h3>
+          <p className="mt-1 text-sm text-black/90">Saat ini belum ada paket estimasi Haji yang tersedia untuk ditampilkan.</p>
         </div>
       </div>
     </div>

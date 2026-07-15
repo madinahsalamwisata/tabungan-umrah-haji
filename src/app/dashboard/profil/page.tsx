@@ -130,7 +130,7 @@ export default async function ProfilPage() {
                       {/* Info Paket */}
                       <div className="flex-1 pl-2 sm:pl-3">
                         <div className="flex items-center gap-2 mb-1.5">
-                          <h4 className="text-base font-bold text-emerald-900 group-hover:text-emerald-700 transition-colors line-clamp-1">
+                          <h4 className="text-base font-bold text-emerald-50 group-hover:text-emerald-300 transition-colors line-clamp-1">
                             {rencana.paket?.nama_paket}
                           </h4>
                           <span className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-black rounded shadow-inner ${
@@ -141,7 +141,7 @@ export default async function ProfilPage() {
                             {rencana.status}
                           </span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-3 text-[11px] text-emerald-700 font-medium">
+                        <div className="flex flex-wrap items-center gap-3 text-[11px] text-emerald-300 font-medium">
                           <div className="flex items-center gap-1">
                             <svg className="w-3.5 h-3.5 text-emerald-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                             {new Date(rencana.tanggal_mulai).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
@@ -155,11 +155,11 @@ export default async function ProfilPage() {
 
                       {/* Info Dana */}
                       <div className="sm:text-right shrink-0 bg-black/20 sm:bg-transparent p-3 sm:p-0 rounded-xl sm:rounded-none">
-                        <p className="text-[10px] text-emerald-700 uppercase tracking-widest font-bold mb-0.5">Terkumpul</p>
-                        <p className="text-lg font-black text-emerald-700">
+                        <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-0.5">Terkumpul</p>
+                        <p className="text-lg font-black text-emerald-400">
                           {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalTerkumpul)}
                         </p>
-                        <p className="text-[10px] text-gray-500 font-medium">
+                        <p className="text-[10px] text-gray-400 font-medium">
                           / {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(rencana.total_biaya)}
                         </p>
                       </div>

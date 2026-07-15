@@ -43,7 +43,7 @@ export default async function TabunganBaruPage(props: {
   return (
     <div className="max-w-3xl mx-auto py-8 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
       <div className="mb-6">
-        <Link href={backUrl} className="inline-flex items-center text-sm font-medium text-emerald-300 hover:text-white bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 px-3 py-1.5 rounded-lg transition-colors backdrop-blur-md">
+        <Link href={backUrl} className="inline-flex items-center text-sm font-medium text-white hover:text-emerald-50 bg-emerald-950 hover:bg-emerald-900 border border-emerald-900 px-3 py-1.5 rounded-lg transition-colors shadow-sm">
           <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           {backText}
         </Link>

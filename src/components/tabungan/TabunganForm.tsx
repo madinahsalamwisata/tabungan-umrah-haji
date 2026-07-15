@@ -67,10 +67,10 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
   };
 
   return (
-    <div className="bg-black/80 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden">
-      <div className="bg-emerald-900/40 backdrop-blur-md px-6 py-5 border-b border-emerald-100">
-        <h2 className="text-xl font-bold text-emerald-900 drop-shadow-md">Rencanakan Tabungan</h2>
-        <p className="text-emerald-100/90 text-sm mt-1">{paket.nama_paket}</p>
+    <div className="bg-white/90 backdrop-blur-md rounded-[2rem] shadow-xl border border-emerald-100 overflow-hidden shadow-emerald-900/5">
+      <div className="bg-emerald-950 px-6 py-5 border-b border-emerald-900">
+        <h2 className="text-xl font-bold text-white drop-shadow-sm">Rencanakan Tabungan</h2>
+        <p className="text-emerald-50 text-sm mt-1">{paket.nama_paket}</p>
       </div>
 
       <div className="p-6">
@@ -84,7 +84,7 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-emerald-300 mb-2">Pilih Jenis Kamar</label>
+              <label className="block text-sm font-bold text-emerald-900 mb-2">Pilih Jenis Kamar</label>
               <div className="grid grid-cols-3 gap-3">
                 {["Quad", "Triple", "Double"].map((kamar) => (
                   <label 
@@ -92,8 +92,8 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
                     className={`
                       cursor-pointer border-2 rounded-xl p-3 text-center transition-all backdrop-blur-sm
                       ${jenisKamar === kamar 
-                        ? "border-emerald-400 bg-emerald-500/20 text-emerald-300 shadow-[0_0_15px_rgba(52,211,153,0.2)]" 
-                        : "border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:bg-emerald-50"
+                        ? "border-emerald-400 bg-emerald-900 text-white shadow-[0_0_15px_rgba(4,120,87,0.3)]" 
+                        : "border-emerald-800 bg-emerald-950 text-emerald-100 hover:border-emerald-600 hover:bg-emerald-900"
                       }
                     `}
                   >
@@ -115,31 +115,31 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-emerald-300 mb-2">Jumlah Jamaah</label>
+              <label className="block text-sm font-bold text-emerald-900 mb-2">Jumlah Jamaah</label>
               <div className="flex items-center gap-4">
                 <button
                   type="button"
                   onClick={() => setJumlahJamaah(prev => Math.max(1, prev - 1))}
-                  className="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center text-xl transition-colors border border-white/20"
+                  className="w-10 h-10 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-white font-bold flex items-center justify-center text-xl transition-colors border border-emerald-900 shadow-sm"
                 >
                   -
                 </button>
-                <div className="w-16 text-center font-bold text-xl text-white">
+                <div className="w-16 text-center font-bold text-xl text-gray-900">
                   {jumlahJamaah}
                 </div>
                 <button
                   type="button"
                   onClick={() => setJumlahJamaah(prev => Math.min(paket.kuota, prev + 1))}
-                  className="w-10 h-10 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-bold flex items-center justify-center text-xl transition-colors border border-emerald-500/30"
+                  className="w-10 h-10 rounded-lg bg-emerald-900 hover:bg-emerald-800 text-white font-bold flex items-center justify-center text-xl transition-colors border border-emerald-800 shadow-sm"
                 >
                   +
                 </button>
-                <span className="text-sm text-gray-400 ml-2">Orang (Maks: {paket.kuota})</span>
+                <span className="text-sm text-gray-900 ml-2">Orang (Maks: {paket.kuota})</span>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-emerald-300 mb-3">Target Durasi Menabung (Bulan)</label>
+              <label className="block text-sm font-bold text-emerald-900 mb-3">Target Durasi Menabung (Bulan)</label>
               <div className="flex items-center gap-4">
                 <input 
                   type="range" 
@@ -148,19 +148,19 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
                   step="1" 
                   value={durasiBulan} 
                   onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
-                  className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                  className="w-full h-2 bg-emerald-100 rounded-lg appearance-none cursor-pointer accent-emerald-600 shadow-inner"
                 />
                 <div className="w-24 text-center">
                   <input 
                     type="number" 
                     value={durasiBulan} 
                     onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
-                    className="w-16 text-center border-b-2 bg-transparent border-emerald-500/50 font-bold text-xl text-white focus:outline-none focus:border-emerald-400"
+                    className="w-16 text-center border-b-2 bg-transparent border-emerald-300 font-bold text-xl text-gray-900 focus:outline-none focus:border-emerald-500"
                   />
-                  <span className="text-sm text-emerald-700 font-medium ml-1">Bulan</span>
+                  <span className="text-sm text-emerald-800 font-medium ml-1">Bulan</span>
                 </div>
               </div>
-              <div className="flex justify-between text-xs text-emerald-700 mt-2">
+              <div className="flex justify-between text-xs text-emerald-800 font-medium mt-2">
                 <span>3 Bulan</span>
                 <span>{maxBulan} Bulan</span>
               </div>
@@ -168,35 +168,35 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
 
           </div>
 
-          <div className="bg-black/30 backdrop-blur-md rounded-xl p-5 border border-white/10 space-y-3">
-            <h3 className="text-sm font-bold text-emerald-700 uppercase tracking-wider mb-2">Estimasi Biaya</h3>
+          <div className="bg-emerald-950 rounded-xl p-5 border border-emerald-900 shadow-md space-y-3">
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-2">Estimasi Biaya</h3>
             
             <div className="flex justify-between items-center text-sm">
-              <span className="text-gray-300">Harga per Orang (Kamar {jenisKamar})</span>
-              <span className="font-semibold text-emerald-900">{formatRp(hargaPerOrang)}</span>
+              <span className="text-emerald-50">Harga per Orang (Kamar {jenisKamar})</span>
+              <span className="font-semibold text-white">{formatRp(hargaPerOrang)}</span>
             </div>
 
-            <div className="flex justify-between items-center text-sm border-b border-emerald-100 pb-3">
-              <span className="text-gray-300">Total Jamaah</span>
-              <span className="font-semibold text-emerald-900">{jumlahJamaah} Orang</span>
+            <div className="flex justify-between items-center text-sm border-b border-emerald-800 pb-3">
+              <span className="text-emerald-50">Total Jamaah</span>
+              <span className="font-semibold text-white">{jumlahJamaah} Orang</span>
             </div>
 
             <div className="flex justify-between items-center pt-1">
-              <span className="text-emerald-300 font-medium">Total Keseluruhan</span>
-              <span className="text-lg font-bold text-emerald-900">{formatRp(totalBiaya)}</span>
+              <span className="text-white font-medium">Total Keseluruhan</span>
+              <span className="text-lg font-bold text-white">{formatRp(totalBiaya)}</span>
             </div>
             
-            <div className="flex justify-between items-center bg-black/80 p-3 rounded-lg border border-white/10 mt-3">
-              <span className="text-emerald-300 font-bold">Setoran per Bulan</span>
-              <span className="text-2xl font-black text-emerald-700">{formatRp(setoranBulanan)}</span>
+            <div className="flex justify-between items-center bg-emerald-900 p-3 rounded-lg border border-emerald-800 shadow-inner mt-3">
+              <span className="text-emerald-100 font-bold">Setoran per Bulan</span>
+              <span className="text-2xl font-black text-white">{formatRp(setoranBulanan)}</span>
             </div>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-4 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white 
-              ${isLoading ? 'bg-emerald-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500'} 
+            className={`w-full py-4 px-4 border border-transparent rounded-lg shadow-md text-sm font-bold text-white 
+              ${isLoading ? 'bg-emerald-400 cursor-not-allowed' : 'bg-emerald-950 hover:bg-emerald-900 focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500'} 
               transition-colors flex justify-center items-center`}
           >
             {isLoading ? (

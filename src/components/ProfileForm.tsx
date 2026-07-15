@@ -222,9 +222,9 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
                       alamat: jamaah.alamat || "",
                     });
                   }}
-                  className="w-full py-2.5 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-xl text-sm font-semibold text-red-300 transition-all shadow-sm flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-4 bg-red-950 hover:bg-red-900 border border-red-800 rounded-xl text-sm font-semibold text-white transition-all shadow-sm flex items-center justify-center gap-2"
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                   Batal Edit
                 </button>
               )}
@@ -247,46 +247,46 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
             {isEditing ? (
               <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Nama Lengkap</label>
+                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner">
+                    <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nama Lengkap</label>
                     <input
                       type="text"
                       required
                       value={form.nama}
                       onChange={(e) => setForm({ ...form, nama: e.target.value })}
-                      className="block w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
+                      className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0"
                     />
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold text-emerald-700 uppercase tracking-wider">No. HP / WhatsApp</label>
+                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner">
+                    <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">No. HP / WhatsApp</label>
                     <input
                       type="text"
                       required
                       value={form.no_hp}
                       onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
-                      className="block w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
+                      className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0"
                     />
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold text-emerald-700 uppercase tracking-wider">NIK</label>
+                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner">
+                    <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nomor Induk Kependudukan (NIK)</label>
                     <input
                       type="text"
                       required
                       value={form.nik}
                       onChange={(e) => setForm({ ...form, nik: e.target.value })}
-                      className="block w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner"
+                      className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0"
                     />
                   </div>
 
-                  <div className="sm:col-span-2 space-y-1.5">
-                    <label className="block text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Alamat Lengkap</label>
+                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner sm:col-span-2">
+                    <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Alamat Lengkap</label>
                     <textarea
                       rows={3}
                       value={form.alamat}
                       onChange={(e) => setForm({ ...form, alamat: e.target.value })}
-                      className="block w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all resize-none shadow-inner"
+                      className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0 resize-none"
                     />
                   </div>
                 </div>

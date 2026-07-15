@@ -133,10 +133,10 @@ export default async function ProfilPage() {
                           <h4 className="text-base font-bold text-emerald-50 group-hover:text-emerald-300 transition-colors line-clamp-1">
                             {rencana.paket?.nama_paket}
                           </h4>
-                          <span className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-black rounded shadow-inner ${
+                          <span className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-bold rounded-md shadow-sm border ${
                             rencana.status === 'Lunas' 
-                              ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-                              : 'bg-emerald-500/20 text-emerald-700 border border-emerald-500/30'
+                              ? 'bg-green-600 border-green-500 text-white' 
+                              : 'bg-emerald-600 border-emerald-500 text-white'
                           }`}>
                             {rencana.status}
                           </span>

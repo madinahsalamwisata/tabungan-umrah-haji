@@ -11,14 +11,14 @@ export default async function TabunganHajiDashboard() {
 
   return (
     <div className="space-y-6 mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-      <div className="relative rounded-[2rem] p-8 md:p-12 shadow-2xl overflow-hidden text-center border border-white/20 bg-black/80 backdrop-blur-xl flex flex-col items-center justify-center">
-        <div className="relative z-10 mx-auto w-14 h-14 bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 rounded-full flex items-center justify-center mb-5 shadow-inner">
-          <svg className="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="relative rounded-[2rem] p-8 md:p-12 shadow-xl overflow-hidden text-center border border-emerald-100 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center">
+        <div className="relative z-10 mx-auto w-14 h-14 bg-emerald-100 backdrop-blur-md border border-emerald-200 rounded-full flex items-center justify-center mb-5 shadow-inner">
+          <svg className="w-6 h-6 text-emerald-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
           </svg>
         </div>
         <h2 className="relative z-10 text-lg md:text-xl font-bold text-emerald-900 mb-3 drop-shadow-sm">Tabungan Haji Segera Hadir</h2>
-        <p className="relative z-10 text-emerald-100/90 max-w-2xl mx-auto leading-relaxed text-sm md:text-base italic font-light drop-shadow-sm">
+        <p className="relative z-10 text-black/90 max-w-2xl mx-auto leading-relaxed text-sm md:text-base italic font-light drop-shadow-sm">
           "Semoga Allah <i>Subhanahu Wa Ta'ala</i> memudahkan kami untuk segera menyelenggarakan program Haji dan memudahkan langkah jamaah kami untuk menunaikan ibadah Haji ke Baitullah. Amin Ya Rabbal 'Alamin."
         </p>
       </div>

@@ -280,7 +280,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
                     />
                   </div>
 
-                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner">
+                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner sm:col-span-2">
                     <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nomor Induk Kependudukan (NIK)</label>
                     <input
                       type="text"

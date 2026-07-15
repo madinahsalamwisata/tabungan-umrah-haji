@@ -70,7 +70,7 @@ export default async function PaketPage() {
     <div className="space-y-6">
       <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-white/90 backdrop-blur-md border border-emerald-100 shadow-xl shadow-emerald-900/5 p-6 sm:p-8 mb-8">
         <h2 className="text-2xl font-bold text-emerald-900 drop-shadow-md">Pilihan Paket Umrah (Jadwal Pasti)</h2>
-        <p className="mt-2 text-sm text-emerald-100/80 drop-shadow-sm leading-relaxed">
+        <p className="mt-2 text-sm text-gray-900 drop-shadow-sm leading-relaxed">
           Daftar paket umrah dengan jadwal keberangkatan pasti. Untuk paket yang jadwalnya masih lebih dari 1 tahun, Anda dapat memilih opsi Booking Langsung atau menggunakan skema Tabungan.
         </p>
       </div>

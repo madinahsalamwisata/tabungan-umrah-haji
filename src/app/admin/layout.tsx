@@ -44,7 +44,7 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="h-screen flex text-white relative font-sans overflow-hidden">
+    <div className="fixed inset-0 flex text-white font-sans overflow-hidden">
       <div className="fixed inset-0 z-0 bg-black">
         <img 
           src="/images/bg/madinah_thumbnail.webp" 
@@ -184,7 +184,7 @@ export default function AdminLayout({
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-screen">
+      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-full">
         {/* Instant Loading Overlay */}
         {isNavigating && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">

@@ -71,7 +71,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
   const [pesawat, setPesawat] = useState("");
   const [hotel, setHotel] = useState("");
   const [bulan, setBulan] = useState("");
-  const [hasSearched, setHasSearched] = useState(false);
+  const [hasSearched, setHasSearched] = useState(true);
 
   // Extract unique options for dropdowns
   const pesawatOptions = Array.from(new Set(pakets.map(p => p.maskapai).filter(Boolean)));

@@ -184,7 +184,12 @@ export default function TabunganDashboardClient({
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/90">
             <span className="font-semibold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-              {new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+              {rencana.paket.is_estimasi 
+                ? new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
+                : rencana.paket.tanggal_kepulangan 
+                  ? `${new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(rencana.paket.tanggal_kepulangan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                  : new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+              }
             </span>
             <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
             <span className="text-white">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</span>

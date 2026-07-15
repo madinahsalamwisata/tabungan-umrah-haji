@@ -212,21 +212,32 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
                   Edit Profil
                 </button>
               ) : (
-                <button
-                  onClick={() => {
-                    setIsEditing(false);
-                    setForm({
-                      nama: jamaah.nama,
-                      no_hp: jamaah.no_hp,
-                      nik: jamaah.nik,
-                      alamat: jamaah.alamat || "",
-                    });
-                  }}
-                  className="w-full py-2.5 px-4 bg-red-950 hover:bg-red-900 border border-red-800 rounded-xl text-sm font-semibold text-white transition-all shadow-sm flex items-center justify-center gap-2"
-                >
-                  <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                  Batal Edit
-                </button>
+                <>
+                  <button
+                    onClick={() => {
+                      setIsEditing(false);
+                      setForm({
+                        nama: jamaah.nama,
+                        no_hp: jamaah.no_hp,
+                        nik: jamaah.nik,
+                        alamat: jamaah.alamat || "",
+                      });
+                    }}
+                    className="w-full py-2.5 px-4 bg-red-950 hover:bg-red-900 border border-red-800 rounded-xl text-sm font-semibold text-white transition-all shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    Batal Edit
+                  </button>
+                  <button
+                    type="submit"
+                    form="profil-form"
+                    disabled={loading}
+                    className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 border border-emerald-500 rounded-xl text-sm font-bold text-white transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    {loading ? "Menyimpan..." : "Simpan Perubahan"}
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -245,7 +256,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
 
           <div className="p-6">
             {isEditing ? (
-              <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
+              <form id="profil-form" onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner">
                     <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nama Lengkap</label>
@@ -289,16 +300,6 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
                       className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0 resize-none"
                     />
                   </div>
-                </div>
-                
-                <div className="flex justify-end pt-4">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="inline-flex justify-center items-center px-6 py-2.5 border border-emerald-500 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-emerald-500 disabled:opacity-50 shadow-lg shadow-emerald-900/50 transition-all"
-                  >
-                    {loading ? "Menyimpan..." : "Simpan Perubahan"}
-                  </button>
                 </div>
               </form>
             ) : (

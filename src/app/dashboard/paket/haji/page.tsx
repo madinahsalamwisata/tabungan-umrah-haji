@@ -26,7 +26,7 @@ export default async function PaketHajiPage() {
       <div className="pt-4">
         {/* Placeholder for Search Engine */}
         <div className="bg-white/90 backdrop-blur-md p-6 rounded-[2rem] shadow-xl border border-emerald-100 shadow-emerald-900/5 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 opacity-50 pointer-events-none">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pointer-events-none">
             <div>
               <label className="block text-sm font-bold text-emerald-900 mb-2">Tipe Paket</label>
               <select className="w-full bg-emerald-950 border border-emerald-800 rounded-md shadow-sm text-emerald-50 py-2 px-3 appearance-none font-medium">

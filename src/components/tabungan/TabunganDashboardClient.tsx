@@ -310,13 +310,25 @@ export default function TabunganDashboardClient({
           <div className="flex justify-between items-start gap-2">
             <div>
               <span className="text-[10px] uppercase font-bold text-white/60 tracking-wider">Perencanaan Tabungan</span>
-              <h3 className="font-bold text-base mt-0.5 leading-snug">{rencana.paket.nama_paket}</h3>
+              <div className="flex items-center gap-2 mt-0.5">
+                <h3 className="font-bold text-base leading-snug">{rencana.paket.nama_paket}</h3>
+                {sudahBayarSemua ? (
+                  <span className="bg-yellow-500 text-emerald-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0">LUNAS</span>
+                ) : (
+                  <span className="bg-emas/20 border border-emas/30 text-emas text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0">AKTIF</span>
+                )}
+              </div>
             </div>
-            {sudahBayarSemua ? (
-              <span className="bg-yellow-500 text-emerald-900 text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wide shrink-0">LUNAS</span>
-            ) : (
-              <span className="bg-white/10 border border-white/20 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide shrink-0">AKTIF</span>
-            )}
+            <div className="flex gap-2 shrink-0 z-10">
+              {!sudahBayarSemua && (
+                <button onClick={(e) => { e.stopPropagation(); setIsEditing(true); }} className="p-1.5 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                </button>
+              )}
+              <button onClick={(e) => { e.stopPropagation(); handleDelete(); }} className="p-1.5 rounded-full bg-red-500/10 text-red-300 border border-red-500/20 hover:bg-red-500/20 transition-colors">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+              </button>
+            </div>
           </div>
 
           <div className="mt-5">
@@ -343,6 +355,24 @@ export default function TabunganDashboardClient({
             <span className="font-bold text-white">
               {new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
             </span>
+          </div>
+
+          <div className="flex gap-2 mt-5 z-10 relative">
+            <button 
+              onClick={(e) => { e.stopPropagation(); handleBayar(); }}
+              disabled={isPaying || sudahLunasBulanIni}
+              className="flex-1 bg-emas hover:bg-emas/90 text-hijau-900 font-bold py-2 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+              Setor
+            </button>
+            <button 
+              onClick={(e) => { e.stopPropagation(); router.push(`/dashboard/tabungan/${rencana.id}/riwayat`); }}
+              className="flex-1 bg-transparent border border-white/30 text-white hover:bg-white/10 font-bold py-2 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              Riwayat
+            </button>
           </div>
         </div>
 

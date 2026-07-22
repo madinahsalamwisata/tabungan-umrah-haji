@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Swal from "sweetalert2";
 
 const MySwal = Swal.mixin({
@@ -363,18 +364,23 @@ export default function TabunganDashboardClient({
             <button 
               onClick={(e) => { e.stopPropagation(); handleBayar(); }}
               disabled={isPaying || sudahLunasBulanIni}
-              className="flex-1 bg-emas hover:bg-emas/90 text-hijau-900 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-transform active:scale-95 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="flex-1 bg-emas hover:bg-emas/90 text-hijau-900 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-transform active:scale-95 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-              Setor
+              {isPaying ? "Proses..." : (
+                <>
+                  <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Setor
+                </>
+              )}
             </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); router.push(`/dashboard/tabungan/${rencana.id}/riwayat`); }}
-              className="flex-1 bg-transparent border border-white/30 text-white hover:bg-white/10 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-transform active:scale-95 touch-manipulation cursor-pointer"
+            <Link 
+              href={`/dashboard/tabungan/${rencana.id}/riwayat`}
+              onClick={(e) => e.stopPropagation()}
+              className="flex-1 bg-white/10 border border-white/20 text-white hover:bg-white/20 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1.5 transition-transform active:scale-95 touch-manipulation cursor-pointer"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               Riwayat
-            </button>
+            </Link>
           </div>
         </div>
 

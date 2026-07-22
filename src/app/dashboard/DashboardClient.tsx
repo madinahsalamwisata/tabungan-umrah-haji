@@ -26,18 +26,20 @@ const GlassCard = ({ children, className = "" }: { children: React.ReactNode, cl
 export default function DashboardClient({ 
   initialPengumuman,
   userNama = "Jamaah",
-  savingsInfo = null
+  savingsPlans = []
 }: { 
   initialPengumuman: any[];
   userNama?: string;
-  savingsInfo?: {
+  savingsPlans?: {
     namaPaket: string;
     totalTerkumpul: number;
     targetBiaya: number;
     percentage: number;
     formattedTargetDate: string;
     idRencana: string;
-  } | null;
+    jenisKamar: string;
+    jumlahJamaah: number;
+  }[];
 }) {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [pengumumanList, setPengumumanList] = useState<any[]>(initialPengumuman);
@@ -420,35 +422,39 @@ export default function DashboardClient({
               Assalamu&apos;alaikum, {userNama}
             </div>
             
-            {savingsInfo ? (
-              <>
-                <div className="text-xs text-white/60 mt-3">Total Tabungan Umrah &amp; Haji</div>
-                <div className="text-2xl font-bold font-serif mt-1 flex items-baseline gap-1.5 flex-wrap">
-                  {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(savingsInfo.totalTerkumpul)}
-                  <span className="text-xs text-white/50 font-sans font-medium">/ {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(savingsInfo.targetBiaya)}</span>
-                </div>
-                
-                <div className="mt-4">
-                  <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-emas to-yellow-300 rounded-full" style={{ width: `${savingsInfo.percentage}%` }}></div>
-                  </div>
-                  <div className="flex justify-between items-center text-[10px] text-white/60 mt-2">
-                    <span>Terkumpul <b>{savingsInfo.percentage}%</b></span>
-                    <span>Target {savingsInfo.formattedTargetDate}</span>
-                  </div>
-                </div>
+            {savingsPlans.length > 0 ? (
+              <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-4 -mx-5 px-5 pb-2">
+                {savingsPlans.map((plan) => (
+                  <div key={plan.idRencana} className="min-w-full snap-center flex-shrink-0">
+                    <div className="text-xs text-white/60 mt-3 line-clamp-1 truncate">{plan.namaPaket}</div>
+                    <div className="text-2xl font-bold font-serif mt-1 flex items-baseline gap-1.5 flex-wrap">
+                      {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(plan.totalTerkumpul)}
+                      <span className="text-xs text-white/50 font-sans font-medium">/ {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(plan.targetBiaya)}</span>
+                    </div>
+                    
+                    <div className="mt-4">
+                      <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-emas to-yellow-300 rounded-full" style={{ width: `${plan.percentage}%` }}></div>
+                      </div>
+                      <div className="flex justify-between items-center text-[10px] text-white/60 mt-2">
+                        <span>Terkumpul <b>{plan.percentage}%</b></span>
+                        <span>Target {plan.formattedTargetDate}</span>
+                      </div>
+                    </div>
 
-                <div className="flex gap-3 mt-5">
-                  <Link href="/dashboard/tabungan" className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all">
-                    <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    Setor
-                  </Link>
-                  <Link href="/dashboard/tabungan" className="flex-1 py-2.5 bg-white/10 border border-white/20 text-white text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 active:scale-98 transition-all">
-                    <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Riwayat
-                  </Link>
-                </div>
-              </>
+                    <div className="flex gap-3 mt-5">
+                      <Link href={`/dashboard/tabungan/${plan.idRencana}/bayar`} className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all">
+                        <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Setor
+                      </Link>
+                      <Link href={`/dashboard/tabungan/${plan.idRencana}/riwayat`} className="flex-1 py-2.5 bg-white/10 border border-white/20 text-white text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 active:scale-98 transition-all">
+                        <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Riwayat
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
               <>
                 <div className="text-sm font-semibold mt-4 text-white/90">Mulai Perencanaan Ibadah Anda</div>
@@ -469,7 +475,7 @@ export default function DashboardClient({
           <div>
             <div className="text-xs uppercase tracking-wider text-teks-500 font-bold mb-3">Menu Utama</div>
             <div className="grid grid-cols-4 gap-2">
-              <Link href="/dashboard/tabungan/baru" className="flex flex-col items-center gap-2 text-center">
+              <Link href="/dashboard/tabungan" className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
                   <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2" /><path d="M3 10h18" /><path d="M7 15h3" /></svg>
                 </div>
@@ -481,7 +487,7 @@ export default function DashboardClient({
                 </div>
                 <span className="text-[10px] font-semibold text-teks-900 leading-tight">Paket<br/>Umrah</span>
               </Link>
-              <Link href="/dashboard/tabungan" className="flex flex-col items-center gap-2 text-center">
+              <Link href="/dashboard/riwayat" className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
                   <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" /><path d="M12 7v5l3 3" /></svg>
                 </div>

@@ -244,8 +244,8 @@ export default function DashboardLayout({
         {pathname === "/dashboard" || pathname === "/dashboard/tabungan" || pathname === "/dashboard/paket" || pathname === "/dashboard/profil" ? (
           /* Main Brand Header */
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-hijau-100 flex items-center justify-center font-serif font-black text-hijau-900 text-sm shadow-sm">
-              MS
+            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center font-serif font-black shadow-sm overflow-hidden p-0.5">
+              <img src="/images/ms-wisata-new-logo.png" alt="Logo MS" className="w-full h-full object-contain" />
             </div>
             <div className="flex flex-col">
               <h1 className="text-sm font-bold text-white leading-tight">

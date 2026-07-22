@@ -48,33 +48,33 @@ export default async function DashboardPage() {
   // Calculate savings info across active plans
   const activePlans = jamaah.RencanaTabungan.filter(p => p.status === "Aktif" || p.status === "Lunas");
   
-  let savingsInfo = null;
-  if (activePlans.length > 0) {
-    const primaryPlan = activePlans[0];
-    const totalTerkumpul = primaryPlan.RiwayatSetoran.reduce((sum, item) => sum + Number(item.nominal), 0);
-    const targetBiaya = Number(primaryPlan.total_biaya);
+  const savingsPlans = activePlans.map((plan) => {
+    const totalTerkumpul = plan.RiwayatSetoran.reduce((sum, item) => sum + Number(item.nominal), 0);
+    const targetBiaya = Number(plan.total_biaya);
     const percentage = targetBiaya > 0 ? Math.min(100, Math.round((totalTerkumpul / targetBiaya) * 100)) : 0;
     
     // Target date estimation: tanggal_mulai + periode_bulan
-    const startDate = new Date(primaryPlan.tanggal_mulai);
-    const targetDate = new Date(startDate.setMonth(startDate.getMonth() + primaryPlan.periode_bulan));
+    const startDate = new Date(plan.tanggal_mulai);
+    const targetDate = new Date(startDate.setMonth(startDate.getMonth() + plan.periode_bulan));
     const formattedTargetDate = targetDate.toLocaleDateString("id-ID", { month: "short", year: "numeric" });
 
-    savingsInfo = {
-      namaPaket: primaryPlan.paket.nama_paket,
+    return {
+      namaPaket: plan.paket.nama_paket,
       totalTerkumpul,
       targetBiaya,
       percentage,
       formattedTargetDate,
-      idRencana: primaryPlan.id
+      idRencana: plan.id,
+      jenisKamar: plan.jenis_kamar,
+      jumlahJamaah: plan.jumlah_jamaah
     };
-  }
+  });
 
   return (
     <DashboardClient 
       initialPengumuman={serializedPengumuman} 
       userNama={jamaah.nama}
-      savingsInfo={savingsInfo}
+      savingsPlans={savingsPlans}
     />
   );
 }

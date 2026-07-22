@@ -6,55 +6,64 @@ export default function RiwayatClient({ riwayat }: { riwayat: any[] }) {
   };
 
   return (
-    <div className="bg-emerald-50 rounded-2xl border border-emerald-100 overflow-hidden shadow-inner">
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-emerald-800 text-white text-xs sm:text-sm">
-              <th className="p-3 sm:p-4 font-semibold whitespace-nowrap">Tanggal & Waktu</th>
-              <th className="p-3 sm:p-4 font-semibold whitespace-nowrap">Paket</th>
-              <th className="p-3 sm:p-4 font-semibold whitespace-nowrap">Cicilan Ke</th>
-              <th className="p-3 sm:p-4 font-semibold whitespace-nowrap">Status</th>
-              <th className="p-3 sm:p-4 font-semibold whitespace-nowrap text-right">Nominal</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-emerald-200">
-            {riwayat.length > 0 ? (
-              riwayat.map((item, idx) => (
-                <tr key={idx} className="hover:bg-emerald-100/50 transition-colors bg-white">
-                  <td className="p-3 sm:p-4 text-xs sm:text-sm text-emerald-950 whitespace-nowrap">
+    <div className="bg-slate-50/50 rounded-2xl overflow-hidden">
+      {riwayat.length > 0 ? (
+        <div className="flex flex-col gap-3">
+          {riwayat.map((item, idx) => (
+            <div key={idx} className="bg-white p-4 rounded-2xl border border-emerald-50 shadow-sm flex items-center justify-between hover:border-emerald-100 transition-colors">
+              <div className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
+                  item.status_pembayaran === 'success' ? 'bg-emerald-50 text-emerald-600' :
+                  item.status_pembayaran === 'pending' ? 'bg-amber-50 text-amber-500' :
+                  'bg-red-50 text-red-500'
+                }`}>
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    {item.status_pembayaran === 'success' ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    ) : item.status_pembayaran === 'pending' ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                    )}
+                  </svg>
+                </div>
+                
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-emerald-950 mb-0.5">{item.nama_paket}</span>
+                  <span className="text-xs font-semibold text-emerald-600 mb-1">Cicilan Ke-{item.bulan_ke}</span>
+                  <span className="text-[10px] text-gray-400">
                     {new Date(item.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                  </td>
-                  <td className="p-3 sm:p-4 text-xs sm:text-sm text-emerald-900 font-medium">
-                    {item.nama_paket}
-                  </td>
-                  <td className="p-3 sm:p-4 text-xs sm:text-sm text-emerald-950 font-bold">
-                    Ke-{item.bulan_ke}
-                  </td>
-                  <td className="p-3 sm:p-4 text-xs sm:text-sm">
-                    <span className={`px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider ${
-                      item.status_pembayaran === 'success' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
-                      item.status_pembayaran === 'pending' ? 'bg-amber-100 text-amber-700 border border-amber-200' :
-                      'bg-red-100 text-red-700 border border-red-200'
-                    }`}>
-                      {item.status_pembayaran}
-                    </span>
-                  </td>
-                  <td className="p-3 sm:p-4 text-xs sm:text-sm text-right font-black text-emerald-700 whitespace-nowrap">
-                    {formatRp(Number(item.nominal))}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={5} className="p-8 text-center text-emerald-600/60 bg-white text-sm">
-                  Belum ada riwayat transaksi.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-end gap-2">
+                <span className={`text-sm sm:text-base font-black tracking-tight ${
+                  item.status_pembayaran === 'success' ? 'text-emerald-600' :
+                  item.status_pembayaran === 'pending' ? 'text-amber-500' :
+                  'text-red-500'
+                }`}>
+                  {formatRp(Number(item.nominal))}
+                </span>
+                <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
+                  item.status_pembayaran === 'success' ? 'bg-emerald-100 text-emerald-700' :
+                  item.status_pembayaran === 'pending' ? 'bg-amber-100 text-amber-700' :
+                  'bg-red-100 text-red-700'
+                }`}>
+                  {item.status_pembayaran}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="bg-white p-8 rounded-2xl border border-dashed border-emerald-100 text-center flex flex-col items-center justify-center gap-3">
+          <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-2">
+             <svg className="w-8 h-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          </div>
+          <span className="text-sm font-semibold text-gray-500">Belum ada riwayat transaksi.</span>
+        </div>
+      )}
     </div>
   );
 }

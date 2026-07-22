@@ -102,41 +102,48 @@ export default function BayarClient({
   };
 
   return (
-    <div className="bg-emerald-950 p-6 rounded-3xl shadow-inner border border-emerald-800 flex flex-col justify-between">
-      <div className="mb-6">
-        <h4 className="text-base font-bold text-white mb-2">Konfirmasi Pembayaran</h4>
-        <p className="text-sm text-white/80 mb-6">
+    <div className="bg-white p-6 rounded-3xl shadow-sm border border-emerald-50 flex flex-col justify-between relative overflow-hidden">
+      {/* Decorative top background */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-emerald-50/50 to-white -z-10" />
+      
+      <div className="mb-6 z-10">
+        <h4 className="text-lg font-bold text-emerald-950 mb-1">Konfirmasi Pembayaran</h4>
+        <p className="text-xs text-gray-500 mb-6">
           {!sudahBayarSemua ? `Pembayaran untuk Cicilan ke-${cicilanKe} dari total ${rencana.periode_bulan} bulan` : "Tabungan Anda telah lunas."}
         </p>
         
-        <div className="bg-emerald-900/50 p-4 rounded-xl border border-emerald-800/50">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm text-white/70">Nominal Setoran</span>
-            <span className="text-2xl font-black text-emerald-400">{formatRp(Number(rencana.setoran_per_bulan))}</span>
+        {/* Nominal Card */}
+        <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-[0_4px_20px_-10px_rgba(16,185,129,0.15)] relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500" />
+          
+          <div className="flex flex-col mb-4">
+            <span className="text-xs font-semibold text-gray-500 mb-1">Nominal Setoran</span>
+            <span className="text-3xl font-black text-emerald-950 tracking-tight">{formatRp(Number(rencana.setoran_per_bulan))}</span>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-white/60">Terkumpul Sebelumnya</span>
-            <span className="text-xs text-white/90 font-bold">{formatRp(totalTerkumpul)}</span>
+          
+          <div className="pt-4 border-t border-dashed border-emerald-100 flex justify-between items-center">
+            <span className="text-xs font-medium text-gray-500">Terkumpul Sebelumnya</span>
+            <span className="text-sm text-emerald-800 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg">{formatRp(totalTerkumpul)}</span>
           </div>
         </div>
       </div>
       
-      <div>
+      <div className="z-10">
         {sudahBayarSemua || sudahLunasBulanIni ? (
-          <button disabled className="w-full bg-white/5 text-white/80 font-bold py-3 px-4 rounded-xl cursor-not-allowed text-sm border border-white/10 backdrop-blur-sm">
+          <button disabled className="w-full bg-gray-100 text-gray-400 font-bold py-3.5 px-4 rounded-2xl cursor-not-allowed text-sm border border-gray-200">
             Sudah Dibayar Penuh
           </button>
         ) : (
           <button 
             onClick={handleBayar}
             disabled={isPaying}
-            className={`w-full font-bold py-3 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm ${
-                isPaying ? "bg-emerald-400/50 text-white cursor-wait" : "bg-emerald-600 hover:bg-emerald-500 text-white"
+            className={`w-full font-bold py-3.5 px-4 rounded-2xl shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 text-sm active:scale-95 ${
+                isPaying ? "bg-emerald-300 text-emerald-800 cursor-wait" : "bg-emerald-600 hover:bg-emerald-700 text-white"
             }`}
           >
             {isPaying ? (
               <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-emerald-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>

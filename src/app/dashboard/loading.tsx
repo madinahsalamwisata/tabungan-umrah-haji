@@ -6,7 +6,7 @@ export default function Loading() {
           <div className="absolute inset-0 rounded-full border-2 border-emerald-800"></div>
           <div className="absolute inset-0 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin"></div>
         </div>
-        <p className="text-xs font-bold text-white tracking-wide animate-pulse">Memuat...</p>
+        <p className="text-xs font-bold text-white tracking-wide animate-pulse">Loading...</p>
       </div>
     </div>
   );

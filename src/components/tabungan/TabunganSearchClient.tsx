@@ -34,20 +34,20 @@ function CustomSelect({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-emerald-950 border border-emerald-800 rounded-xl shadow-sm pl-4 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm h-[42px] text-white transition-colors hover:bg-emerald-900"
+        className="w-full bg-krem border border-garis rounded-xl pl-3 pr-10 py-2.5 text-left cursor-default focus:outline-none focus:border-hijau-800 text-xs text-teks-900 transition-colors font-semibold"
       >
-        <span className="block truncate font-medium">{selectedOption ? selectedOption.label : placeholder}</span>
-        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-          <svg className="h-5 w-5 text-emerald-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <span className="block truncate">{selectedOption ? selectedOption.label : placeholder}</span>
+        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+          <svg className="h-4 w-4 text-teks-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         </span>
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-full bg-emerald-950/95 backdrop-blur-xl border border-emerald-800 shadow-xl max-h-48 rounded-xl py-1 text-base overflow-auto focus:outline-none sm:text-sm">
+        <div className="absolute z-50 mt-1 w-full bg-white border border-garis shadow-md max-h-48 rounded-xl py-1 text-xs overflow-auto focus:outline-none">
           <div
-            className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-500/20 hover:text-emerald-300 ${value === "" ? "bg-emerald-500/20 text-emerald-300 font-semibold" : "text-gray-300"}`}
+            className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-krem ${value === "" ? "bg-krem text-teks-900 font-bold" : "text-teks-600"}`}
             onClick={() => { onChange(""); setIsOpen(false); }}
           >
             <span className="block truncate">{placeholder}</span>
@@ -55,7 +55,7 @@ function CustomSelect({
           {options.map((opt) => (
             <div
               key={opt.value}
-              className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-emerald-500/20 hover:text-emerald-300 ${value === opt.value ? "bg-emerald-500/20 text-emerald-300 font-semibold" : "text-gray-300"}`}
+              className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-krem ${value === opt.value ? "bg-krem text-teks-900 font-bold" : "text-teks-600"}`}
               onClick={() => { onChange(opt.value); setIsOpen(false); }}
             >
               <span className="block truncate">{opt.label}</span>
@@ -106,44 +106,46 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
 
   return (
     <div className="space-y-6">
-      <div className="relative z-30 p-6 rounded-[2rem] shadow-xl border border-emerald-100 bg-white/90 backdrop-blur-md">
-        <div className="relative z-10">
-          <h3 className="text-lg font-bold text-emerald-900 mb-4">Cari Estimasi Paket Tabungan</h3>
-          <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div>
-              <label className="block text-sm font-bold text-emerald-900 mb-1">Jenis Pesawat</label>
-              <CustomSelect 
-                value={pesawat} 
-                onChange={setPesawat} 
-                options={pesawatOptions.map((opt: any) => ({ label: opt, value: opt }))}
-                placeholder="Semua Pesawat"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-emerald-900 mb-1">Jenis Hotel</label>
-              <CustomSelect 
-                value={hotel} 
-                onChange={setHotel} 
-                options={hotelOptions.map((opt: any) => ({ label: formatHotelOption(opt), value: opt }))}
-                placeholder="Semua Hotel"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-emerald-900 mb-1">Bulan Keberangkatan</label>
-              <CustomSelect 
-                value={bulan} 
-                onChange={setBulan} 
-                options={bulanOptions.map((opt: any) => ({ label: opt, value: opt }))}
-                placeholder="Semua Bulan"
-              />
-            </div>
-            <div>
-              <button type="submit" className="w-full h-[42px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transition-all border border-emerald-500/50">
-                Cari Paket
-              </button>
-            </div>
-          </form>
-        </div>
+      {/* Search Engine */}
+      <div className="bg-white p-5 rounded-3xl border border-garis shadow-sm mb-6 relative z-30">
+        <h3 className="text-sm font-bold text-teks-900 font-serif mb-4 flex items-center gap-2">
+          <svg className="w-4 h-4 text-hijau-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          Cari Estimasi Paket Tabungan
+        </h3>
+        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-teks-500 mb-2">Jenis Pesawat</label>
+            <CustomSelect 
+              value={pesawat} 
+              onChange={setPesawat} 
+              options={pesawatOptions.map((opt: any) => ({ label: opt, value: opt }))}
+              placeholder="Semua Pesawat"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-teks-500 mb-2">Jenis Hotel</label>
+            <CustomSelect 
+              value={hotel} 
+              onChange={setHotel} 
+              options={hotelOptions.map((opt: any) => ({ label: formatHotelOption(opt), value: opt }))}
+              placeholder="Semua Hotel"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-teks-500 mb-2">Bulan Keberangkatan</label>
+            <CustomSelect 
+              value={bulan} 
+              onChange={setBulan} 
+              options={bulanOptions.map((opt: any) => ({ label: opt, value: opt }))}
+              placeholder="Semua Bulan"
+            />
+          </div>
+          <div>
+            <button type="submit" className="w-full bg-hijau-800 hover:bg-hijau-900 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm transition-all text-xs h-[42px]">
+              Cari Paket
+            </button>
+          </div>
+        </form>
       </div>
 
       {hasSearched && (

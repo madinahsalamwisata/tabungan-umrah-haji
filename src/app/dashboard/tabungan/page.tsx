@@ -80,7 +80,7 @@ export default async function TabunganDashboard() {
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 custom-scrollbar -mx-2 px-2 sm:-mx-0 sm:px-0">
           {rencanaTabunganList.map((rencanaTabungan) => {
             // Kalkulasi progress
             const totalTerkumpul = rencanaTabungan.RiwayatSetoran

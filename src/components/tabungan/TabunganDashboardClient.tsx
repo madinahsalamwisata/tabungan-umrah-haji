@@ -171,7 +171,7 @@ export default function TabunganDashboardClient({
   return (
     <>
       {/* Desktop View */}
-      <div className="hidden md:block relative rounded-2xl shadow-xl border border-emerald-800 bg-emerald-950 overflow-hidden transition-all duration-300 mb-6">
+      <div className="hidden md:block shrink-0 w-[550px] lg:w-[650px] snap-center relative rounded-2xl shadow-xl border border-emerald-800 bg-emerald-950 overflow-hidden transition-all duration-300 h-fit">
         {/* Header / Summary (Always Visible) */}
         <div 
           className="relative z-10 p-5 cursor-pointer hover:bg-white/5 transition-colors flex items-center justify-between"
@@ -298,7 +298,7 @@ export default function TabunganDashboardClient({
       </div>
 
       {/* Mobile View (Banking App Style Card + Mutual List) */}
-      <div className="md:hidden space-y-4 mb-6">
+      <div className="md:hidden space-y-4 shrink-0 w-[85vw] max-w-[340px] snap-center h-fit">
         {/* Virtual Card */}
         <div 
           onClick={() => setIsExpanded(!isExpanded)}

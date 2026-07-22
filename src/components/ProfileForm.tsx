@@ -55,6 +55,9 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
 
   const [localFotoUrl, setLocalFotoUrl] = useState(jamaah.foto_url);
   const [localNama, setLocalNama] = useState(jamaah.nama);
+  const [localNoHp, setLocalNoHp] = useState(jamaah.no_hp);
+  const [localNik, setLocalNik] = useState(jamaah.nik);
+  const [localAlamat, setLocalAlamat] = useState(jamaah.alamat);
   
   const [form, setForm] = useState({
     nama: jamaah.nama,
@@ -141,6 +144,9 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
       });
       setIsEditing(false);
       setLocalNama(form.nama);
+      setLocalNoHp(form.no_hp);
+      setLocalNik(form.nik);
+      setLocalAlamat(form.alamat);
       window.dispatchEvent(new Event('profileUpdated'));
       router.refresh();
     } catch (err: any) {
@@ -304,18 +310,18 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
 
                   <div className="bg-krem border border-garis/80 rounded-2xl p-4 transition-colors">
                     <p className="text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">No. HP / WhatsApp</p>
-                    <p className="text-xs font-bold text-teks-900">{jamaah.no_hp}</p>
+                    <p className="text-xs font-bold text-teks-900">{localNoHp}</p>
                   </div>
 
                   <div className="bg-krem border border-garis/80 rounded-2xl p-4 transition-colors md:col-span-2">
                     <p className="text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Nomor Induk Kependudukan (NIK)</p>
-                    <p className="text-xs font-bold text-teks-900">{jamaah.nik}</p>
+                    <p className="text-xs font-bold text-teks-900">{localNik}</p>
                   </div>
 
                   <div className="bg-krem border border-garis/80 rounded-2xl p-4 md:col-span-2 transition-colors">
                     <p className="text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Alamat Lengkap</p>
-                    <p className="text-xs font-medium text-teks-800 leading-relaxed">
-                      {jamaah.alamat || <span className="text-teks-300 italic font-normal">Belum diisi</span>}
+                    <p className="text-xs font-medium text-teks-800 leading-relaxed whitespace-pre-wrap">
+                      {localAlamat || <span className="text-teks-300 italic font-normal">Belum diisi</span>}
                     </p>
                   </div>
                 </div>

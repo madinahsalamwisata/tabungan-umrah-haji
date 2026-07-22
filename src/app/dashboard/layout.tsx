@@ -267,7 +267,7 @@ export default function DashboardLayout({
                   router.push("/dashboard");
                 }
               }}
-              className="text-white hover:text-white/80 p-1 -ml-1 flex items-center justify-center"
+              className="text-white hover:text-white/80 p-3 -ml-3 active:scale-95 transition-transform flex items-center justify-center cursor-pointer touch-manipulation"
               aria-label="Kembali"
             >
               <svg className="w-6 h-6 stroke-white" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

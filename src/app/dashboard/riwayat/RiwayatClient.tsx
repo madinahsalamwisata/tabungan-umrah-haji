@@ -6,18 +6,18 @@ export default function RiwayatClient({ riwayat }: { riwayat: any[] }) {
   };
 
   return (
-    <div className="bg-slate-50/50 rounded-2xl overflow-hidden">
+    <div className="bg-slate-50/50 rounded-2xl overflow-hidden mt-4">
       {riwayat.length > 0 ? (
         <div className="flex flex-col gap-2">
           {riwayat.map((item, idx) => (
-            <div key={idx} className="bg-white p-3 rounded-xl border border-emerald-50 shadow-sm flex items-center justify-between hover:border-emerald-100 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                  item.status_pembayaran === 'success' ? 'bg-emerald-50 text-emerald-600' :
+            <div key={idx} className="bg-white p-2.5 sm:p-3 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md hover:border-emerald-100 transition-all">
+              <div className="flex items-center gap-2.5">
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 ${
+                  item.status_pembayaran === 'success' ? 'bg-emerald-50 text-emerald-500' :
                   item.status_pembayaran === 'pending' ? 'bg-amber-50 text-amber-500' :
                   'bg-red-50 text-red-500'
                 }`}>
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     {item.status_pembayaran === 'success' ? (
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                     ) : item.status_pembayaran === 'pending' ? (
@@ -29,23 +29,23 @@ export default function RiwayatClient({ riwayat }: { riwayat: any[] }) {
                 </div>
                 
                 <div className="flex flex-col">
-                  <span className="text-[13px] font-bold text-emerald-950 mb-0.5">{item.nama_paket}</span>
-                  <span className="text-[11px] font-semibold text-emerald-600 mb-0.5">Cicilan Ke-{item.bulan_ke}</span>
-                  <span className="text-[10px] text-gray-400">
+                  <span className="text-[12px] sm:text-[13px] font-bold text-gray-800 mb-0.5 leading-tight">{item.nama_paket}</span>
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-emerald-600 mb-0.5 leading-tight">Cicilan Ke-{item.bulan_ke}</span>
+                  <span className="text-[9px] sm:text-[10px] text-gray-400">
                     {new Date(item.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-col items-end gap-1.5">
-                <span className={`text-sm font-black tracking-tight ${
+              <div className="flex flex-col items-end gap-1 sm:gap-1.5 shrink-0 ml-2">
+                <span className={`text-[13px] sm:text-sm font-black tracking-tight ${
                   item.status_pembayaran === 'success' ? 'text-emerald-600' :
                   item.status_pembayaran === 'pending' ? 'text-amber-500' :
                   'text-red-500'
                 }`}>
                   {formatRp(Number(item.nominal))}
                 </span>
-                <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
+                <span className={`px-2 py-0.5 rounded-md text-[8px] sm:text-[9px] font-bold uppercase tracking-wider ${
                   item.status_pembayaran === 'success' ? 'bg-emerald-100 text-emerald-700' :
                   item.status_pembayaran === 'pending' ? 'bg-amber-100 text-amber-700' :
                   'bg-red-100 text-red-700'

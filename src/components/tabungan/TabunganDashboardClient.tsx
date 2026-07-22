@@ -310,14 +310,14 @@ export default function TabunganDashboardClient({
           <div className="flex justify-between items-start gap-2">
             <div>
               <span className="text-[10px] uppercase font-bold text-white/60 tracking-wider">Perencanaan Tabungan</span>
-              <div className="flex items-center gap-2 mt-0.5">
-                <h3 className="font-bold text-base leading-snug">{rencana.paket.nama_paket}</h3>
+              <h3 className="font-bold text-base leading-snug mt-0.5">
+                {rencana.paket.nama_paket}{" "}
                 {sudahBayarSemua ? (
-                  <span className="bg-yellow-500 text-emerald-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0">LUNAS</span>
+                  <span className="bg-yellow-500 text-emerald-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide inline-flex items-center align-middle relative -top-[1px] ml-1">LUNAS</span>
                 ) : (
-                  <span className="bg-emas/20 border border-emas/30 text-emas text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0">AKTIF</span>
+                  <span className="bg-emas/20 border border-emas/30 text-emas text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide inline-flex items-center align-middle relative -top-[1px] ml-1">AKTIF</span>
                 )}
-              </div>
+              </h3>
             </div>
             <div className="flex gap-2 shrink-0 z-10">
               {!sudahBayarSemua && (
@@ -361,14 +361,14 @@ export default function TabunganDashboardClient({
             <button 
               onClick={(e) => { e.stopPropagation(); handleBayar(); }}
               disabled={isPaying || sudahLunasBulanIni}
-              className="flex-1 bg-emas hover:bg-emas/90 text-hijau-900 font-bold py-2 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-emas hover:bg-emas/90 text-hijau-900 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-transform active:scale-95 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
               Setor
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); router.push(`/dashboard/tabungan/${rencana.id}/riwayat`); }}
-              className="flex-1 bg-transparent border border-white/30 text-white hover:bg-white/10 font-bold py-2 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-colors"
+              className="flex-1 bg-transparent border border-white/30 text-white hover:bg-white/10 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-transform active:scale-95 touch-manipulation cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               Riwayat
@@ -455,17 +455,17 @@ export default function TabunganDashboardClient({
 
       {/* Modal Edit */}
       {isEditing && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="bg-emerald-950 border border-emerald-800 rounded-3xl p-6 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-300">
-            <h3 className="text-lg font-bold text-white mb-4">Edit Rencana Tabungan</h3>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white border border-gray-100 rounded-3xl p-6 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-300">
+            <h3 className="text-lg font-bold text-emerald-950 mb-4">Edit Rencana Tabungan</h3>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-white/90 mb-2">Jenis Kamar</label>
+                <label className="block text-sm font-semibold text-emerald-900 mb-2">Jenis Kamar</label>
                 <select 
                   value={editKamar}
                   onChange={(e) => setEditKamar(e.target.value)}
-                  className="w-full bg-hijau-900 border border-emerald-700/80 rounded-xl py-2 px-3 text-white focus:outline-none focus:border-emas"
+                  className="w-full bg-white border border-gray-300 rounded-xl py-2 px-3 text-emerald-950 focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
                 >
                   <option value="Quad">Quad (Ber-4)</option>
                   <option value="Triple">Triple (Ber-3)</option>
@@ -474,27 +474,27 @@ export default function TabunganDashboardClient({
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-white/90 mb-2">Jumlah Jamaah</label>
+                <label className="block text-sm font-semibold text-emerald-900 mb-2">Jumlah Jamaah</label>
                 <input 
                   type="number" 
                   min="1"
                   max={rencana.paket.kuota}
                   value={editJamaah}
                   onChange={(e) => setEditJamaah(Number(e.target.value))}
-                  className="w-full bg-hijau-900 border border-emerald-700/80 rounded-xl py-2 px-3 text-white focus:outline-none focus:border-emas"
+                  className="w-full bg-white border border-gray-300 rounded-xl py-2 px-3 text-emerald-950 focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
                 />
               </div>
 
-              <div className="bg-white/5 border border-white/10 p-3 rounded-xl text-xs text-white/70 leading-relaxed">
+              <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-xl text-xs text-emerald-800 leading-relaxed">
                 Pembaruan ini akan otomatis menyesuaikan total biaya paket dan sisa tagihan bulanan Anda ke depan.
               </div>
             </div>
 
-            <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/15">
-              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-xs font-semibold text-white bg-white/10 hover:bg-white/15 rounded-xl transition-colors">
+            <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-gray-100">
+              <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">
                 Batal
               </button>
-              <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-xs font-semibold text-hijau-900 bg-emas hover:bg-emas/90 rounded-xl transition-colors">
+              <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-colors">
                 {isSubmittingEdit ? "Menyimpan..." : "Simpan Perubahan"}
               </button>
             </div>

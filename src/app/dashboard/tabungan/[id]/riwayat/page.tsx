@@ -41,7 +41,6 @@ export default async function TabunganRiwayatPage({ params }: { params: { id: st
     ...setoran,
     nominal: setoran.nominal.toString(),
     nama_paket: rencanaTabungan.paket.nama_paket,
-    is_haji: rencanaTabungan.paket.is_haji,
   }));
 
   return (

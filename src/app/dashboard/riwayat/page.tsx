@@ -40,7 +40,6 @@ export default async function RiwayatPage() {
         ...setoran,
         nominal: setoran.nominal.toString(),
         nama_paket: rencana.paket.nama_paket,
-        is_haji: rencana.paket.is_haji,
       });
     });
   });

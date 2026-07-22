@@ -41,13 +41,7 @@ export default async function TabunganBaruPage(props: {
   const backText = source === 'paket' ? 'Kembali ke Pilihan Paket' : 'Kembali ke Tabungan';
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-      <div className="mb-6">
-        <Link href={backUrl} className="inline-flex items-center text-sm font-medium text-white hover:text-emerald-50 bg-emerald-950 hover:bg-emerald-900 border border-emerald-900 px-3 py-1.5 rounded-lg transition-transform active:scale-95 touch-manipulation shadow-sm cursor-pointer">
-          <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-          {backText}
-        </Link>
-      </div>
+    <div className="max-w-3xl mx-auto py-4 sm:py-8 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
       <TabunganForm paket={serializedPaket} maxBulan={maxBulan} />
     </div>
   );

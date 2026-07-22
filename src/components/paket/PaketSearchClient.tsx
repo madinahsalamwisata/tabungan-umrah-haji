@@ -14,55 +14,23 @@ function CustomSelect({
   options: { label: string, value: string }[], 
   placeholder: string 
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const selectedOption = options.find(opt => opt.value === value);
-
   return (
-    <div className={`relative ${isOpen ? 'z-50' : ''}`} ref={dropdownRef}>
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-krem border border-garis rounded-xl pl-3 pr-10 py-2.5 text-left cursor-default focus:outline-none focus:border-hijau-800 text-xs text-teks-900 transition-colors font-semibold"
+    <div className="relative">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-krem border border-garis rounded-xl pl-3 pr-10 py-2.5 appearance-none focus:outline-none focus:border-hijau-800 text-xs text-teks-900 font-semibold cursor-pointer"
       >
-        <span className="block truncate">{selectedOption ? selectedOption.label : placeholder}</span>
-        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-          <svg className="h-4 w-4 text-teks-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
-        </span>
-      </button>
-
-      {isOpen && (
-        <div className="absolute z-50 mt-1 w-full bg-white border border-garis shadow-md max-h-48 rounded-xl py-1 text-xs overflow-auto focus:outline-none">
-          <div
-            className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-krem ${value === "" ? "bg-krem text-teks-900 font-bold" : "text-teks-600"}`}
-            onClick={() => { onChange(""); setIsOpen(false); }}
-          >
-            <span className="block truncate">{placeholder}</span>
-          </div>
-          {options.map((opt) => (
-            <div
-              key={opt.value}
-              className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-krem ${value === opt.value ? "bg-krem text-teks-900 font-bold" : "text-teks-600"}`}
-              onClick={() => { onChange(opt.value); setIsOpen(false); }}
-            >
-              <span className="block truncate">{opt.label}</span>
-            </div>
-          ))}
-        </div>
-      )}
+        <option value="">{placeholder}</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>{opt.label}</option>
+        ))}
+      </select>
+      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+        <svg className="h-4 w-4 text-teks-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+        </svg>
+      </div>
     </div>
   );
 }

@@ -455,8 +455,8 @@ export default function TabunganDashboardClient({
 
       {/* Modal Edit */}
       {isEditing && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-gray-100 rounded-3xl p-6 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 bg-white/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="bg-white border border-gray-100 rounded-3xl p-6 max-w-md w-full shadow-[0_10px_40px_-15px_rgba(0,0,0,0.15)] animate-in zoom-in-95 duration-300">
             <h3 className="text-lg font-bold text-emerald-950 mb-4">Edit Rencana Tabungan</h3>
             
             <div className="space-y-4">

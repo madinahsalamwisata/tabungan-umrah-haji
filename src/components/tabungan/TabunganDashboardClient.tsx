@@ -5,10 +5,13 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 const MySwal = Swal.mixin({
-  width: '360px',
+  width: '300px',
   customClass: {
-    title: 'text-lg',
-    htmlContainer: 'text-sm'
+    popup: 'rounded-3xl shadow-xl border border-gray-100 p-2',
+    title: 'text-base font-bold text-gray-900 mt-2',
+    htmlContainer: 'text-xs text-gray-600',
+    confirmButton: 'text-xs font-bold px-4 py-2 rounded-xl shadow-sm',
+    cancelButton: 'text-xs font-bold px-4 py-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 shadow-sm'
   }
 });
 
@@ -301,7 +304,6 @@ export default function TabunganDashboardClient({
       <div className="md:hidden space-y-4 shrink-0 w-[85vw] max-w-[340px] snap-center h-fit">
         {/* Virtual Card */}
         <div 
-          onClick={() => setIsExpanded(!isExpanded)}
           className="bg-gradient-to-br from-emerald-900 to-emerald-800 rounded-3xl p-5 text-white shadow-[0_10px_28px_-14px_rgba(11,61,48,0.28)] relative overflow-hidden"
         >
           {/* Decorative Circle */}
@@ -376,81 +378,6 @@ export default function TabunganDashboardClient({
           </div>
         </div>
 
-        {/* Collapsible Details Drawer */}
-        {isExpanded && (
-          <div className="bg-white border border-emerald-100 rounded-3xl p-5 space-y-5 animate-in slide-in-from-top-2 duration-300">
-            {/* Setoran Bulanan Card */}
-            {!sudahBayarSemua && (
-              <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 flex items-center justify-between gap-4">
-                <div>
-                  <span className="text-[9px] font-bold text-emerald-600 uppercase tracking-wide block">Tagihan Cicilan ke-{cicilanKe}</span>
-                  <span className="text-lg font-black text-emerald-950 mt-0.5 block">{formatRp(Number(rencana.setoran_per_bulan))}</span>
-                </div>
-                {sudahLunasBulanIni ? (
-                  <span className="bg-emerald-200 text-emerald-700 text-xs font-bold px-3 py-2 rounded-xl">Sudah Bayar</span>
-                ) : (
-                  <button 
-                    onClick={handleBayar}
-                    disabled={isPaying}
-                    className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
-                  >
-                    {isPaying ? "Proses..." : "Setor"}
-                  </button>
-                )}
-              </div>
-            )}
-
-            {/* Mutasi List (Riwayat Setoran) */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-emerald-950 uppercase tracking-wider">Mutasi Setoran</h4>
-              {rencana.RiwayatSetoran.length > 0 ? (
-                <div className="divide-y divide-emerald-100 max-h-[220px] overflow-y-auto pr-1">
-                  {rencana.RiwayatSetoran.map((setoran: any) => (
-                    <div key={setoran.id} className="py-2.5 flex items-center justify-between hover:bg-emerald-50 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                          <svg className="w-4 h-4 stroke-emerald-800" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <polyline points="19 12 12 19 5 12"></polyline>
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-emerald-950">Cicilan Ke-{setoran.bulan_ke}</p>
-                          <p className="text-[9px] text-gray-400 mt-0.5">{new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs font-bold text-emerald-900">{formatRp(Number(setoran.nominal))}</p>
-                        <span className="text-[8px] font-black text-emerald-700 uppercase tracking-wider">SUCCESS</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-xs text-gray-400 text-center py-4 bg-emerald-50/50 rounded-xl border border-dashed border-emerald-100">Belum ada riwayat setoran.</p>
-              )}
-            </div>
-
-            {/* Manage Buttons */}
-            <div className="flex gap-2 pt-4 border-t border-emerald-100">
-              {!sudahBayarSemua && (
-                <button 
-                  onClick={() => setIsEditing(true)} 
-                  className="flex-1 py-2 border border-emerald-100 bg-white hover:bg-emerald-50 text-emerald-950 font-bold text-xs rounded-xl text-center active:scale-98 transition-all"
-                >
-                  Edit Rencana
-                </button>
-              )}
-              <button 
-                onClick={handleDelete} 
-                disabled={isDeleting}
-                className="flex-1 py-2 bg-red-50 text-red-600 font-bold text-xs rounded-xl text-center active:scale-98 transition-all"
-              >
-                {isDeleting ? "Menghapus..." : "Hapus Tabungan"}
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Modal Edit */}

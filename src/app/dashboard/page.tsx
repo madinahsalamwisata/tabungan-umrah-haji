@@ -57,6 +57,7 @@ export default async function DashboardPage() {
     const startDate = new Date(plan.tanggal_mulai);
     const targetDate = new Date(startDate.setMonth(startDate.getMonth() + plan.periode_bulan));
     const formattedTargetDate = targetDate.toLocaleDateString("id-ID", { month: "short", year: "numeric" });
+    const cicilanKe = plan.RiwayatSetoran.length + 1;
 
     return {
       namaPaket: plan.paket.nama_paket,
@@ -66,7 +67,8 @@ export default async function DashboardPage() {
       formattedTargetDate,
       idRencana: plan.id,
       jenisKamar: plan.jenis_kamar,
-      jumlahJamaah: plan.jumlah_jamaah
+      jumlahJamaah: plan.jumlah_jamaah,
+      cicilanKe
     };
   });
 

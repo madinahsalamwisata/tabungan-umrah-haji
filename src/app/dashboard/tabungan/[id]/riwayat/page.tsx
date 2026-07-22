@@ -7,7 +7,8 @@ import RiwayatClient from "../../../riwayat/RiwayatClient";
 
 export const revalidate = 0;
 
-export default async function TabunganRiwayatPage({ params }: { params: { id: string } }) {
+export default async function TabunganRiwayatPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -23,7 +24,7 @@ export default async function TabunganRiwayatPage({ params }: { params: { id: st
   }
 
   const rencanaTabungan = await prisma.rencanaTabungan.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: {
       paket: true,
       RiwayatSetoran: {

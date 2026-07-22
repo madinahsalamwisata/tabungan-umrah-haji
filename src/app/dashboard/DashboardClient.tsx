@@ -14,6 +14,12 @@ import {
 } from "lucide-react";
 import Swal from "sweetalert2";
 
+declare global {
+  interface Window {
+    snap: any;
+  }
+}
+
 // Helper component untuk kotak glassmorphism murni
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
   <div className={`relative overflow-hidden rounded-2xl shadow-2xl bg-white/90 backdrop-blur-xl border border-gray-200 transition-all duration-300 hover:bg-white hover:shadow-lg ${className}`}>
@@ -39,10 +45,94 @@ export default function DashboardClient({
     idRencana: string;
     jenisKamar: string;
     jumlahJamaah: number;
+    cicilanKe: number;
   }[];
 }) {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [pengumumanList, setPengumumanList] = useState<any[]>(initialPengumuman);
+  const [isPaying, setIsPaying] = useState<string | null>(null);
+
+  const syncPayment = async (order_id: string, idRencana: string, nominal: number, cicilanKe: number) => {
+    try {
+      const res = await fetch("/api/tabungan/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ order_id, id_rencana_tabungan: idRencana, bulan_ke: cicilanKe, nominal })
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+          Swal.fire({
+            title: 'Berhasil!',
+            text: 'Pembayaran berhasil!',
+            icon: 'success',
+            confirmButtonColor: '#059669',
+            customClass: { popup: 'rounded-3xl' }
+          }).then(() => {
+            window.location.reload();
+          });
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsPaying(null);
+    }
+  };
+
+  const handleBayar = async (idRencana: string, cicilanKe: number) => {
+    setIsPaying(idRencana);
+    try {
+      const resToken = await fetch("/api/tabungan/bayar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_rencana_tabungan: idRencana })
+      });
+      const dataToken = await resToken.json();
+      if (!resToken.ok) {
+         let errMsg = dataToken.message || "Gagal membuat transaksi";
+         if (dataToken.detail && dataToken.detail.error_messages) {
+            errMsg += ": " + dataToken.detail.error_messages.join(', ');
+         } else if (dataToken.detail) {
+            errMsg += ": " + JSON.stringify(dataToken.detail);
+         }
+         throw new Error(errMsg);
+      }
+
+      if (typeof window !== "undefined" && window.snap) {
+        window.snap.pay(dataToken.token, {
+          onSuccess: async function() {
+            await syncPayment(dataToken.order_id, idRencana, dataToken.nominal, cicilanKe);
+          },
+          onPending: async function() {
+             await syncPayment(dataToken.order_id, idRencana, dataToken.nominal, cicilanKe);
+          },
+          onError: function() {
+            Swal.fire({
+              title: 'Gagal!',
+              text: 'Pembayaran gagal!',
+              icon: 'error',
+              confirmButtonColor: '#059669',
+              customClass: { popup: 'rounded-3xl' }
+            });
+            setIsPaying(null);
+          },
+          onClose: async function() {
+            await syncPayment(dataToken.order_id, idRencana, dataToken.nominal, cicilanKe);
+          }
+        });
+      } else {
+        throw new Error("Sistem pembayaran sedang memuat, mohon coba kembali dalam beberapa detik.");
+      }
+    } catch (err: any) {
+      Swal.fire({
+        title: 'Error',
+        text: err.message,
+        icon: 'error',
+        confirmButtonColor: '#059669',
+        customClass: { popup: 'rounded-3xl' }
+      });
+      setIsPaying(null);
+    }
+  };
 
   useEffect(() => {
     const fetchPengumuman = () => {
@@ -443,10 +533,18 @@ export default function DashboardClient({
                     </div>
 
                     <div className="flex gap-3 mt-5">
-                      <Link href={`/dashboard/tabungan/${plan.idRencana}/bayar`} className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all">
-                        <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        Setor
-                      </Link>
+                      <button 
+                        onClick={() => handleBayar(plan.idRencana, plan.cicilanKe)}
+                        disabled={isPaying === plan.idRencana}
+                        className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all"
+                      >
+                        {isPaying === plan.idRencana ? "Proses..." : (
+                          <>
+                            <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            Setor
+                          </>
+                        )}
+                      </button>
                       <Link href={`/dashboard/tabungan/${plan.idRencana}/riwayat`} className="flex-1 py-2.5 bg-white/10 border border-white/20 text-white text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 active:scale-98 transition-all">
                         <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         Riwayat

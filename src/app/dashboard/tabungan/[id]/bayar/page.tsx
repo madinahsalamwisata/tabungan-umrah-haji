@@ -7,7 +7,8 @@ import BayarClient from "./BayarClient";
 
 export const revalidate = 0;
 
-export default async function TabunganBayarPage({ params }: { params: { id: string } }) {
+export default async function TabunganBayarPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -23,7 +24,7 @@ export default async function TabunganBayarPage({ params }: { params: { id: stri
   }
 
   const rencanaTabungan = await prisma.rencanaTabungan.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: {
       paket: true,
       RiwayatSetoran: {

@@ -509,7 +509,7 @@ export default function DashboardClient({
                   <div 
                     key={item.id} 
                     onClick={() => showPengumumanPopup(item)}
-                    className={`flex-shrink-0 w-[240px] rounded-2xl p-4 shadow-sm cursor-pointer relative snap-start border ${
+                    className={`flex-shrink-0 w-[240px] rounded-2xl p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] cursor-pointer relative snap-start border ${
                       item.is_penting 
                         ? "bg-hijau-800 text-white border-hijau-700" 
                         : "bg-white text-teks-900 border-garis"
@@ -530,7 +530,7 @@ export default function DashboardClient({
                   </div>
                 ))
               ) : (
-                <div className="w-full bg-white border border-garis rounded-2xl p-6 text-center text-xs text-teks-500">
+                <div className="w-full bg-white border border-garis rounded-2xl p-6 text-center text-xs text-teks-500 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)]">
                   Belum ada pengumuman terbaru.
                 </div>
               )}
@@ -538,7 +538,7 @@ export default function DashboardClient({
           </div>
 
           {/* Tentang Kami Ringkas Card */}
-          <div className="bg-white border border-garis rounded-2xl p-4 shadow-sm">
+          <div className="bg-white border border-garis rounded-2xl p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)]">
             <div className="flex gap-3 items-start">
               <div className="w-9 h-9 rounded-xl bg-hijau-100 flex items-center justify-center flex-shrink-0">
                 <svg className="w-4 h-4 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
@@ -560,7 +560,7 @@ export default function DashboardClient({
             </div>
           </div>
 
-          <Link href="/dashboard/lokasi" className="bg-white border border-garis rounded-2xl p-4 shadow-sm flex items-center gap-3">
+          <Link href="/dashboard/lokasi" className="bg-white border border-garis rounded-2xl p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-hijau-100 flex items-center justify-center flex-shrink-0">
               <svg className="w-4 h-4 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
             </div>

@@ -86,14 +86,14 @@ export default function DashboardLayout({
 
   return (
     <div className="fixed inset-0 flex text-white font-sans overflow-hidden">
-      <div className="fixed inset-0 z-0">
+      <div className="fixed inset-0 z-0 hidden md:block">
         <img 
           src="/images/bg/makkah_thumbnail.webp" 
           alt="Background Makkah" 
           className="w-full h-full object-cover" 
         />
-
       </div>
+      <div className="fixed inset-0 z-0 bg-white md:hidden"></div>
 
       {/* Sidebar for desktop */}
       <div tabIndex={0} className="peer group outline-none hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 focus-within:md:w-64 z-30">

@@ -243,10 +243,8 @@ export default function DashboardLayout({
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-gradient-to-br from-hijau-900 to-hijau-700 h-16 px-4 flex items-center justify-between shadow-md">
         {pathname === "/dashboard" || pathname === "/dashboard/tabungan" || pathname === "/dashboard/paket" || pathname === "/dashboard/profil" ? (
           /* Main Brand Header */
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-emerald-950 flex items-center justify-center shadow-sm overflow-hidden p-1 border border-emerald-700">
-              <img src="/images/ms-wisata-new-logo.png" alt="Logo MS" className="w-full h-full object-contain" />
-            </div>
+          <div className="flex items-center gap-2">
+            <img src="/images/ms-wisata-new-logo.png" alt="Logo MS" className="h-9 w-auto object-contain drop-shadow-md" />
             <div className="flex flex-col">
               <h1 className="text-sm font-bold text-white leading-tight">
                 Tabungan Umrah &amp; Haji
@@ -310,13 +308,13 @@ export default function DashboardLayout({
       <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-full">
         {/* Instant Loading Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
-            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-white/10 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-xl">
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12">
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm px-4 transition-all duration-300">
+            <div className="flex items-center gap-3 py-3 px-5 bg-emerald-950 rounded-full shadow-2xl border border-emerald-800">
+              <div className="relative w-5 h-5">
+                <div className="absolute inset-0 rounded-full border-2 border-emerald-800"></div>
+                <div className="absolute inset-0 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin"></div>
               </div>
-              <p className="text-sm font-medium text-emerald-300 animate-pulse">Memuat halaman...</p>
+              <p className="text-xs font-bold text-white tracking-wide animate-pulse">Memuat...</p>
             </div>
           </div>
         )}

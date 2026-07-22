@@ -237,19 +237,23 @@ export default function DashboardClient({
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm text-gray-700">
                 <li className="flex gap-2.5 items-start">
                   <CheckCircle2 className="w-4 h-4 text-emerald-800 mt-0.5 shrink-0" />
-                  <span>Menyelenggarakan perjalanan ibadah Umrah dan Haji sesuai syariat dan sunnah.</span>
+                  <span>Menyelenggarakan perjalanan ibadah Umrah dan Haji yang sesuai dengan tuntunan syariat dan sunnah.</span>
                 </li>
                 <li className="flex gap-2.5 items-start">
                   <CheckCircle2 className="w-4 h-4 text-emerald-800 mt-0.5 shrink-0" />
-                  <span>Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian.</span>
+                  <span>Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian kepada jamaah.</span>
                 </li>
                 <li className="flex gap-2.5 items-start">
                   <CheckCircle2 className="w-4 h-4 text-emerald-800 mt-0.5 shrink-0" />
-                  <span>Membimbing jamaah agar meraih ibadah yang sah, khusyuk, dan mabrur.</span>
+                  <span>Membimbing jamaah secara ruhiyah dan teknis agar meraih ibadah yang sah, khusyuk, dan mabrur.</span>
                 </li>
                 <li className="flex gap-2.5 items-start">
                   <CheckCircle2 className="w-4 h-4 text-emerald-800 mt-0.5 shrink-0" />
-                  <span>Menghadirkan pengalaman berwisata yang edukatif dan memperkuat iman.</span>
+                  <span>Menghadirkan pengalaman berwisata yang edukatif, berkesan, dan memperkuat iman.</span>
+                </li>
+                <li className="flex gap-2.5 items-start sm:col-span-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-800 mt-0.5 shrink-0" />
+                  <span>Menjalin kemitraan yang transparan dan berkelanjutan dengan stakeholder lokal dan internasional.</span>
                 </li>
               </ul>
             </GlassCard>
@@ -662,6 +666,36 @@ export default function DashboardClient({
               <span>Izin PPIU</span>
               <b className="text-teks-500 font-bold">03012400173490004</b>
             </div>
+          </div>
+
+          {/* Misi Kami Card (Mobile) */}
+          <div className="bg-white border border-garis rounded-2xl p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)]">
+            <div className="flex gap-2 items-center mb-3 border-b border-garis pb-3">
+              <CheckCircle2 className="w-5 h-5 text-hijau-800" />
+              <h3 className="font-bold text-sm font-serif text-teks-900">Misi Kami</h3>
+            </div>
+            <ul className="space-y-3 text-xs text-teks-600">
+               <li className="flex gap-2 items-start">
+                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
+                 <span className="leading-relaxed">Menyelenggarakan perjalanan ibadah Umrah dan Haji yang sesuai dengan tuntunan syariat dan sunnah.</span>
+               </li>
+               <li className="flex gap-2 items-start">
+                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
+                 <span className="leading-relaxed">Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian kepada jamaah.</span>
+               </li>
+               <li className="flex gap-2 items-start">
+                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
+                 <span className="leading-relaxed">Membimbing jamaah secara ruhiyah dan teknis agar meraih ibadah yang sah, khusyuk, dan mabrur.</span>
+               </li>
+               <li className="flex gap-2 items-start">
+                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
+                 <span className="leading-relaxed">Menghadirkan pengalaman berwisata yang edukatif, berkesan, dan memperkuat iman.</span>
+               </li>
+               <li className="flex gap-2 items-start">
+                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
+                 <span className="leading-relaxed">Menjalin kemitraan yang transparan dan berkelanjutan dengan stakeholder lokal dan internasional.</span>
+               </li>
+            </ul>
           </div>
 
           <Link href="/dashboard/lokasi" className="bg-white border border-garis rounded-2xl p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] flex items-center gap-3">

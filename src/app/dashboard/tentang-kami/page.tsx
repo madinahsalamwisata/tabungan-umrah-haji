@@ -41,16 +41,17 @@ export default function TentangKamiPage() {
         </h3>
         <ul className="space-y-3.5">
           {[
-            "Menyelenggarakan perjalanan ibadah Umrah dan Haji sesuai syariat dan sunnah.",
-            "Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian.",
-            "Membimbing jamaah agar meraih ibadah yang sah, khusyuk, dan mabrur.",
-            "Menghadirkan pengalaman berwisata yang edukatif dan memperkuat iman."
+            "Menyelenggarakan perjalanan ibadah Umrah dan Haji yang sesuai dengan tuntunan syariat dan sunnah.",
+            "Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian kepada jamaah.",
+            "Membimbing jamaah secara ruhiyah dan teknis agar meraih ibadah yang sah, khusyuk, dan mabrur.",
+            "Menghadirkan pengalaman berwisata yang edukatif, berkesan, dan memperkuat iman.",
+            "Menjalin kemitraan yang transparan dan berkelanjutan dengan stakeholder lokal dan internasional."
           ].map((misi, idx) => (
             <li key={idx} className="flex gap-3 items-start">
               <span className="w-5 h-5 rounded-full bg-hijau-100 flex items-center justify-center text-[11px] font-bold text-hijau-900 shrink-0 mt-0.5">
                 {idx + 1}
               </span>
-              <span className="text-sm text-teks-950 leading-relaxed">{misi}</span>
+              <span className="text-sm text-gray-700 leading-relaxed">{misi}</span>
             </li>
           ))}
         </ul>

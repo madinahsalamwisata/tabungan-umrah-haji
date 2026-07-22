@@ -668,36 +668,6 @@ export default function DashboardClient({
             </div>
           </div>
 
-          {/* Misi Kami Card (Mobile) */}
-          <div className="bg-white border border-garis rounded-2xl p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)]">
-            <div className="flex gap-2 items-center mb-3 border-b border-garis pb-3">
-              <CheckCircle2 className="w-5 h-5 text-hijau-800" />
-              <h3 className="font-bold text-sm font-serif text-teks-900">Misi Kami</h3>
-            </div>
-            <ul className="space-y-3 text-xs text-teks-600">
-               <li className="flex gap-2 items-start">
-                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
-                 <span className="leading-relaxed">Menyelenggarakan perjalanan ibadah Umrah dan Haji yang sesuai dengan tuntunan syariat dan sunnah.</span>
-               </li>
-               <li className="flex gap-2 items-start">
-                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
-                 <span className="leading-relaxed">Memberikan pelayanan yang amanah, profesional, dan penuh kepedulian kepada jamaah.</span>
-               </li>
-               <li className="flex gap-2 items-start">
-                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
-                 <span className="leading-relaxed">Membimbing jamaah secara ruhiyah dan teknis agar meraih ibadah yang sah, khusyuk, dan mabrur.</span>
-               </li>
-               <li className="flex gap-2 items-start">
-                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
-                 <span className="leading-relaxed">Menghadirkan pengalaman berwisata yang edukatif, berkesan, dan memperkuat iman.</span>
-               </li>
-               <li className="flex gap-2 items-start">
-                 <div className="w-1.5 h-1.5 rounded-full bg-emas mt-1.5 shrink-0"></div>
-                 <span className="leading-relaxed">Menjalin kemitraan yang transparan dan berkelanjutan dengan stakeholder lokal dan internasional.</span>
-               </li>
-            </ul>
-          </div>
-
           <Link href="/dashboard/lokasi" className="bg-white border border-garis rounded-2xl p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-hijau-100 flex items-center justify-center flex-shrink-0">
               <svg className="w-4 h-4 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>

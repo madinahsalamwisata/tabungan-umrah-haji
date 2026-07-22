@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import Swal from "sweetalert2";
 
 const SmallSwal = Swal.mixin({
@@ -167,173 +168,179 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
           className="hidden" 
         />
 
-        {/* KOLOM KIRI: ID Card Profile (Lebih ringkas dan inovatif) */}
+        {/* KOLOM KIRI: ID Card Profile */}
         <div className="lg:col-span-4">
-          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-white/90 backdrop-blur-md border border-emerald-100 animate-in fade-in zoom-in-95 duration-500 flex flex-col justify-center">
-          {/* Subtle Gradient Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/90 to-white/90 opacity-100 z-0"></div>
-          
-          <div className="relative z-10 p-6 flex flex-col items-center text-center">
-            {/* Avatar */}
-            <div className="relative group mb-4">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-[3px] border-emerald-500/30 bg-black/60 backdrop-blur-md shadow-lg overflow-hidden flex items-center justify-center relative">
-                {isUploading ? (
-                  <div className="absolute inset-0 bg-white/90 flex items-center justify-center">
-                    <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
-                  </div>
-                ) : localFotoUrl ? (
-                  <img src={localFotoUrl} alt={localNama} className="w-full h-full object-cover" />
+          <div className="h-full relative rounded-3xl overflow-hidden bg-white border border-garis shadow-sm animate-in fade-in zoom-in-95 duration-500 flex flex-col justify-center">
+            <div className="relative z-10 p-6 flex flex-col items-center text-center">
+              {/* Avatar */}
+              <div className="relative group mb-4">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-[3px] border-emas/30 bg-krem shadow-sm overflow-hidden flex items-center justify-center relative">
+                  {localFotoUrl ? (
+                    <img src={localFotoUrl} alt={localNama} className="w-full h-full object-cover" />
+                  ) : (
+                    <UserCircleIcon />
+                  )}
+                </div>
+                <button 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="absolute bottom-1 right-1 p-2 bg-emas text-hijau-900 rounded-full border-2 border-white shadow-sm hover:scale-110 transition-all"
+                  title="Ganti Foto"
+                >
+                  <CameraIcon />
+                </button>
+              </div>
+
+              {/* User Info */}
+              <h2 className="text-lg font-bold text-teks-900 font-serif leading-tight mb-1">{localNama}</h2>
+              <p className="text-teks-500 font-bold text-xs bg-krem px-3 py-1 rounded-full border border-garis">{jamaah.email}</p>
+
+              {/* Action Buttons */}
+              <div className="w-full mt-6 space-y-2">
+                {!isEditing ? (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="w-full py-2.5 px-4 bg-hijau-800 hover:bg-hijau-900 border border-hijau-750 rounded-xl text-xs font-semibold text-white transition-all shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                    Edit Profil
+                  </button>
                 ) : (
-                  <UserCircleIcon />
+                  <>
+                    <button
+                      onClick={() => {
+                        setIsEditing(false);
+                        setForm({
+                          nama: jamaah.nama,
+                          no_hp: jamaah.no_hp,
+                          nik: jamaah.nik,
+                          alamat: jamaah.alamat || "",
+                        });
+                      }}
+                      className="w-full py-2.5 px-4 bg-white border border-garis hover:bg-krem rounded-xl text-xs font-semibold text-teks-900 transition-all shadow-sm flex items-center justify-center gap-2"
+                    >
+                      <svg className="w-4 h-4 text-teks-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                      Batal Edit
+                    </button>
+                    <button
+                      type="submit"
+                      form="profil-form"
+                      disabled={loading}
+                      className="w-full py-2.5 px-4 bg-emas hover:bg-emas/90 border border-emas rounded-xl text-xs font-bold text-hijau-900 transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      {loading ? "Menyimpan..." : "Simpan Perubahan"}
+                    </button>
+                  </>
                 )}
               </div>
-              <button 
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
-                className="absolute bottom-1 right-1 p-2 bg-emerald-600 text-white rounded-full border-2 border-[#1a231f] shadow-md hover:bg-emerald-500 hover:scale-110 transition-all disabled:opacity-50"
-                title="Ganti Foto"
-              >
-                <CameraIcon />
-              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* KOLOM KANAN: Detail Informasi */}
+        <div className="lg:col-span-8">
+          <div className="h-full relative rounded-3xl overflow-hidden bg-white border border-garis shadow-sm animate-in fade-in zoom-in-95 duration-500 flex flex-col justify-center">
+            <div className="px-5 py-4 border-b border-garis">
+              <h3 className="text-sm font-bold text-teks-900 font-serif flex items-center gap-2">
+                <svg className="w-4 h-4 text-hijau-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" /></svg>
+                Detail Informasi Pribadi
+              </h3>
             </div>
 
-            {/* User Info */}
-            <h2 className="text-xl font-bold text-emerald-900 drop-shadow-md leading-tight mb-1">{localNama}</h2>
-            <p className="text-emerald-700 font-medium text-xs sm:text-sm bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{jamaah.email}</p>
+            <div className="p-5">
+              {isEditing ? (
+                <form id="profil-form" onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="bg-krem border border-garis rounded-2xl p-4 focus-within:ring-2 focus-within:ring-hijau-800 transition-all">
+                      <label className="block text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                      <input
+                        type="text"
+                        required
+                        value={form.nama}
+                        onChange={(e) => setForm({ ...form, nama: e.target.value })}
+                        className="block w-full bg-transparent border-none p-0 text-xs font-semibold text-teks-900 placeholder-teks-300 focus:outline-none focus:ring-0"
+                      />
+                    </div>
 
-            {/* Action Buttons */}
-            <div className="w-full mt-6 space-y-2">
-              {!isEditing ? (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="w-full py-2.5 px-4 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 rounded-xl text-sm font-semibold text-white transition-all shadow-sm flex items-center justify-center gap-2"
-                >
-                  <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-                  Edit Profil
-                </button>
+                    <div className="bg-krem border border-garis rounded-2xl p-4 focus-within:ring-2 focus-within:ring-hijau-800 transition-all">
+                      <label className="block text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">No. HP / WhatsApp</label>
+                      <input
+                        type="text"
+                        required
+                        value={form.no_hp}
+                        onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
+                        className="block w-full bg-transparent border-none p-0 text-xs font-semibold text-teks-900 placeholder-teks-300 focus:outline-none focus:ring-0"
+                      />
+                    </div>
+
+                    <div className="bg-krem border border-garis rounded-2xl p-4 focus-within:ring-2 focus-within:ring-hijau-800 transition-all sm:col-span-2">
+                      <label className="block text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Nomor Induk Kependudukan (NIK)</label>
+                      <input
+                        type="text"
+                        required
+                        value={form.nik}
+                        onChange={(e) => setForm({ ...form, nik: e.target.value })}
+                        className="block w-full bg-transparent border-none p-0 text-xs font-semibold text-teks-900 placeholder-teks-300 focus:outline-none focus:ring-0"
+                      />
+                    </div>
+
+                    <div className="bg-krem border border-garis rounded-2xl p-4 focus-within:ring-2 focus-within:ring-hijau-800 transition-all sm:col-span-2">
+                      <label className="block text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Alamat Lengkap</label>
+                      <textarea
+                        rows={3}
+                        value={form.alamat}
+                        onChange={(e) => setForm({ ...form, alamat: e.target.value })}
+                        className="block w-full bg-transparent border-none p-0 text-xs font-semibold text-teks-900 placeholder-teks-300 focus:outline-none focus:ring-0 resize-none"
+                      />
+                    </div>
+                  </div>
+                </form>
               ) : (
-                <>
-                  <button
-                    onClick={() => {
-                      setIsEditing(false);
-                      setForm({
-                        nama: jamaah.nama,
-                        no_hp: jamaah.no_hp,
-                        nik: jamaah.nik,
-                        alamat: jamaah.alamat || "",
-                      });
-                    }}
-                    className="w-full py-2.5 px-4 bg-red-950 hover:bg-red-900 border border-red-800 rounded-xl text-sm font-semibold text-white transition-all shadow-sm flex items-center justify-center gap-2"
-                  >
-                    <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                    Batal Edit
-                  </button>
-                  <button
-                    type="submit"
-                    form="profil-form"
-                    disabled={loading}
-                    className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 border border-emerald-500 rounded-xl text-sm font-bold text-white transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    {loading ? "Menyimpan..." : "Simpan Perubahan"}
-                  </button>
-                </>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
+                  <div className="bg-krem border border-garis/80 rounded-2xl p-4 transition-colors">
+                    <p className="text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Nama Lengkap</p>
+                    <p className="text-xs font-bold text-teks-900">{localNama}</p>
+                  </div>
+
+                  <div className="bg-krem border border-garis/80 rounded-2xl p-4 transition-colors">
+                    <p className="text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">No. HP / WhatsApp</p>
+                    <p className="text-xs font-bold text-teks-900">{jamaah.no_hp}</p>
+                  </div>
+
+                  <div className="bg-krem border border-garis/80 rounded-2xl p-4 transition-colors md:col-span-2">
+                    <p className="text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Nomor Induk Kependudukan (NIK)</p>
+                    <p className="text-xs font-bold text-teks-900">{jamaah.nik}</p>
+                  </div>
+
+                  <div className="bg-krem border border-garis/80 rounded-2xl p-4 md:col-span-2 transition-colors">
+                    <p className="text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Alamat Lengkap</p>
+                    <p className="text-xs font-medium text-teks-800 leading-relaxed">
+                      {jamaah.alamat || <span className="text-teks-300 italic font-normal">Belum diisi</span>}
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* KOLOM KANAN: Detail Informasi */}
-        <div className="lg:col-span-8">
-          <div className="h-full relative rounded-3xl shadow-xl overflow-hidden bg-white/90 backdrop-blur-md border border-emerald-100 animate-in fade-in zoom-in-95 duration-500 delay-75 flex flex-col justify-center">
-          <div className="px-6 py-5 border-b border-emerald-100">
-            <h3 className="text-lg font-bold text-emerald-900 flex items-center gap-2">
-              <svg className="w-5 h-5 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" /></svg>
-              Detail Informasi Pribadi
-            </h3>
-          </div>
-
-          <div className="p-6">
-            {isEditing ? (
-              <form id="profil-form" onSubmit={handleSubmit} className="space-y-4 animate-in fade-in duration-300">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner">
-                    <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nama Lengkap</label>
-                    <input
-                      type="text"
-                      required
-                      value={form.nama}
-                      onChange={(e) => setForm({ ...form, nama: e.target.value })}
-                      className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0"
-                    />
-                  </div>
-
-                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner">
-                    <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">No. HP / WhatsApp</label>
-                    <input
-                      type="text"
-                      required
-                      value={form.no_hp}
-                      onChange={(e) => setForm({ ...form, no_hp: e.target.value })}
-                      className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0"
-                    />
-                  </div>
-
-                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner sm:col-span-2">
-                    <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nomor Induk Kependudukan (NIK)</label>
-                    <input
-                      type="text"
-                      required
-                      value={form.nik}
-                      onChange={(e) => setForm({ ...form, nik: e.target.value })}
-                      className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0"
-                    />
-                  </div>
-
-                  <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 focus-within:ring-2 focus-within:ring-emerald-500 transition-all shadow-inner sm:col-span-2">
-                    <label className="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Alamat Lengkap</label>
-                    <textarea
-                      rows={3}
-                      value={form.alamat}
-                      onChange={(e) => setForm({ ...form, alamat: e.target.value })}
-                      className="block w-full bg-transparent border-none p-0 text-sm font-semibold text-white placeholder-emerald-700/50 focus:outline-none focus:ring-0 resize-none"
-                    />
-                  </div>
-                </div>
-              </form>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
-                <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 hover:bg-emerald-900 transition-colors shadow-inner">
-                  <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nama Lengkap</p>
-                  <p className="text-sm font-semibold text-white">{localNama}</p>
-                </div>
-
-                <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 hover:bg-emerald-900 transition-colors shadow-inner">
-                  <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">No. HP / WhatsApp</p>
-                  <p className="text-sm font-semibold text-white">{jamaah.no_hp}</p>
-                </div>
-
-                <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 hover:bg-emerald-900 transition-colors shadow-inner md:col-span-2">
-                  <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Nomor Induk Kependudukan (NIK)</p>
-                  <p className="text-sm font-semibold text-white">{jamaah.nik}</p>
-                </div>
-
-                <div className="bg-emerald-950 border border-emerald-800 rounded-2xl p-4 md:col-span-2 hover:bg-emerald-900 transition-colors shadow-inner">
-                  <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Alamat Lengkap</p>
-                  <p className="text-sm font-medium text-emerald-50 leading-relaxed">
-                    {jamaah.alamat || <span className="text-gray-400 italic font-normal">Belum diisi</span>}
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-
-      {/* Riwayat Tabungan dirender di luar kolom agar memanjang ke samping penuh */}
       {children}
+
+      {/* Logout button at the very bottom on mobile view */}
+      <div className="pt-4 md:hidden">
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="w-full py-3.5 bg-red-50 text-red-600 hover:bg-red-100/80 active:scale-98 rounded-xl font-bold text-xs flex items-center justify-center gap-2 border border-red-100 transition-all shadow-sm"
+        >
+          <svg className="w-4 h-4 stroke-red-600" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Keluar dari Akun
+        </button>
+      </div>
     </div>
   );
 }

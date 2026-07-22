@@ -239,111 +239,71 @@ export default function DashboardLayout({
         </div>
       </div>
 
-      {/* Mobile Header & Nav */}
-      <div className="md:hidden fixed top-0 w-full z-40">
-        <div className="flex items-center justify-between bg-emerald-950 backdrop-blur-xl border-emerald-800 h-16 px-4 shadow-md border-b">
+      {/* Mobile Top Bar (Banking App Style) */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-gradient-to-br from-hijau-900 to-hijau-700 h-16 px-4 flex items-center justify-between shadow-md">
+        {pathname === "/dashboard" || pathname === "/dashboard/tabungan" || pathname === "/dashboard/paket" || pathname === "/dashboard/profil" ? (
+          /* Main Brand Header */
           <div className="flex items-center gap-3">
-            <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
+            <div className="w-9 h-9 rounded-full bg-hijau-100 flex items-center justify-center font-serif font-black text-hijau-900 text-sm shadow-sm">
+              MS
+            </div>
             <div className="flex flex-col">
-              <h1 className="text-sm font-bold text-white drop-shadow-md leading-tight">
-                Tabungan Umrah & Haji
+              <h1 className="text-sm font-bold text-white leading-tight">
+                Tabungan Umrah &amp; Haji
               </h1>
-              <p className="text-[10px] text-gray-200 drop-shadow-md">
+              <p className="text-[10px] text-white/70">
                 Madinah Salam Wisata
               </p>
             </div>
           </div>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-white hover:text-gray-200 p-2"
-          >
-            {mobileMenuOpen ? (
-              <XMarkIcon className="h-6 w-6" />
-            ) : (
-              <Bars3Icon className="h-6 w-6" />
-            )}
-          </button>
-        </div>
-        
-        {/* Mobile menu dropdown */}
-        {mobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-emerald-950 backdrop-blur-2xl shadow-2xl border-b border-emerald-800">
-            <div className="px-3 pt-4 pb-6 space-y-3">
-              {navigation.map((item) => {
-                if (item.children) {
-                  const isOpen = openMenus.includes(item.name);
-                  return (
-                    <div key={item.name} className="space-y-2">
-                      <button
-                        onClick={() => toggleMenu(item.name)}
-                        className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-base font-medium transition-all border backdrop-blur-sm shadow-sm active:scale-95 ${isOpen ? 'bg-white/20 border-white/30 text-white font-bold scale-[0.98]' : 'bg-white/5 border-white/10 text-gray-200 hover:bg-white/10 hover:text-white'}`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <item.icon className={`h-5 w-5 ${isOpen ? "text-white" : "text-gray-300"}`} />
-                          <span className="drop-shadow-sm">{item.name}</span>
-                        </div>
-                        <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180 text-white' : 'text-gray-400'}`} />
-                      </button>
-                      {isOpen && (
-                        <div className="pl-6 pr-1 space-y-2 mt-2">
-                          {item.children.map(child => {
-                            const isChildCurrent = pathname === child.href;
-                            return (
-                                <Link
-                                  key={child.name}
-                                  href={child.href}
-                                  onClick={() => {
-                                    if (pathname !== child.href) setIsNavigating(true);
-                                    setMobileMenuOpen(false);
-                                  }}
-                                  prefetch={true}
-                                  className={`${
-                                  isChildCurrent
-                                    ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
-                                    : "bg-white/5 text-gray-300 font-medium hover:bg-white/10 hover:text-white border-white/10 hover:shadow-md"
-                                } flex items-center px-4 py-2.5 text-sm rounded-xl transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
-                              >
-                                {child.name}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
+        ) : (
+          /* Sub-page Header with Back Button */
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                if (pathname.startsWith("/dashboard/tabungan/")) {
+                  router.push("/dashboard/tabungan");
+                } else if (pathname.startsWith("/dashboard/paket/")) {
+                  router.push("/dashboard/paket");
+                } else {
+                  router.push("/dashboard");
                 }
-
-                const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href + '/'));
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href!}
-                    onClick={() => {
-                      if (pathname !== item.href) setIsNavigating(true);
-                      setMobileMenuOpen(false);
-                    }}
-                    prefetch={true}
-                    className={`${
-                      isActive
-                        ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
-                        : "bg-white/5 text-gray-200 font-medium hover:bg-white/10 hover:text-white border-white/10 hover:shadow-md"
-                    } px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
-                  >
-                    <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-300"}`} />
-                    <span className={isActive ? "font-bold" : "font-medium"}>{item.name}</span>
-                  </Link>
-                );
-              })}
-              <button
-                onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full text-left text-gray-300 hover:bg-white/10 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-3 drop-shadow-sm active:scale-95 transition-transform"
-              >
-                <ArrowLeftOnRectangleIcon className="h-5 w-5 text-gray-400" />
-                Keluar
-              </button>
-            </div>
+              }}
+              className="text-white hover:text-white/80 p-1 -ml-1 flex items-center justify-center"
+              aria-label="Kembali"
+            >
+              <svg className="w-6 h-6 stroke-white" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
+            <h1 className="text-base font-bold text-white">
+              {(() => {
+                if (pathname === "/dashboard/tabungan/baru") return "Setor Baru";
+                if (pathname === "/dashboard/tabungan/haji") return "Tabungan Haji";
+                if (pathname === "/dashboard/tabungan") return "Tabungan Umrah";
+                if (pathname === "/dashboard/paket") return "Paket Umrah";
+                if (pathname === "/dashboard/paket/haji") return "Paket Haji";
+                if (pathname === "/dashboard/profil") return "Profil Saya";
+                if (pathname === "/dashboard/tentang-kami") return "Tentang Kami";
+                if (pathname === "/dashboard/lokasi") return "Lokasi Kantor";
+                if (pathname === "/dashboard/informasi") return "Informasi & Update";
+                return "Kembali";
+              })()}
+            </h1>
           </div>
         )}
+        
+        <div className="flex items-center gap-2">
+          {/* Notification Bell */}
+          <Link href="/dashboard/informasi" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center relative">
+            <svg className="w-5 h-5 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <div className="absolute top-2 right-2.5 w-2 h-2 rounded-full bg-emas border border-hijau-900"></div>
+          </Link>
+        </div>
       </div>
 
       {/* Main content area */}
@@ -360,9 +320,68 @@ export default function DashboardLayout({
             </div>
           </div>
         )}
-        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none p-4 sm:p-6 lg:p-8">
+        <main className={`flex-1 relative z-0 overflow-y-auto focus:outline-none p-4 sm:p-6 lg:p-8 ${
+          pathname === "/dashboard" || pathname === "/dashboard/tabungan" || pathname === "/dashboard/paket" || pathname === "/dashboard/profil" || pathname === "/dashboard/tabungan/haji" || pathname === "/dashboard/paket/haji"
+            ? "pb-24 md:pb-8"
+            : "pb-20 md:pb-8"
+        }`}>
           {children}
         </main>
+
+        {/* Mobile Bottom Navigation (Visible on Main Pages only) */}
+        {(() => {
+          const isMainPage = pathname === "/dashboard" || pathname === "/dashboard/tabungan" || pathname === "/dashboard/paket" || pathname === "/dashboard/profil" || pathname === "/dashboard/tabungan/haji" || pathname === "/dashboard/paket/haji";
+          if (!isMainPage) return null;
+          return (
+            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-garis rounded-t-[24px] shadow-[0_-14px_30px_-18px_rgba(11,61,48,0.35)] flex py-2 px-1 z-40 pb-safe">
+              <Link 
+                href="/dashboard" 
+                onClick={() => { if (pathname !== "/dashboard") setIsNavigating(true); }}
+                className={`flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl transition-all ${pathname === "/dashboard" ? "text-hijau-800 font-bold animate-pulse-subtle" : "text-teks-300"}`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <path d="M9 22V12h6v10" />
+                </svg>
+                <span className="text-[10px]">Beranda</span>
+              </Link>
+              <Link 
+                href="/dashboard/tabungan" 
+                onClick={() => { if (pathname !== "/dashboard/tabungan") setIsNavigating(true); }}
+                className={`flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl transition-all ${pathname.startsWith("/dashboard/tabungan") ? "text-hijau-800 font-bold" : "text-teks-300"}`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" />
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </svg>
+                <span className="text-[10px]">Tabungan</span>
+              </Link>
+              <Link 
+                href="/dashboard/paket" 
+                onClick={() => { if (pathname !== "/dashboard/paket") setIsNavigating(true); }}
+                className={`flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl transition-all ${pathname.startsWith("/dashboard/paket") ? "text-hijau-800 font-bold" : "text-teks-300"}`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                  <line x1="8" y1="2" x2="8" y2="18" />
+                  <line x1="16" y1="6" x2="16" y2="22" />
+                </svg>
+                <span className="text-[10px]">Paket</span>
+              </Link>
+              <Link 
+                href="/dashboard/profil" 
+                onClick={() => { if (pathname !== "/dashboard/profil") setIsNavigating(true); }}
+                className={`flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl transition-all ${pathname === "/dashboard/profil" ? "text-hijau-800 font-bold" : "text-teks-300"}`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span className="text-[10px]">Profil</span>
+              </Link>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );

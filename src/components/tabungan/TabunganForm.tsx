@@ -67,33 +67,33 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-md rounded-[2rem] shadow-xl border border-emerald-100 overflow-hidden shadow-emerald-900/5">
-      <div className="bg-emerald-950 px-6 py-5 border-b border-emerald-900">
-        <h2 className="text-xl font-bold text-white drop-shadow-sm">Rencanakan Tabungan</h2>
-        <p className="text-emerald-50 text-sm mt-1">{paket.nama_paket}</p>
+    <div className="bg-white border border-garis rounded-[22px] shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="bg-gradient-to-br from-hijau-900 to-hijau-800 px-6 py-5 text-white">
+        <h2 className="text-lg font-bold font-serif text-white">Rencanakan Tabungan</h2>
+        <p className="text-white/70 text-xs mt-1">{paket.nama_paket}</p>
       </div>
 
-      <div className="p-6">
+      <div className="p-5">
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+          <div className="mb-5 p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          
-          <div className="space-y-4">
+          <div className="space-y-5">
+            {/* Pilihan Kamar */}
             <div>
-              <label className="block text-sm font-bold text-emerald-900 mb-2">Pilih Jenis Kamar</label>
-              <div className="grid grid-cols-3 gap-3">
+              <label className="block text-xs font-bold text-teks-900 uppercase tracking-wider mb-2.5">Pilih Jenis Kamar</label>
+              <div className="grid grid-cols-3 gap-2.5">
                 {["Quad", "Triple", "Double"].map((kamar) => (
                   <label 
                     key={kamar}
                     className={`
-                      cursor-pointer border-2 rounded-xl p-3 text-center transition-all backdrop-blur-sm
+                      cursor-pointer border-2 rounded-xl p-3 text-center transition-all select-none
                       ${jenisKamar === kamar 
-                        ? "border-emerald-400 bg-emerald-900 text-white shadow-[0_0_15px_rgba(4,120,87,0.3)]" 
-                        : "border-emerald-800 bg-emerald-950 text-emerald-100 hover:border-emerald-600 hover:bg-emerald-900"
+                        ? "border-emas bg-hijau-900 text-white shadow-sm" 
+                        : "border-garis bg-white text-teks-900 hover:bg-krem"
                       }
                     `}
                   >
@@ -105,41 +105,43 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
                       onChange={(e) => setJenisKamar(e.target.value)}
                       className="hidden"
                     />
-                    <div className="font-bold text-white">{kamar}</div>
-                    <div className="text-[10px] mt-1 opacity-80">
-                      {kamar === "Quad" ? "Sekamar Ber-4" : kamar === "Triple" ? "Sekamar Ber-3" : "Sekamar Ber-2"}
+                    <div className={`font-bold text-sm ${jenisKamar === kamar ? "text-white" : "text-teks-900"}`}>{kamar}</div>
+                    <div className={`text-[9px] mt-1 ${jenisKamar === kamar ? "text-white/70" : "text-teks-500"}`}>
+                      {kamar === "Quad" ? "Ber-4" : kamar === "Triple" ? "Ber-3" : "Ber-2"}
                     </div>
                   </label>
                 ))}
               </div>
             </div>
 
+            {/* Jumlah Jamaah */}
             <div>
-              <label className="block text-sm font-bold text-emerald-900 mb-2">Jumlah Jamaah</label>
-              <div className="flex items-center gap-4">
+              <label className="block text-xs font-bold text-teks-900 uppercase tracking-wider mb-2.5">Jumlah Jamaah</label>
+              <div className="flex items-center gap-3.5">
                 <button
                   type="button"
                   onClick={() => setJumlahJamaah(prev => Math.max(1, prev - 1))}
-                  className="w-10 h-10 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-white font-bold flex items-center justify-center text-xl transition-colors border border-emerald-900 shadow-sm"
+                  className="w-10 h-10 rounded-xl bg-krem hover:bg-garis text-teks-900 font-bold flex items-center justify-center text-lg transition-colors border border-garis/60"
                 >
                   -
                 </button>
-                <div className="w-16 text-center font-bold text-xl text-gray-900">
+                <div className="w-10 text-center font-bold text-base text-teks-900">
                   {jumlahJamaah}
                 </div>
                 <button
                   type="button"
                   onClick={() => setJumlahJamaah(prev => Math.min(paket.kuota, prev + 1))}
-                  className="w-10 h-10 rounded-lg bg-emerald-900 hover:bg-emerald-800 text-white font-bold flex items-center justify-center text-xl transition-colors border border-emerald-800 shadow-sm"
+                  className="w-10 h-10 rounded-xl bg-krem hover:bg-garis text-teks-900 font-bold flex items-center justify-center text-lg transition-colors border border-garis/60"
                 >
                   +
                 </button>
-                <span className="text-sm text-gray-900 ml-2">Orang (Maks: {paket.kuota})</span>
+                <span className="text-xs text-teks-500 font-medium">Jamaah (Maks: {paket.kuota})</span>
               </div>
             </div>
 
+            {/* Durasi Menabung */}
             <div>
-              <label className="block text-sm font-bold text-emerald-900 mb-3">Target Durasi Menabung (Bulan)</label>
+              <label className="block text-xs font-bold text-teks-900 uppercase tracking-wider mb-2.5">Durasi Menabung</label>
               <div className="flex items-center gap-4">
                 <input 
                   type="range" 
@@ -148,60 +150,58 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
                   step="1" 
                   value={durasiBulan} 
                   onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
-                  className="w-full h-2 bg-emerald-100 rounded-lg appearance-none cursor-pointer accent-emerald-600 shadow-inner"
+                  className="w-full h-1 bg-garis rounded-lg appearance-none cursor-pointer accent-hijau-800"
                 />
-                <div className="w-24 text-center">
+                <div className="w-20 text-center shrink-0 flex items-center justify-end">
                   <input 
                     type="number" 
                     value={durasiBulan} 
                     onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
-                    className="w-16 text-center border-b-2 bg-transparent border-emerald-300 font-bold text-xl text-gray-900 focus:outline-none focus:border-emerald-500"
+                    className="w-10 text-center border-b border-garis font-bold text-base text-teks-900 focus:outline-none focus:border-hijau-750"
                   />
-                  <span className="text-sm text-emerald-800 font-medium ml-1">Bulan</span>
+                  <span className="text-xs text-teks-500 font-bold ml-1">Bln</span>
                 </div>
               </div>
-              <div className="flex justify-between text-xs text-emerald-800 font-medium mt-2">
+              <div className="flex justify-between text-[10px] text-teks-300 font-bold mt-2">
                 <span>3 Bulan</span>
                 <span>{maxBulan} Bulan</span>
               </div>
             </div>
-
           </div>
 
-          <div className="bg-emerald-950 rounded-xl p-5 border border-emerald-900 shadow-md space-y-3">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-2">Estimasi Biaya</h3>
+          {/* Estimasi Biaya Box */}
+          <div className="bg-gradient-to-br from-hijau-900 to-hijau-800 rounded-2xl p-5 text-white shadow-sm space-y-3 relative overflow-hidden">
+            <h3 className="text-xs font-bold text-white/50 uppercase tracking-wider">Estimasi Rincian</h3>
             
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-emerald-50">Harga per Orang (Kamar {jenisKamar})</span>
-              <span className="font-semibold text-white">{formatRp(hargaPerOrang)}</span>
+            <div className="flex justify-between items-center text-xs text-white/80">
+              <span>Biaya Kamar ({jenisKamar})</span>
+              <span className="font-semibold">{formatRp(hargaPerOrang)}</span>
             </div>
 
-            <div className="flex justify-between items-center text-sm border-b border-emerald-800 pb-3">
-              <span className="text-emerald-50">Total Jamaah</span>
-              <span className="font-semibold text-white">{jumlahJamaah} Orang</span>
+            <div className="flex justify-between items-center text-xs text-white/80 border-b border-white/10 pb-3">
+              <span>Jumlah Jamaah</span>
+              <span className="font-semibold">{jumlahJamaah} Orang</span>
             </div>
 
-            <div className="flex justify-between items-center pt-1">
-              <span className="text-white font-medium">Total Keseluruhan</span>
-              <span className="text-lg font-bold text-white">{formatRp(totalBiaya)}</span>
+            <div className="flex justify-between items-center pt-1 text-sm font-semibold">
+              <span>Total Keseluruhan</span>
+              <span>{formatRp(totalBiaya)}</span>
             </div>
             
-            <div className="flex justify-between items-center bg-emerald-900 p-3 rounded-lg border border-emerald-800 shadow-inner mt-3">
-              <span className="text-emerald-100 font-bold">Setoran per Bulan</span>
-              <span className="text-2xl font-black text-white">{formatRp(setoranBulanan)}</span>
+            <div className="flex justify-between items-center bg-white/10 border border-white/15 p-3.5 rounded-xl shadow-inner mt-4">
+              <span className="text-xs text-white/80 font-bold">Setoran per Bulan</span>
+              <span className="text-xl font-black text-emas">{formatRp(setoranBulanan)}</span>
             </div>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-4 px-4 border border-transparent rounded-lg shadow-md text-sm font-bold text-white 
-              ${isLoading ? 'bg-emerald-400 cursor-not-allowed' : 'bg-emerald-950 hover:bg-emerald-900 focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500'} 
-              transition-colors flex justify-center items-center`}
+            className={`w-full py-3.5 px-4 rounded-xl shadow-sm text-sm font-bold text-hijau-900 bg-emas hover:bg-emas/90 focus:outline-none transition-colors flex justify-center items-center active:scale-98`}
           >
             {isLoading ? (
               <>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-hijau-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>

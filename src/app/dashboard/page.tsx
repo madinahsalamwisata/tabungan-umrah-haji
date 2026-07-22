@@ -1,26 +1,80 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import DashboardClient from "./DashboardClient";
 
-const prisma = new PrismaClient();
-
-// Revalidate every 0 seconds (always dynamic) or you can set a revalidate time
 export const revalidate = 0;
 
 export default async function DashboardPage() {
-  // Fetch data server-side
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.email) {
+    redirect("/login");
+  }
+
+  const jamaah = await prisma.jamaah.findUnique({
+    where: { email: session.user.email },
+    include: {
+      RencanaTabungan: {
+        include: {
+          RiwayatSetoran: {
+            where: { status_pembayaran: "success" }
+          },
+          paket: true
+        }
+      }
+    }
+  });
+
+  if (!jamaah) {
+    redirect("/login");
+  }
+
+  // Fetch announcements
   const pengumuman = await prisma.pengumuman.findMany({
     orderBy: [
       { is_penting: 'desc' },
       { created_at: 'desc' }
     ],
-    take: 10, // Get top 10 recent announcements
+    take: 10,
   });
 
-  // Convert to plain object to pass to client component safely
   const serializedPengumuman = pengumuman.map(p => ({
     ...p,
     created_at: p.created_at.toISOString(),
   }));
 
-  return <DashboardClient initialPengumuman={serializedPengumuman} />;
+  // Calculate savings info across active plans
+  const activePlans = jamaah.RencanaTabungan.filter(p => p.status === "Aktif" || p.status === "Lunas");
+  
+  let savingsInfo = null;
+  if (activePlans.length > 0) {
+    const primaryPlan = activePlans[0];
+    const totalTerkumpul = primaryPlan.RiwayatSetoran.reduce((sum, item) => sum + Number(item.nominal), 0);
+    const targetBiaya = Number(primaryPlan.total_biaya);
+    const percentage = targetBiaya > 0 ? Math.min(100, Math.round((totalTerkumpul / targetBiaya) * 100)) : 0;
+    
+    // Target date estimation: tanggal_mulai + periode_bulan
+    const startDate = new Date(primaryPlan.tanggal_mulai);
+    const targetDate = new Date(startDate.setMonth(startDate.getMonth() + primaryPlan.periode_bulan));
+    const formattedTargetDate = targetDate.toLocaleDateString("id-ID", { month: "short", year: "numeric" });
+
+    savingsInfo = {
+      namaPaket: primaryPlan.paket.nama_paket,
+      totalTerkumpul,
+      targetBiaya,
+      percentage,
+      formattedTargetDate,
+      idRencana: primaryPlan.id
+    };
+  }
+
+  return (
+    <DashboardClient 
+      initialPengumuman={serializedPengumuman} 
+      userNama={jamaah.nama}
+      savingsInfo={savingsInfo}
+    />
+  );
 }

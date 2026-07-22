@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { 
   Bell, 
   ChevronDown, 
@@ -22,7 +23,22 @@ const GlassCard = ({ children, className = "" }: { children: React.ReactNode, cl
   </div>
 );
 
-export default function DashboardClient({ initialPengumuman }: { initialPengumuman: any[] }) {
+export default function DashboardClient({ 
+  initialPengumuman,
+  userNama = "Jamaah",
+  savingsInfo = null
+}: { 
+  initialPengumuman: any[];
+  userNama?: string;
+  savingsInfo?: {
+    namaPaket: string;
+    totalTerkumpul: number;
+    targetBiaya: number;
+    percentage: number;
+    formattedTargetDate: string;
+    idRencana: string;
+  } | null;
+}) {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [pengumumanList, setPengumumanList] = useState<any[]>(initialPengumuman);
 
@@ -82,7 +98,8 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
     <div className="min-h-screen relative overflow-hidden py-6 sm:py-8 px-3 sm:px-6 lg:px-8">
       <div className="relative z-10 max-w-7xl mx-auto space-y-4 sm:space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        {/* Desktop View */}
+        <div className="hidden md:grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           
           {/* Kolom Kiri: Header + Tentang Kami + Visi Misi */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6 flex flex-col">
@@ -117,7 +134,7 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
                   <h2 className="text-lg font-bold text-emerald-900">Visi Kami</h2>
                 </div>
                 <p className="text-sm text-gray-700 italic leading-relaxed flex-1">
-                  &quot;Menjadi penyelenggara perjalanan ibadah Umrah, Haji, dan wisata terpercaya yang berkomitmen menghadirkan layanan sesuai tuntunan sunnah Rasulullah ï·º.&quot;
+                  &quot;Menjadi penyelenggara perjalanan ibadah Umrah, Haji, dan wisata terpercaya yang berkomitmen menghadirkan layanan sesuai tuntunan sunnah Rasulullah ﷺ.&quot;
                 </p>
               </GlassCard>
             </div>
@@ -390,6 +407,169 @@ export default function DashboardClient({ initialPengumuman }: { initialPengumum
 
           </div>
 
+        </div>
+
+        {/* Mobile View (Banking/E-Wallet Style) */}
+        <div className="md:hidden space-y-6">
+          {/* Welcome Message & Kartu Saldo */}
+          <div className="bg-gradient-to-br from-hijau-900 to-hijau-800 rounded-3xl p-5 text-white shadow-[0_10px_28px_-14px_rgba(11,61,48,0.28)] relative overflow-hidden">
+            {/* Background design circle */}
+            <div className="absolute -right-10 -bottom-14 w-40 h-40 rounded-full border border-white/5 pointer-events-none"></div>
+            
+            <div className="text-xs text-white/70 font-medium">
+              Assalamu&apos;alaikum, {userNama}
+            </div>
+            
+            {savingsInfo ? (
+              <>
+                <div className="text-xs text-white/60 mt-3">Total Tabungan Umrah &amp; Haji</div>
+                <div className="text-2xl font-bold font-serif mt-1 flex items-baseline gap-1.5 flex-wrap">
+                  {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(savingsInfo.totalTerkumpul)}
+                  <span className="text-xs text-white/50 font-sans font-medium">/ {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(savingsInfo.targetBiaya)}</span>
+                </div>
+                
+                <div className="mt-4">
+                  <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-emas to-yellow-300 rounded-full" style={{ width: `${savingsInfo.percentage}%` }}></div>
+                  </div>
+                  <div className="flex justify-between items-center text-[10px] text-white/60 mt-2">
+                    <span>Terkumpul <b>{savingsInfo.percentage}%</b></span>
+                    <span>Target {savingsInfo.formattedTargetDate}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 mt-5">
+                  <Link href="/dashboard/tabungan" className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all">
+                    <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Setor
+                  </Link>
+                  <Link href="/dashboard/tabungan" className="flex-1 py-2.5 bg-white/10 border border-white/20 text-white text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 active:scale-98 transition-all">
+                    <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Riwayat
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-sm font-semibold mt-4 text-white/90">Mulai Perencanaan Ibadah Anda</div>
+                <p className="text-xs text-white/70 mt-1 leading-relaxed">
+                  Rencanakan tabungan Umrah atau Haji Anda sekarang untuk kemudahan perjalanan ke tanah suci.
+                </p>
+                <div className="mt-5">
+                  <Link href="/dashboard/tabungan/baru" className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl shadow-md active:scale-98 transition-all">
+                    Mulai Menabung
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  </Link>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Quick Menu Grid */}
+          <div>
+            <div className="text-xs uppercase tracking-wider text-teks-500 font-bold mb-3">Menu Utama</div>
+            <div className="grid grid-cols-4 gap-2">
+              <Link href="/dashboard/tabungan/baru" className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2" /><path d="M3 10h18" /><path d="M7 15h3" /></svg>
+                </div>
+                <span className="text-[10px] font-semibold text-teks-900 leading-tight">Setor<br/>Tabungan</span>
+              </Link>
+              <Link href="/dashboard/paket" className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a2 2 0 0 0-2.83 0L9 13.17V19h5.83l8.58-8.59a2 2 0 0 0 0-2.83z" /><path d="M16 5.5 18.5 8" /><path d="M3 21h9" /></svg>
+                </div>
+                <span className="text-[10px] font-semibold text-teks-900 leading-tight">Paket<br/>Umrah</span>
+              </Link>
+              <Link href="/dashboard/tabungan" className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" /><path d="M12 7v5l3 3" /></svg>
+                </div>
+                <span className="text-[10px] font-semibold text-teks-900 leading-tight">Riwayat<br/>Transaksi</span>
+              </Link>
+              <Link href="/dashboard/tentang-kami" className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+                </div>
+                <span className="text-[10px] font-semibold text-teks-900 leading-tight">Tentang<br/>Kami</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Informasi & Update Carousel */}
+          <div>
+            <div className="flex justify-between items-center mb-3">
+              <div className="text-xs uppercase tracking-wider text-teks-500 font-bold">Informasi &amp; Update</div>
+              <Link href="/dashboard/informasi" className="text-xs font-bold text-hijau-700">Lihat semua</Link>
+            </div>
+            
+            <div className="flex gap-3 overflow-x-auto pb-2 scroll-snap-x snap-mandatory scrollbar-none -mx-4 px-4">
+              {pengumumanList.length > 0 ? (
+                pengumumanList.slice(0, 5).map((item) => (
+                  <div 
+                    key={item.id} 
+                    onClick={() => showPengumumanPopup(item)}
+                    className={`flex-shrink-0 w-[240px] rounded-2xl p-4 shadow-sm cursor-pointer relative snap-start border ${
+                      item.is_penting 
+                        ? "bg-hijau-800 text-white border-hijau-700" 
+                        : "bg-white text-teks-900 border-garis"
+                    }`}
+                  >
+                    {item.is_penting && (
+                      <span className="absolute top-4 right-4 bg-emas text-hijau-900 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                        Penting
+                      </span>
+                    )}
+                    <div className={`text-[10px] flex items-center gap-1 mt-6 ${item.is_penting ? "text-white/60" : "text-teks-500"}`}>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+                      {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </div>
+                    <div className="text-sm font-bold mt-2 line-clamp-2 leading-snug">
+                      {item.judul}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="w-full bg-white border border-garis rounded-2xl p-6 text-center text-xs text-teks-500">
+                  Belum ada pengumuman terbaru.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Tentang Kami Ringkas Card */}
+          <div className="bg-white border border-garis rounded-2xl p-4 shadow-sm">
+            <div className="flex gap-3 items-start">
+              <div className="w-9 h-9 rounded-xl bg-hijau-100 flex items-center justify-center flex-shrink-0">
+                <svg className="w-4 h-4 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-sm font-serif text-teks-900">Tentang Kami</h3>
+                <p className="text-xs text-teks-500 mt-1 leading-relaxed">
+                  PT Madinah Salam Wisata melayani perjalanan Umrah &amp; Haji yang amanah, profesional, dan sesuai tuntunan syariat.
+                </p>
+                <Link href="/dashboard/tentang-kami" className="inline-flex items-center gap-1 text-xs font-bold text-hijau-700 mt-3">
+                  Selengkapnya termasuk Visi &amp; Misi
+                  <svg className="w-3 h-3 stroke-hijau-700" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </Link>
+              </div>
+            </div>
+            <div className="mt-3 pt-3 border-t border-dashed border-garis flex justify-between items-center text-[10px] text-teks-300">
+              <span>Izin PPIU</span>
+              <b className="text-teks-500 font-bold">03012400173490004</b>
+            </div>
+          </div>
+
+          <Link href="/dashboard/lokasi" className="bg-white border border-garis rounded-2xl p-4 shadow-sm flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-hijau-100 flex items-center justify-center flex-shrink-0">
+              <svg className="w-4 h-4 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-xs font-bold text-teks-900">Kantor Pusat</div>
+              <div className="text-[10px] text-teks-500 truncate mt-0.5">Jl. Radar Auri No.9, Cibubur, Jakarta Timur</div>
+            </div>
+            <svg className="w-4 h-4 stroke-teks-300 flex-shrink-0" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </Link>
         </div>
 
       </div>

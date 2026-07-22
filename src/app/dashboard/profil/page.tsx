@@ -104,19 +104,19 @@ export default async function ProfilPage() {
       {/* Komponen Form Profil (Riwayat Tabungan sebagai children) */}
       <ProfileForm jamaah={serializedJamaah}>
         {/* Seksi Riwayat Tabungan */}
-        <div className="relative rounded-3xl overflow-hidden mt-0 bg-white/90 backdrop-blur-md border border-emerald-100 animate-in fade-in zoom-in-95 duration-500 delay-150">
-          <div className="px-6 py-5 border-b border-emerald-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-            <h3 className="text-lg font-bold text-emerald-900 flex items-center gap-2">
-              <svg className="w-5 h-5 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div className="bg-white border border-garis rounded-3xl overflow-hidden shadow-sm animate-in fade-in zoom-in-95 duration-500">
+          <div className="px-5 py-4.5 border-b border-garis flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+            <h3 className="text-sm font-bold text-teks-900 font-serif flex items-center gap-2">
+              <svg className="w-4 h-4 text-hijau-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Riwayat Tabungan Saya
             </h3>
           </div>
           
-          <div className="relative z-10 p-6 max-h-[320px] overflow-y-auto custom-scrollbar">
+          <div className="p-5 max-h-[320px] overflow-y-auto pr-1">
             {rencanaAktif.length > 0 ? (
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 {rencanaAktif.map((rencana: any) => {
                   const totalTerkumpul = rencana.RiwayatSetoran
                     ? rencana.RiwayatSetoran.filter((r: any) => r.status_pembayaran === "success")
@@ -124,42 +124,42 @@ export default async function ProfilPage() {
                     : 0;
 
                   return (
-                    <div key={rencana.id} className="group relative bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 rounded-2xl p-4 transition-all overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div className="absolute inset-y-0 left-0 w-1 bg-emerald-500 rounded-l-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div key={rencana.id} className="group relative bg-krem/40 hover:bg-krem/80 border border-garis rounded-2xl p-4 transition-all overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="absolute inset-y-0 left-0 w-1 bg-emas opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       
                       {/* Info Paket */}
-                      <div className="flex-1 pl-2 sm:pl-3">
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <h4 className="text-base font-bold text-emerald-50 group-hover:text-emerald-300 transition-colors line-clamp-1">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="text-xs font-bold text-teks-900 group-hover:text-hijau-800 transition-colors line-clamp-1">
                             {rencana.paket?.nama_paket}
                           </h4>
-                          <span className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-bold rounded-md shadow-sm border ${
+                          <span className={`px-2 py-0.5 text-[8px] uppercase tracking-wider font-black rounded-md ${
                             rencana.status === 'Lunas' 
-                              ? 'bg-green-600 border-green-500 text-white' 
-                              : 'bg-emerald-600 border-emerald-500 text-white'
+                              ? 'bg-yellow-500 text-hijau-900' 
+                              : 'bg-hijau-100 text-hijau-800'
                           }`}>
                             {rencana.status}
                           </span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-3 text-[11px] text-emerald-300 font-medium">
+                        <div className="flex flex-wrap items-center gap-3 text-[10px] text-teks-500 font-semibold">
                           <div className="flex items-center gap-1">
-                            <svg className="w-3.5 h-3.5 text-emerald-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            <svg className="w-3.5 h-3.5 stroke-teks-400" fill="none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                             {new Date(rencana.tanggal_mulai).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
                           </div>
                           <div className="flex items-center gap-1">
-                            <svg className="w-3.5 h-3.5 text-emerald-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-                            Kamar {rencana.jenis_kamar}
+                            <svg className="w-3.5 h-3.5 stroke-teks-400" fill="none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            {rencana.jenis_kamar} Room
                           </div>
                         </div>
                       </div>
 
                       {/* Info Dana */}
-                      <div className="sm:text-right shrink-0 bg-black/20 sm:bg-transparent p-3 sm:p-0 rounded-xl sm:rounded-none">
-                        <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-0.5">Terkumpul</p>
-                        <p className="text-lg font-black text-emerald-400">
+                      <div className="sm:text-right shrink-0 bg-white sm:bg-transparent p-3 sm:p-0 rounded-xl sm:rounded-none border border-garis sm:border-0">
+                        <p className="text-[9px] text-teks-400 uppercase tracking-wider font-bold mb-0.5">Terkumpul</p>
+                        <p className="text-sm font-black text-teks-900">
                           {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalTerkumpul)}
                         </p>
-                        <p className="text-[10px] text-gray-400 font-medium">
+                        <p className="text-[10px] text-teks-500 font-medium">
                           / {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(rencana.total_biaya)}
                         </p>
                       </div>
@@ -168,18 +168,18 @@ export default async function ProfilPage() {
                 })}
               </div>
             ) : (
-              <div className="text-center py-10 px-4 border border-emerald-100 rounded-2xl bg-white/5 backdrop-blur-sm">
-                <svg className="mx-auto h-10 w-10 text-emerald-500/50 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="text-center py-8 px-4 border border-dashed border-garis rounded-2xl bg-krem/20">
+                <svg className="mx-auto h-8 w-8 text-teks-300 mb-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <h3 className="text-base font-bold text-emerald-900 mb-1">Belum Ada Tabungan</h3>
-                <p className="text-xs text-emerald-700 mb-5 max-w-xs mx-auto">Yuk mulai menabung untuk wujudkan mimpimu ke tanah suci!</p>
+                <h4 className="text-xs font-bold text-teks-900 mb-1">Belum Ada Tabungan</h4>
+                <p className="text-[11px] text-teks-500 mb-4 max-w-xs mx-auto">Yuk mulai menabung untuk wujudkan mimpimu ke tanah suci!</p>
                 <Link 
                   href="/dashboard/tabungan/baru" 
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-lg hover:shadow-emerald-900/50 transition-all hover:scale-105"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl shadow-sm transition-all"
                 >
                   Mulai Menabung
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </Link>
               </div>
             )}

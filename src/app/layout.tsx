@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import Script from "next/script";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <WhatsAppButton />
         <Script 
           src="https://app.sandbox.midtrans.com/snap/snap.js" 
           data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}

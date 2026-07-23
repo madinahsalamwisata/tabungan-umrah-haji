@@ -28,21 +28,21 @@ export default function PaketSelectionClient() {
 
       <div className="px-5 mt-6 space-y-4">
         {/* Paket Umrah */}
-        <Link href="/dashboard/paket/umrah" className="block relative w-full h-32 rounded-[1.5rem] overflow-hidden shadow-sm group hover:shadow-md transition-all active:scale-[0.98]">
+        <Link href="/dashboard/paket/umrah" className="block relative w-full h-24 rounded-2xl overflow-hidden shadow-[0_2px_10px_-3px_rgba(6,78,59,0.15)] group active:scale-[0.98] transition-transform">
           <Image 
             src="/images/bg-paket.jpeg" 
             alt="Paket Umrah" 
             fill 
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover opacity-90"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-          <div className="absolute inset-0 p-5 flex items-end justify-between">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/70 to-transparent"></div>
+          <div className="absolute inset-0 px-5 flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-white tracking-tight drop-shadow-md">Paket Umrah</h2>
-              <p className="text-xs text-white/80 mt-0.5 font-medium">Jadwal keberangkatan pasti</p>
+              <h2 className="text-lg font-bold text-white tracking-tight drop-shadow-sm">Paket Umrah</h2>
+              <p className="text-[11px] text-emerald-50/90 mt-0.5 font-medium">Jadwal keberangkatan pasti</p>
             </div>
-            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+            <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner">
+              <svg className="w-4 h-4 text-white ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </div>
@@ -53,22 +53,22 @@ export default function PaketSelectionClient() {
         <div>
           <div 
             onClick={() => setShowHajiDropdown(!showHajiDropdown)} 
-            className="block relative w-full h-32 rounded-[1.5rem] overflow-hidden shadow-sm group hover:shadow-md transition-all active:scale-[0.98] cursor-pointer"
+            className="block relative w-full h-24 rounded-2xl overflow-hidden shadow-[0_2px_10px_-3px_rgba(6,78,59,0.15)] group active:scale-[0.98] transition-transform cursor-pointer"
           >
             <Image 
               src="/images/makkah_thumbnail.webp" 
               alt="Paket Haji" 
               fill 
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover opacity-90"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div className="absolute inset-0 p-5 flex items-end justify-between">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/70 to-transparent"></div>
+            <div className="absolute inset-0 px-5 flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight drop-shadow-md">Paket Haji</h2>
-                <p className="text-xs text-white/80 mt-0.5 font-medium">Pilihan paket haji terbaik</p>
+                <h2 className="text-lg font-bold text-white tracking-tight drop-shadow-sm">Paket Haji</h2>
+                <p className="text-[11px] text-emerald-50/90 mt-0.5 font-medium">Pilihan paket haji terbaik</p>
               </div>
-              <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center transition-transform duration-300" style={{ transform: showHajiDropdown ? 'rotate(90deg)' : 'rotate(0deg)' }}>
-                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+              <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner transition-transform duration-300" style={{ transform: showHajiDropdown ? 'rotate(90deg)' : 'rotate(0deg)' }}>
+                <svg className="w-4 h-4 text-white ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </div>
@@ -77,8 +77,11 @@ export default function PaketSelectionClient() {
           
           {/* Dropdown Notification */}
           <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showHajiDropdown ? 'max-h-20 opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}`}>
-            <div className="bg-white border border-emerald-100 rounded-xl p-3 flex items-center justify-center shadow-sm">
-              <p className="text-sm font-semibold text-emerald-800">✨ Coming Soon InsyaAllah</p>
+            <div className="bg-emerald-50 border border-emerald-100/60 rounded-xl px-4 py-3 flex items-center gap-3 shadow-inner">
+               <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+               </svg>
+              <p className="text-xs font-semibold text-emerald-800">Coming Soon InsyaAllah</p>
             </div>
           </div>
         </div>

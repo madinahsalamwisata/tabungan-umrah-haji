@@ -12,23 +12,23 @@ export default function PaketSelectionClient() {
   return (
     <div className="min-h-screen bg-gray-50/50 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-8 pb-6 px-5 sticky top-0 z-20 rounded-b-[2.5rem] shadow-sm">
-        <div className="flex items-center gap-4 mb-4">
-          <button onClick={() => router.push("/dashboard")} className="p-2 bg-white/10 hover:bg-white/20 rounded-2xl transition-colors backdrop-blur-md">
+      <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm">
+        <div className="flex items-center gap-3">
+          <button onClick={() => router.push("/dashboard")} className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-md">
             <svg className="w-5 h-5 stroke-white" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-white tracking-tight">Pilih Paket</h1>
-            <p className="text-white/80 text-xs font-medium mt-0.5">Lihat pilihan paket yang tersedia</p>
+            <h1 className="text-base font-bold text-white tracking-tight leading-tight">Pilih Paket</h1>
+            <p className="text-emerald-50/80 text-[11px] font-medium mt-0.5">Lihat pilihan paket yang tersedia</p>
           </div>
         </div>
       </div>
 
-      <div className="px-5 mt-6 space-y-4">
+      <div className="px-5 mt-6 space-y-5">
         {/* Paket Umrah */}
-        <Link href="/dashboard/paket/umrah" className="block relative w-full h-24 rounded-2xl overflow-hidden shadow-[0_2px_10px_-3px_rgba(6,78,59,0.15)] group active:scale-[0.98] transition-transform">
+        <Link href="/dashboard/paket/umrah" className="block relative w-full h-28 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform">
           <Image 
             src="/images/bg-paket.jpeg" 
             alt="Paket Umrah" 
@@ -53,7 +53,7 @@ export default function PaketSelectionClient() {
         <div>
           <div 
             onClick={() => setShowHajiDropdown(!showHajiDropdown)} 
-            className="block relative w-full h-24 rounded-2xl overflow-hidden shadow-[0_2px_10px_-3px_rgba(6,78,59,0.15)] group active:scale-[0.98] transition-transform cursor-pointer"
+            className="block relative w-full h-28 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform cursor-pointer"
           >
             <Image 
               src="/images/makkah_thumbnail.webp" 

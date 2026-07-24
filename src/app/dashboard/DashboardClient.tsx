@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { 
   Bell, 
@@ -51,6 +52,8 @@ export default function DashboardClient({
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [pengumumanList, setPengumumanList] = useState<any[]>(initialPengumuman);
   const [isPaying, setIsPaying] = useState<string | null>(null);
+  const [isNavigatingRiwayat, setIsNavigatingRiwayat] = useState<string | null>(null);
+  const router = useRouter();
 
   const syncPayment = async (order_id: string, idRencana: string, nominal: number, cicilanKe: number) => {
     try {
@@ -160,27 +163,38 @@ export default function DashboardClient({
   };
   const showPengumumanPopup = (item: any) => {
     Swal.fire({
-      title: item.judul,
+      showCloseButton: true,
+      showConfirmButton: true,
+      confirmButtonText: 'Tutup',
+      confirmButtonColor: '#059669',
+      background: '#ffffff',
+      backdrop: 'rgba(0,0,0,0.5)',
       html: `
-        <div class="text-[11px] font-semibold text-emerald-600 mb-4 pb-3 border-b border-gray-100 text-left flex items-center gap-2">
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          ${new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
-          ${item.is_penting ? '<span class="bg-yellow-100 border border-yellow-200 text-yellow-700 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">Penting</span>' : ''}
-        </div>
-        <div class="text-sm text-gray-600 text-left whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style="scrollbar-width: thin;">
-          ${item.konten}
+        <div class="text-left mt-2">
+          <div class="flex items-center gap-2 mb-3">
+             <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+             </div>
+             <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Informasi Pendaftaran</span>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3 leading-snug">${item.judul}</h3>
+          
+          <div class="flex items-center gap-2 text-[11px] font-medium text-gray-500 mb-5 pb-4 border-b border-gray-100">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            ${new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+            ${item.is_penting ? '<span class="ml-2 bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider">Penting</span>' : ''}
+          </div>
+          
+          <div class="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed max-h-[60vh] overflow-y-auto pr-2" style="scrollbar-width: thin;">
+            ${item.konten}
+          </div>
         </div>
       `,
-      background: '#ffffff',
-      color: '#1f2937',
-      backdrop: 'rgba(0,0,0,0.4)',
-      confirmButtonColor: '#059669',
-      confirmButtonText: 'Tutup',
       customClass: {
-        popup: 'rounded-3xl border border-gray-100 shadow-xl',
-        title: 'text-left text-lg text-emerald-900 font-bold',
-        htmlContainer: 'text-left !m-0 !mt-2',
-        confirmButton: 'rounded-xl shadow-sm hover:shadow-md transition-all font-bold px-8'
+        popup: 'rounded-[24px] shadow-2xl pb-2',
+        htmlContainer: '!m-0 !px-4',
+        confirmButton: 'w-full md:w-auto rounded-xl shadow-sm hover:shadow-md transition-all font-bold px-8 py-3 text-sm mt-4',
+        actions: 'w-full px-4'
       }
     });
   };
@@ -548,10 +562,18 @@ export default function DashboardClient({
                           </>
                         )}
                       </button>
-                      <Link href={`/dashboard/tabungan/${plan.idRencana}/riwayat`} className="flex-1 py-2.5 bg-white/10 border border-white/20 text-white text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 active:scale-98 transition-all">
-                        <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        Riwayat
-                      </Link>
+                      <button 
+                        onClick={() => { setIsNavigatingRiwayat(plan.idRencana); router.push(`/dashboard/tabungan/${plan.idRencana}/riwayat`); }}
+                        disabled={isNavigatingRiwayat === plan.idRencana}
+                        className="flex-1 py-2.5 bg-white/10 border border-white/20 text-white text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 active:scale-98 transition-all"
+                      >
+                        {isNavigatingRiwayat === plan.idRencana ? "Proses..." : (
+                          <>
+                            <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            Riwayat
+                          </>
+                        )}
+                      </button>
                     </div>
                   </div>
                 ))}

@@ -37,6 +37,9 @@ export default function TabunganDashboardClient({
   const [isPaying, setIsPaying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isNavigatingSetor, setIsNavigatingSetor] = useState(false);
+  const [isNavigatingRiwayat, setIsNavigatingRiwayat] = useState(false);
+  const [isNavigatingDesktop, setIsNavigatingDesktop] = useState(false);
   
   // Edit states
   const [editKamar, setEditKamar] = useState(rencana.jenis_kamar);
@@ -253,12 +256,13 @@ export default function TabunganDashboardClient({
                        Sudah Dibayar Bulan Ini
                      </button>
                    ) : (
-                     <Link 
-                       href={`/dashboard/tabungan/${rencana.id}/bayar`}
+                     <button 
+                       onClick={() => { setIsNavigatingDesktop(true); router.push(`/dashboard/tabungan/${rencana.id}/bayar`); }}
+                       disabled={isNavigatingDesktop}
                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500/50 font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm"
                      >
-                       Bayar Setoran Ini
-                     </Link>
+                       {isNavigatingDesktop ? "Memuat..." : "Bayar Setoran Ini"}
+                     </button>
                    )}
                  </div>
               </div>
@@ -358,22 +362,30 @@ export default function TabunganDashboardClient({
           </div>
 
           <div className="flex gap-2 mt-5 z-10 relative">
-            <Link 
-              href={`/dashboard/tabungan/${rencana.id}/bayar`}
-              onClick={(e) => e.stopPropagation()}
-              className="flex-1 bg-emas hover:bg-emas/90 text-hijau-900 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-transform active:scale-95 touch-manipulation shadow-sm cursor-pointer"
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsNavigatingSetor(true); router.push(`/dashboard/tabungan/${rencana.id}/bayar`); }}
+              disabled={isNavigatingSetor}
+              className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all"
             >
-              <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              Setor
-            </Link>
-            <Link 
-              href={`/dashboard/tabungan/${rencana.id}/riwayat`}
-              onClick={(e) => e.stopPropagation()}
-              className="flex-1 bg-white/10 border border-white/20 text-white hover:bg-white/20 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1.5 transition-transform active:scale-95 touch-manipulation cursor-pointer"
+              {isNavigatingSetor ? "Proses..." : (
+                <>
+                  <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Setor
+                </>
+              )}
+            </button>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsNavigatingRiwayat(true); router.push(`/dashboard/tabungan/${rencana.id}/riwayat`); }}
+              disabled={isNavigatingRiwayat}
+              className="flex-1 py-2.5 bg-white/10 border border-white/20 text-white text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 active:scale-98 transition-all"
             >
-              <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              Riwayat
-            </Link>
+              {isNavigatingRiwayat ? "Proses..." : (
+                <>
+                  <svg className="w-4 h-4 stroke-white" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  Riwayat
+                </>
+              )}
+            </button>
           </div>
         </div>
 

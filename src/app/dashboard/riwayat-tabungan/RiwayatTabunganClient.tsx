@@ -10,11 +10,6 @@ export default function RiwayatTabunganClient() {
       {/* Header */}
       <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.push("/dashboard")} className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-md">
-            <svg className="w-5 h-5 stroke-white" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
           <div className="flex-1">
             <h1 className="text-base font-bold text-white tracking-tight leading-tight">Riwayat Tabungan</h1>
             <p className="text-emerald-50/80 text-[11px] font-medium mt-0.5">Riwayat tabungan Umrah &amp; Haji Anda</p>

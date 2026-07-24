@@ -36,9 +36,27 @@ export default function SyaratKetentuanClient() {
       title: "Syarat & Ketentuan Pembatalan",
       icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>,
       content: (
-        <p className="text-xs text-white leading-relaxed">
-          Syarat dan ketentuan pembatalan akan diinformasikan lebih lanjut oleh pihak penyelenggara.
-        </p>
+        <div className="text-xs text-white leading-relaxed space-y-4">
+          <div>
+            <span className="font-bold">A. Uang Muka (DP)</span>
+            <p>DP yang telah diserahkan oleh calon jamaah umroh tidak bisa dikembalikan.</p>
+          </div>
+          <div>
+            <span className="font-bold">B. Pelunasan</span>
+            <ul className="list-disc pl-5 mt-1 space-y-1">
+              <li>Calon jamaah wajib melakukan pelunasan selambat-lambatnya H-30.</li>
+            </ul>
+          </div>
+          <div>
+            <span className="font-bold">C. Pembatalan</span>
+            <ul className="list-disc pl-5 mt-1 space-y-1">
+              <li>Pembatalan diatas 30 hari sebelum keberangkatan maka dikenakan pemotongan administrasi Rp 6.000.000.</li>
+              <li>Pembatalan 30 hari sebelum keberangkatan maka dikenakan pemotongan 50% dari harga paket.</li>
+              <li>Pembatalan 15 hari sebelum keberangkatan maka dikenakan pemotongan 100% dari harga paket.</li>
+              <li><span className="font-bold">Pembatalan otomatis:</span> Apabila calon jamaah tidak melunasi H-25, maka dianggap mengundurkan diri.</li>
+            </ul>
+          </div>
+        </div>
       )
     },
     {
@@ -78,11 +96,6 @@ export default function SyaratKetentuanClient() {
       {/* Header */}
       <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.push("/dashboard")} className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-md">
-            <svg className="w-5 h-5 stroke-white" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
           <div className="flex-1">
             <h1 className="text-base font-bold text-white tracking-tight leading-tight">Syarat &amp; Ketentuan Khusus</h1>
             <p className="text-emerald-50/80 text-[11px] font-medium mt-0.5">Informasi terkait pendaftaran dan lainnya</p>

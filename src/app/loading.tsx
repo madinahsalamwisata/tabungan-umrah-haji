@@ -1,10 +1,9 @@
 export default function GlobalLoading() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black/90">
-      <div className="flex flex-col items-center justify-center p-8 bg-[#111814]/80 backdrop-blur-md rounded-2xl border border-emerald-500/30 shadow-2xl">
-        <div className="w-16 h-16 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
-        <p className="text-emerald-400 font-bold text-lg animate-pulse">Loading...</p>
-        <p className="text-emerald-200/60 text-sm mt-1">Harap tunggu sebentar</p>
+    <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-white">
+      <div className="flex items-center gap-3 bg-hijau-900 px-6 py-3 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-hijau-800 animate-pulse">
+        <div className="w-5 h-5 border-2 border-emerald-500/30 border-t-emerald-400 rounded-full animate-spin"></div>
+        <span className="text-white font-bold text-sm tracking-wide">Loading...</span>
       </div>
     </div>
   );

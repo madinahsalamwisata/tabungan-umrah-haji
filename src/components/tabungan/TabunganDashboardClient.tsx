@@ -253,15 +253,12 @@ export default function TabunganDashboardClient({
                        Sudah Dibayar Bulan Ini
                      </button>
                    ) : (
-                     <button 
-                       onClick={handleBayar}
-                       disabled={isPaying}
-                       className={`w-full font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm ${
-                           isPaying ? "bg-emerald-400/50 text-white cursor-wait" : "bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500/50"
-                       }`}
+                     <Link 
+                       href={`/dashboard/tabungan/${rencana.id}/bayar`}
+                       className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500/50 font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm"
                      >
-                       {isPaying ? "Memproses..." : "Bayar Setoran Ini"}
-                     </button>
+                       Bayar Setoran Ini
+                     </Link>
                    )}
                  </div>
               </div>
@@ -361,18 +358,14 @@ export default function TabunganDashboardClient({
           </div>
 
           <div className="flex gap-2 mt-5 z-10 relative">
-            <button 
-              onClick={(e) => { e.stopPropagation(); handleBayar(); }}
-              disabled={isPaying || sudahLunasBulanIni}
-              className="flex-1 bg-emas hover:bg-emas/90 text-hijau-900 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-transform active:scale-95 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
+            <Link 
+              href={`/dashboard/tabungan/${rencana.id}/bayar`}
+              onClick={(e) => e.stopPropagation()}
+              className="flex-1 bg-emas hover:bg-emas/90 text-hijau-900 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-transform active:scale-95 touch-manipulation shadow-sm cursor-pointer"
             >
-              {isPaying ? "Proses..." : (
-                <>
-                  <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                  Setor
-                </>
-              )}
-            </button>
+              <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Setor
+            </Link>
             <Link 
               href={`/dashboard/tabungan/${rencana.id}/riwayat`}
               onClick={(e) => e.stopPropagation()}

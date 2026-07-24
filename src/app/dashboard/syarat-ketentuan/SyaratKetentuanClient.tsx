@@ -64,9 +64,20 @@ export default function SyaratKetentuanClient() {
       title: "Ketentuan Khusus",
       icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
       content: (
-        <p className="text-xs text-white leading-relaxed">
-          Ketentuan khusus lainnya menyesuaikan dengan kondisi dan peraturan terbaru dari pemerintah Republik Indonesia dan Kerajaan Arab Saudi.
-        </p>
+        <div className="text-xs text-white leading-relaxed space-y-4">
+          <div>
+            <span className="font-bold">1. Klausul Force Majeure</span>
+            <p className="mt-1">
+              Dalam hal terjadi keadaan kahar (force majeure) yang berada di luar kemampuan dan kendali Para Pihak, maka Pihak Travel dibebaskan dari segala tuntutan atas kerugian atau keterlambatan.
+            </p>
+          </div>
+          <div>
+            <span className="font-bold">2. Klausul Penyesuaian Harga</span>
+            <p className="mt-1">
+              Pihak Travel berhak melakukan penyesuaian harga paket apabila terjadi kenaikan biaya dari pihak ketiga, seperti kenaikan harga tiket penerbangan maskapai.
+            </p>
+          </div>
+        </div>
       )
     },
     {

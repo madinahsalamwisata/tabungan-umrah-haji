@@ -158,30 +158,29 @@ export default function DashboardClient({
       setOpenAccordion(id);
     }
   };
-
   const showPengumumanPopup = (item: any) => {
     Swal.fire({
       title: item.judul,
       html: `
-        <div class="text-xs text-emerald-800 mb-4 pb-3 border-b border-gray-200 text-left flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <div class="text-[11px] font-semibold text-emerald-600 mb-4 pb-3 border-b border-gray-100 text-left flex items-center gap-2">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           ${new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
-          ${item.is_penting ? '<span class="bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Penting</span>' : ''}
+          ${item.is_penting ? '<span class="bg-yellow-100 border border-yellow-200 text-yellow-700 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">Penting</span>' : ''}
         </div>
-        <div class="text-sm text-gray-700 text-left whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style="scrollbar-width: thin;">
+        <div class="text-sm text-gray-600 text-left whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style="scrollbar-width: thin;">
           ${item.konten}
         </div>
       `,
-      background: 'rgba(15, 23, 42, 0.85)',
-      color: '#111827',
-      backdrop: 'rgba(0,0,0,0.6)',
+      background: '#ffffff',
+      color: '#1f2937',
+      backdrop: 'rgba(0,0,0,0.4)',
       confirmButtonColor: '#059669',
       confirmButtonText: 'Tutup',
       customClass: {
-        popup: 'rounded-3xl border border-gray-200 shadow-2xl backdrop-blur-xl',
-        title: 'text-left text-xl text-emerald-800 font-bold',
+        popup: 'rounded-3xl border border-gray-100 shadow-xl',
+        title: 'text-left text-lg text-emerald-900 font-bold',
         htmlContainer: 'text-left !m-0 !mt-2',
-        confirmButton: 'rounded-xl shadow-lg hover:shadow-emerald-900/50 transition-all font-bold px-8'
+        confirmButton: 'rounded-xl shadow-sm hover:shadow-md transition-all font-bold px-8'
       }
     });
   };

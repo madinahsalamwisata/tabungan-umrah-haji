@@ -34,6 +34,9 @@ export default async function TabunganBaruPage(props: {
   // Convert Decimal to string for Client Component serialization
   const serializedPaket = {
     ...paket,
+    nama_paket: paket.is_estimasi || paket.nama_paket.includes("(Estimasi)") 
+      ? paket.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim() 
+      : paket.nama_paket,
     harga_quad: paket.harga_quad.toString(),
     harga_triple: paket.harga_triple.toString(),
     harga_double: paket.harga_double.toString(),

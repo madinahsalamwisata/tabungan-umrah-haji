@@ -117,8 +117,8 @@ export default function BayarClient({
           <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500" />
           
           <div className="flex flex-col mb-4">
-            <span className="text-xs font-semibold text-gray-500 mb-1">Nominal Setoran</span>
-            <span className="text-3xl font-black text-emerald-950 tracking-tight">{formatRp(Number(rencana.setoran_per_bulan))}</span>
+            <span className="text-xs font-semibold text-gray-500 mb-1">Nominal Setoran {cicilanKe === 1 ? "(Termasuk Admin)" : ""}</span>
+            <span className="text-3xl font-black text-emerald-950 tracking-tight">{formatRp(Number(rencana.setoran_per_bulan) + (cicilanKe === 1 ? 500000 : 0))}</span>
           </div>
           
           <div className="pt-4 border-t border-dashed border-emerald-100 flex justify-between items-center">

@@ -60,7 +60,9 @@ export default async function DashboardPage() {
     const cicilanKe = plan.RiwayatSetoran.length + 1;
 
     return {
-      namaPaket: plan.paket.nama_paket,
+      namaPaket: plan.paket.is_estimasi || plan.paket.nama_paket.includes("(Estimasi)")
+        ? plan.paket.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
+        : plan.paket.nama_paket,
       totalTerkumpul,
       targetBiaya,
       percentage,

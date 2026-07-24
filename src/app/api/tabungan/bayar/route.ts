@@ -47,7 +47,10 @@ export async function POST(req: Request) {
     });
 
     const orderId = `UMR-${rencana.id.substring(0, 8)}-BLN${cicilanKe}-${Date.now()}`;
-    const nominal = Math.round(Number(rencana.setoran_per_bulan));
+    let nominal = Math.round(Number(rencana.setoran_per_bulan));
+    if (cicilanKe === 1) {
+        nominal += 500000;
+    }
 
     const parameter = {
         "transaction_details": {

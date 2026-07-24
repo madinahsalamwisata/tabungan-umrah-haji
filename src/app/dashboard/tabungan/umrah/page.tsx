@@ -44,6 +44,7 @@ export default async function TabunganDashboard() {
      return p.is_estimasi === true || p.nama_paket.includes("(Estimasi)");
   }).map(p => ({
      ...p,
+     nama_paket: p.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim(),
      harga_quad: p.harga_quad.toString(),
      harga_triple: p.harga_triple.toString(),
      harga_double: p.harga_double.toString(),
@@ -94,6 +95,9 @@ export default async function TabunganDashboard() {
               setoran_per_bulan: rencanaTabungan.setoran_per_bulan.toString(),
               paket: {
                 ...rencanaTabungan.paket,
+                nama_paket: rencanaTabungan.paket.is_estimasi || rencanaTabungan.paket.nama_paket.includes("(Estimasi)")
+                  ? rencanaTabungan.paket.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
+                  : rencanaTabungan.paket.nama_paket,
                 harga_quad: rencanaTabungan.paket.harga_quad.toString(),
                 harga_triple: rencanaTabungan.paket.harga_triple.toString(),
                 harga_double: rencanaTabungan.paket.harga_double.toString(),

@@ -24,8 +24,10 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
   };
 
   const hargaPerOrang = getHargaKamar();
-  const totalBiaya = hargaPerOrang * jumlahJamaah;
-  const setoranBulanan = Math.ceil(totalBiaya / durasiBulan);
+  const totalBiayaPaket = hargaPerOrang * jumlahJamaah;
+  const biayaAdmin = 500000;
+  const totalKeseluruhan = totalBiayaPaket + biayaAdmin;
+  const setoranBulanan = Math.ceil(totalBiayaPaket / durasiBulan);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +45,7 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
           jenis_kamar: jenisKamar,
           jumlah_jamaah: jumlahJamaah,
           durasi_bulan: durasiBulan,
-          total_biaya: totalBiaya,
+          total_biaya: totalKeseluruhan,
           setoran_bulanan: setoranBulanan,
         }),
       });
@@ -184,9 +186,14 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
               <span className="font-semibold">{jumlahJamaah} Orang</span>
             </div>
 
+            <div className="flex justify-between items-center text-xs text-white/80 border-b border-white/10 pb-3">
+              <span>Biaya Admin (Hanya Awal)</span>
+              <span className="font-semibold">{formatRp(biayaAdmin)}</span>
+            </div>
+
             <div className="flex justify-between items-center pt-1 text-sm font-semibold">
               <span>Total Keseluruhan</span>
-              <span>{formatRp(totalBiaya)}</span>
+              <span>{formatRp(totalKeseluruhan)}</span>
             </div>
             
             <div className="flex justify-between items-center bg-white/10 border border-white/15 p-3.5 rounded-xl shadow-inner mt-4">

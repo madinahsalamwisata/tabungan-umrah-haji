@@ -33,7 +33,7 @@ export default async function PaketPage() {
   // Also deduplicate by name to prevent duplicate dummy packages showing up
   const uniqueNames = new Set();
   const pastiPakets = pakets.filter(paket => {
-    if (paket.nama_paket.includes("(Estimasi)")) return false;
+    if (paket.is_estimasi === true || paket.nama_paket.includes("(Estimasi)")) return false;
     
     // Normalize name to deduplicate those that have tags like '(< 1 Tahun)'
     let baseName = paket.nama_paket;

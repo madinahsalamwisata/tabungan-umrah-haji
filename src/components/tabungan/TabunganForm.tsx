@@ -8,6 +8,7 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
   
   const [jenisKamar, setJenisKamar] = useState<string>("Quad");
   const [jumlahJamaah, setJumlahJamaah] = useState<number>(1);
+  const minBulanAllowed = Math.min(3, maxBulan); // if max is 2, min is 2, if max 24, min is 3
   const [durasiBulan, setDurasiBulan] = useState<number>(Math.min(12, maxBulan));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -145,25 +146,25 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
               <div className="flex items-center gap-4">
                 <input 
                   type="range" 
-                  min="3" 
+                  min={minBulanAllowed} 
                   max={maxBulan} 
                   step="1" 
                   value={durasiBulan} 
-                  onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
+                  onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(minBulanAllowed, Number(e.target.value))))}
                   className="w-full h-1 bg-garis rounded-lg appearance-none cursor-pointer accent-hijau-800"
                 />
                 <div className="w-20 text-center shrink-0 flex items-center justify-end">
                   <input 
                     type="number" 
                     value={durasiBulan} 
-                    onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(3, Number(e.target.value))))}
+                    onChange={(e) => setDurasiBulan(Math.min(maxBulan, Math.max(minBulanAllowed, Number(e.target.value))))}
                     className="w-10 text-center border-b border-garis font-bold text-base text-teks-900 focus:outline-none focus:border-hijau-750"
                   />
                   <span className="text-xs text-teks-500 font-bold ml-1">Bln</span>
                 </div>
               </div>
               <div className="flex justify-between text-[10px] text-teks-300 font-bold mt-2">
-                <span>3 Bulan</span>
+                <span>{minBulanAllowed} Bulan</span>
                 <span>{maxBulan} Bulan</span>
               </div>
             </div>

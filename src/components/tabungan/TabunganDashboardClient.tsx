@@ -37,9 +37,7 @@ export default function TabunganDashboardClient({
   const [isPaying, setIsPaying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isNavigatingSetor, setIsNavigatingSetor] = useState(false);
   const [isNavigatingRiwayat, setIsNavigatingRiwayat] = useState(false);
-  const [isNavigatingDesktop, setIsNavigatingDesktop] = useState(false);
   
   // Edit states
   const [editKamar, setEditKamar] = useState(rencana.jenis_kamar);
@@ -257,11 +255,11 @@ export default function TabunganDashboardClient({
                      </button>
                    ) : (
                      <button 
-                       onClick={() => { setIsNavigatingDesktop(true); router.push(`/dashboard/tabungan/${rencana.id}/bayar`); }}
-                       disabled={isNavigatingDesktop}
+                       onClick={handleBayar}
+                       disabled={isPaying}
                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500/50 font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm"
                      >
-                       {isNavigatingDesktop ? "Memuat..." : "Bayar Setoran Ini"}
+                       {isPaying ? "Memuat..." : "Bayar Setoran Ini"}
                      </button>
                    )}
                  </div>
@@ -363,11 +361,11 @@ export default function TabunganDashboardClient({
 
           <div className="flex gap-2 mt-5 z-10 relative">
             <button 
-              onClick={(e) => { e.stopPropagation(); setIsNavigatingSetor(true); router.push(`/dashboard/tabungan/${rencana.id}/bayar`); }}
-              disabled={isNavigatingSetor}
+              onClick={(e) => { e.stopPropagation(); handleBayar(); }}
+              disabled={isPaying || sudahLunasBulanIni}
               className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all"
             >
-              {isNavigatingSetor ? "Proses..." : (
+              {isPaying ? "Proses..." : (
                 <>
                   <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                   Setor

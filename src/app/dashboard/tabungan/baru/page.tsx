@@ -23,11 +23,13 @@ export default async function TabunganBaruPage(props: {
   }
 
   // Calculate max months allowed based on departure date
-  const now = new Date();
-  const depart = paket.tanggal_keberangkatan;
-  const diffInMonths = (depart.getFullYear() - now.getFullYear()) * 12 + (depart.getMonth() - now.getMonth());
-  // Ensure minimum max is 3 just in case, or cap at diffInMonths
-  const maxBulan = Math.max(3, diffInMonths);
+  let maxBulan = 24;
+  if (!paket.is_estimasi && paket.tanggal_keberangkatan) {
+    const now = new Date();
+    const depart = new Date(paket.tanggal_keberangkatan);
+    const diffInMonths = (depart.getFullYear() - now.getFullYear()) * 12 + (depart.getMonth() - now.getMonth());
+    maxBulan = Math.max(1, diffInMonths); // Could be very short if departing soon
+  }
 
   // Convert Decimal to string for Client Component serialization
   const serializedPaket = {

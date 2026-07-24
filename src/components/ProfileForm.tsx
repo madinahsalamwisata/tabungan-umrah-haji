@@ -320,7 +320,7 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
 
                   <div className="bg-krem border border-garis/80 rounded-2xl p-4 md:col-span-2 transition-colors">
                     <p className="text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Alamat Lengkap</p>
-                    <p className="text-xs font-medium text-teks-800 leading-relaxed whitespace-pre-wrap">
+                    <p className="text-xs font-bold text-teks-900 leading-relaxed whitespace-pre-wrap">
                       {localAlamat || <span className="text-teks-300 italic font-normal">Belum diisi</span>}
                     </p>
                   </div>

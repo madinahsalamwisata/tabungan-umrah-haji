@@ -576,28 +576,40 @@ export default function DashboardClient({
           {/* Quick Menu Grid */}
           <div>
             <div className="text-xs uppercase tracking-wider text-teks-500 font-bold mb-3">Menu Utama</div>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-4 gap-y-4 gap-x-2">
               <Link href="/dashboard/tabungan" className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
-                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2" /><path d="M3 10h18" /><path d="M7 15h3" /></svg>
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6" width="18" height="13" rx="2" /><path d="M3 10h18" /><path d="M7 15h3" /></svg>
                 </div>
                 <span className="text-[10px] font-semibold text-teks-900 leading-tight">Setor<br/>Tabungan</span>
               </Link>
               <Link href="/dashboard/paket" className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
-                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a2 2 0 0 0-2.83 0L9 13.17V19h5.83l8.58-8.59a2 2 0 0 0 0-2.83z" /><path d="M16 5.5 18.5 8" /><path d="M3 21h9" /></svg>
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.42 4.58a2 2 0 0 0-2.83 0L9 13.17V19h5.83l8.58-8.59a2 2 0 0 0 0-2.83z" /><path d="M16 5.5 18.5 8" /><path d="M3 21h9" /></svg>
                 </div>
                 <span className="text-[10px] font-semibold text-teks-900 leading-tight">Paket<br/>Umrah</span>
               </Link>
+              <Link href="/dashboard/riwayat-tabungan" className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <span className="text-[10px] font-semibold text-teks-900 leading-tight">Riwayat<br/>Tabungan</span>
+              </Link>
+              <Link href="/dashboard/syarat-ketentuan" className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <span className="text-[10px] font-semibold text-teks-900 leading-tight">Syarat &amp;<br/>Ketentuan</span>
+              </Link>
               <Link href="/dashboard/riwayat" className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
-                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" /><path d="M12 7v5l3 3" /></svg>
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" /><path d="M12 7v5l3 3" /></svg>
                 </div>
                 <span className="text-[10px] font-semibold text-teks-900 leading-tight">Riwayat<br/>Transaksi</span>
               </Link>
               <Link href="/dashboard/tentang-kami" className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-2xl bg-hijau-100 flex items-center justify-center shadow-sm">
-                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+                  <svg className="w-5 h-5 stroke-hijau-800" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
                 </div>
                 <span className="text-[10px] font-semibold text-teks-900 leading-tight">Tentang<br/>Kami</span>
               </Link>

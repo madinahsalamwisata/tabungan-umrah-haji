@@ -50,10 +50,21 @@ export default function DashboardClient({
   }[];
 }) {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
-  const [pengumumanList, setPengumumanList] = useState<any[]>(initialPengumuman);
+  const [pengumumanList, setPengumumanList] = useState<any[]>(Array.isArray(initialPengumuman) ? initialPengumuman : []);
   const [isPaying, setIsPaying] = useState<string | null>(null);
   const [isNavigatingRiwayat, setIsNavigatingRiwayat] = useState<string | null>(null);
   const router = useRouter();
+
+  const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
+    try {
+      if (!d) return fallback;
+      const dateObj = new Date(d);
+      if (isNaN(dateObj.getTime())) return fallback;
+      return dateObj.toLocaleDateString('id-ID', options);
+    } catch {
+      return fallback;
+    }
+  };
 
   const syncPayment = async (order_id: string, idRencana: string, nominal: number, cicilanKe: number) => {
     try {
@@ -141,15 +152,19 @@ export default function DashboardClient({
     const fetchPengumuman = () => {
       fetch("/api/admin/pengumuman")
         .then(res => res.json())
-        .then(data => setPengumumanList(data))
+        .then(data => {
+          if (Array.isArray(data)) {
+            setPengumumanList(data);
+          }
+        })
         .catch(err => console.error("Gagal load pengumuman", err));
     };
 
     // Panggil pertama kali
     fetchPengumuman();
 
-    // Polling setiap 3 detik (3000 ms)
-    const interval = setInterval(fetchPengumuman, 3000);
+    // Polling setiap 60 detik (60000 ms) agar tidak membebani koneksi/server
+    const interval = setInterval(fetchPengumuman, 60000);
 
     return () => clearInterval(interval);
   }, []);
@@ -181,7 +196,7 @@ export default function DashboardClient({
           
           <div class="flex items-center gap-2 text-[11px] font-medium text-gray-500 mb-5 pb-4 border-b border-gray-100">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            ${new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+            ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
             ${item.is_penting ? '<span class="ml-2 bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider">Penting</span>' : ''}
           </div>
           
@@ -305,7 +320,7 @@ export default function DashboardClient({
                         </div>
                         <span className={`text-[10px] font-medium uppercase tracking-wide flex items-center gap-1 ${item.is_penting ? "text-emerald-100" : "text-emerald-100"}`}>
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                          {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+                          {formatSafeDate(item.created_at, { dateStyle: 'long' })}
                         </span>
                       </div>
                     </button>
@@ -663,7 +678,7 @@ export default function DashboardClient({
                     )}
                     <div className={`text-[10px] flex items-center gap-1 mt-6 ${item.is_penting ? "text-white/60" : "text-teks-500"}`}>
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
-                      {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      {formatSafeDate(item.created_at, { day: 'numeric', month: 'short', year: 'numeric' })}
                     </div>
                     <div className="text-sm font-bold mt-2 line-clamp-2 leading-snug">
                       {item.judul}

@@ -75,8 +75,19 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
   // Extract unique options
   const tipePaketOptions = Array.from(new Set(pakets.map(p => p.nama_paket).filter(Boolean)));
   
+  const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
+    try {
+      if (!d) return fallback;
+      const dateObj = new Date(d);
+      if (isNaN(dateObj.getTime())) return fallback;
+      return dateObj.toLocaleDateString('id-ID', options);
+    } catch {
+      return fallback;
+    }
+  };
+
   const getBulanTahun = (date: Date) => {
-    return new Date(date).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+    return formatSafeDate(date, { month: 'long', year: 'numeric' });
   };
   const bulanTahunOptions = Array.from(new Set(pakets.map(p => getBulanTahun(p.tanggal_keberangkatan))));
   
@@ -212,8 +223,8 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
                           {paket.is_estimasi 
-                            ? depart.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
-                            : `${depart.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(paket.tanggal_kepulangan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                            ? formatSafeDate(depart, { month: 'long', year: 'numeric' })
+                            : `${formatSafeDate(depart, { day: 'numeric', month: 'short', year: 'numeric' })} - ${formatSafeDate(paket.tanggal_kepulangan, { day: 'numeric', month: 'short', year: 'numeric' })}`
                           }
                         </span>
                       </div>
@@ -316,8 +327,8 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                         <span className="flex items-center gap-1">
                           <svg className="w-3.5 h-3.5 stroke-hijau-800" fill="none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                           {paket.is_estimasi 
-                            ? depart.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
-                            : `${depart.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(paket.tanggal_kepulangan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                            ? formatSafeDate(depart, { month: 'long', year: 'numeric' })
+                            : `${formatSafeDate(depart, { day: 'numeric', month: 'short', year: 'numeric' })} - ${formatSafeDate(paket.tanggal_kepulangan, { day: 'numeric', month: 'short', year: 'numeric' })}`
                           }
                         </span>
                       </div>

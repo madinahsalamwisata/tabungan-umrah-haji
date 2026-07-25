@@ -77,6 +77,17 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
   const [bulan, setBulan] = useState("");
   const [hasSearched, setHasSearched] = useState(true);
 
+  const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
+    try {
+      if (!d) return fallback;
+      const dateObj = new Date(d);
+      if (isNaN(dateObj.getTime())) return fallback;
+      return dateObj.toLocaleDateString('id-ID', options);
+    } catch {
+      return fallback;
+    }
+  };
+
   // Extract unique options for dropdowns
   const pesawatOptions = Array.from(new Set(pakets.map(p => p.maskapai).filter(Boolean)));
   const hotelOptions = Array.from(new Set(pakets.map(p => p.hotel_makkah).filter(Boolean)));
@@ -103,7 +114,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
   const filteredPakets = pakets.filter(p => {
     const matchPesawat = pesawat === "" || p.maskapai === pesawat;
     const matchHotel = hotel === "" || p.hotel_makkah === hotel;
-    const pBulan = new Date(p.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' });
+    const pBulan = formatSafeDate(p.tanggal_keberangkatan, { month: 'long' });
     const matchBulan = bulan === "" || pBulan === bulan;
     return matchPesawat && matchHotel && matchBulan;
   });
@@ -203,7 +214,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                         </div>
                         <div>
                           <p className="text-[10px] text-emerald-700/80 uppercase tracking-wider font-bold">Bulan Keberangkatan</p>
-                          <p className="text-sm font-semibold text-emerald-900">{new Date(paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' })}</p>
+                          <p className="text-sm font-semibold text-emerald-900">{formatSafeDate(paket.tanggal_keberangkatan, { month: 'long' })}</p>
                         </div>
                       </div>
                       

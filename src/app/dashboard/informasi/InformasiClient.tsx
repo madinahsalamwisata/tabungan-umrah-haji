@@ -8,13 +8,24 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState<"semua" | "penting">("semua");
 
+  const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
+    try {
+      if (!d) return fallback;
+      const dateObj = new Date(d);
+      if (isNaN(dateObj.getTime())) return fallback;
+      return dateObj.toLocaleDateString('id-ID', options);
+    } catch {
+      return fallback;
+    }
+  };
+
   const showDetail = (item: any) => {
     Swal.fire({
       title: item.judul,
       html: `
         <div class="text-xs text-emerald-800 mb-4 pb-3 border-b border-gray-200 text-left flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          ${new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+          ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
           ${item.is_penting ? '<span class="bg-yellow-500/20 border border-yellow-500/30 text-yellow-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Penting</span>' : ''}
         </div>
         <div class="text-sm text-gray-700 text-left whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style="scrollbar-width: thin;">
@@ -104,7 +115,7 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
                 item.is_penting ? "text-white/60" : "text-teks-500"
               }`}>
                 <Calendar className="w-3.5 h-3.5" />
-                {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'medium' })}
+                {formatSafeDate(item.created_at, { dateStyle: 'medium' })}
               </div>
 
               <h3 className="text-base font-bold mt-2.5 font-serif leading-snug">

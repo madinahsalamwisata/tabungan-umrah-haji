@@ -39,13 +39,14 @@ export default async function RiwayatPage() {
       allRiwayat.push({
         ...setoran,
         nominal: setoran.nominal.toString(),
+        tanggal_setor: setoran.tanggal_setor ? new Date(setoran.tanggal_setor).toISOString() : null,
         nama_paket: rencana.paket?.nama_paket || (rencana as any).paket_snapshot_nama || "Paket Dihapus",
       });
     });
   });
 
   // Urutkan berdasarkan tanggal_setor terbaru
-  allRiwayat.sort((a, b) => new Date(b.tanggal_setor).getTime() - new Date(a.tanggal_setor).getTime());
+  allRiwayat.sort((a, b) => new Date(b.tanggal_setor || 0).getTime() - new Date(a.tanggal_setor || 0).getTime());
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">

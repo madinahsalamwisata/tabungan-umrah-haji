@@ -41,6 +41,7 @@ export default async function TabunganRiwayatPage({ params }: { params: Promise<
   const riwayat = rencanaTabungan.RiwayatSetoran.map((setoran) => ({
     ...setoran,
     nominal: setoran.nominal.toString(),
+    tanggal_setor: setoran.tanggal_setor ? new Date(setoran.tanggal_setor).toISOString() : null,
     nama_paket: rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah",
   }));
 

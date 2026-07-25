@@ -45,6 +45,8 @@ export default async function TabunganDashboard() {
   }).map(p => ({
      ...p,
      nama_paket: p.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim(),
+     tanggal_keberangkatan: p.tanggal_keberangkatan ? new Date(p.tanggal_keberangkatan).toISOString() : null,
+     tanggal_kepulangan: p.tanggal_kepulangan ? new Date(p.tanggal_kepulangan).toISOString() : null,
      harga_quad: p.harga_quad.toString(),
      harga_triple: p.harga_triple.toString(),
      harga_double: p.harga_double.toString(),
@@ -91,6 +93,9 @@ export default async function TabunganDashboard() {
             // Serialize decimals to string for Client Component
             const serializedRencana = {
               ...rencanaTabungan,
+              tanggal_mulai: rencanaTabungan.tanggal_mulai ? new Date(rencanaTabungan.tanggal_mulai).toISOString() : null,
+              paket_snapshot_tanggal_berangkat: rencanaTabungan.paket_snapshot_tanggal_berangkat ? new Date(rencanaTabungan.paket_snapshot_tanggal_berangkat).toISOString() : null,
+              paket_snapshot_tanggal_kepulangan: rencanaTabungan.paket_snapshot_tanggal_kepulangan ? new Date(rencanaTabungan.paket_snapshot_tanggal_kepulangan).toISOString() : null,
               total_biaya: rencanaTabungan.total_biaya.toString(),
               setoran_per_bulan: rencanaTabungan.setoran_per_bulan.toString(),
               paket: rencanaTabungan.paket ? {
@@ -98,12 +103,15 @@ export default async function TabunganDashboard() {
                 nama_paket: rencanaTabungan.paket?.is_estimasi || rencanaTabungan.paket?.nama_paket?.includes("(Estimasi)") || rencanaTabungan.paket_snapshot_is_estimasi
                   ? (rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah").replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
                   : (rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah"),
+                tanggal_keberangkatan: rencanaTabungan.paket.tanggal_keberangkatan ? new Date(rencanaTabungan.paket.tanggal_keberangkatan).toISOString() : null,
+                tanggal_kepulangan: rencanaTabungan.paket.tanggal_kepulangan ? new Date(rencanaTabungan.paket.tanggal_kepulangan).toISOString() : null,
                 harga_quad: rencanaTabungan.paket.harga_quad.toString(),
                 harga_triple: rencanaTabungan.paket.harga_triple.toString(),
                 harga_double: rencanaTabungan.paket.harga_double.toString(),
               } : null,
               RiwayatSetoran: rencanaTabungan.RiwayatSetoran.map(r => ({
                 ...r,
+                tanggal_setor: r.tanggal_setor ? new Date(r.tanggal_setor).toISOString() : null,
                 nominal: r.nominal.toString()
               }))
             };

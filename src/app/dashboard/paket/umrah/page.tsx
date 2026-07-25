@@ -51,6 +51,8 @@ export default async function PaketPage() {
     return true;
   }).map(paket => ({
     ...paket,
+    tanggal_keberangkatan: paket.tanggal_keberangkatan ? new Date(paket.tanggal_keberangkatan).toISOString() : null,
+    tanggal_kepulangan: paket.tanggal_kepulangan ? new Date(paket.tanggal_kepulangan).toISOString() : null,
     harga_quad: paket.harga_quad.toString(),
     harga_triple: paket.harga_triple.toString(),
     harga_double: paket.harga_double.toString(),

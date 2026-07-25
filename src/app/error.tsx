@@ -22,9 +22,14 @@ export default function GlobalError({
           </svg>
         </div>
         <h2 className="text-2xl font-bold text-white mb-2">Oops! Terjadi Kesalahan</h2>
-        <p className="text-gray-400 mb-8">
+        <p className="text-gray-400 mb-4">
           Halaman gagal dimuat. Ini mungkin karena sesi Anda telah berakhir atau terjadi gangguan koneksi.
         </p>
+        <div className="mb-8 p-3 bg-red-950/60 border border-red-500/40 rounded-xl text-left overflow-auto max-h-40">
+          <p className="text-[11px] font-bold text-red-400 font-mono mb-1">🔥 Detail Error:</p>
+          <p className="text-[11px] font-mono text-red-200 break-all">{error?.message || "Unknown error occurred"}</p>
+          {error?.digest && <p className="text-[10px] font-mono text-gray-500 mt-1">Digest: {error.digest}</p>}
+        </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => reset()}

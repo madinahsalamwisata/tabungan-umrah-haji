@@ -31,12 +31,14 @@ export default async function TabunganBaruPage(props: {
     maxBulan = Math.max(1, diffInMonths); // Could be very short if departing soon
   }
 
-  // Convert Decimal to string for Client Component serialization
+  // Convert Decimal and Date to string for Client Component serialization
   const serializedPaket = {
     ...paket,
     nama_paket: paket.is_estimasi || paket.nama_paket.includes("(Estimasi)") 
       ? paket.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim() 
       : paket.nama_paket,
+    tanggal_keberangkatan: paket.tanggal_keberangkatan ? new Date(paket.tanggal_keberangkatan).toISOString() : null,
+    tanggal_kepulangan: paket.tanggal_kepulangan ? new Date(paket.tanggal_kepulangan).toISOString() : null,
     harga_quad: paket.harga_quad.toString(),
     harga_triple: paket.harga_triple.toString(),
     harga_double: paket.harga_double.toString(),

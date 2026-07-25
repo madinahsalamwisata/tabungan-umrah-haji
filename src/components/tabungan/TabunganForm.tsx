@@ -56,7 +56,8 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
         throw new Error(data.message || "Terjadi kesalahan");
       }
 
-      router.push("/dashboard/tabungan");
+      const isHaji = paket.nama_paket.toLowerCase().includes('haji');
+      router.push(isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah");
       router.refresh();
       
     } catch (err: any) {

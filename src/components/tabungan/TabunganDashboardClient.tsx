@@ -41,19 +41,17 @@ export default function TabunganDashboardClient({
   
   // Edit states
   const [editKamar, setEditKamar] = useState(rencana.jenis_kamar);
-  // Use snapshot name if available, otherwise fallback to paket's current name
-  const isEstimasi = rencana.paket_snapshot_is_estimasi !== null 
-    ? rencana.paket_snapshot_is_estimasi 
-    : (rencana.paket?.is_estimasi || false);
+  // Gunakan data paket live (bukan snapshot) agar jika admin merubah data, di dashboard aktif ikut berubah
+  const isEstimasi = rencana.paket?.is_estimasi || false;
     
-  const baseName = rencana.paket_snapshot_nama || rencana.paket?.nama_paket || "Paket Umrah";
+  const baseName = rencana.paket?.nama_paket || "Paket Umrah";
 
   const namaPaket = isEstimasi
     ? baseName.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
     : baseName;
     
-  const tglBerangkat = rencana.paket_snapshot_tanggal_berangkat || rencana.paket?.tanggal_keberangkatan;
-  const tglPulang = rencana.paket_snapshot_tanggal_kepulangan || rencana.paket?.tanggal_kepulangan;
+  const tglBerangkat = rencana.paket?.tanggal_keberangkatan;
+  const tglPulang = rencana.paket?.tanggal_kepulangan;
   
   const [editJamaah, setEditJamaah] = useState(rencana.jumlah_jamaah || 1);
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);

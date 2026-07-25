@@ -27,7 +27,7 @@ export default function PaketSelectionClient() {
         {isNavigatingUmrah ? (
           <div className="w-full h-28 rounded-2xl bg-gray-200/70 animate-pulse flex flex-col items-center justify-center shadow-inner border border-gray-100">
              <div className="w-8 h-8 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mb-2"></div>
-             <p className="text-xs font-semibold text-emerald-800 animate-pulse">Memuat data...</p>
+             <p className="text-xs font-semibold text-emerald-800 animate-pulse">Loading....</p>
           </div>
         ) : (
           <Link 

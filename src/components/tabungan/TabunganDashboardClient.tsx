@@ -41,6 +41,20 @@ export default function TabunganDashboardClient({
   
   // Edit states
   const [editKamar, setEditKamar] = useState(rencana.jenis_kamar);
+  // Use snapshot name if available, otherwise fallback to paket's current name
+  const isEstimasi = rencana.paket_snapshot_is_estimasi !== null 
+    ? rencana.paket_snapshot_is_estimasi 
+    : (rencana.paket?.is_estimasi || false);
+    
+  const baseName = rencana.paket_snapshot_nama || rencana.paket?.nama_paket || "Paket Umrah";
+
+  const namaPaket = isEstimasi
+    ? baseName.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
+    : baseName;
+    
+  const tglBerangkat = rencana.paket_snapshot_tanggal_berangkat || rencana.paket?.tanggal_keberangkatan;
+  const tglPulang = rencana.paket_snapshot_tanggal_kepulangan || rencana.paket?.tanggal_kepulangan;
+  
   const [editJamaah, setEditJamaah] = useState(rencana.jumlah_jamaah || 1);
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
 
@@ -184,18 +198,18 @@ export default function TabunganDashboardClient({
         >
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1.5">
-              <h3 className="font-bold text-lg text-white">{rencana.paket.nama_paket}</h3>
+              <h3 className="font-bold text-lg text-white">{namaPaket}</h3>
               {sudahBayarSemua && (
                 <span className="bg-yellow-500/20 text-yellow-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-yellow-500/30">LUNAS 🎉</span>
               )}
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/90">
               <span className="font-semibold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-                {rencana.paket.is_estimasi 
-                  ? new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' })
-                  : rencana.paket.tanggal_kepulangan 
-                    ? `${new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(rencana.paket.tanggal_kepulangan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                    : new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                {isEstimasi 
+                  ? new Date(tglBerangkat).toLocaleDateString('id-ID', { month: 'long' })
+                  : tglPulang 
+                    ? `${new Date(tglBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(tglPulang).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                    : new Date(tglBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
                 }
               </span>
               <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
@@ -313,7 +327,7 @@ export default function TabunganDashboardClient({
             <div>
               <span className="text-[10px] uppercase font-bold text-white/60 tracking-wider">Perencanaan Tabungan</span>
               <h3 className="font-bold text-base leading-snug mt-0.5">
-                {rencana.paket.nama_paket}{" "}
+                {namaPaket}{" "}
                 {sudahBayarSemua ? (
                   <span className="bg-yellow-500 text-emerald-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide inline-flex items-center align-middle relative -top-[1px] ml-1">LUNAS</span>
                 ) : (
@@ -353,13 +367,13 @@ export default function TabunganDashboardClient({
           </div>
 
           <div className="flex justify-between items-center mt-4 pt-3 border-t border-white/10 text-[10px] text-white/60">
-            <span>{rencana.paket.is_estimasi ? "Estimasi Keberangkatan" : "Jadwal Keberangkatan"}</span>
+            <span>{isEstimasi ? "Estimasi Keberangkatan" : "Jadwal Keberangkatan"}</span>
             <span className="font-bold text-white">
-              {rencana.paket.is_estimasi 
-                ? new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { month: 'long' })
-                : rencana.paket.tanggal_kepulangan 
-                  ? `${new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(rencana.paket.tanggal_kepulangan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                  : new Date(rencana.paket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+              {isEstimasi 
+                ? new Date(tglBerangkat).toLocaleDateString('id-ID', { month: 'long' })
+                : tglPulang 
+                  ? `${new Date(tglBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(tglPulang).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                  : new Date(tglBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
               }
             </span>
           </div>

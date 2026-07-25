@@ -23,7 +23,7 @@ export default async function TabunganDashboard() {
 
   // Ambil semua rencana tabungan aktif jamaah
   const rencanaTabunganList = await prisma.rencanaTabungan.findMany({
-    where: { id_jamaah: jamaah.id },
+    where: { id_jamaah: jamaah.id, status: "Aktif" },
     include: {
       paket: true,
       RiwayatSetoran: {

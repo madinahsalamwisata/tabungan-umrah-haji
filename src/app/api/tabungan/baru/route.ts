@@ -66,6 +66,11 @@ export async function POST(req: Request) {
           setoran_per_bulan: Number(setoran_bulanan),
           tanggal_mulai: new Date(),
           status: "Aktif",
+          paket_snapshot_nama: paketData.nama_paket,
+          paket_snapshot_is_estimasi: paketData.is_estimasi,
+          paket_snapshot_tanggal_berangkat: paketData.tanggal_keberangkatan,
+          paket_snapshot_tanggal_kepulangan: paketData.tanggal_kepulangan,
+          paket_snapshot_maskapai: paketData.maskapai,
         },
       });
 

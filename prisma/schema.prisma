@@ -53,7 +53,7 @@ model Pengumuman {
 model RencanaTabungan {
   id                String           @id @default(uuid())
   id_jamaah         String
-  id_paket          String
+  id_paket          String?
   jenis_kamar       String
   jumlah_jamaah     Int              @default(1)
   periode_bulan     Int
@@ -61,8 +61,16 @@ model RencanaTabungan {
   setoran_per_bulan Decimal
   tanggal_mulai     DateTime
   status            String
+
+  // Snapshot fields
+  paket_snapshot_nama            String?
+  paket_snapshot_is_estimasi     Boolean?
+  paket_snapshot_tanggal_berangkat DateTime?
+  paket_snapshot_tanggal_kepulangan DateTime?
+  paket_snapshot_maskapai        String?
+
   jamaah            Jamaah           @relation(fields: [id_jamaah], references: [id])
-  paket             Paket            @relation(fields: [id_paket], references: [id])
+  paket             Paket?           @relation(fields: [id_paket], references: [id], onDelete: SetNull)
   RiwayatSetoran    RiwayatSetoran[]
 }
 

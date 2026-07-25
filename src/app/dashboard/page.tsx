@@ -46,7 +46,7 @@ export default async function DashboardPage() {
   }));
 
   // Calculate savings info across active plans
-  const activePlans = jamaah.RencanaTabungan.filter(p => p.status === "Aktif" || p.status === "Lunas");
+  const activePlans = jamaah.RencanaTabungan.filter(p => p.status === "Aktif");
   
   const savingsPlans = activePlans.map((plan) => {
     const totalTerkumpul = plan.RiwayatSetoran.reduce((sum, item) => sum + Number(item.nominal), 0);

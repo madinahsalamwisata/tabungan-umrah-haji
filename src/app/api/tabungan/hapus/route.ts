@@ -32,24 +32,22 @@ export async function DELETE(req: Request) {
     }
 
     await prisma.$transaction(async (tx: any) => {
-      // Hapus riwayat setoran terkait dulu
-      await tx.riwayatSetoran.deleteMany({
-        where: { id_rencana_tabungan: id },
-      });
+      // Kembalikan kuota paket jika paket masih ada (id_paket tidak null)
+      if (rencana.id_paket) {
+        await tx.paket.update({
+          where: { id: rencana.id_paket },
+          data: { kuota: { increment: rencana.jumlah_jamaah } }
+        });
+      }
 
-      // Kembalikan kuota paket
-      await tx.paket.update({
-        where: { id: rencana.id_paket },
-        data: { kuota: { increment: rencana.jumlah_jamaah } }
-      });
-
-      // Baru hapus rencana
-      await tx.rencanaTabungan.delete({
+      // Ubah status rencana menjadi Dibatalkan
+      await tx.rencanaTabungan.update({
         where: { id },
+        data: { status: "Dibatalkan" }
       });
     });
 
-    return NextResponse.json({ message: "Berhasil dihapus" }, { status: 200 });
+    return NextResponse.json({ message: "Berhasil dibatalkan" }, { status: 200 });
 
   } catch (error: any) {
     console.error("Error deleting rencana:", error);

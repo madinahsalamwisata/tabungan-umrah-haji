@@ -33,15 +33,22 @@ export default async function TabunganBaruPage(props: {
 
   // Convert Decimal and Date to string for Client Component serialization
   const serializedPaket = {
-    ...paket,
+    id: paket.id,
     nama_paket: paket.is_estimasi || paket.nama_paket.includes("(Estimasi)") 
       ? paket.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim() 
       : paket.nama_paket,
     tanggal_keberangkatan: paket.tanggal_keberangkatan ? new Date(paket.tanggal_keberangkatan).toISOString() : null,
     tanggal_kepulangan: paket.tanggal_kepulangan ? new Date(paket.tanggal_kepulangan).toISOString() : null,
+    hotel_makkah: paket.hotel_makkah,
+    hotel_madinah: paket.hotel_madinah,
+    maskapai: paket.maskapai,
     harga_quad: paket.harga_quad.toString(),
     harga_triple: paket.harga_triple.toString(),
     harga_double: paket.harga_double.toString(),
+    kuota: paket.kuota,
+    deskripsi_fasilitas: paket.deskripsi_fasilitas,
+    poster_url: paket.poster_url,
+    is_estimasi: paket.is_estimasi,
   };
 
   const backUrl = source === 'paket' ? '/dashboard/paket' : '/dashboard/tabungan';

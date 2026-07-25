@@ -37,7 +37,11 @@ export default async function RiwayatPage() {
   jamaah.RencanaTabungan.forEach(rencana => {
     rencana.RiwayatSetoran.forEach(setoran => {
       allRiwayat.push({
-        ...setoran,
+        id: setoran.id,
+        id_rencana_tabungan: setoran.id_rencana_tabungan,
+        bulan_ke: setoran.bulan_ke,
+        status_pembayaran: setoran.status_pembayaran,
+        id_transaksi_gateway: setoran.id_transaksi_gateway,
         nominal: setoran.nominal.toString(),
         tanggal_setor: setoran.tanggal_setor ? new Date(setoran.tanggal_setor).toISOString() : null,
         nama_paket: rencana.paket?.nama_paket || (rencana as any).paket_snapshot_nama || "Paket Dihapus",

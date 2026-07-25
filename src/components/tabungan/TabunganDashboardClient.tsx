@@ -431,7 +431,7 @@ export default function TabunganDashboardClient({
                 <input 
                   type="number" 
                   min="1"
-                  max={rencana.paket.kuota}
+                  max={rencana.paket?.kuota || 1}
                   value={editJamaah}
                   onChange={(e) => setEditJamaah(Number(e.target.value))}
                   className="w-full bg-white border border-gray-300 rounded-xl py-2 px-3 text-emerald-950 focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"

@@ -45,7 +45,7 @@ export default function RiwayatTabunganClient({ riwayatList }: { riwayatList: an
             const isEstimasi = rencana.paket_snapshot_is_estimasi !== null 
               ? rencana.paket_snapshot_is_estimasi 
               : (rencana.paket?.is_estimasi || false);
-            const tglBerangkat = rencana.paket_snapshot_tanggal_berangkat || rencana.paket?.tanggal_keberangkatan;
+            const tglBerangkat = rencana.paket_snapshot_tanggal_berangkat || rencana.paket?.tanggal_keberangkatan || new Date();
             
             const totalTerkumpul = rencana.RiwayatSetoran
               .filter((r: any) => r.status_pembayaran === "success")

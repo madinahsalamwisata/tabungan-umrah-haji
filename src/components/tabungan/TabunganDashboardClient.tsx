@@ -50,8 +50,8 @@ export default function TabunganDashboardClient({
     ? baseName.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
     : baseName;
     
-  const tglBerangkat = rencana.paket?.tanggal_keberangkatan;
-  const tglPulang = rencana.paket?.tanggal_kepulangan;
+  const tglBerangkat = rencana.paket?.tanggal_keberangkatan || rencana.paket_snapshot_tanggal_berangkat || new Date();
+  const tglPulang = rencana.paket?.tanggal_kepulangan || rencana.paket_snapshot_tanggal_kepulangan || null;
   
   const [editJamaah, setEditJamaah] = useState(rencana.jumlah_jamaah || 1);
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);

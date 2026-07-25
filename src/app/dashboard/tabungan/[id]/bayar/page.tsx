@@ -49,12 +49,12 @@ export default async function TabunganBayarPage({ params }: { params: Promise<{ 
     ...rencanaTabungan,
     total_biaya: rencanaTabungan.total_biaya.toString(),
     setoran_per_bulan: rencanaTabungan.setoran_per_bulan.toString(),
-    paket: {
+    paket: rencanaTabungan.paket ? {
       ...rencanaTabungan.paket,
       harga_quad: rencanaTabungan.paket.harga_quad.toString(),
       harga_triple: rencanaTabungan.paket.harga_triple.toString(),
       harga_double: rencanaTabungan.paket.harga_double.toString(),
-    },
+    } : null,
     RiwayatSetoran: rencanaTabungan.RiwayatSetoran.map(r => ({
       ...r,
       nominal: r.nominal.toString()
@@ -72,7 +72,7 @@ export default async function TabunganBayarPage({ params }: { params: Promise<{ 
             <h3 className="text-xl font-bold text-emerald-900 drop-shadow-md">
               Halaman Pembayaran
             </h3>
-            <p className="text-sm text-emerald-700">{rencanaTabungan.paket.nama_paket}</p>
+            <p className="text-sm text-emerald-700">{rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah"}</p>
           </div>
         </div>
         

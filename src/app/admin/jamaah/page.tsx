@@ -28,7 +28,7 @@ export default async function AdminJamaahPage() {
     created_at: j.created_at.toISOString(),
     rencana_tabungan: j.RencanaTabungan.map(rt => ({
       id: rt.id,
-      paket_nama: rt.paket.nama_paket,
+      paket_nama: rt.paket?.nama_paket || rt.paket_snapshot_nama || "Paket Dihapus",
       status: rt.status,
       total_biaya: Number(rt.total_biaya)
     }))

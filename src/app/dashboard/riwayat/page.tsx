@@ -39,7 +39,7 @@ export default async function RiwayatPage() {
       allRiwayat.push({
         ...setoran,
         nominal: setoran.nominal.toString(),
-        nama_paket: rencana.paket.nama_paket,
+        nama_paket: rencana.paket?.nama_paket || (rencana as any).paket_snapshot_nama || "Paket Dihapus",
       });
     });
   });

@@ -50,7 +50,7 @@ export default async function TabunganDashboard() {
      harga_double: p.harga_double.toString(),
   }));
 
-  const activePaketIds = rencanaTabunganList.map(r => r.id_paket);
+  const activePaketIds = rencanaTabunganList.map(r => r.id_paket).filter(Boolean) as string[];
 
   if (rencanaTabunganList.length === 0) {
     return (
@@ -93,15 +93,15 @@ export default async function TabunganDashboard() {
               ...rencanaTabungan,
               total_biaya: rencanaTabungan.total_biaya.toString(),
               setoran_per_bulan: rencanaTabungan.setoran_per_bulan.toString(),
-              paket: {
+              paket: rencanaTabungan.paket ? {
                 ...rencanaTabungan.paket,
-                nama_paket: rencanaTabungan.paket.is_estimasi || rencanaTabungan.paket.nama_paket.includes("(Estimasi)")
-                  ? rencanaTabungan.paket.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
-                  : rencanaTabungan.paket.nama_paket,
+                nama_paket: rencanaTabungan.paket?.is_estimasi || rencanaTabungan.paket?.nama_paket?.includes("(Estimasi)") || rencanaTabungan.paket_snapshot_is_estimasi
+                  ? (rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah").replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
+                  : (rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah"),
                 harga_quad: rencanaTabungan.paket.harga_quad.toString(),
                 harga_triple: rencanaTabungan.paket.harga_triple.toString(),
                 harga_double: rencanaTabungan.paket.harga_double.toString(),
-              },
+              } : null,
               RiwayatSetoran: rencanaTabungan.RiwayatSetoran.map(r => ({
                 ...r,
                 nominal: r.nominal.toString()

@@ -138,7 +138,7 @@ export default async function AdminDashboardPage() {
                     {setoran.rencana_tabungan.jamaah.nama}
                   </td>
                   <td className="px-6 py-4">
-                    {setoran.rencana_tabungan.paket.nama_paket}
+                    {setoran.rencana_tabungan.paket?.nama_paket || (setoran.rencana_tabungan as any).paket_snapshot_nama || "Paket Dihapus"}
                   </td>
                   <td className="px-6 py-4">
                     {new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}

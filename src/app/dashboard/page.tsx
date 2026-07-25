@@ -60,9 +60,9 @@ export default async function DashboardPage() {
     const cicilanKe = plan.RiwayatSetoran.length + 1;
 
     return {
-      namaPaket: plan.paket.is_estimasi || plan.paket.nama_paket.includes("(Estimasi)")
-        ? plan.paket.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
-        : plan.paket.nama_paket,
+      namaPaket: plan.paket?.is_estimasi || plan.paket?.nama_paket?.includes("(Estimasi)") || plan.paket_snapshot_is_estimasi
+        ? (plan.paket?.nama_paket || plan.paket_snapshot_nama || 'Paket Umrah').replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
+        : (plan.paket?.nama_paket || plan.paket_snapshot_nama || 'Paket Umrah'),
       totalTerkumpul,
       targetBiaya,
       percentage,

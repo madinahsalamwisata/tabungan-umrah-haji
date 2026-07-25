@@ -41,7 +41,7 @@ export default async function TabunganRiwayatPage({ params }: { params: Promise<
   const riwayat = rencanaTabungan.RiwayatSetoran.map((setoran) => ({
     ...setoran,
     nominal: setoran.nominal.toString(),
-    nama_paket: rencanaTabungan.paket.nama_paket,
+    nama_paket: rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah",
   }));
 
   return (
@@ -52,7 +52,7 @@ export default async function TabunganRiwayatPage({ params }: { params: Promise<
             <h3 className="text-xl font-bold text-emerald-900 drop-shadow-md">
               Riwayat Transaksi
             </h3>
-            <p className="text-sm text-emerald-700">{rencanaTabungan.paket.nama_paket}</p>
+            <p className="text-sm text-emerald-700">{rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah"}</p>
           </div>
         </div>
         

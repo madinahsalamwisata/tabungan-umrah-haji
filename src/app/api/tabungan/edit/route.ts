@@ -32,6 +32,10 @@ export async function PUT(req: Request) {
       return NextResponse.json({ message: "Rencana tidak ditemukan atau bukan milik Anda" }, { status: 404 });
     }
 
+    if (!rencana.paket) {
+      return NextResponse.json({ message: "Maaf, paket aslinya sudah dihapus sehingga Anda tidak dapat mengubah rencana." }, { status: 400 });
+    }
+
     // Hitung ulang harga
     let hargaPerOrang = 0;
     if (jenis_kamar === "Quad") hargaPerOrang = Number(rencana.paket.harga_quad);

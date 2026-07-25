@@ -61,7 +61,7 @@ export async function POST(req: Request) {
             "id": `CICILAN-${cicilanKe}`,
             "price": nominal,
             "quantity": 1,
-            "name": `Setoran Ke-${cicilanKe} Paket ${rencana.paket.nama_paket.substring(0, 30)}`
+            "name": `Setoran Ke-${cicilanKe} Paket ${(rencana.paket?.nama_paket || rencana.paket_snapshot_nama || 'Paket Umrah').substring(0, 30)}`
         }],
         "customer_details": {
             "first_name": rencana.jamaah.nama,

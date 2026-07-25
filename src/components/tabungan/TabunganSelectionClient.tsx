@@ -8,6 +8,7 @@ import { useState } from "react";
 export default function TabunganSelectionClient() {
   const router = useRouter();
   const [showHajiDropdown, setShowHajiDropdown] = useState(false);
+  const [isNavigatingUmrah, setIsNavigatingUmrah] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50/50 pb-24">
@@ -23,26 +24,37 @@ export default function TabunganSelectionClient() {
 
       <div className="px-5 mt-6 space-y-5">
         {/* Tabungan Umrah */}
-        <Link href="/dashboard/tabungan/umrah" className="block relative w-full h-28 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform">
-          <Image 
-            src="/images/bg-paket.jpeg" 
-            alt="Tabungan Umrah" 
-            fill 
-            className="object-cover opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/70 to-transparent"></div>
-          <div className="absolute inset-0 px-5 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-bold text-white tracking-tight drop-shadow-sm">Tabungan Umrah</h2>
-              <p className="text-[11px] text-emerald-50/90 mt-0.5 font-medium">Lihat rencana & mulai menabung</p>
-            </div>
-            <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner">
-              <svg className="w-4 h-4 text-white ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
+        {isNavigatingUmrah ? (
+          <div className="w-full h-28 rounded-2xl bg-gray-200/70 animate-pulse flex flex-col items-center justify-center shadow-inner border border-gray-100">
+             <div className="w-8 h-8 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mb-2"></div>
+             <p className="text-xs font-semibold text-emerald-800 animate-pulse">Memuat data...</p>
           </div>
-        </Link>
+        ) : (
+          <Link 
+            href="/dashboard/tabungan/umrah" 
+            onClick={() => setIsNavigatingUmrah(true)}
+            className="block relative w-full h-28 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform"
+          >
+            <Image 
+              src="/images/bg-paket.jpeg" 
+              alt="Tabungan Umrah" 
+              fill 
+              className="object-cover opacity-90"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/70 to-transparent"></div>
+            <div className="absolute inset-0 px-5 flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-white tracking-tight drop-shadow-sm">Tabungan Umrah</h2>
+                <p className="text-[11px] text-emerald-50/90 mt-0.5 font-medium">Lihat rencana & mulai menabung</p>
+              </div>
+              <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner">
+                <svg className="w-4 h-4 text-white ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+        )}
 
         {/* Tabungan Haji */}
         <div>

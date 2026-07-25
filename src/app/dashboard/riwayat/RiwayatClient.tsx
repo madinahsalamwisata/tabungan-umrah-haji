@@ -5,6 +5,17 @@ export default function RiwayatClient({ riwayat }: { riwayat: any[] }) {
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
   };
 
+  const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
+    try {
+      if (!d) return fallback;
+      const dateObj = new Date(d);
+      if (isNaN(dateObj.getTime())) return fallback;
+      return dateObj.toLocaleDateString('id-ID', options);
+    } catch {
+      return fallback;
+    }
+  };
+
   return (
     <div className="bg-slate-50/50 rounded-2xl overflow-hidden mt-4">
       {riwayat.length > 0 ? (
@@ -32,7 +43,7 @@ export default function RiwayatClient({ riwayat }: { riwayat: any[] }) {
                   <span className="text-[12px] sm:text-[13px] font-bold text-gray-800 mb-0.5 leading-tight">{item.nama_paket}</span>
                   <span className="text-[10px] sm:text-[11px] font-semibold text-emerald-600 mb-0.5 leading-tight">Cicilan Ke-{item.bulan_ke}</span>
                   <span className="text-[9px] sm:text-[10px] text-gray-400">
-                    {new Date(item.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    {formatSafeDate(item.tanggal_setor, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
               </div>

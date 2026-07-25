@@ -10,6 +10,17 @@ export default function RiwayatTabunganClient({ riwayatList }: { riwayatList: an
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
   };
 
+  const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
+    try {
+      if (!d) return fallback;
+      const dateObj = new Date(d);
+      if (isNaN(dateObj.getTime())) return fallback;
+      return dateObj.toLocaleDateString('id-ID', options);
+    } catch {
+      return fallback;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/50 pb-24">
       {/* Header */}
@@ -84,7 +95,7 @@ export default function RiwayatTabunganClient({ riwayatList }: { riwayatList: an
                     <span className="text-teks-500">{isEstimasi ? "Estimasi Keberangkatan" : "Jadwal Keberangkatan"}</span>
                     <span className="font-bold text-teks-900">
                       {tglBerangkat 
-                        ? new Date(tglBerangkat).toLocaleDateString('id-ID', { month: 'long', year: isEstimasi ? undefined : 'numeric' }) 
+                        ? formatSafeDate(tglBerangkat, { month: 'long', year: isEstimasi ? undefined : 'numeric' }) 
                         : "-"}
                     </span>
                   </div>

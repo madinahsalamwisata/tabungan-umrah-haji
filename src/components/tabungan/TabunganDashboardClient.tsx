@@ -53,6 +53,17 @@ export default function TabunganDashboardClient({
   const tglBerangkat = rencana.paket?.tanggal_keberangkatan || rencana.paket_snapshot_tanggal_berangkat || new Date();
   const tglPulang = rencana.paket?.tanggal_kepulangan || rencana.paket_snapshot_tanggal_kepulangan || null;
   
+  const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
+    try {
+      if (!d) return fallback;
+      const dateObj = new Date(d);
+      if (isNaN(dateObj.getTime())) return fallback;
+      return dateObj.toLocaleDateString('id-ID', options);
+    } catch {
+      return fallback;
+    }
+  };
+
   const [editJamaah, setEditJamaah] = useState(rencana.jumlah_jamaah || 1);
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
 
@@ -204,10 +215,10 @@ export default function TabunganDashboardClient({
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/90">
               <span className="font-semibold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded-md">
                 {isEstimasi 
-                  ? new Date(tglBerangkat).toLocaleDateString('id-ID', { month: 'long' })
+                  ? formatSafeDate(tglBerangkat, { month: 'long' })
                   : tglPulang 
-                    ? `${new Date(tglBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(tglPulang).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                    : new Date(tglBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                    ? `${formatSafeDate(tglBerangkat, { day: 'numeric', month: 'short', year: 'numeric' })} - ${formatSafeDate(tglPulang, { day: 'numeric', month: 'short', year: 'numeric' })}`
+                    : formatSafeDate(tglBerangkat, { day: 'numeric', month: 'long', year: 'numeric' })
                 }
               </span>
               <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
@@ -289,7 +300,7 @@ export default function TabunganDashboardClient({
                          <li key={setoran.id} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
                            <div>
                              <p className="text-xs font-bold text-emerald-300 mb-0.5">Cicilan Ke-{setoran.bulan_ke}</p>
-                             <p className="text-[10px] text-white/80">{new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                             <p className="text-[10px] text-white/80">{formatSafeDate(setoran.tanggal_setor, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                            </div>
                            <div className="text-right">
                              <p className="text-sm font-bold text-white mb-1">{formatRp(Number(setoran.nominal))}</p>
@@ -368,10 +379,10 @@ export default function TabunganDashboardClient({
             <span>{isEstimasi ? "Estimasi Keberangkatan" : "Jadwal Keberangkatan"}</span>
             <span className="font-bold text-white">
               {isEstimasi 
-                ? new Date(tglBerangkat).toLocaleDateString('id-ID', { month: 'long' })
+                ? formatSafeDate(tglBerangkat, { month: 'long' })
                 : tglPulang 
-                  ? `${new Date(tglBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - ${new Date(tglPulang).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                  : new Date(tglBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                  ? `${formatSafeDate(tglBerangkat, { day: 'numeric', month: 'short', year: 'numeric' })} - ${formatSafeDate(tglPulang, { day: 'numeric', month: 'short', year: 'numeric' })}`
+                  : formatSafeDate(tglBerangkat, { day: 'numeric', month: 'long', year: 'numeric' })
               }
             </span>
           </div>

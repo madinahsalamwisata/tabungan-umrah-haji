@@ -54,9 +54,19 @@ export default async function DashboardPage() {
     const percentage = targetBiaya > 0 ? Math.min(100, Math.round((totalTerkumpul / targetBiaya) * 100)) : 0;
     
     // Target date estimation: tanggal_mulai + periode_bulan
-    const startDate = new Date(plan.tanggal_mulai);
-    const targetDate = new Date(startDate.setMonth(startDate.getMonth() + plan.periode_bulan));
-    const formattedTargetDate = targetDate.toLocaleDateString("id-ID", { month: "short", year: "numeric" });
+    let formattedTargetDate = "-";
+    try {
+      const startDate = plan.tanggal_mulai ? new Date(plan.tanggal_mulai) : new Date();
+      if (!isNaN(startDate.getTime())) {
+        const targetDate = new Date(startDate.getTime());
+        targetDate.setMonth(targetDate.getMonth() + (Number(plan.periode_bulan) || 12));
+        if (!isNaN(targetDate.getTime())) {
+          formattedTargetDate = targetDate.toLocaleDateString("id-ID", { month: "short", year: "numeric" });
+        }
+      }
+    } catch {
+      formattedTargetDate = "-";
+    }
     const cicilanKe = plan.RiwayatSetoran.length + 1;
 
     return {

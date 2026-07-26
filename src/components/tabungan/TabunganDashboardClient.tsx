@@ -199,128 +199,105 @@ export default function TabunganDashboardClient({
   return (
     <>
       {/* Desktop View */}
-      <div className="hidden md:block shrink-0 w-[550px] lg:w-[650px] snap-center relative rounded-2xl shadow-xl border border-emerald-800 bg-emerald-950 overflow-hidden transition-all duration-300 h-fit">
-        {/* Header / Summary (Always Visible) */}
-        <div 
-          className="relative z-10 p-5 cursor-pointer hover:bg-white/5 transition-colors flex items-center justify-between"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-1.5">
-              <h3 className="font-bold text-lg text-white">{namaPaket}</h3>
-              {sudahBayarSemua && (
-                <span className="bg-yellow-500/20 text-yellow-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-yellow-500/30">LUNAS 🎉</span>
+      <div className="hidden md:block shrink-0 w-[550px] lg:w-[650px] snap-center relative rounded-[22px] shadow-xl border border-emerald-800 bg-gradient-to-br from-hijau-800 to-hijau-900 p-8 text-white overflow-hidden transition-all duration-300">
+        <div className="absolute -right-[60px] -bottom-[90px] w-[240px] h-[240px] rounded-full border border-white/9 pointer-events-none"></div>
+        
+        {/* Top Header of Card */}
+        <div className="flex justify-between items-start gap-4">
+          <div>
+            <div className="flex items-center gap-3">
+              <h3 className="font-serif font-bold text-xl text-white">{namaPaket}</h3>
+              {sudahBayarSemua ? (
+                <span className="bg-yellow-500 text-emerald-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">Lunas 🎉</span>
+              ) : (
+                <span className="bg-emas/20 border border-emas/30 text-emas text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Aktif</span>
               )}
             </div>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/90">
-              <span className="font-semibold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-                {isEstimasi 
-                  ? formatSafeDate(tglBerangkat, { month: 'long' })
-                  : tglPulang 
-                    ? `${formatSafeDate(tglBerangkat, { day: 'numeric', month: 'short', year: 'numeric' })} - ${formatSafeDate(tglPulang, { day: 'numeric', month: 'short', year: 'numeric' })}`
-                    : formatSafeDate(tglBerangkat, { day: 'numeric', month: 'long', year: 'numeric' })
-                }
-              </span>
-              <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-              <span className="text-white">Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah || 1} Jamaah</span>
-              <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-              <span className="text-white">Terkumpul: <strong className="text-emerald-400">{formatRp(totalTerkumpul)}</strong></span>
-              <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full"></span>
-              <span className="text-white">Sisa: <strong className="text-white">{formatRp(sisaTagihan)}</strong></span>
-            </div>
+            <p className="text-[12.5px] text-white/70 mt-1.5 text-left">
+              Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah} Pax • {isEstimasi ? "Estimasi" : "Jadwal"}: {isEstimasi 
+                ? formatSafeDate(tglBerangkat, { month: 'long' })
+                : tglPulang 
+                  ? `${formatSafeDate(tglBerangkat, { day: 'numeric', month: 'short', year: 'numeric' })} - ${formatSafeDate(tglPulang, { day: 'numeric', month: 'short', year: 'numeric' })}`
+                  : formatSafeDate(tglBerangkat, { day: 'numeric', month: 'long', year: 'numeric' })
+              }
+            </p>
           </div>
-          
-          <div className="flex items-center gap-4 pl-4 ml-4 border-l border-white/10">
-            <div className="hidden md:block w-32">
-              <div className="flex justify-between text-[11px] text-white/90 mb-1 font-medium">
-                <span>{persentase.toFixed(1)}%</span>
-              </div>
-              <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
-                <div className="bg-emerald-400 h-full rounded-full transition-all duration-500" style={{ width: `${persentase}%` }}></div>
-              </div>
-            </div>
-            <button className={`p-2 rounded-full hover:bg-white/10 text-white transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+
+          <div className="flex gap-2 shrink-0 z-10">
+            {!sudahBayarSemua && (
+              <button 
+                onClick={() => setIsEditing(true)} 
+                className="w-[32px] h-[32px] rounded-full bg-white/10 text-white hover:text-emas hover:bg-white/20 transition-all flex items-center justify-center border border-white/15 cursor-pointer"
+                title="Edit Rencana"
+              >
+                <svg className="w-4 h-4 stroke-2 fill-none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+              </button>
+            )}
+            <button 
+              onClick={handleDelete} 
+              disabled={isDeleting}
+              className="w-[32px] h-[32px] rounded-full bg-red-500/10 text-red-300 border border-red-500/20 hover:bg-red-500/20 transition-all flex items-center justify-center cursor-pointer"
+              title="Hapus Tabungan"
+            >
+              <svg className="w-4 h-4 stroke-2 fill-none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
             </button>
           </div>
         </div>
 
-        {/* Expanded Content */}
-        {isExpanded && (
-          <div className="relative z-10 border-t border-emerald-800/50 bg-black/20 p-5 sm:p-6 animate-in slide-in-from-top-2 duration-300">
-            {/* Action Buttons */}
-            <div className="flex justify-end gap-2 mb-6">
-              {!sudahBayarSemua && (
-                  <button onClick={() => setIsEditing(true)} className="bg-white/5 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 font-medium px-3 py-1.5 rounded shadow-sm text-xs transition-colors backdrop-blur-sm">
-                      Edit Rencana
-                  </button>
-              )}
-              <button onClick={handleDelete} disabled={isDeleting} className="bg-white/5 border border-red-500/30 text-red-400 hover:bg-red-500/20 font-medium px-3 py-1.5 rounded shadow-sm text-xs transition-colors backdrop-blur-sm">
-                  {isDeleting ? "Menghapus..." : "Hapus Tabungan"}
-              </button>
-            </div>
+        {/* Content body */}
+        <div className="text-[12.5px] text-white/60 mt-6 text-left">Total Tabungan</div>
+        <div className="font-serif text-[38px] font-semibold tracking-tight mt-1 flex items-baseline gap-2.5 text-left">
+          {formatRp(totalTerkumpul)}
+          <span className="font-sans text-[13.5px] text-white/55 font-semibold">
+            / {formatRp(Number(rencana.total_biaya))}
+          </span>
+        </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              {/* Setoran Bulanan Card */}
-              <div className="bg-emerald-900/50 backdrop-blur-md p-5 rounded-xl shadow-sm border border-emerald-800 flex flex-col justify-between">
-                 <div>
-                   <h4 className="text-sm font-bold text-white mb-1">Setoran Bulanan</h4>
-                   <p className="text-xs text-white/80 mb-4">
-                     {!sudahBayarSemua ? `Pembayaran untuk Cicilan ke-${cicilanKe} dari ${rencana.periode_bulan}` : "Tabungan Anda telah lunas."}
-                   </p>
-                   <p className="text-3xl font-black text-emerald-400 mb-6">{formatRp(Number(rencana.setoran_per_bulan))}</p>
-                 </div>
-                 
-                 <div>
-                   {sudahBayarSemua || sudahLunasBulanIni ? (
-                     <button disabled className="w-full bg-white/5 text-white/80 font-bold py-2.5 px-4 rounded-lg cursor-not-allowed text-sm border border-white/10 backdrop-blur-sm">
-                       Sudah Dibayar Bulan Ini
-                     </button>
-                   ) : (
-                     <button 
-                       onClick={handleBayar}
-                       disabled={isPaying}
-                       className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500/50 font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm"
-                     >
-                       {isPaying ? "Memuat..." : "Bayar Setoran Ini"}
-                     </button>
-                   )}
-                 </div>
-              </div>
+        {/* Progress track */}
+        <div className="h-[7px] rounded-full bg-white/16 overflow-hidden mt-5">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-emas to-[#E4C877] transition-all duration-500"
+            style={{ width: `${persentase}%` }}
+          ></div>
+        </div>
+        <div className="flex justify-between items-center mt-2.5 text-xs text-white/60">
+          <span>Terkumpul <b>{persentase.toFixed(1)}%</b></span>
+          <span>Setoran per bulan: <b>{formatRp(Number(rencana.setoran_per_bulan))}</b></span>
+        </div>
 
-              {/* Riwayat Tabungan Card */}
-              <div className="bg-emerald-900/50 backdrop-blur-md rounded-xl shadow-sm border border-emerald-800 overflow-hidden flex flex-col max-h-[250px]">
-                 <div className="p-4 border-b border-emerald-800 bg-black/20">
-                   <h4 className="text-sm font-bold text-white">Riwayat Setoran</h4>
-                 </div>
-                 <div className="overflow-y-auto flex-1 custom-scrollbar">
-                   {rencana.RiwayatSetoran.length > 0 ? (
-                     <ul className="divide-y divide-emerald-800/50">
-                       {rencana.RiwayatSetoran.map((setoran: any) => (
-                         <li key={setoran.id} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
-                           <div>
-                             <p className="text-xs font-bold text-emerald-300 mb-0.5">Cicilan Ke-{setoran.bulan_ke}</p>
-                             <p className="text-[10px] text-white/80">{formatSafeDate(setoran.tanggal_setor, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-                           </div>
-                           <div className="text-right">
-                             <p className="text-sm font-bold text-white mb-1">{formatRp(Number(setoran.nominal))}</p>
-                             <span className="px-2 py-0.5 inline-flex text-[10px] font-semibold rounded-md bg-emerald-500/20 text-emerald-300 uppercase border border-emerald-500/30">
-                               {setoran.status_pembayaran}
-                             </span>
-                           </div>
-                         </li>
-                       ))}
-                     </ul>
-                   ) : (
-                     <div className="p-8 text-center text-sm text-white">
-                       Belum ada riwayat setoran pembayaran.
-                     </div>
-                   )}
-                 </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Action Buttons */}
+        <div className="flex gap-3 mt-6 relative z-10">
+          <button
+            onClick={handleBayar}
+            disabled={isPaying || sudahLunasBulanIni}
+            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50"
+          >
+            {isPaying ? (
+              <div className="w-4 h-4 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+            )}
+            Setor
+          </button>
+          <button
+            onClick={() => {
+              setIsNavigatingRiwayat(true);
+              router.push(`/dashboard/tabungan/${rencana.id}/riwayat`);
+            }}
+            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-white/10 hover:bg-white/20 text-white border border-white/35 flex items-center gap-2 active:scale-95 transition-all shrink-0 cursor-pointer"
+          >
+            {isNavigatingRiwayat ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.05 13A9 9 0 1 0 6 5.3L3 8m9-1v5l3 3" />
+              </svg>
+            )}
+            Riwayat
+          </button>
+        </div>
       </div>
 
       {/* Mobile View (Banking App Style Card + Mutual List) */}

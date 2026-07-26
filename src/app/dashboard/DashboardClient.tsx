@@ -230,68 +230,76 @@ export default function DashboardClient({
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-6 items-start">
-            {/* Kolom Kiri: Kartu Saldo / Empty State + Menu Utama */}
+            {/* Kolom Kiri: Kartu Saldo / Empty State */}
             <div className="space-y-6">
               {savingsPlans && savingsPlans.length > 0 ? (
-                <div className="space-y-4">
-                  {savingsPlans.map((plan) => (
-                    <div
-                      key={plan.idRencana}
-                      className="bg-gradient-to-br from-hijau-800 to-hijau-900 rounded-[22px] p-8 text-white shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] relative overflow-hidden"
-                    >
-                      <div className="absolute -right-[60px] -bottom-[90px] w-[240px] h-[240px] rounded-full border border-white/9 pointer-events-none"></div>
-                      <div className="text-[13.5px] text-white/70 font-semibold">{plan.namaPaket}</div>
-                      <div className="text-[12.5px] text-white/60 mt-4">Total Tabungan</div>
-                      <div className="font-serif text-[38px] font-semibold tracking-tight mt-1 flex items-baseline gap-2.5">
-                        Rp {plan.totalTerkumpul.toLocaleString("id-ID")}
-                        <span className="font-sans text-[13.5px] text-white/55 font-semibold">
-                          / Rp {plan.targetBiaya.toLocaleString("id-ID")}
-                        </span>
+                <div className="relative group/slider">
+                  <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 scrollbar-none pb-2">
+                    {savingsPlans.map((plan) => (
+                      <div
+                        key={plan.idRencana}
+                        className="min-w-full snap-center bg-gradient-to-br from-hijau-800 to-hijau-900 rounded-[22px] p-8 text-white shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] relative overflow-hidden"
+                      >
+                        <div className="absolute -right-[60px] -bottom-[90px] w-[240px] h-[240px] rounded-full border border-white/9 pointer-events-none"></div>
+                        <div className="text-[13.5px] text-white/70 font-semibold">{plan.namaPaket}</div>
+                        <div className="text-[12.5px] text-white/60 mt-4">Total Tabungan</div>
+                        <div className="font-serif text-[38px] font-semibold tracking-tight mt-1 flex items-baseline gap-2.5">
+                          Rp {plan.totalTerkumpul.toLocaleString("id-ID")}
+                          <span className="font-sans text-[13.5px] text-white/55 font-semibold">
+                            / Rp {plan.targetBiaya.toLocaleString("id-ID")}
+                          </span>
+                        </div>
+                        <div className="h-[7px] rounded-full bg-white/16 overflow-hidden mt-5">
+                          <div
+                            className="h-full rounded-full bg-gradient-to-r from-emas to-[#E4C877] transition-all duration-500"
+                            style={{ width: `${plan.percentage}%` }}
+                          ></div>
+                        </div>
+                        <div className="flex justify-between items-center mt-2.5 text-xs text-white/60">
+                          <span>Terkumpul <b>{plan.percentage}%</b></span>
+                          <span>Target {plan.formattedTargetDate}</span>
+                        </div>
+                        <div className="flex gap-3 mt-6 relative z-10">
+                          <button
+                            onClick={() => handleBayar(plan.idRencana, plan.cicilanKe)}
+                            disabled={isPaying === plan.idRencana}
+                            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50"
+                          >
+                            {isPaying === plan.idRencana ? (
+                              <div className="w-4 h-4 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                              <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                              </svg>
+                            )}
+                            Setor
+                          </button>
+                          <button
+                            onClick={() => {
+                              setIsNavigatingRiwayat(plan.idRencana);
+                              router.push(`/dashboard/tabungan/${plan.idRencana}/riwayat`);
+                            }}
+                            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-white/10 hover:bg-white/20 text-white border border-white/35 flex items-center gap-2 active:scale-95 transition-all shrink-0 cursor-pointer"
+                          >
+                            {isNavigatingRiwayat === plan.idRencana ? (
+                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                              <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.05 13A9 9 0 1 0 6 5.3L3 8m9-1v5l3 3" />
+                              </svg>
+                            )}
+                            Riwayat
+                          </button>
+                        </div>
                       </div>
-                      <div className="h-[7px] rounded-full bg-white/16 overflow-hidden mt-5">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-emas to-[#E4C877] transition-all duration-500"
-                          style={{ width: `${plan.percentage}%` }}
-                        ></div>
-                      </div>
-                      <div className="flex justify-between items-center mt-2.5 text-xs text-white/60">
-                        <span>Terkumpul <b>{plan.percentage}%</b></span>
-                        <span>Target {plan.formattedTargetDate}</span>
-                      </div>
-                      <div className="flex gap-3 mt-6 relative z-10">
-                        <button
-                          onClick={() => handleBayar(plan.idRencana, plan.cicilanKe)}
-                          disabled={isPaying === plan.idRencana}
-                          className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50"
-                        >
-                          {isPaying === plan.idRencana ? (
-                            <div className="w-4 h-4 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
-                          ) : (
-                            <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                            </svg>
-                          )}
-                          Setor
-                        </button>
-                        <button
-                          onClick={() => {
-                            setIsNavigatingRiwayat(plan.idRencana);
-                            router.push(`/dashboard/tabungan/${plan.idRencana}/riwayat`);
-                          }}
-                          className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-white/10 hover:bg-white/20 text-white border border-white/35 flex items-center gap-2 active:scale-95 transition-all shrink-0 cursor-pointer"
-                        >
-                          {isNavigatingRiwayat === plan.idRencana ? (
-                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          ) : (
-                            <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M3.05 13A9 9 0 1 0 6 5.3L3 8m9-1v5l3 3" />
-                            </svg>
-                          )}
-                          Riwayat
-                        </button>
-                      </div>
+                    ))}
+                  </div>
+                  {savingsPlans.length > 1 && (
+                    <div className="absolute bottom-6 right-8 flex items-center gap-1.5 bg-black/25 backdrop-blur-md rounded-full px-2.5 py-1 z-20">
+                      <span className="text-[10px] text-white/90 font-medium">Geser</span>
+                      <svg className="w-3.5 h-3.5 text-white/90 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                     </div>
-                  ))}
+                  )}
                 </div>
               ) : (
                 <div className="bg-gradient-to-br from-hijau-800 to-hijau-900 rounded-[22px] p-8 text-white shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] relative overflow-hidden">
@@ -308,70 +316,8 @@ export default function DashboardClient({
                   </button>
                 </div>
               )}
-
-              {/* Menu Utama Quick Panel */}
-              <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)]">
-                <h3 className="font-display font-semibold text-[14.5px] text-teks-900 mb-4">Menu Utama</h3>
-                <div className="flex flex-col gap-1">
-                  <div
-                    onClick={() => router.push("/dashboard/paket")}
-                    className="flex items-center gap-3.5 p-3 rounded-xl hover:bg-krem transition-all duration-200 cursor-pointer group"
-                  >
-                    <div className="w-[42px] h-[42px] rounded-xl bg-hijau-100 flex items-center justify-center shrink-0">
-                      <svg className="w-[19px] h-[19px] text-hijau-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-                    </div>
-                    <div className="text-left">
-                      <div className="text-[13px] font-bold text-teks-900">Paket Umrah &amp; Haji</div>
-                      <div className="text-[11.5px] text-teks-500 mt-0.5">Jadwal keberangkatan pasti</div>
-                    </div>
-                    <svg className="ml-auto w-4 h-4 text-teks-300 group-hover:text-teks-900 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>
-                  </div>
-
-                  <div
-                    onClick={() => router.push("/dashboard/riwayat-tabungan")}
-                    className="flex items-center gap-3.5 p-3 rounded-xl hover:bg-krem transition-all duration-200 cursor-pointer group"
-                  >
-                    <div className="w-[42px] h-[42px] rounded-xl bg-hijau-100 flex items-center justify-center shrink-0">
-                      <svg className="w-[19px] h-[19px] text-hijau-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>
-                    </div>
-                    <div className="text-left">
-                      <div className="text-[13px] font-bold text-teks-900">Riwayat Tabungan</div>
-                      <div className="text-[11.5px] text-teks-500 mt-0.5">Cek mutasi tabungan lunas/batal</div>
-                    </div>
-                    <svg className="ml-auto w-4 h-4 text-teks-300 group-hover:text-teks-900 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>
-                  </div>
-
-                  <div
-                    onClick={() => router.push("/dashboard/syarat-ketentuan")}
-                    className="flex items-center gap-3.5 p-3 rounded-xl hover:bg-krem transition-all duration-200 cursor-pointer group"
-                  >
-                    <div className="w-[42px] h-[42px] rounded-xl bg-hijau-100 flex items-center justify-center shrink-0">
-                      <svg className="w-[19px] h-[19px] text-hijau-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-                    </div>
-                    <div className="text-left">
-                      <div className="text-[13px] font-bold text-teks-900">Syarat &amp; Ketentuan</div>
-                      <div className="text-[11.5px] text-teks-500 mt-0.5">Baca ketentuan pendaftaran &amp; pembatalan</div>
-                    </div>
-                    <svg className="ml-auto w-4 h-4 text-teks-300 group-hover:text-teks-900 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>
-                  </div>
-
-                  <div
-                    onClick={() => router.push("/dashboard/tentang-kami")}
-                    className="flex items-center gap-3.5 p-3 rounded-xl hover:bg-krem transition-all duration-200 cursor-pointer group"
-                  >
-                    <div className="w-[42px] h-[42px] rounded-xl bg-hijau-100 flex items-center justify-center shrink-0">
-                      <svg className="w-[19px] h-[19px] text-hijau-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                    </div>
-                    <div className="text-left">
-                      <div className="text-[13px] font-bold text-teks-900">Tentang Kami</div>
-                      <div className="text-[11.5px] text-teks-500 mt-0.5">Profil travel &amp; legalitas PPIU</div>
-                    </div>
-                    <svg className="ml-auto w-4 h-4 text-teks-300 group-hover:text-teks-900 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>
-                  </div>
-                </div>
-              </div>
             </div>
-
+ 
             {/* Kolom Kanan: Informasi & Update + Kantor Pusat */}
             <div className="space-y-6">
               {/* Informasi & Update */}
@@ -414,7 +360,7 @@ export default function DashboardClient({
                   )}
                 </div>
               </div>
-
+ 
               {/* Kantor Pusat */}
               <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)]">
                 <div className="flex justify-between items-center mb-4">
@@ -446,9 +392,12 @@ export default function DashboardClient({
               </div>
             </div>
           </div>
-
+ 
           {/* Footer Tentang Kami */}
-          <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div 
+            onClick={() => router.push("/dashboard/tentang-kami")}
+            className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 cursor-pointer hover:bg-slate-50 transition-all duration-200"
+          >
             <div className="text-left">
               <h3 className="font-display font-semibold text-[14.5px] text-teks-900 mb-1.5">Tentang Kami</h3>
               <p className="text-[12.5px] text-teks-500 max-w-[480px] leading-relaxed m-0">

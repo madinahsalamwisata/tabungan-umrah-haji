@@ -230,6 +230,21 @@ export default function DashboardLayout({
               );
             })()}
 
+            {/* Riwayat Tabungan Link */}
+            <Link
+              href="/dashboard/riwayat-tabungan"
+              prefetch={true}
+              onClick={() => { if (pathname !== "/dashboard/riwayat-tabungan") setIsNavigating(true); }}
+              className={`group flex items-center py-2.5 px-3 text-[13.5px] font-semibold rounded-xl transition-all duration-200 gap-3 ${
+                pathname === "/dashboard/riwayat-tabungan"
+                  ? "text-hijau-900 bg-hijau-100 font-bold"
+                  : "text-teks-500 hover:bg-krem hover:text-teks-900"
+              }`}
+            >
+              <svg className={`h-[18px] w-[18px] flex-shrink-0 stroke-[2.1] fill-none transition-colors duration-200 ${pathname === "/dashboard/riwayat-tabungan" ? "stroke-hijau-800" : "stroke-teks-300 group-hover:stroke-teks-900"}`} viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>
+              <span className="font-sans">Riwayat Tabungan</span>
+            </Link>
+
             {/* Akun Group */}
             <div className="text-[10.5px] uppercase tracking-wider text-teks-300 font-extrabold mt-6 mb-2 mx-3">Akun</div>
 
@@ -262,23 +277,25 @@ export default function DashboardLayout({
               <svg className={`h-[18px] w-[18px] flex-shrink-0 stroke-[2.1] transition-colors duration-200 ${pathname === "/dashboard/tentang-kami" ? "text-hijau-800 stroke-hijau-800" : "text-teks-300 stroke-teks-300 group-hover:stroke-teks-900 group-hover:text-teks-900"}`} viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
               <span className="font-sans">Tentang Kami</span>
             </Link>
+
+            {/* Syarat & Ketentuan Link */}
+            <Link
+              href="/dashboard/syarat-ketentuan"
+              prefetch={true}
+              onClick={() => { if (pathname !== "/dashboard/syarat-ketentuan") setIsNavigating(true); }}
+              className={`group flex items-center py-2.5 px-3 text-[13.5px] font-semibold rounded-xl transition-all duration-200 gap-3 ${
+                pathname === "/dashboard/syarat-ketentuan"
+                  ? "text-hijau-900 bg-hijau-100 font-bold"
+                  : "text-teks-500 hover:bg-krem hover:text-teks-900"
+              }`}
+            >
+              <svg className={`h-[18px] w-[18px] flex-shrink-0 stroke-[2.1] fill-none transition-colors duration-200 ${pathname === "/dashboard/syarat-ketentuan" ? "stroke-hijau-800" : "stroke-teks-300 group-hover:stroke-teks-900"}`} viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              <span className="font-sans">Syarat &amp; Ketentuan</span>
+            </Link>
           </nav>
 
           {/* Sidebar Foot */}
           <div className="mt-auto pt-4 border-t border-garis shrink-0">
-            <div className="flex items-center gap-3 p-2.5 rounded-xl bg-krem">
-              <div className="w-[40px] h-[40px] rounded-full border-2 border-white shadow-sm flex items-center justify-center text-white bg-emerald-700 font-bold uppercase overflow-hidden shrink-0">
-                {userProfile?.foto_url ? (
-                  <img src={userProfile.foto_url} alt="Profile" className="w-full h-full object-cover" />
-                ) : (
-                  session?.user?.name?.charAt(0) || "U"
-                )}
-              </div>
-              <div className="truncate text-left flex-1 min-w-0">
-                <p className="text-[12.5px] font-bold text-teks-900 truncate leading-snug">{session?.user?.name || "Jamaah"}</p>
-                <p className="text-[10.5px] text-teks-500 truncate mt-0.5">{session?.user?.email || ""}</p>
-              </div>
-            </div>
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
               className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-[13px] font-bold text-[#B3423A] hover:bg-[#FBEAE8] transition-colors mt-2 text-left"

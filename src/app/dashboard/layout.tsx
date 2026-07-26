@@ -106,8 +106,8 @@ export default function DashboardLayout({
         </div>
 
         {/* Sidebar Body */}
-        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto px-4 py-[22px] custom-scrollbar text-slate-800">
-          <nav className="flex-1 space-y-1">
+        <div className="flex-1 flex flex-col min-h-0 px-4 pt-[22px] pb-4 text-slate-800 overflow-hidden">
+          <nav className="flex-1 overflow-y-auto pr-1 custom-scrollbar space-y-1 pb-4">
             {/* Menu Utama Group */}
             <div className="text-[10.5px] uppercase tracking-wider text-teks-300 font-extrabold mt-2 mb-2 mx-3">Menu Utama</div>
             
@@ -295,10 +295,10 @@ export default function DashboardLayout({
           </nav>
 
           {/* Sidebar Foot */}
-          <div className="mt-auto pt-4 border-t border-garis shrink-0">
+          <div className="pt-4 border-t border-garis shrink-0 mt-auto">
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
-              className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-[13px] font-bold text-[#B3423A] hover:bg-[#FBEAE8] transition-colors mt-2 text-left"
+              className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-[13px] font-bold text-[#B3423A] hover:bg-[#FBEAE8] transition-colors text-left"
             >
               <svg className="w-4 h-4 stroke-[#B3423A] stroke-[2.1] fill-none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
               Keluar dari Akun

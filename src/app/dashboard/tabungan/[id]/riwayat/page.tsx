@@ -49,10 +49,25 @@ export default async function TabunganRiwayatPage({ params }: { params: Promise<
     nama_paket: rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah",
   }));
 
+  // Determine back URL based on package category or name
+  const isHaji = (rencanaTabungan.paket as any)?.kategori?.toLowerCase() === "haji" || 
+                 rencanaTabungan.paket?.nama_paket?.toLowerCase().includes("haji") ||
+                 rencanaTabungan.paket_snapshot_nama?.toLowerCase().includes("haji");
+  const backUrl = isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah";
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
       <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-white/90 backdrop-blur-md border border-emerald-100 p-6 sm:p-8">
         <div className="flex items-center gap-4 mb-6">
+          <Link
+            href={backUrl}
+            className="flex items-center gap-1.5 text-xs font-bold text-hijau-700 hover:text-hijau-900 transition-colors bg-hijau-100/50 hover:bg-hijau-100 px-3 py-2 rounded-xl"
+          >
+            <svg className="w-4 h-4 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Kembali
+          </Link>
           <div>
             <h3 className="text-xl font-bold text-emerald-900 drop-shadow-md">
               Riwayat Transaksi

@@ -360,9 +360,14 @@ export default function DashboardClient({
                   )}
                 </div>
               </div>
- 
-              {/* Kantor Pusat */}
-              <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)]">
+            </div>
+          </div>
+
+          {/* Baris Bawah: Kantor Pusat & Tentang Kami Side-by-Side */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch mt-6">
+            {/* Kantor Pusat Card */}
+            <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col justify-between h-full">
+              <div>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-display font-semibold text-[14.5px] text-teks-900 m-0">Kantor Pusat</h3>
                   <a
@@ -374,39 +379,39 @@ export default function DashboardClient({
                     Buka di Maps
                   </a>
                 </div>
-                <div className="h-[120px] rounded-xl overflow-hidden border border-garis bg-gradient-to-br from-hijau-100 to-[#F1EEE3] relative flex items-center justify-center">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.234149021953!2d106.87784017551061!3d-6.363715693626297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed28f29cddad%3A0xe67098e727931cba!2sMadinah%20Salam%20Wisata!5e0!3m2!1sid!2sid!4v1709123456789!5m2!1sid!2sid"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen={true}
-                    loading="lazy"
-                    className="absolute inset-0 filter saturate-150 contrast-125"
-                  ></iframe>
-                </div>
-                <div className="text-[12.5px] text-teks-500 mt-4 leading-relaxed text-left">
+                <div className="text-[12.5px] text-teks-500 mb-4 leading-relaxed text-left">
                   <strong className="block text-teks-900 text-[13px] mb-1">PT Madinah Salam Wisata</strong>
                   Jl. Radar Auri No.9, RT.13/RW.5, Cibubur, Kec. Ciracas, Jakarta Timur 13720
                 </div>
               </div>
+              <div className="h-[140px] rounded-xl overflow-hidden border border-garis bg-gradient-to-br from-hijau-100 to-[#F1EEE3] relative flex items-center justify-center shrink-0">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.234149021953!2d106.87784017551061!3d-6.363715693626297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed28f29cddad%3A0xe67098e727931cba!2sMadinah%20Salam%20Wisata!5e0!3m2!1sid!2sid!4v1709123456789!5m2!1sid!2sid"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  className="absolute inset-0 filter saturate-150 contrast-125"
+                ></iframe>
+              </div>
             </div>
-          </div>
- 
-          {/* Footer Tentang Kami */}
-          <div 
-            onClick={() => router.push("/dashboard/tentang-kami")}
-            className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 cursor-pointer hover:bg-slate-50 transition-all duration-200"
-          >
-            <div className="text-left">
-              <h3 className="font-display font-semibold text-[14.5px] text-teks-900 mb-1.5">Tentang Kami</h3>
-              <p className="text-[12.5px] text-teks-500 max-w-[480px] leading-relaxed m-0">
-                PT Madinah Salam Wisata melayani perjalanan Umrah &amp; Haji yang amanah, profesional, dan sesuai tuntunan syariat.
-              </p>
-            </div>
-            <div className="bg-hijau-900 text-white rounded-xl px-5 py-3 text-[11px] font-semibold text-center shadow-md select-none shrink-0">
-              <span className="text-[10px] opacity-75 uppercase tracking-wider block">IZIN PPIU NO</span>
-              <b className="text-sm font-bold block mt-1 tracking-wider text-emas">03012400173490004</b>
+
+            {/* Tentang Kami Card */}
+            <div 
+              onClick={() => router.push("/dashboard/tentang-kami")}
+              className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col justify-between h-full cursor-pointer hover:bg-slate-50 transition-all duration-200"
+            >
+              <div>
+                <h3 className="font-display font-semibold text-[14.5px] text-teks-900 mb-3">Tentang Kami</h3>
+                <p className="text-[12.5px] text-teks-500 leading-relaxed m-0 text-left">
+                  PT Madinah Salam Wisata melayani perjalanan Umrah &amp; Haji yang amanah, profesional, dan sesuai tuntunan syariat. Kami siap membimbing dan mengawal perjalanan suci Anda menuju tanah suci dengan pelayanan berkualitas.
+                </p>
+              </div>
+              <div className="bg-hijau-900 text-white rounded-xl px-5 py-4 text-[11px] font-semibold text-center shadow-md select-none shrink-0 mt-6">
+                <span className="text-[10px] opacity-75 uppercase tracking-wider block">IZIN PPIU NO</span>
+                <b className="text-sm font-bold block mt-1 tracking-wider text-emas">03012400173490004</b>
+              </div>
             </div>
           </div>
         </div>

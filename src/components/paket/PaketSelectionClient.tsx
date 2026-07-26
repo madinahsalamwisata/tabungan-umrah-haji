@@ -13,11 +13,11 @@ export default function PaketSelectionClient() {
   return (
     <div className="min-h-screen bg-gray-50/50 pb-24 md:min-h-0 md:bg-transparent md:space-y-6 md:pb-8">
       {/* Header */}
-      <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm md:relative md:top-auto md:z-0 md:bg-white/90 md:from-transparent md:to-transparent md:backdrop-blur-md md:border md:border-emerald-100 md:rounded-3xl md:shadow-lg md:shadow-emerald-900/5 md:p-6 md:px-8">
+      <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm md:relative md:top-auto md:z-0 md:bg-white md:from-transparent md:to-transparent md:border md:border-garis md:rounded-[22px] md:shadow-[0_14px_34px_-18px_rgba(11,61,48,0.15)] md:p-6 md:px-8">
         <div className="flex items-center gap-3">
           <div className="flex-1">
-            <h1 className="text-base md:text-2xl font-bold text-white md:text-emerald-900 tracking-tight leading-tight">Pilih Paket</h1>
-            <p className="text-emerald-50/80 md:text-emerald-700 text-[11px] md:text-sm font-medium mt-0.5 md:mt-1">Lihat pilihan paket yang tersedia</p>
+            <h1 className="text-base md:text-2xl font-bold text-white md:text-teks-900 font-display tracking-tight leading-tight">Pilih Paket</h1>
+            <p className="text-emerald-50/80 md:text-teks-500 text-[11px] md:text-sm font-medium mt-0.5 md:mt-1">Lihat pilihan paket umrah dan haji yang tersedia</p>
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@ export default function PaketSelectionClient() {
           <Link 
             href="/dashboard/paket/umrah" 
             onClick={() => setIsNavigatingUmrah(true)}
-            className="block relative w-full h-28 md:h-44 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform"
+            className="block relative w-full h-28 md:h-44 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-all hover:scale-[1.01] hover:shadow-lg"
           >
             <Image 
               src="/images/bg-paket.jpeg" 
@@ -44,7 +44,7 @@ export default function PaketSelectionClient() {
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/70 to-transparent"></div>
             <div className="absolute inset-0 px-5 flex items-center justify-between">
               <div>
-                <h2 className="text-lg md:text-xl font-bold text-white tracking-tight drop-shadow-sm">Paket Umrah</h2>
+                <h2 className="text-lg md:text-2xl font-serif font-bold text-white tracking-tight drop-shadow-sm">Paket Umrah</h2>
                 <p className="text-[11px] md:text-xs text-emerald-50/90 mt-0.5 font-medium">Jadwal keberangkatan pasti</p>
               </div>
               <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner">
@@ -60,7 +60,7 @@ export default function PaketSelectionClient() {
         <div>
           <div 
             onClick={() => setShowHajiDropdown(!showHajiDropdown)} 
-            className="block relative w-full h-28 md:h-44 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform cursor-pointer"
+            className="block relative w-full h-28 md:h-44 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-all hover:scale-[1.01] hover:shadow-lg cursor-pointer"
           >
             <Image 
               src="/images/makkah_thumbnail.webp" 
@@ -71,7 +71,7 @@ export default function PaketSelectionClient() {
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/70 to-transparent"></div>
             <div className="absolute inset-0 px-5 flex items-center justify-between">
               <div>
-                <h2 className="text-lg md:text-xl font-bold text-white tracking-tight drop-shadow-sm">Paket Haji</h2>
+                <h2 className="text-lg md:text-2xl font-serif font-bold text-white tracking-tight drop-shadow-sm">Paket Haji</h2>
                 <p className="text-[11px] md:text-xs text-emerald-50/90 mt-0.5 font-medium">Pilihan paket haji terbaik</p>
               </div>
               <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner transition-transform duration-300" style={{ transform: showHajiDropdown ? 'rotate(90deg)' : 'rotate(0deg)' }}>

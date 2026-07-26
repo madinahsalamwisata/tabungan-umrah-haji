@@ -89,148 +89,206 @@ export default function DashboardLayout({
       <div className="fixed inset-0 z-0 bg-white md:bg-slate-50"></div>
 
       {/* Sidebar for desktop */}
-      <div tabIndex={0} className="peer group outline-none hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 focus-within:md:w-64 z-30">
-        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/20 bg-emerald-950 backdrop-blur-xl border-emerald-800">
-          <div className="relative z-10 flex flex-col flex-1 min-h-0">
-
-            <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-200 justify-center group-hover:justify-start group-focus-within:justify-start group-hover:gap-3 group-focus-within:gap-3">
-              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-10 group-hover:h-14 group-focus-within:h-14 w-auto drop-shadow-md shrink-0 transition-all duration-200" />
-                <div className="text-left flex flex-col justify-center overflow-hidden transition-all duration-200 ease-in-out max-w-0 opacity-0 group-hover:max-w-[200px] group-focus-within:max-w-[200px] group-hover:opacity-100 group-focus-within:opacity-100">
-                  <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
-                    Tabungan Umrah dan Haji
-                  </h1>
-                  <p className="text-[11px] font-bold text-yellow-300 drop-shadow-sm mt-0.5 w-[140px]">
-                    Madinah Salam Wisata
-                  </p>
-                </div>
-            </div>
-          <div className="flex flex-col flex-1 min-h-0">
-            <nav className="custom-scrollbar overflow-y-auto flex-1 px-2 py-6 space-y-2">
-              {navigation.map((item) => {
-                if (item.children) {
-                  const isOpen = openMenus.includes(item.name);
-                  // Parent menu without active highlight
-                  return (
-                    <div key={item.name} className="space-y-1 relative">
-                      <button
-                        onClick={() => toggleMenu(item.name)}
-                        className={`group w-full flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden backdrop-blur-sm px-0 justify-center group-hover:px-4 group-focus-within:px-4 group-hover:justify-between group-focus-within:justify-between ${
-                          isOpen 
-                            ? "text-white bg-white/10" 
-                            : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
-                        }`}
-                        title={item.name}
-                      >
-                        <div className="flex items-center">
-                          <item.icon
-                            className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
-                              isOpen ? "text-white" : "text-gray-300 group-hover:text-white group-focus-within:text-white"
-                            }`}
-                            aria-hidden="true"
-                          />
-                          <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap w-0 opacity-0 ml-0 group-hover:w-[150px] group-focus-within:w-[150px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3 text-left">
-                            {item.name}
-                          </span>
-                        </div>
-                        <ChevronDownIcon
-                          className={`flex-shrink-0 transition-all duration-200 ease-in-out ${
-                            isOpen ? "rotate-180 text-white" : "text-gray-400 group-hover:text-white group-focus-within:text-white"
-                          } w-0 opacity-0 ml-0 border-none group-hover:w-4 group-focus-within:w-4 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3`}
-                          aria-hidden="true"
-                        />
-                      </button>
-                      
-                      {/* Submenu Dropdown */}
-                      <div
-                        className={`overflow-hidden transition-all duration-200 ease-in-out max-h-0 opacity-0 ${
-                          isOpen ? "group-hover:max-h-96 group-focus-within:max-h-96 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:mt-2 group-focus-within:mt-2" : ""
-                        }`}
-                      >
-                        <div className="space-y-1 pl-2 pr-2">
-                          {item.children.map((child: any) => {
-                            const isChildActive = pathname === child.href;
-                            return (
-                              <Link
-                                key={child.name}
-                                href={child.href}
-                                prefetch={true}
-                                onClick={(e) => {
-                                  if (pathname !== child.href) setIsNavigating(true);
-                                }}
-                                className={`group flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-300 backdrop-blur-sm px-4 ${
-                                  isChildActive
-                                    ? "text-white bg-white/20 shadow-md font-bold"
-                                    : "text-gray-300 bg-white/5 hover:text-white hover:bg-white/10"
-                                }`}
-                              >
-                                {child.name}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-
-                const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href + '/'));
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href!}
-                    prefetch={true}
-                    onClick={(e) => {
-                      if (pathname !== item.href) setIsNavigating(true);
-                    }}
-                    className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden backdrop-blur-sm px-0 justify-center group-hover:px-4 group-focus-within:px-4 group-hover:justify-start group-focus-within:justify-start ${
-                      isActive
-                        ? "text-white bg-white/20 shadow-md font-bold"
-                        : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
-                    }`}
-                    title={item.name}
-                  >
-                    <item.icon
-                      className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
-                        isActive ? "text-white" : "text-gray-300 group-hover:text-white group-focus-within:text-white"
-                      }`}
-                      aria-hidden="true"
-                    />
-                    <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap w-0 opacity-0 ml-0 group-hover:w-[150px] group-focus-within:w-[150px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3 text-left">
-                      {item.name}
-                    </span>
-                  </Link>
-                );
-              })}
-            </nav>
-            <div className="flex-shrink-0 p-4 border-t border-white/20 bg-black/20 backdrop-blur-md">
-              <div className="flex items-center justify-center group-hover:justify-start group-focus-within:justify-start group-hover:mb-4 group-focus-within:mb-4">
-                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md overflow-hidden shrink-0">
-                  {userProfile?.foto_url ? (
-                    <img src={userProfile.foto_url} alt="Profile" className="w-full h-full object-cover" />
-                  ) : (
-                    session?.user?.name?.charAt(0) || "U"
-                  )}
-                </div>
-                <div className="truncate transition-all duration-200 ease-in-out overflow-hidden max-w-0 opacity-0 ml-0 group-hover:max-w-[200px] group-focus-within:max-w-[200px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3">
-                  <p className="text-sm font-medium text-white truncate drop-shadow-md">{session?.user?.name}</p>
-                  <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">{session?.user?.email}</p>
-                </div>
-              </div>
-              <button
-                onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full flex items-center justify-center bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md text-red-100 hover:text-white border border-red-500/30 rounded-xl text-sm font-bold transition-all shadow-sm p-2 mt-4 group-hover:px-4 group-focus-within:px-4 group-hover:py-2.5 group-focus-within:py-2.5 group-hover:mt-0 group-focus-within:mt-0"
-                title="Keluar"
-              >
-                <ArrowLeftOnRectangleIcon className="w-5 h-5" />
-                <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap max-w-0 opacity-0 ml-0 group-hover:max-w-[100px] group-focus-within:max-w-[100px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-2 group-focus-within:ml-2">
-                  Keluar
-                </span>
-              </button>
-            </div>
+      <aside className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:w-[264px] z-30 bg-white border-r border-garis">
+        {/* Sidebar Head */}
+        <div className="bg-gradient-to-br from-hijau-900 to-hijau-700 px-5 py-[26px] flex items-center gap-3 shrink-0">
+          <div className="w-[42px] h-[42px] rounded-xl bg-white/14 border border-white/20 flex items-center justify-center font-serif font-bold text-white text-base shrink-0 select-none">
+            MS
           </div>
+          <div className="text-left flex flex-col justify-center">
+            <h1 className="text-sm font-bold text-white leading-tight">
+              Tabungan Umrah &amp; Haji
+            </h1>
+            <p className="text-[11px] font-medium text-white/60 mt-0.5">
+              Madinah Salam Wisata
+            </p>
           </div>
         </div>
-      </div>
+
+        {/* Sidebar Body */}
+        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto px-4 py-[22px] custom-scrollbar text-slate-800">
+          <nav className="flex-1 space-y-1">
+            {/* Menu Utama Group */}
+            <div className="text-[10.5px] uppercase tracking-wider text-teks-300 font-extrabold mt-2 mb-2 mx-3">Menu Utama</div>
+            
+            {/* Beranda Link */}
+            <Link
+              href="/dashboard"
+              prefetch={true}
+              onClick={() => { if (pathname !== "/dashboard") setIsNavigating(true); }}
+              className={`group flex items-center py-2.5 px-3 text-[13.5px] font-semibold rounded-xl transition-all duration-200 gap-3 ${
+                pathname === "/dashboard"
+                  ? "text-hijau-900 bg-hijau-100 font-bold"
+                  : "text-teks-500 hover:bg-krem hover:text-teks-900"
+              }`}
+            >
+              <HomeIcon className={`h-[18px] w-[18px] flex-shrink-0 transition-colors duration-200 ${pathname === "/dashboard" ? "text-hijau-800" : "text-teks-300 group-hover:text-teks-900"}`} />
+              <span className="font-sans">Beranda</span>
+            </Link>
+
+            {/* Tabungan Link (Dropdown) */}
+            {(() => {
+              const isTabunganActive = pathname.startsWith("/dashboard/tabungan");
+              const isOpen = openMenus.includes("Tabungan") || isTabunganActive;
+              return (
+                <div className="space-y-0.5">
+                  <button
+                    onClick={() => toggleMenu("Tabungan")}
+                    className={`group w-full flex items-center py-2.5 px-3 text-[13.5px] font-semibold rounded-xl transition-all duration-200 justify-between ${
+                      isOpen
+                        ? "text-hijau-900 bg-hijau-100/50"
+                        : "text-teks-500 hover:bg-krem hover:text-teks-900"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <WalletIcon className={`h-[18px] w-[18px] flex-shrink-0 transition-colors duration-200 ${isOpen ? "text-hijau-800" : "text-teks-300 group-hover:text-teks-900"}`} />
+                      <span className="font-sans">Tabungan</span>
+                    </div>
+                    <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180 text-hijau-800" : "text-teks-300 group-hover:text-teks-900"}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-200 ease-in-out pl-[30px] space-y-0.5 ${isOpen ? "max-h-40 mt-0.5 mb-1.5" : "max-h-0"}`}>
+                    <Link
+                      href="/dashboard/tabungan"
+                      prefetch={true}
+                      onClick={() => { if (pathname !== "/dashboard/tabungan") setIsNavigating(true); }}
+                      className={`flex items-center py-2 px-3 text-[12.5px] font-semibold rounded-xl transition-all duration-200 ${
+                        pathname === "/dashboard/tabungan"
+                          ? "text-hijau-900 bg-hijau-100 font-bold"
+                          : "text-teks-500 hover:text-teks-900 hover:bg-krem"
+                      }`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-teks-300 mr-2 shrink-0"></span>
+                      Tabungan Umrah
+                    </Link>
+                    <Link
+                      href="/dashboard/tabungan/haji"
+                      prefetch={true}
+                      onClick={() => { if (pathname !== "/dashboard/tabungan/haji") setIsNavigating(true); }}
+                      className={`flex items-center py-2 px-3 text-[12.5px] font-semibold rounded-xl transition-all duration-200 ${
+                        pathname === "/dashboard/tabungan/haji"
+                          ? "text-hijau-900 bg-hijau-100 font-bold"
+                          : "text-teks-500 hover:text-teks-900 hover:bg-krem"
+                      }`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-teks-300 mr-2 shrink-0"></span>
+                      Tabungan Haji
+                    </Link>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Paket Link (Dropdown) */}
+            {(() => {
+              const isPaketActive = pathname.startsWith("/dashboard/paket");
+              const isOpen = openMenus.includes("Paket") || isPaketActive;
+              return (
+                <div className="space-y-0.5">
+                  <button
+                    onClick={() => toggleMenu("Paket")}
+                    className={`group w-full flex items-center py-2.5 px-3 text-[13.5px] font-semibold rounded-xl transition-all duration-200 justify-between ${
+                      isOpen
+                        ? "text-hijau-900 bg-hijau-100/50"
+                        : "text-teks-500 hover:bg-krem hover:text-teks-900"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <MapIcon className={`h-[18px] w-[18px] flex-shrink-0 transition-colors duration-200 ${isOpen ? "text-hijau-800" : "text-teks-300 group-hover:text-teks-900"}`} />
+                      <span className="font-sans">Paket</span>
+                    </div>
+                    <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180 text-hijau-800" : "text-teks-300 group-hover:text-teks-900"}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-200 ease-in-out pl-[30px] space-y-0.5 ${isOpen ? "max-h-40 mt-0.5 mb-1.5" : "max-h-0"}`}>
+                    <Link
+                      href="/dashboard/paket"
+                      prefetch={true}
+                      onClick={() => { if (pathname !== "/dashboard/paket") setIsNavigating(true); }}
+                      className={`flex items-center py-2 px-3 text-[12.5px] font-semibold rounded-xl transition-all duration-200 ${
+                        pathname === "/dashboard/paket"
+                          ? "text-hijau-900 bg-hijau-100 font-bold"
+                          : "text-teks-500 hover:text-teks-900 hover:bg-krem"
+                      }`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-teks-300 mr-2 shrink-0"></span>
+                      Paket Umrah
+                    </Link>
+                    <Link
+                      href="/dashboard/paket/haji"
+                      prefetch={true}
+                      onClick={() => { if (pathname !== "/dashboard/paket/haji") setIsNavigating(true); }}
+                      className={`flex items-center py-2 px-3 text-[12.5px] font-semibold rounded-xl transition-all duration-200 ${
+                        pathname === "/dashboard/paket/haji"
+                          ? "text-hijau-900 bg-hijau-100 font-bold"
+                          : "text-teks-500 hover:text-teks-900 hover:bg-krem"
+                      }`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-teks-300 mr-2 shrink-0"></span>
+                      Paket Haji
+                    </Link>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Akun Group */}
+            <div className="text-[10.5px] uppercase tracking-wider text-teks-300 font-extrabold mt-6 mb-2 mx-3">Akun</div>
+
+            {/* Profil Saya Link */}
+            <Link
+              href="/dashboard/profil"
+              prefetch={true}
+              onClick={() => { if (pathname !== "/dashboard/profil") setIsNavigating(true); }}
+              className={`group flex items-center py-2.5 px-3 text-[13.5px] font-semibold rounded-xl transition-all duration-200 gap-3 ${
+                pathname === "/dashboard/profil"
+                  ? "text-hijau-900 bg-hijau-100 font-bold"
+                  : "text-teks-500 hover:bg-krem hover:text-teks-900"
+              }`}
+            >
+              <UserIcon className={`h-[18px] w-[18px] flex-shrink-0 transition-colors duration-200 ${pathname === "/dashboard/profil" ? "text-hijau-800" : "text-teks-300 group-hover:text-teks-900"}`} />
+              <span className="font-sans">Profil Saya</span>
+            </Link>
+
+            {/* Tentang Kami Link */}
+            <Link
+              href="/dashboard/tentang-kami"
+              prefetch={true}
+              onClick={() => { if (pathname !== "/dashboard/tentang-kami") setIsNavigating(true); }}
+              className={`group flex items-center py-2.5 px-3 text-[13.5px] font-semibold rounded-xl transition-all duration-200 gap-3 ${
+                pathname === "/dashboard/tentang-kami"
+                  ? "text-hijau-900 bg-hijau-100 font-bold"
+                  : "text-teks-500 hover:bg-krem hover:text-teks-900"
+              }`}
+            >
+              <svg className={`h-[18px] w-[18px] flex-shrink-0 stroke-[2.1] transition-colors duration-200 ${pathname === "/dashboard/tentang-kami" ? "text-hijau-800 stroke-hijau-800" : "text-teks-300 stroke-teks-300 group-hover:stroke-teks-900 group-hover:text-teks-900"}`} viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              <span className="font-sans">Tentang Kami</span>
+            </Link>
+          </nav>
+
+          {/* Sidebar Foot */}
+          <div className="mt-auto pt-4 border-t border-garis shrink-0">
+            <div className="flex items-center gap-3 p-2.5 rounded-xl bg-krem">
+              <div className="w-[40px] h-[40px] rounded-full border-2 border-white shadow-sm flex items-center justify-center text-white bg-emerald-700 font-bold uppercase overflow-hidden shrink-0">
+                {userProfile?.foto_url ? (
+                  <img src={userProfile.foto_url} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  session?.user?.name?.charAt(0) || "U"
+                )}
+              </div>
+              <div className="truncate text-left flex-1 min-w-0">
+                <p className="text-[12.5px] font-bold text-teks-900 truncate leading-snug">{session?.user?.name || "Jamaah"}</p>
+                <p className="text-[10.5px] text-teks-500 truncate mt-0.5">{session?.user?.email || ""}</p>
+              </div>
+            </div>
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-[13px] font-bold text-[#B3423A] hover:bg-[#FBEAE8] transition-colors mt-2 text-left"
+            >
+              <svg className="w-4 h-4 stroke-[#B3423A] stroke-[2.1] fill-none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Keluar dari Akun
+            </button>
+          </div>
+        </div>
+      </aside>
 
       {/* Mobile Top Bar (Banking App Style) */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-gradient-to-br from-hijau-900 to-hijau-700 h-16 px-4 flex items-center justify-between shadow-md">
@@ -298,7 +356,39 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-full text-slate-800">
+      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-[264px] relative z-10 h-full text-slate-800">
+        {/* Desktop Top Bar */}
+        <header className="hidden md:flex h-[76px] shrink-0 bg-white border-b border-garis items-center justify-between px-8 sticky top-0 z-20">
+          <div className="flex items-center gap-3 bg-krem border border-garis rounded-xl px-3.5 py-2 w-[320px]">
+            <svg className="w-4 h-4 text-teks-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" placeholder="Cari paket, transaksi, atau info..." className="border-none bg-transparent outline-none text-xs w-full text-teks-900 placeholder-teks-300 font-sans" />
+          </div>
+
+          <div className="flex items-center gap-[18px]">
+            <Link href="/dashboard/informasi" className="w-10 h-10 rounded-full bg-hijau-100 flex items-center justify-center relative cursor-pointer active:scale-95 transition-transform">
+              <svg className="w-[18px] h-[18px] text-hijau-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <div className="absolute top-[9px] right-[10px] w-[7px] h-[7px] rounded-full bg-emas-deep border border-white"></div>
+            </Link>
+
+            <Link href="/dashboard/profil" className="flex items-center gap-2.5 cursor-pointer">
+              <div className="w-[38px] h-[38px] rounded-full border-2 border-hijau-100 overflow-hidden">
+                {userProfile?.foto_url ? (
+                  <img src={userProfile.foto_url} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-emerald-700 text-white flex items-center justify-center font-bold text-xs uppercase">
+                    {session?.user?.name?.charAt(0) || "U"}
+                  </div>
+                )}
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-teks-900 leading-snug">{session?.user?.name || "Jamaah"}</p>
+                <p className="text-[11px] text-teks-500">Jamaah Terdaftar</p>
+              </div>
+              <svg className="w-3.5 h-3.5 text-teks-300 ml-1 stroke-[2.4]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+            </Link>
+          </div>
+        </header>
+
         {/* Instant Loading Overlay */}
         {isNavigating && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm px-4 transition-all duration-300">

@@ -11,21 +11,21 @@ export default function TabunganSelectionClient() {
   const [isNavigatingUmrah, setIsNavigatingUmrah] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pb-24">
+    <div className="min-h-screen bg-gray-50/50 pb-24 md:min-h-0 md:bg-transparent md:space-y-6 md:pb-8">
       {/* Header */}
-      <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm">
+      <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm md:relative md:top-auto md:z-0 md:bg-white/90 md:from-transparent md:to-transparent md:backdrop-blur-md md:border md:border-emerald-100 md:rounded-3xl md:shadow-lg md:shadow-emerald-900/5 md:p-6 md:px-8">
         <div className="flex items-center gap-3">
           <div className="flex-1">
-            <h1 className="text-base font-bold text-white tracking-tight leading-tight">Pilih Tabungan</h1>
-            <p className="text-emerald-50/80 text-[11px] font-medium mt-0.5">Mulai perjalanan suci Anda</p>
+            <h1 className="text-base md:text-2xl font-bold text-white md:text-emerald-900 tracking-tight leading-tight">Pilih Tabungan</h1>
+            <p className="text-emerald-50/80 md:text-emerald-700 text-[11px] md:text-sm font-medium mt-0.5 md:mt-1">Mulai perjalanan suci Anda</p>
           </div>
         </div>
       </div>
 
-      <div className="px-5 mt-6 space-y-5">
+      <div className="px-5 mt-6 space-y-5 md:grid md:grid-cols-2 md:gap-6 md:space-y-0 md:px-0 md:mt-8">
         {/* Tabungan Umrah */}
         {isNavigatingUmrah ? (
-          <div className="w-full h-28 rounded-2xl bg-gray-200/70 animate-pulse flex flex-col items-center justify-center shadow-inner border border-gray-100">
+          <div className="w-full h-28 md:h-44 rounded-2xl bg-gray-200/70 animate-pulse flex flex-col items-center justify-center shadow-inner border border-gray-100">
              <div className="w-8 h-8 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mb-2"></div>
              <p className="text-xs font-semibold text-emerald-800 animate-pulse">Loading....</p>
           </div>
@@ -33,7 +33,7 @@ export default function TabunganSelectionClient() {
           <Link 
             href="/dashboard/tabungan/umrah" 
             onClick={() => setIsNavigatingUmrah(true)}
-            className="block relative w-full h-28 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform"
+            className="block relative w-full h-28 md:h-44 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform"
           >
             <Image 
               src="/images/bg-paket.jpeg" 
@@ -44,8 +44,8 @@ export default function TabunganSelectionClient() {
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/70 to-transparent"></div>
             <div className="absolute inset-0 px-5 flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-bold text-white tracking-tight drop-shadow-sm">Tabungan Umrah</h2>
-                <p className="text-[11px] text-emerald-50/90 mt-0.5 font-medium">Lihat rencana & mulai menabung</p>
+                <h2 className="text-lg md:text-xl font-bold text-white tracking-tight drop-shadow-sm">Tabungan Umrah</h2>
+                <p className="text-[11px] md:text-xs text-emerald-50/90 mt-0.5 font-medium">Lihat rencana & mulai menabung</p>
               </div>
               <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner">
                 <svg className="w-4 h-4 text-white ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -60,7 +60,7 @@ export default function TabunganSelectionClient() {
         <div>
           <div 
             onClick={() => setShowHajiDropdown(!showHajiDropdown)} 
-            className="block relative w-full h-28 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform cursor-pointer"
+            className="block relative w-full h-28 md:h-44 rounded-2xl overflow-hidden shadow-[0_4px_12px_-4px_rgba(6,78,59,0.2)] group active:scale-[0.98] transition-transform cursor-pointer"
           >
             <Image 
               src="/images/makkah_thumbnail.webp" 
@@ -71,8 +71,8 @@ export default function TabunganSelectionClient() {
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/70 to-transparent"></div>
             <div className="absolute inset-0 px-5 flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-bold text-white tracking-tight drop-shadow-sm">Tabungan Haji</h2>
-                <p className="text-[11px] text-emerald-50/90 mt-0.5 font-medium">Persiapkan tabungan haji</p>
+                <h2 className="text-lg md:text-xl font-bold text-white tracking-tight drop-shadow-sm">Tabungan Haji</h2>
+                <p className="text-[11px] md:text-xs text-emerald-50/90 mt-0.5 font-medium">Persiapkan tabungan haji</p>
               </div>
               <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner transition-transform duration-300" style={{ transform: showHajiDropdown ? 'rotate(90deg)' : 'rotate(0deg)' }}>
                 <svg className="w-4 h-4 text-white ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

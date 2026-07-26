@@ -86,14 +86,7 @@ export default function DashboardLayout({
 
   return (
     <div className="fixed inset-0 flex text-white font-sans overflow-hidden">
-      <div className="fixed inset-0 z-0 hidden md:block">
-        <img 
-          src="/images/bg/makkah_thumbnail.webp" 
-          alt="Background Makkah" 
-          className="w-full h-full object-cover" 
-        />
-      </div>
-      <div className="fixed inset-0 z-0 bg-white md:hidden"></div>
+      <div className="fixed inset-0 z-0 bg-white md:bg-slate-50"></div>
 
       {/* Sidebar for desktop */}
       <div tabIndex={0} className="peer group outline-none hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 focus-within:md:w-64 z-30">
@@ -305,7 +298,7 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-full">
+      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-full text-slate-800">
         {/* Instant Loading Overlay */}
         {isNavigating && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm px-4 transition-all duration-300">

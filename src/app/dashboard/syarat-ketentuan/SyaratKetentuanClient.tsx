@@ -105,7 +105,7 @@ export default function SyaratKetentuanClient() {
   return (
     <div className="min-h-screen bg-gray-50/50 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm">
+      <div className="md:hidden bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm">
         <div className="flex items-center gap-3">
           <div className="flex-1">
             <h1 className="text-base font-bold text-white tracking-tight leading-tight">Syarat &amp; Ketentuan Khusus</h1>

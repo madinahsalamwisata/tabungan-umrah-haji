@@ -84,7 +84,7 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen flex bg-krem text-teks-900 font-sans overflow-hidden">
+    <div className="h-screen w-screen flex bg-krem text-teks-900 font-sans overflow-hidden">
       {/* Sidebar for desktop */}
       <aside className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:w-[264px] z-30 bg-white border-r border-garis">
         {/* Sidebar Head */}
@@ -167,7 +167,7 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content Pane */}
-      <div className="flex-1 flex flex-col min-w-0 md:pl-[264px] relative z-10 min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 md:pl-[264px] relative z-10 h-screen overflow-hidden">
         {/* Topbar */}
         <header className="h-[76px] flex-shrink-0 bg-white border-b border-garis flex items-center justify-between px-6 sm:px-8 sticky top-0 z-20">
           <div className="search flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-72 sm:w-80">

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import AdminDashboardClient from "@/components/admin/AdminDashboardClient";
 
 export const dynamic = "force-dynamic";
 
@@ -8,32 +9,52 @@ export default async function AdminDashboardPage() {
     where: { email: { not: "madinahsalamwisata@gmail.com" } }
   });
   
-  const jamaahPasti = await prisma.rencanaTabungan.count({
-    where: { 
-      status: "Aktif",
-      paket: { is_estimasi: false }
+  // Calculate Jamaah Estimasi: sum of jumlah_jamaah of all active plans
+  const sumJamaah = await prisma.rencanaTabungan.aggregate({
+    _sum: {
+      jumlah_jamaah: true
+    },
+    where: { status: "Aktif" }
+  });
+  const jamaahEstimasi = Number(sumJamaah._sum.jumlah_jamaah || 0);
+
+  // Total Setor: sum of payments where status is success/settlement/Lunas
+  const sumSetor = await prisma.riwayatSetoran.aggregate({
+    _sum: {
+      nominal: true
+    },
+    where: {
+      status_pembayaran: {
+        in: ["success", "settlement", "Lunas"]
+      }
     }
   });
+  const totalSetor = Number(sumSetor._sum.nominal || 0);
 
-  const jamaahEstimasi = await prisma.rencanaTabungan.count({
-    where: { 
-      status: "Aktif",
-      paket: { is_estimasi: true }
+  // Total Refund: sum of payments where status is refund/refunded
+  const sumRefund = await prisma.riwayatSetoran.aggregate({
+    _sum: {
+      nominal: true
+    },
+    where: {
+      status_pembayaran: {
+        in: ["refund", "refunded"]
+      }
     }
   });
+  const totalRefund = Number(sumRefund._sum.nominal || 0);
 
+  // Total Tagihan: sum of total_biaya of active savings plans
   const agregatTabungan = await prisma.rencanaTabungan.aggregate({
     _sum: {
       total_biaya: true
     },
     where: { status: "Aktif" }
   });
-
   const totalBiaya = Number(agregatTabungan._sum.total_biaya || 0);
 
-  // Fetch recent payments for table summary
+  // Fetch all recent transactions for the client table search/scroll
   const setoranTerbaru = await prisma.riwayatSetoran.findMany({
-    take: 5,
     orderBy: { tanggal_setor: 'desc' },
     include: {
       rencana_tabungan: {
@@ -45,6 +66,23 @@ export default async function AdminDashboardPage() {
     }
   });
 
+  const serializedSetoran = setoranTerbaru.map((s) => ({
+    id: s.id,
+    nominal: Number(s.nominal),
+    tanggal_setor: s.tanggal_setor.toISOString(),
+    status_pembayaran: s.status_pembayaran,
+    rencana_tabungan: {
+      id: s.rencana_tabungan.id,
+      paket_nama: s.rencana_tabungan.paket?.nama_paket || (s.rencana_tabungan as any).paket_snapshot_nama || "Paket Dihapus",
+      jamaah: {
+        id: s.rencana_tabungan.jamaah.id,
+        nama: s.rencana_tabungan.jamaah.nama,
+        nik: s.rencana_tabungan.jamaah.nik,
+        foto_url: s.rencana_tabungan.jamaah.foto_url
+      }
+    }
+  }));
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -53,133 +91,72 @@ export default async function AdminDashboardPage() {
         <p className="text-sm text-teks-500 mt-1">Ringkasan statistik dan aktivitas pendaftaran jamaah.</p>
       </div>
 
-      {/* Stats Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Cards Row (Horizontal Slider Layout) */}
+      <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-emerald-800/10 scrollbar-track-transparent">
         {/* Total Akun */}
-        <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between">
+        <div className="min-w-[260px] bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between snap-start flex-1">
           <div>
-            <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-teks-500">Total Akun</span>
-            <div className="text-3xl font-bold text-teks-900 mt-2.5">{totalAkun}</div>
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-teks-500">Total Akun</span>
+            <div className="text-3xl font-bold text-teks-900 mt-2">{totalAkun}</div>
           </div>
           <div className="w-[42px] h-[42px] rounded-xl bg-[#EFEAFB] flex items-center justify-center shrink-0">
             <svg className="w-[19px] h-[19px] stroke-[#6D4FC9] stroke-2 fill-none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
         </div>
 
-        {/* Jamaah Pasti */}
-        <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between">
+        {/* Jamaah (Estimasi) */}
+        <div className="min-w-[260px] bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between snap-start flex-1">
           <div>
-            <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-teks-500">Jamaah (Pasti)</span>
-            <div className="text-3xl font-bold text-teks-900 mt-2.5">{jamaahPasti}</div>
-          </div>
-          <div className="w-[42px] h-[42px] rounded-xl bg-hijau-100 flex items-center justify-center shrink-0">
-            <svg className="w-[19px] h-[19px] stroke-hijau-800 stroke-2 fill-none" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-        </div>
-
-        {/* Jamaah Estimasi */}
-        <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between">
-          <div>
-            <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-teks-500">Jamaah (Estimasi)</span>
-            <div className="text-3xl font-bold text-teks-900 mt-2.5">{jamaahEstimasi}</div>
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-teks-500">Jamaah (Estimasi)</span>
+            <div className="text-3xl font-bold text-teks-900 mt-2">{jamaahEstimasi}</div>
           </div>
           <div className="w-[42px] h-[42px] rounded-xl bg-[#FBF1DF] flex items-center justify-center shrink-0">
             <svg className="w-[19px] h-[19px] stroke-emas-deep stroke-2 fill-none" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
           </div>
         </div>
 
-        {/* Total Tagihan */}
-        <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between">
+        {/* Total Setor */}
+        <div className="min-w-[260px] bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between snap-start flex-1">
           <div>
-            <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-teks-500">Total Tagihan</span>
-            <div className="text-xl lg:text-2xl font-bold text-teks-900 mt-3 truncate" title={`Rp ${totalBiaya.toLocaleString('id-ID')}`}>
-              Rp {(totalBiaya / 1000000).toFixed(1)}jt
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-teks-500">Total Setor</span>
+            <div className="text-2xl font-bold text-hijau-900 mt-2" title={`Rp ${totalSetor.toLocaleString('id-ID')}`}>
+              Rp {(totalSetor / 1000000).toFixed(1)}jt
+            </div>
+          </div>
+          <div className="w-[42px] h-[42px] rounded-xl bg-hijau-100 flex items-center justify-center shrink-0">
+            <svg className="w-[19px] h-[19px] stroke-hijau-800 stroke-2 fill-none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+        </div>
+
+        {/* Total Refund */}
+        <div className="min-w-[260px] bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between snap-start flex-1">
+          <div>
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-teks-500">Total Refund</span>
+            <div className="text-2xl font-bold text-[#B3423A] mt-2" title={`Rp ${totalRefund.toLocaleString('id-ID')}`}>
+              Rp {(totalRefund / 1000000).toFixed(1)}jt
             </div>
           </div>
           <div className="w-[42px] h-[42px] rounded-xl bg-[#FBEAE8] flex items-center justify-center shrink-0">
-            <svg className="w-[19px] h-[19px] stroke-[#B3423A] stroke-2 fill-none" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+            <svg className="w-[19px] h-[19px] stroke-[#B3423A] stroke-2 fill-none" viewBox="0 0 24 24"><path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+        </div>
+
+        {/* Total Tagihan */}
+        <div className="min-w-[260px] bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex items-start justify-between snap-start flex-1">
+          <div>
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-teks-500">Total Tagihan</span>
+            <div className="text-2xl font-bold text-teks-900 mt-2" title={`Rp ${totalBiaya.toLocaleString('id-ID')}`}>
+              Rp {(totalBiaya / 1000000).toFixed(1)}jt
+            </div>
+          </div>
+          <div className="w-[42px] h-[42px] rounded-xl bg-hijau-100 flex items-center justify-center shrink-0">
+            <svg className="w-[19px] h-[19px] stroke-hijau-800 stroke-2 fill-none" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
           </div>
         </div>
       </div>
 
-      {/* Setoran Terbaru Panel */}
-      <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden">
-        <div className="px-6 py-6 border-b border-garis bg-white text-left">
-          <h3 className="text-base font-bold text-teks-900">Aktivitas Setoran Terbaru</h3>
-          <p className="text-xs text-teks-500 mt-1">Daftar setoran tabungan terakhir dari jamaah.</p>
-        </div>
-
-        <div className="overflow-x-auto w-full">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="border-b border-garis">
-                <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300">Jamaah</th>
-                <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300">Paket Tujuan</th>
-                <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300">Tanggal Setor</th>
-                <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300">Nominal</th>
-                <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-garis">
-              {setoranTerbaru.map((setoran) => {
-                const isSuccess = setoran.status_pembayaran === 'Lunas' || setoran.status_pembayaran === 'settlement' || setoran.status_pembayaran === 'success';
-                const isPending = setoran.status_pembayaran === 'pending';
-                
-                return (
-                  <tr key={setoran.id} className="hover:bg-krem/40 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {setoran.rencana_tabungan.jamaah.foto_url ? (
-                          <img 
-                            src={setoran.rencana_tabungan.jamaah.foto_url} 
-                            alt={setoran.rencana_tabungan.jamaah.nama} 
-                            className="w-[34px] h-[34px] rounded-full object-cover shrink-0 border border-garis"
-                          />
-                        ) : (
-                          <div className="w-[34px] h-[34px] rounded-full flex items-center justify-center font-bold text-white text-[12px] bg-gradient-to-br from-hijau-700 to-hijau-900 shrink-0">
-                            {setoran.rencana_tabungan.jamaah.nama?.[0] || "J"}
-                          </div>
-                        )}
-                        <div className="text-left">
-                          <div className="font-bold text-teks-900">{setoran.rencana_tabungan.jamaah.nama}</div>
-                          <div className="text-[10px] text-teks-500 mt-0.5">NIK {setoran.rencana_tabungan.jamaah.nik}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 font-medium text-teks-900 text-left">
-                      {setoran.rencana_tabungan.paket?.nama_paket || (setoran.rencana_tabungan as any).paket_snapshot_nama || "Paket Dihapus"}
-                    </td>
-                    <td className="px-6 py-4 text-teks-500 text-left">
-                      {new Date(setoran.tanggal_setor).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                    </td>
-                    <td className="px-6 py-4 text-hijau-900 font-bold text-left">
-                      Rp {Number(setoran.nominal).toLocaleString('id-ID')}
-                    </td>
-                    <td className="px-6 py-4 text-left">
-                      <span className={`status-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10.5px] font-extrabold uppercase tracking-wide border ${
-                        isSuccess
-                          ? 'bg-hijau-100 text-hijau-800 border-hijau-200/50'
-                          : isPending
-                          ? 'bg-yellow-50 text-yellow-700 border-yellow-200/50'
-                          : 'bg-red-50 text-red-600 border-red-100/50'
-                      }`}>
-                        {isSuccess ? 'Success' : setoran.status_pembayaran}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-              {setoranTerbaru.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-teks-300 italic">
-                    Belum ada riwayat setoran terbaru
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Aktivitas Transaksi Panel */}
+      <AdminDashboardClient initialSetoran={serializedSetoran} />
     </div>
   );
 }

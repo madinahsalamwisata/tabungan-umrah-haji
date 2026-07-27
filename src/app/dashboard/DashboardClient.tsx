@@ -194,9 +194,7 @@ export default function DashboardClient({
             Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
           </p>
           <div class="border-t border-gray-100 my-3"></div>
-          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">
-            ${cleanKonten}
-          </div>
+          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">${cleanKonten}</div>
           <div class="border-t border-gray-100 my-3.5"></div>
           <div class="flex justify-end">
             <button class="tutup-btn-custom bg-[#146349] hover:bg-[#0B3D30] text-white rounded-xl text-xs font-bold px-5 py-2.5 transition-colors shadow-md cursor-pointer">
@@ -329,11 +327,11 @@ export default function DashboardClient({
             <div className="space-y-6">
               {/* Informasi & Update */}
               <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)]">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-display font-semibold text-[14.5px] text-teks-900 m-0">Informasi &amp; Update</h3>
+                <div className="flex justify-between items-center mb-4 gap-2">
+                  <h3 className="font-display font-semibold text-[14.5px] text-teks-900 m-0 shrink-0">Informasi &amp; Update</h3>
                   <span
                     onClick={() => router.push("/dashboard/informasi")}
-                    className="text-xs font-bold text-hijau-700 hover:text-hijau-900 cursor-pointer transition-colors"
+                    className="text-xs font-bold text-hijau-700 hover:text-hijau-900 cursor-pointer transition-colors shrink-0"
                   >
                     Lihat semua
                   </span>
@@ -347,13 +345,13 @@ export default function DashboardClient({
                         className="flex items-start gap-3 py-3 border-b border-garis last:border-b-0 cursor-pointer group"
                       >
                         <div className="w-2 h-2 rounded-full bg-hijau-700 mt-1.5 shrink-0 group-hover:scale-125 transition-transform"></div>
-                        <div className="flex-1 text-left">
-                          <h4 className="text-[13px] font-bold text-teks-900 group-hover:text-hijau-900 transition-colors leading-snug flex items-center justify-between gap-2">
-                            <span className="truncate" title={item.judul}>
-                              {item.judul}
+                        <div className="flex-1 text-left min-w-0">
+                          <h4 className="text-[13px] font-bold text-teks-900 group-hover:text-hijau-900 transition-colors leading-snug flex items-center justify-between gap-2 w-full">
+                            <span className="truncate flex-1 min-w-0" title={item.judul}>
+                              {item.judul.length > 28 ? item.judul.substring(0, 28) + " ...." : item.judul}
                             </span>
                             {item.is_penting && (
-                              <span className="badge inline-block bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 text-[8.5px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shadow-[0_2px_8px_-1px_rgba(201,162,75,0.4)] border border-emas/30 shrink-0">
+                              <span className="badge inline-block bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 text-[8.5px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider border border-emas/30 shrink-0">
                                 PENTING
                               </span>
                             )}

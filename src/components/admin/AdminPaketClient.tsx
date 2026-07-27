@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 type PaketData = {
   id: string;
@@ -27,6 +28,22 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const [activeTab, setActiveTab] = useState<"pasti" | "estimasi">("pasti");
   const [isEstimasiForm, setIsEstimasiForm] = useState(false);
 
+  // Helper Swal Notifications
+  const showNotification = (title: string, text: string, icon: 'success' | 'error' | 'warning') => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+      confirmButtonColor: '#146349',
+      customClass: {
+        popup: 'rounded-2xl border border-garis shadow-2xl',
+        title: 'text-base text-hijau-900 font-bold',
+        htmlContainer: 'text-xs text-teks-500',
+        confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2'
+      }
+    });
+  };
+
   const handleOpenAdd = () => {
     setEditingData(null);
     setIsEstimasiForm(activeTab === "estimasi");
@@ -40,18 +57,36 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   };
 
   const handleDelete = async (id: string, nama: string) => {
-    if (confirm(`Yakin ingin menghapus paket ${nama}?`)) {
+    const result = await Swal.fire({
+      title: 'Hapus Paket?',
+      text: `Apakah Anda yakin ingin menghapus paket "${nama}" secara permanen?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#B3423A',
+      cancelButtonColor: '#94A39C',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal',
+      customClass: {
+        popup: 'rounded-2xl border border-garis shadow-2xl',
+        title: 'text-base text-[#B3423A] font-bold',
+        htmlContainer: 'text-xs text-teks-500',
+        confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2 text-sm',
+        cancelButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2 text-sm',
+      }
+    });
+
+    if (result.isConfirmed) {
       try {
         const res = await fetch(`/api/admin/paket?id=${id}`, { method: 'DELETE' });
         if (res.ok) {
           setData(prev => prev.filter(item => item.id !== id));
-          alert("Paket dihapus.");
+          showNotification('Berhasil', 'Paket berhasil dihapus!', 'success');
         } else {
           const err = await res.json();
-          alert(`Gagal: ${err.message}`);
+          showNotification('Gagal', err.message, 'error');
         }
       } catch (e) {
-        alert("Terjadi kesalahan.");
+        showNotification('Gagal', 'Terjadi kesalahan sistem.', 'error');
       }
     }
   };
@@ -71,9 +106,18 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
       harga_double: parseFloat(formData.get("harga_double") as string),
       harga_triple: parseFloat(formData.get("harga_triple") as string),
       kuota: parseInt(formData.get("kuota") as string),
-      poster_url: formData.get("poster_url") as string,
+      poster_url: formData.get("poster_url") as string || null,
       is_estimasi: formData.get("is_estimasi") === "on",
     };
+
+    // If it's estimasi, we save date as the first of selected month (e.g. YYYY-MM-01)
+    if (payload.is_estimasi) {
+      const monthVal = formData.get("bulan_keberangkatan") as string; // format YYYY-MM
+      if (monthVal) {
+        payload.tanggal_keberangkatan = `${monthVal}-01`;
+        payload.tanggal_kepulangan = `${monthVal}-15`; // placeholder
+      }
+    }
 
     try {
       const method = editingData ? "PUT" : "POST";
@@ -85,7 +129,6 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
 
       if (res.ok) {
         const result = await res.json();
-        // parsing dates string back for UI
         result.tanggal_keberangkatan = new Date(result.tanggal_keberangkatan).toISOString();
         result.tanggal_kepulangan = new Date(result.tanggal_kepulangan).toISOString();
         result.harga_quad = Number(result.harga_quad);
@@ -98,69 +141,71 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
           setData(prev => [...prev, result].sort((a,b) => new Date(a.tanggal_keberangkatan).getTime() - new Date(b.tanggal_keberangkatan).getTime()));
         }
         setIsModalOpen(false);
+        showNotification('Berhasil', 'Paket berhasil disimpan!', 'success');
       } else {
         const err = await res.json();
-        alert(`Gagal: ${err.message}`);
+        showNotification('Gagal', err.message, 'error');
       }
     } catch (e) {
-      alert("Terjadi kesalahan sistem.");
+      showNotification('Gagal', 'Terjadi kesalahan sistem.', 'error');
     }
+  };
+
+  const getStarRating = (hotelStr: string) => {
+    if (!hotelStr) return "";
+    const match = hotelStr.match(/\*(\d)/);
+    if (match) {
+      const stars = parseInt(match[1]);
+      return "⭐️".repeat(stars);
+    }
+    // Check if it says *4 or *5 without parentheses
+    const match2 = hotelStr.match(/\*?\s*(\d)\s*star/i);
+    if (match2) {
+      return "⭐️".repeat(parseInt(match2[1]));
+    }
+    return "";
+  };
+
+  const getCleanHotelName = (hotelStr: string) => {
+    if (!hotelStr) return "";
+    return hotelStr.replace(/\(\*\d\)/g, '').replace(/\*\d/g, '').trim();
+  };
+
+  const formatMonth = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('id-ID', { month: 'long' });
+  };
+
+  const cleanTitle = (title: string) => {
+    // Strip year like "1448H", "2026", "2027" from titles for estimation plans
+    return title.replace(/\b\d{4}H?\b/gi, '').trim();
   };
 
   const paketPasti = data.filter(item => !item.is_estimasi);
   const paketEstimasi = data.filter(item => item.is_estimasi);
 
-  const renderPaketCard = (item: PaketData) => (
-    <div key={item.id} className="relative bg-white/90 backdrop-blur-md border border-emerald-100 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row group">
-      {!item.is_estimasi && (
-        <div className="md:w-2/5 h-48 md:h-auto relative bg-black/80">
-          {item.poster_url ? (
-            <img src={item.poster_url} alt={item.nama_paket} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-600">
-              <svg fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-12 h-12"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
-            </div>
-          )}
-        </div>
-      )}
-      
-      <div className={`p-6 flex flex-col justify-between ${item.is_estimasi ? 'w-full' : 'md:w-3/5'}`}>
-        <div>
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-bold text-emerald-900">{item.nama_paket}</h3>
-            {item.is_estimasi && (
-              <span className="bg-yellow-500/10 border border-yellow-500/50 text-yellow-500 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider backdrop-blur-sm">Estimasi</span>
-            )}
-          </div>
-          <div className="space-y-1 text-xs text-emerald-700">
-            <p>Berangkat: <span className="text-gray-200 font-medium">{new Date(item.tanggal_keberangkatan).toLocaleDateString('id-ID')}</span></p>
-            <p>Maskapai: <span className="text-gray-200 font-medium">{item.maskapai}</span></p>
-            <p>Kuota: <span className="text-emerald-700 font-medium">{item.kuota} Kursi</span></p>
-            <p className="pt-2 text-sm text-yellow-400 font-bold">Mulai Rp {item.harga_quad.toLocaleString('id-ID')}</p>
-          </div>
-        </div>
-        <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/10">
-          <button onClick={() => handleOpenEdit(item)} className="text-blue-400 hover:text-blue-300 text-sm font-semibold">Edit</button>
-          <button onClick={() => handleDelete(item.id, item.nama_paket)} className="text-red-400 hover:text-red-300 text-sm font-semibold">Hapus</button>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-6">
+      {/* Top Action Tabs & Button */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         {/* Tabs */}
-        <div className="flex p-1 bg-black/80 border border-white/10 rounded-2xl w-fit">
+        <div className="flex p-1 bg-krem border border-garis rounded-xl w-fit">
           <button 
             onClick={() => setActiveTab('pasti')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'pasti' ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-emerald-50'}`}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
+              activeTab === 'pasti' 
+                ? 'bg-hijau-900 text-white shadow-md' 
+                : 'text-teks-500 hover:text-teks-900 hover:bg-white/50'
+            }`}
           >
             Paket Pasti Berangkat
           </button>
           <button 
             onClick={() => setActiveTab('estimasi')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'estimasi' ? 'bg-yellow-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-emerald-50'}`}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
+              activeTab === 'estimasi' 
+                ? 'bg-hijau-900 text-white shadow-md' 
+                : 'text-teks-500 hover:text-teks-900 hover:bg-white/50'
+            }`}
           >
             Rencana / Estimasi
           </button>
@@ -168,120 +213,320 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
 
         <button 
           onClick={handleOpenAdd}
-          className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold transition-colors shadow-lg"
+          className="flex items-center justify-center gap-2 bg-hijau-900 hover:bg-hijau-800 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-lg shrink-0"
         >
-          <svg fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+          <svg fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
           Tambah Paket
         </button>
       </div>
 
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {activeTab === 'pasti' ? (
-            <>
-              {paketPasti.map(renderPaketCard)}
-              {paketPasti.length === 0 && (
-                <div className="col-span-1 lg:col-span-2 py-12 text-center text-gray-500 italic bg-white/5 rounded-[2rem] border border-white/10">
-                  Belum ada paket pasti yang tersedia.
+      {/* Main Grid Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {activeTab === 'pasti' ? (
+          <>
+            {paketPasti.map((item) => (
+              <div 
+                key={item.id} 
+                className="bg-white border border-garis rounded-[22px] overflow-hidden shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col sm:flex-row group text-left"
+              >
+                {/* Poster Image Section */}
+                <div className="sm:w-2/5 h-48 sm:h-auto relative bg-krem shrink-0">
+                  <img 
+                    src={item.poster_url || "/images/paket-umrah-rabiul-akhir-1448-h.jpeg"} 
+                    alt={item.nama_paket} 
+                    className="w-full h-full object-cover transition-opacity duration-300" 
+                  />
                 </div>
-              )}
-            </>
-          ) : (
-            <>
-              {paketEstimasi.map(renderPaketCard)}
-              {paketEstimasi.length === 0 && (
-                <div className="col-span-1 lg:col-span-2 py-12 text-center text-gray-500 italic bg-white/5 rounded-[2rem] border border-white/10">
-                  Belum ada rencana paket estimasi.
+                
+                {/* Details Section */}
+                <div className="p-5 flex flex-col justify-between flex-1">
+                  <div>
+                    <h3 className="text-base font-bold text-teks-900 leading-snug">{item.nama_paket}</h3>
+                    
+                    <div className="mt-3.5 space-y-1.5 text-xs text-teks-500">
+                      <p>🗓️ Keberangkatan: <span className="font-bold text-teks-900">
+                        {new Date(item.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} - {new Date(item.tanggal_kepulangan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </span></p>
+                      <p>✈️ Maskapai: <span className="font-bold text-teks-900">{item.maskapai}</span></p>
+                      <p>🏢 Hotel Makkah: <span className="font-bold text-teks-900">{getCleanHotelName(item.hotel_makkah)} {getStarRating(item.hotel_makkah)}</span></p>
+                      <p>🏢 Hotel Madinah: <span className="font-bold text-teks-900">{getCleanHotelName(item.hotel_madinah)} {getStarRating(item.hotel_madinah)}</span></p>
+                      <p>👥 Kuota Sisa: <span className="font-bold text-hijau-900">{item.kuota} Kursi</span></p>
+                    </div>
+
+                    {/* Price grid */}
+                    <div className="grid grid-cols-3 gap-2 mt-4 pt-3.5 border-t border-garis/60">
+                      <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
+                        <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Quad</div>
+                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_quad.toLocaleString('id-ID')}</div>
+                      </div>
+                      <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
+                        <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Triple</div>
+                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_triple.toLocaleString('id-ID')}</div>
+                      </div>
+                      <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
+                        <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Double</div>
+                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_double.toLocaleString('id-ID')}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex justify-end gap-2.5 pt-3 border-t border-garis/60">
+                    <button 
+                      onClick={() => handleOpenEdit(item)} 
+                      className="text-hijau-900 bg-hijau-100 hover:bg-hijau-200 border border-garis text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(item.id, item.nama_paket)} 
+                      className="text-[#B3423A] bg-[#FBEAE8] hover:bg-[#FBEAE8]/80 border border-red-100 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      Hapus
+                    </button>
+                  </div>
                 </div>
-              )}
-            </>
-          )}
-        </div>
+              </div>
+            ))}
+            {paketPasti.length === 0 && (
+              <div className="col-span-1 lg:col-span-2 py-12 text-center text-teks-300 italic bg-white border border-garis rounded-[22px]">
+                Belum ada paket pasti yang tersedia.
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            {paketEstimasi.map((item) => (
+              <div 
+                key={item.id} 
+                className="bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col justify-between text-left relative"
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-2.5 gap-2">
+                    <h3 className="text-base font-bold text-teks-900 leading-snug">{cleanTitle(item.nama_paket)}</h3>
+                    <span className="bg-yellow-50 text-yellow-700 border border-yellow-200/50 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Estimasi</span>
+                  </div>
+
+                  <div className="mt-3.5 space-y-1.5 text-xs text-teks-500">
+                    <p>🗓️ Bulan Berangkat: <span className="font-bold text-teks-900 capitalize">{formatMonth(item.tanggal_keberangkatan)}</span></p>
+                    <p>✈️ Maskapai: <span className="font-bold text-teks-900">{item.maskapai}</span></p>
+                    <p>🏢 Hotel Makkah: <span className="font-bold text-teks-900">{getCleanHotelName(item.hotel_makkah)} {getStarRating(item.hotel_makkah)}</span></p>
+                    <p>🏢 Hotel Madinah: <span className="font-bold text-teks-900">{getCleanHotelName(item.hotel_madinah)} {getStarRating(item.hotel_madinah)}</span></p>
+                  </div>
+
+                  {/* Price grid */}
+                  <div className="grid grid-cols-3 gap-2 mt-4 pt-3.5 border-t border-garis/60">
+                    <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
+                      <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Quad</div>
+                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_quad.toLocaleString('id-ID')}</div>
+                    </div>
+                    <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
+                      <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Triple</div>
+                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_triple.toLocaleString('id-ID')}</div>
+                    </div>
+                    <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
+                      <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Double</div>
+                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_double.toLocaleString('id-ID')}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-5 flex justify-end gap-2.5 pt-3 border-t border-garis/60">
+                  <button 
+                    onClick={() => handleOpenEdit(item)} 
+                    className="text-hijau-900 bg-hijau-100 hover:bg-hijau-200 border border-garis text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(item.id, item.nama_paket)} 
+                    className="text-[#B3423A] bg-[#FBEAE8] hover:bg-[#FBEAE8]/80 border border-red-100 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            ))}
+            {paketEstimasi.length === 0 && (
+              <div className="col-span-1 lg:col-span-2 py-12 text-center text-teks-300 italic bg-white border border-garis rounded-[22px]">
+                Belum ada rencana paket estimasi.
+              </div>
+            )}
+          </>
+        )}
       </div>
 
+      {/* ----------------- COMPACT EDIT/ADD MODAL ----------------- */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200 custom-scrollbar">
-            <h2 className="text-xl font-bold text-emerald-900 mb-6 border-b border-emerald-100 pb-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
+          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-7 animate-in zoom-in-95 duration-200 custom-scrollbar text-left">
+            <h2 className="text-base font-bold text-teks-900 mb-5 border-b border-garis pb-3">
               {editingData ? "Edit Paket" : "Buat Paket Baru"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Nama Paket</label>
-                  <input name="nama_paket" defaultValue={editingData?.nama_paket} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Paket Umrah Spesial Ramadhan" />
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Nama Paket</label>
+                  <input 
+                    name="nama_paket" 
+                    defaultValue={editingData?.nama_paket} 
+                    required 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                    placeholder="Misal: Paket Umrah Spesial Rabiul Akhir" 
+                  />
                 </div>
                 
+                {isEstimasiForm ? (
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Bulan Keberangkatan</label>
+                    <input 
+                      type="month" 
+                      name="bulan_keberangkatan" 
+                      defaultValue={editingData?.tanggal_keberangkatan ? editingData.tanggal_keberangkatan.substring(0, 7) : ""}
+                      required 
+                      className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Tanggal Keberangkatan</label>
+                      <input 
+                        type="date" 
+                        name="tanggal_keberangkatan" 
+                        defaultValue={editingData?.tanggal_keberangkatan ? editingData.tanggal_keberangkatan.split('T')[0] : ""} 
+                        required 
+                        className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Tanggal Kepulangan</label>
+                      <input 
+                        type="date" 
+                        name="tanggal_kepulangan" 
+                        defaultValue={editingData?.tanggal_kepulangan ? editingData.tanggal_kepulangan.split('T')[0] : ""} 
+                        required 
+                        className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                      />
+                    </div>
+                  </>
+                )}
+
                 <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Tanggal Keberangkatan</label>
-                  <input type="date" name="tanggal_keberangkatan" defaultValue={editingData?.tanggal_keberangkatan.split('T')[0]} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Hotel Makkah & Rating</label>
+                  <input 
+                    name="hotel_makkah" 
+                    defaultValue={editingData?.hotel_makkah} 
+                    required 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                    placeholder="Misal: Swissotel Makkah (*5)" 
+                  />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Tanggal Kepulangan</label>
-                  <input type="date" name="tanggal_kepulangan" defaultValue={editingData?.tanggal_kepulangan.split('T')[0]} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Hotel Madinah & Rating</label>
+                  <input 
+                    name="hotel_madinah" 
+                    defaultValue={editingData?.hotel_madinah} 
+                    required 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                    placeholder="Misal: Taiba Front (*5)" 
+                  />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Hotel Makkah</label>
-                  <input name="hotel_makkah" defaultValue={editingData?.hotel_makkah} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Swissotel Makkah (*5)" />
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Maskapai Penerbangan</label>
+                  <input 
+                    name="maskapai" 
+                    defaultValue={editingData?.maskapai} 
+                    required 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                    placeholder="Misal: Saudia Airlines (Direct)" 
+                  />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Hotel Madinah</label>
-                  <input name="hotel_madinah" defaultValue={editingData?.hotel_madinah} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Taiba Front (*5)" />
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Total Kuota (Orang)</label>
+                  <input 
+                    type="number" 
+                    name="kuota" 
+                    defaultValue={editingData?.kuota} 
+                    required 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                  />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Maskapai Penerbangan</label>
-                  <input name="maskapai" defaultValue={editingData?.maskapai} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: Saudia Airlines (Direct)" />
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Harga Quad (Sekamar ber-4)</label>
+                  <input 
+                    type="number" 
+                    name="harga_quad" 
+                    defaultValue={editingData?.harga_quad} 
+                    required 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                  />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Total Kuota (Orang)</label>
-                  <input type="number" name="kuota" defaultValue={editingData?.kuota} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Harga Quad (Sekamar ber-4)</label>
-                  <input type="number" name="harga_quad" defaultValue={editingData?.harga_quad} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Harga Triple (Sekamar ber-3)</label>
-                  <input type="number" name="harga_triple" defaultValue={editingData?.harga_triple} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Harga Triple (Sekamar ber-3)</label>
+                  <input 
+                    type="number" 
+                    name="harga_triple" 
+                    defaultValue={editingData?.harga_triple} 
+                    required 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                  />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Harga Double (Sekamar ber-2)</label>
-                  <input type="number" name="harga_double" defaultValue={editingData?.harga_double} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Harga Double (Sekamar ber-2)</label>
+                  <input 
+                    type="number" 
+                    name="harga_double" 
+                    defaultValue={editingData?.harga_double} 
+                    required 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                  />
                 </div>
                 {!isEstimasiForm && (
                   <div>
-                    <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">URL Poster Gambar (Opsional)</label>
-                    <input type="url" name="poster_url" defaultValue={editingData?.poster_url || ""} className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Misal: /images/paket1.jpg atau https://..." />
+                    <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">URL Poster Gambar (Opsional)</label>
+                    <input 
+                      type="text" 
+                      name="poster_url" 
+                      defaultValue={editingData?.poster_url || ""} 
+                      className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                      placeholder="Contoh: /images/poster.jpg atau link Drive" 
+                    />
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center gap-2 mt-4 p-4 bg-yellow-900/10 border border-yellow-500/20 rounded-xl">
+              <div className="flex items-center gap-2 mt-4 p-3 bg-yellow-50 border border-yellow-200/50 rounded-xl">
                 <input 
                   type="checkbox" 
                   name="is_estimasi" 
                   id="is_estimasi" 
                   checked={isEstimasiForm}
                   onChange={(e) => setIsEstimasiForm(e.target.checked)}
-                  className="w-5 h-5 rounded bg-black/80 border-white/10 text-yellow-500 focus:ring-yellow-500" 
+                  className="w-4 h-4 rounded border-garis text-hijau-900 focus:ring-hijau-900" 
                 />
-                <label htmlFor="is_estimasi" className="text-sm font-medium text-yellow-500 cursor-pointer">
+                <label htmlFor="is_estimasi" className="text-xs font-semibold text-yellow-700 cursor-pointer">
                   Tandai sebagai Paket Estimasi (Harga dan Jadwal bisa berubah)
                 </label>
               </div>
 
-              <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-white/10">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-300 bg-white/5 hover:bg-white/10 transition-colors">
+              <div className="flex justify-end gap-2.5 mt-6 pt-4 border-t border-garis">
+                <button 
+                  type="button" 
+                  onClick={() => setIsModalOpen(false)} 
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-teks-500 bg-krem hover:bg-garis/30 transition-colors"
+                >
                   Batal
                 </button>
-                <button type="submit" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg">
+                <button 
+                  type="submit" 
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-hijau-900 hover:bg-hijau-800 transition-colors shadow-md"
+                >
                   {editingData ? "Simpan Perubahan" : "Buat Paket"}
                 </button>
               </div>

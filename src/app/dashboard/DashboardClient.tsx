@@ -346,7 +346,7 @@ export default function DashboardClient({
                               {item.judul}
                             </span>
                             {item.is_penting && (
-                              <span className="badge inline-block bg-emas text-hijau-900 text-[9.5px] font-extrabold px-2 py-0.5 rounded-full uppercase shrink-0">
+                              <span className="badge inline-block bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 text-[8.5px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shadow-[0_2px_8px_-1px_rgba(201,162,75,0.4)] border border-emas/30 shrink-0">
                                 PENTING
                               </span>
                             )}

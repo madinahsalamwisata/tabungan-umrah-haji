@@ -7,7 +7,7 @@ export default function Loading() {
           <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>
         </div>
         <div className="flex flex-col items-center">
-          <h3 className="text-lg font-semibold text-emerald-300 drop-shadow-md">Memuat Data...</h3>
+          <h3 className="text-lg font-semibold text-emerald-300 drop-shadow-md">Loading Data...</h3>
           <p className="text-sm text-emerald-100/80 animate-pulse mt-1 drop-shadow-sm">Mohon tunggu sebentar</p>
         </div>
       </div>

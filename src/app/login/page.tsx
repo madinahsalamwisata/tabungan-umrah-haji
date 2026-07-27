@@ -216,7 +216,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-emerald-50 flex flex-col justify-center py-12"><div className="text-center text-emerald-900">Memuat...</div></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-emerald-50 flex flex-col justify-center py-12"><div className="text-center text-emerald-900">Loading...</div></div>}>
       <LoginForm />
     </Suspense>
   );

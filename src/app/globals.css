@@ -27,8 +27,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-plus-jakarta-sans);
-  --font-display: var(--font-fraunces);
-  --font-serif: var(--font-fraunces);
+  --font-display: var(--font-plus-jakarta-sans);
+  --font-serif: var(--font-plus-jakarta-sans);
 
   /* Tailwind config mapping for our custom palette */
   --color-hijau-900: var(--hijau-900);

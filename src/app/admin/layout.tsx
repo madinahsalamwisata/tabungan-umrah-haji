@@ -193,7 +193,7 @@ export default function AdminLayout({
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
                 <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>
               </div>
-              <p className="text-sm font-medium text-emerald-300 animate-pulse">Memuat halaman...</p>
+              <p className="text-sm font-medium text-emerald-300 animate-pulse">Loading page...</p>
             </div>
           </div>
         )}

@@ -95,7 +95,7 @@ export default function DashboardLayout({
           <img 
             src="/ms-wisata-new-logo.png" 
             alt="MS Wisata Logo" 
-            className="w-[42px] h-[42px] rounded-xl bg-white/10 p-1 object-contain shrink-0 border border-white/15" 
+            className="w-[42px] h-[42px] object-contain shrink-0" 
           />
           <div className="text-left flex flex-col justify-center">
             <h1 className="text-sm font-bold text-white leading-tight">
@@ -416,7 +416,7 @@ export default function DashboardLayout({
                 <div className="absolute inset-0 rounded-full border-2 border-emerald-800"></div>
                 <div className="absolute inset-0 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin"></div>
               </div>
-              <p className="text-xs font-bold text-white tracking-wide animate-pulse">Memuat...</p>
+              <p className="text-xs font-bold text-white tracking-wide animate-pulse">Loading...</p>
             </div>
           </div>
         )}

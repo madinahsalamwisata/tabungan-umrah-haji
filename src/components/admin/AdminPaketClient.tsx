@@ -361,7 +361,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-7 animate-in zoom-in-95 duration-200 custom-scrollbar text-left">
+          <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200 custom-scrollbar text-left">
             <h2 className="text-base font-bold text-teks-900 mb-5 border-b border-garis pb-3">
               {editingData ? "Edit Paket" : "Buat Paket Baru"}
             </h2>

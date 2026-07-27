@@ -194,7 +194,7 @@ export default function DashboardClient({
             Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
           </p>
           <div class="border-t border-gray-100 my-3"></div>
-          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-left" style="text-align: left; scrollbar-width: thin;">
+          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">
             ${cleanKonten}
           </div>
           <div class="border-t border-gray-100 my-3.5"></div>

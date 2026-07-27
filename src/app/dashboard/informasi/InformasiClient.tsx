@@ -20,25 +20,46 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
   };
 
   const showDetail = (item: any) => {
+    const cleanKonten = item.konten ? item.konten.split('\n').map((line: string) => line.trim()).join('\n') : "";
+
     Swal.fire({
-      title: item.judul,
+      showCloseButton: true,
+      showConfirmButton: false,
+      background: '#ffffff',
+      backdrop: 'rgba(0,0,0,0.5)',
       html: `
-        <div class="text-xs text-emerald-800 mb-4 pb-3 border-b border-gray-200 text-left flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
-          ${item.is_penting ? '<span class="bg-yellow-500/20 border border-yellow-500/30 text-yellow-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Penting</span>' : ''}
-        </div>
-        <div class="text-sm text-gray-700 text-left whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style="scrollbar-width: thin;">
-          ${item.konten}
+        <div class="text-left p-6 sm:p-7">
+          <div class="flex items-center gap-2 flex-wrap mb-1.5">
+            <h3 class="text-base font-extrabold text-gray-900 leading-snug text-left" style="text-align: left;">${item.judul}</h3>
+            ${item.is_penting ? '<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border bg-gradient-to-r from-yellow-500 to-yellow-600 text-white border-yellow-500/30">Penting</span>' : ''}
+          </div>
+          <p class="text-[10px] text-gray-400 mt-1 text-left" style="text-align: left;">
+            Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
+          </p>
+          <div class="border-t border-gray-100 my-3"></div>
+          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">
+            ${cleanKonten}
+          </div>
+          <div class="border-t border-gray-100 my-3.5"></div>
+          <div class="flex justify-end">
+            <button class="tutup-btn-custom bg-[#146349] hover:bg-[#0B3D30] text-white rounded-xl text-xs font-bold px-5 py-2.5 transition-colors shadow-md cursor-pointer">
+              Tutup
+            </button>
+          </div>
         </div>
       `,
-      confirmButtonColor: '#059669',
-      confirmButtonText: 'Tutup',
+      didOpen: () => {
+        const btn = Swal.getHtmlContainer()?.querySelector('.tutup-btn-custom');
+        if (btn) {
+          btn.addEventListener('click', () => {
+            Swal.close();
+          });
+        }
+      },
       customClass: {
-        popup: 'rounded-3xl border border-gray-200 shadow-2xl backdrop-blur-xl',
-        title: 'text-left text-xl text-emerald-800 font-bold',
-        htmlContainer: 'text-left !m-0 !mt-2',
-        confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-8'
+        popup: 'rounded-[22px] border border-gray-100 shadow-2xl !p-0 text-left',
+        htmlContainer: '!m-0 !p-0',
+        closeButton: 'text-gray-300 hover:text-gray-900 !outline-none'
       }
     });
   };

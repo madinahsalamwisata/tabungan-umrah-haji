@@ -222,8 +222,8 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
         </button>
       </div>
 
-      {/* Main Grid Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Main Flex Column Content */}
+      <div className="flex flex-col gap-6">
         {activeTab === 'pasti' ? (
           <>
             {paketPasti.map((item) => (

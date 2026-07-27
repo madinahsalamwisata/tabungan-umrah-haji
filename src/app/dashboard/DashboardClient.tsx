@@ -179,32 +179,33 @@ export default function DashboardClient({
   const showPengumumanPopup = (item: any) => {
     Swal.fire({
       showCloseButton: true,
-      showConfirmButton: true,
-      confirmButtonText: 'Tutup',
-      confirmButtonColor: '#146349',
+      showConfirmButton: false,
       background: '#ffffff',
       backdrop: 'rgba(0,0,0,0.5)',
       html: `
-        <div class="text-left mt-1">
-          <div class="flex items-center gap-2 flex-wrap mb-1">
-            <h3 class="text-base font-bold text-gray-900 leading-snug">${item.judul}</h3>
+        <div class="text-left p-6 sm:p-7">
+          <div class="flex items-center gap-2 flex-wrap mb-1.5">
+            <h3 class="text-base font-extrabold text-gray-900 leading-snug text-left" style="text-align: left;">${item.judul}</h3>
             ${item.is_penting ? '<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border bg-gradient-to-r from-yellow-500 to-yellow-600 text-white border-yellow-500/30">Penting</span>' : ''}
           </div>
-          <p class="text-[10px] text-gray-400 mt-1">
+          <p class="text-[10px] text-gray-400 mt-1 text-left" style="text-align: left;">
             Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
           </p>
           <div class="border-t border-gray-100 my-3"></div>
-          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[300px] overflow-y-auto pr-1" style="scrollbar-width: thin;">
+          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-left" style="text-align: left; scrollbar-width: thin;">
             ${item.konten}
           </div>
-          <div class="border-t border-gray-100 mt-3.5 pb-2"></div>
+          <div class="border-t border-gray-100 my-3.5"></div>
+          <div class="flex justify-end">
+            <button onclick="Swal.close()" class="bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold px-5 py-2.5 transition-colors shadow-md">
+              Tutup
+            </button>
+          </div>
         </div>
       `,
       customClass: {
-        popup: 'rounded-[22px] border border-gray-100 shadow-2xl p-5 text-left',
+        popup: 'rounded-[22px] border border-gray-100 shadow-2xl !p-0 text-left',
         htmlContainer: '!m-0 !p-0',
-        confirmButton: 'bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-semibold px-4 py-2 transition-colors shadow-md float-right mr-1 mb-1',
-        actions: 'w-full !m-0 !p-0 flex justify-end',
         closeButton: 'text-gray-300 hover:text-gray-900 !outline-none'
       }
     });

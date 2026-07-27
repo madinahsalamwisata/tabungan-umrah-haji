@@ -177,6 +177,8 @@ export default function DashboardClient({
     }
   };
   const showPengumumanPopup = (item: any) => {
+    const cleanKonten = item.konten ? item.konten.split('\n').map((line: string) => line.trim()).join('\n') : "";
+
     Swal.fire({
       showCloseButton: true,
       showConfirmButton: false,
@@ -193,16 +195,24 @@ export default function DashboardClient({
           </p>
           <div class="border-t border-gray-100 my-3"></div>
           <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-left" style="text-align: left; scrollbar-width: thin;">
-            ${item.konten}
+            ${cleanKonten}
           </div>
           <div class="border-t border-gray-100 my-3.5"></div>
           <div class="flex justify-end">
-            <button onclick="Swal.close()" class="bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold px-5 py-2.5 transition-colors shadow-md">
+            <button class="tutup-btn-custom bg-[#146349] hover:bg-[#0B3D30] text-white rounded-xl text-xs font-bold px-5 py-2.5 transition-colors shadow-md cursor-pointer">
               Tutup
             </button>
           </div>
         </div>
       `,
+      didOpen: () => {
+        const btn = Swal.getHtmlContainer()?.querySelector('.tutup-btn-custom');
+        if (btn) {
+          btn.addEventListener('click', () => {
+            Swal.close();
+          });
+        }
+      },
       customClass: {
         popup: 'rounded-[22px] border border-gray-100 shadow-2xl !p-0 text-left',
         htmlContainer: '!m-0 !p-0',

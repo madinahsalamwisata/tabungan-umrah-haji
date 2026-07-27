@@ -200,11 +200,11 @@ export default function DashboardLayout({
                   </button>
                   <div className={`overflow-hidden transition-all duration-200 ease-in-out pl-[30px] space-y-0.5 ${isOpen ? "max-h-40 mt-0.5 mb-1.5" : "max-h-0"}`}>
                     <Link
-                      href="/dashboard/paket"
+                      href="/dashboard/paket/umrah"
                       prefetch={true}
-                      onClick={() => { if (pathname !== "/dashboard/paket") setIsNavigating(true); }}
+                      onClick={() => { if (pathname !== "/dashboard/paket/umrah") setIsNavigating(true); }}
                       className={`flex items-center py-2 px-3 text-[12.5px] font-semibold rounded-xl transition-all duration-200 ${
-                        pathname === "/dashboard/paket"
+                        pathname === "/dashboard/paket/umrah"
                           ? "text-hijau-900 bg-hijau-100 font-bold"
                           : "text-teks-500 hover:text-teks-900 hover:bg-krem"
                       }`}

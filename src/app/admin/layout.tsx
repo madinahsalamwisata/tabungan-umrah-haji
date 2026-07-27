@@ -3,7 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 export default function AdminLayout({
   children,
@@ -15,8 +15,23 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [counts, setCounts] = useState({ jamaah: 0, pengumuman: 0 });
 
-  // Matikan loading saat pathname berubah (selesai navigasi)
+  // Get dynamic sidebar menu badge counts
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetch("/api/admin/counts")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && typeof data.jamaah === "number") {
+            setCounts(data);
+          }
+        })
+        .catch((err) => console.error("Error fetching counts:", err));
+    }
+  }, [status, pathname]);
+
+  // Turn off loading navigation state when route finishes
   useEffect(() => {
     setIsNavigating(false);
   }, [pathname]);
@@ -28,12 +43,37 @@ export default function AdminLayout({
   }, [status]);
 
   const navigation = [
-    { name: "Admin Dashboard", href: "/admin", icon: HomeIcon },
-    { name: "Data Jamaah", href: "/admin/jamaah", icon: UsersIcon },
-    { name: "Pengumuman", href: "/admin/pengumuman", icon: MegaphoneIcon },
-    { name: "Manajemen Paket", href: "/admin/paket", icon: MapIcon },
+    { 
+      name: "Admin Dashboard", 
+      href: "/admin", 
+      icon: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+      )
+    },
+    { 
+      name: "Data Jamaah", 
+      href: "/admin/jamaah", 
+      countKey: "jamaah" as const,
+      icon: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      )
+    },
+    { 
+      name: "Pengumuman", 
+      href: "/admin/pengumuman", 
+      countKey: "pengumuman" as const,
+      icon: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      )
+    },
+    { 
+      name: "Manajemen Paket", 
+      href: "/admin/paket", 
+      icon: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      )
+    },
   ];
-
 
   if (status === "loading" || session?.user?.email !== "madinahsalamwisata@gmail.com") {
     return (
@@ -44,219 +84,197 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="fixed inset-0 flex text-white font-sans overflow-hidden">
-      <div className="fixed inset-0 z-0 bg-black">
-        <img 
-          src="/images/bg/madinah_thumbnail.webp" 
-          alt="Background Madinah" 
-          className="w-full h-full object-cover opacity-80" 
-        />
-      </div>
-
+    <div className="min-h-screen flex bg-krem text-teks-900 font-sans overflow-hidden">
       {/* Sidebar for desktop */}
-      <div tabIndex={0} className="peer group outline-none hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-200 ease-in-out md:w-20 hover:md:w-64 focus-within:md:w-64 z-30">
-        <div className="flex-1 flex flex-col min-h-0 relative overflow-hidden shadow-2xl border-r border-white/10 bg-gradient-to-br from-emerald-900/60 to-black/60 backdrop-blur-xl">
-          <div className="relative z-10 flex flex-col flex-1 min-h-0">
-            <div className="flex flex-row items-center pt-5 pb-5 flex-shrink-0 px-4 border-b border-white/10 bg-white/10 backdrop-blur-sm transition-all duration-200 justify-center group-hover:justify-start group-focus-within:justify-start group-hover:gap-3 group-focus-within:gap-3">
-              <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-10 group-hover:h-14 group-focus-within:h-14 w-auto drop-shadow-md shrink-0 transition-all duration-200" />
-              <div className="text-left flex flex-col justify-center overflow-hidden transition-all duration-200 ease-in-out max-w-0 opacity-0 group-hover:max-w-[200px] group-focus-within:max-w-[200px] group-hover:opacity-100 group-focus-within:opacity-100">
-                <h1 className="text-sm font-extrabold text-white drop-shadow-sm leading-tight w-[140px]">
-                  Admin Panel
-                </h1>
-                <p className="text-[10px] font-bold text-emerald-400 drop-shadow-sm mt-0.5 w-[140px] uppercase tracking-wider">
-                  Madinah Salam Wisata
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-col flex-1 min-h-0">
-              <nav className="custom-scrollbar overflow-y-auto flex-1 px-2 py-6 space-y-2">
-                {navigation.map((item) => {
-                  const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href + '/'));
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href!}
-                      prefetch={true}
-                      onClick={(e) => {
-                        if (pathname !== item.href) setIsNavigating(true);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`group flex items-center py-3 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden backdrop-blur-sm px-0 justify-center group-hover:px-4 group-focus-within:px-4 group-hover:justify-start group-focus-within:justify-start ${
-                        isActive
-                          ? "text-white bg-white/20 shadow-md font-bold"
-                          : "text-gray-200 bg-white/5 hover:bg-white/10 hover:text-white"
-                      }`}
-                      title={item.name}
-                    >
-                      <item.icon
-                        className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
-                          isActive ? "text-white" : "text-gray-300 group-hover:text-white group-focus-within:text-white"
-                        }`}
-                        aria-hidden="true"
-                      />
-                      <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap w-0 opacity-0 ml-0 group-hover:w-[150px] group-focus-within:w-[150px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3 text-left">
-                        {item.name}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <div className="flex-shrink-0 p-4 border-t border-white/10 bg-black/20 backdrop-blur-md">
-                <div className="flex items-center justify-center group-hover:justify-start group-focus-within:justify-start group-hover:mb-4 group-focus-within:mb-4">
-                  <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-bold uppercase drop-shadow-md overflow-hidden shrink-0">
-                    <span className="text-sm">A</span>
-                  </div>
-                  <div className="truncate transition-all duration-200 ease-in-out overflow-hidden max-w-0 opacity-0 ml-0 group-hover:max-w-[200px] group-focus-within:max-w-[200px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-3 group-focus-within:ml-3">
-                    <p className="text-sm font-medium text-white truncate drop-shadow-md">Administrator</p>
-                    <p className="text-xs font-medium text-gray-300 truncate drop-shadow-md">admin@mswisata.com</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => signOut({ callbackUrl: "/login" })}
-                  className="w-full flex items-center justify-center bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md text-red-100 hover:text-white border border-red-500/30 rounded-xl text-sm font-bold transition-all shadow-sm p-2 mt-4 group-hover:px-4 group-focus-within:px-4 group-hover:py-2.5 group-focus-within:py-2.5 group-hover:mt-0 group-focus-within:mt-0"
-                  title="Keluar"
-                >
-                  <ArrowLeftOnRectangleIcon className="w-5 h-5" />
-                  <span className="transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap max-w-0 opacity-0 ml-0 group-hover:max-w-[100px] group-focus-within:max-w-[100px] group-hover:opacity-100 group-focus-within:opacity-100 group-hover:ml-2 group-focus-within:ml-2">
-                    Keluar Admin
-                  </span>
-                </button>
-              </div>
-            </div>
+      <aside className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:w-[264px] z-30 bg-white border-r border-garis">
+        {/* Sidebar Head */}
+        <div className="bg-gradient-to-br from-hijau-900 to-hijau-700 px-5 py-[26px] flex items-center gap-3 shrink-0">
+          <img 
+            src="/ms-wisata-new-logo.png" 
+            alt="MS Wisata Logo" 
+            className="w-[42px] h-[42px] object-contain shrink-0" 
+          />
+          <div className="text-left flex flex-col justify-center">
+            <h1 className="text-sm font-bold text-white leading-tight">
+              Admin Panel
+            </h1>
+            <p className="text-[10.5px] font-bold text-white/60 mt-0.5 uppercase tracking-wider">
+              Madinah Salam Wisata
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 w-full z-40">
-        <div className="flex items-center justify-between bg-black/80 backdrop-blur-xl h-16 px-4 shadow-md border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <img src="/images/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
-            <div className="flex flex-col">
-              <h1 className="text-sm font-bold text-white drop-shadow-md leading-tight">Admin Panel</h1>
+        {/* Sidebar Body */}
+        <div className="flex-1 flex flex-col min-h-0 text-slate-800 overflow-hidden">
+          {/* Role Chip */}
+          <div className="px-5 pt-4 shrink-0">
+            <span className="inline-flex items-center gap-1.5 bg-hijau-100 text-hijau-800 text-[10.5px] font-extrabold tracking-wide px-3 py-1 rounded-full">
+              <svg className="w-3.5 h-3.5 stroke-hijau-800 stroke-[2.2] fill-none" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Super Admin
+            </span>
+          </div>
+
+          <nav className="flex-1 overflow-y-auto px-4 py-4 pr-1 custom-scrollbar space-y-1 pb-4">
+            <div className="text-[10.5px] uppercase tracking-wider text-teks-300 font-extrabold mt-2 mb-2 mx-3">Menu Utama</div>
+            {navigation.map((item) => {
+              const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href + '/'));
+              const count = item.countKey ? counts[item.countKey] : 0;
+              
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  prefetch={true}
+                  onClick={() => { if (pathname !== item.href) setIsNavigating(true); }}
+                  className={`group flex items-center py-2.5 px-3 text-[13.5px] font-semibold rounded-xl transition-all duration-200 gap-3 ${
+                    isActive
+                      ? "text-hijau-900 bg-hijau-100 font-bold"
+                      : "text-teks-500 hover:bg-krem hover:text-teks-900"
+                  }`}
+                >
+                  <item.icon className={`h-[18px] w-[18px] flex-shrink-0 stroke-2 fill-none transition-colors duration-200 ${isActive ? "stroke-hijau-800" : "stroke-teks-300 group-hover:stroke-teks-900"}`} />
+                  <span className="font-sans flex-1 text-left">{item.name}</span>
+                  {count > 0 && (
+                    <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full shrink-0 ${isActive ? "bg-emas text-hijau-900" : "bg-hijau-900 text-white"}`}>
+                      {count}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Sidebar Foot */}
+          <div className="p-4 border-t border-garis shrink-0 mt-auto bg-white">
+            <div className="user-card flex items-center gap-3 p-2.5 rounded-2xl bg-krem mb-3 border border-garis/60">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold text-white text-base bg-gradient-to-br from-hijau-700 to-hijau-900 shrink-0">
+                {session?.user?.name?.[0] || "A"}
+              </div>
+              <div className="truncate text-left flex-1">
+                <div className="uname text-xs font-bold text-teks-900 leading-snug truncate">{session?.user?.name || "Administrator"}</div>
+                <div className="uemail text-[10px] text-teks-500 mt-0.5 truncate">{session?.user?.email || "admin@mswisata.com"}</div>
+              </div>
             </div>
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-[13px] font-bold text-[#B3423A] hover:bg-[#FBEAE8] transition-colors text-left cursor-pointer"
+            >
+              <svg className="w-4 h-4 stroke-[#B3423A] stroke-[2.1] fill-none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Keluar Admin
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content Pane */}
+      <div className="flex-1 flex flex-col min-w-0 md:pl-[264px] relative z-10 min-h-screen">
+        {/* Topbar */}
+        <header className="h-[76px] flex-shrink-0 bg-white border-b border-garis flex items-center justify-between px-6 sm:px-8 sticky top-0 z-20">
+          <div className="search flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-72 sm:w-80">
+            <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input 
+              type="text" 
+              placeholder="Cari jamaah, paket, atau pengumuman..." 
+              className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
+            />
+          </div>
+          <div className="top-right flex items-center gap-4">
+            <div className="bell w-10 h-10 rounded-full bg-hijau-100 flex items-center justify-center relative cursor-pointer hover:bg-hijau-100/80 transition-colors">
+              <svg className="w-[18px] h-[18px] stroke-hijau-800 stroke-2 fill-none" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <div className="dot absolute top-2.5 right-2.5 w-[7px] h-[7px] rounded-full bg-emas border-1.5 border-white"></div>
+            </div>
+            <div className="user-chip flex items-center gap-2.5 cursor-pointer">
+              <div className="w-[38px] h-[38px] rounded-full bg-gradient-to-br from-hijau-700 to-hijau-900 flex items-center justify-center font-serif font-bold text-white text-[13px] shrink-0">
+                {session?.user?.name?.[0] || "A"}
+              </div>
+              <div className="text-left hidden sm:block">
+                <div className="uname text-xs font-bold text-teks-900 leading-tight">{session?.user?.name || "Administrator"}</div>
+                <div className="urole text-[10px] text-teks-500 mt-0.5">Super Admin</div>
+              </div>
+              <svg className="w-3.5 h-3.5 text-teks-300 stroke-[2.4]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+            </div>
+          </div>
+        </header>
+
+        {/* Mobile Header overlay */}
+        <div className="md:hidden bg-gradient-to-br from-hijau-900 to-hijau-700 h-16 flex items-center justify-between px-4 shadow-md sticky top-0 z-40">
+          <div className="flex items-center gap-3">
+            <img src="/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
+            <h1 className="text-sm font-bold text-white">Admin Panel</h1>
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-white hover:text-gray-200 p-2"
           >
-            {mobileMenuOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
+            {mobileMenuOpen ? (
+              <svg className="w-6 h-6 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            ) : (
+              <svg className="w-6 h-6 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+            )}
           </button>
         </div>
         
         {mobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-black/80 backdrop-blur-2xl shadow-2xl border-b border-white/10">
-            <div className="px-3 pt-4 pb-6 space-y-3">
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-md shadow-2xl border-b border-garis z-30 transition-all">
+            <div className="px-4 py-4 space-y-2">
               {navigation.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href + '/'));
+                const count = item.countKey ? counts[item.countKey] : 0;
+                
                 return (
                   <Link
                     key={item.name}
-                    href={item.href!}
+                    href={item.href}
                     onClick={() => {
                       if (pathname !== item.href) setIsNavigating(true);
                       setMobileMenuOpen(false);
                     }}
                     prefetch={true}
-                    className={`${
+                    className={`flex items-center py-3 px-4 rounded-xl text-sm font-semibold border transition-all ${
                       isActive
-                        ? "bg-white/20 text-white font-bold border-white/30 shadow-md scale-[0.98]"
-                        : "bg-black/20 text-gray-200 font-medium hover:bg-black/80 hover:text-white border-white/10 hover:shadow-md"
-                    } px-4 py-3 rounded-xl text-base flex items-center gap-3 transition-all backdrop-blur-sm border drop-shadow-sm active:scale-95`}
+                        ? "bg-hijau-100 text-hijau-900 border-hijau-200"
+                        : "bg-white text-teks-500 hover:bg-krem border-garis"
+                    }`}
                   >
-                    <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-300"}`} />
-                    <span className={isActive ? "font-bold" : "font-medium"}>{item.name}</span>
+                    <item.icon className={`h-5 w-5 mr-3 stroke-2 fill-none ${isActive ? "stroke-hijau-800" : "stroke-teks-300"}`} />
+                    <span className="flex-1 text-left">{item.name}</span>
+                    {count > 0 && (
+                      <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shrink-0 ${isActive ? "bg-emas text-hijau-900" : "bg-hijau-900 text-white"}`}>
+                        {count}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full text-left mt-4 text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 active:scale-95 transition-all"
+                className="w-full text-left mt-4 text-[#B3423A] bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3 transition-colors"
               >
-                <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+                <svg className="w-5 h-5 stroke-[#B3423A] stroke-[2.1] fill-none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                 Keluar Admin
               </button>
             </div>
           </div>
         )}
-      </div>
 
-      {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 pt-16 md:pt-0 transition-all duration-200 ease-in-out md:ml-20 peer-hover:md:ml-64 peer-focus-within:md:ml-64 relative z-10 h-full">
         {/* Instant Loading Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
-            <div className="flex flex-col items-center gap-3 sm:gap-4 p-5 sm:p-8 bg-black/80 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl">
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12">
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-900/50"></div>
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin"></div>
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm px-4">
+            <div className="flex items-center gap-3 py-3 px-5 bg-emerald-950 rounded-full shadow-2xl border border-emerald-800">
+              <div className="relative w-5 h-5">
+                <div className="absolute inset-0 rounded-full border-2 border-emerald-800"></div>
+                <div className="absolute inset-0 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin"></div>
               </div>
-              <p className="text-sm font-medium text-emerald-300 animate-pulse">Loading page...</p>
+              <p className="text-xs font-bold text-white tracking-wide animate-pulse">Loading...</p>
             </div>
           </div>
         )}
-        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none p-4 sm:p-6 lg:p-8">
+
+        {/* Page Content */}
+        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none p-6 sm:p-8">
           {children}
         </main>
       </div>
     </div>
-  );
-}
-
-function HomeIcon(props: any) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-    </svg>
-  );
-}
-
-function UsersIcon(props: any) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-    </svg>
-  );
-}
-
-function Bars3Icon(props: any) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-    </svg>
-  );
-}
-
-function XMarkIcon(props: any) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  );
-}
-
-function ArrowLeftOnRectangleIcon(props: any) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-    </svg>
-  );
-}
-
-function MegaphoneIcon(props: any) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-    </svg>
-  );
-}
-
-function MapIcon(props: any) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-    </svg>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 type PengumumanData = {
   id: string;
@@ -12,8 +13,29 @@ type PengumumanData = {
 
 export default function AdminPengumumanClient({ initialData }: { initialData: PengumumanData[] }) {
   const [data, setData] = useState<PengumumanData[]>(initialData);
+  const [search, setSearch] = useState("");
+  const [filterType, setFilterType] = useState<"semua" | "penting" | "biasa">("semua");
+  
+  // Modals & detail popup state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingData, setEditingData] = useState<PengumumanData | null>(null);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<PengumumanData | null>(null);
+
+  // Helper Swal Notifications
+  const showNotification = (title: string, text: string, icon: 'success' | 'error' | 'warning') => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+      confirmButtonColor: '#146349',
+      customClass: {
+        popup: 'rounded-2xl border border-garis shadow-2xl',
+        title: 'text-base text-hijau-900 font-bold',
+        htmlContainer: 'text-xs text-teks-500',
+        confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2'
+      }
+    });
+  };
 
   const handleOpenAdd = () => {
     setEditingData(null);
@@ -26,16 +48,36 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Yakin ingin menghapus pengumuman ini?")) {
+    const result = await Swal.fire({
+      title: 'Hapus Pengumuman?',
+      text: "Apakah Anda yakin ingin menghapus pengumuman ini secara permanen?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#B3423A',
+      cancelButtonColor: '#94A39C',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal',
+      customClass: {
+        popup: 'rounded-2xl border border-garis shadow-2xl',
+        title: 'text-base text-[#B3423A] font-bold',
+        htmlContainer: 'text-xs text-teks-500',
+        confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2 text-sm',
+        cancelButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2 text-sm',
+      }
+    });
+
+    if (result.isConfirmed) {
       try {
         const res = await fetch(`/api/admin/pengumuman?id=${id}`, { method: 'DELETE' });
         if (res.ok) {
           setData(prev => prev.filter(item => item.id !== id));
+          setSelectedAnnouncement(null);
+          showNotification('Berhasil', 'Pengumuman berhasil dihapus!', 'success');
         } else {
-          alert("Gagal menghapus pengumuman.");
+          showNotification('Gagal', 'Gagal menghapus pengumuman.', 'error');
         }
       } catch (e) {
-        alert("Terjadi kesalahan.");
+        showNotification('Gagal', 'Terjadi kesalahan sistem.', 'error');
       }
     }
   };
@@ -66,79 +108,261 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
           setData(prev => [result, ...prev]);
         }
         setIsModalOpen(false);
+        showNotification('Berhasil', 'Pengumuman berhasil disebarkan!', 'success');
       } else {
-        alert("Gagal menyimpan data.");
+        showNotification('Gagal', 'Gagal menyimpan data pengumuman.', 'error');
       }
     } catch (e) {
-      alert("Terjadi kesalahan.");
+      showNotification('Gagal', 'Terjadi kesalahan sistem.', 'error');
     }
   };
 
+  // Filter & Search logic
+  const filteredData = data.filter((item) => {
+    const matchesSearch = 
+      item.judul.toLowerCase().includes(search.toLowerCase()) || 
+      item.konten.toLowerCase().includes(search.toLowerCase());
+    
+    if (filterType === "penting") {
+      return matchesSearch && item.is_penting;
+    }
+    if (filterType === "biasa") {
+      return matchesSearch && !item.is_penting;
+    }
+    return matchesSearch;
+  });
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-end">
+      {/* Top Action Bar */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          {/* Search Box matching the Header style */}
+          <div className="search flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full sm:w-72">
+            <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input 
+              type="text" 
+              placeholder="Cari pengumuman..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
+            />
+          </div>
+
+          {/* Filter Dropdown */}
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value as any)}
+            className="bg-white border border-garis rounded-xl p-2 px-3 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 h-9 font-semibold"
+          >
+            <option value="semua">Semua Prioritas</option>
+            <option value="penting">Penting</option>
+            <option value="biasa">Biasa</option>
+          </select>
+        </div>
+        
         <button 
           onClick={handleOpenAdd}
-          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-lg"
+          className="flex items-center gap-2 bg-hijau-900 hover:bg-hijau-800 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-lg shrink-0"
         >
-          <svg fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
+          <svg className="w-4 h-4 stroke-white stroke-[2.2] fill-none" viewBox="0 0 24 24"><path d="M12 4.5v15m7.5-7.5h-15" /></svg>
           Buat Pengumuman Baru
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {data.map(item => (
-          <div key={item.id} className="relative rounded-2xl p-6 shadow-xl border bg-black/80 backdrop-blur-xl border-white/10">
-            {item.is_penting && (
-              <span className="absolute top-4 right-4 bg-yellow-500/20 text-yellow-500 text-xs px-2 py-1 rounded-full font-bold border border-yellow-500/30">
-                Penting
-              </span>
-            )}
-            <h3 className="text-xl font-bold text-emerald-900 pr-20">{item.judul}</h3>
-            <p className="text-xs text-gray-500 mt-1 mb-4">{new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}</p>
-            <p className="text-sm text-emerald-800 line-clamp-3">{item.konten}</p>
-            
-            <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/10">
-              <button onClick={() => handleOpenEdit(item)} className="text-blue-400 hover:text-blue-300 text-sm font-semibold">Edit</button>
-              <button onClick={() => handleDelete(item.id)} className="text-red-400 hover:text-red-300 text-sm font-semibold">Hapus</button>
-            </div>
-          </div>
-        ))}
-        {data.length === 0 && (
-          <div className="col-span-1 md:col-span-2 text-center py-12 text-gray-500 italic bg-white/5 rounded-2xl border border-white/10">
-            Belum ada pengumuman yang disebar.
-          </div>
-        )}
+      {/* Clean White Table Container */}
+      <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead className="bg-gradient-to-r from-hijau-900 to-hijau-800 text-white">
+              <tr>
+                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Info Informasi</th>
+                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Isi Informasi</th>
+                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Status</th>
+                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-garis">
+              {filteredData.map((item) => (
+                <tr 
+                  key={item.id} 
+                  className="hover:bg-krem/40 transition-colors cursor-pointer"
+                  onClick={() => setSelectedAnnouncement(item)}
+                >
+                  <td className="px-6 py-4">
+                    <div className="font-bold text-teks-900 text-sm max-w-[200px] truncate" title={item.judul}>
+                      {item.judul}
+                    </div>
+                    <div className="text-teks-500 text-[10px] mt-0.5">
+                      {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'medium' })}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-left">
+                    <div className="text-teks-500 max-w-[400px] truncate" title={item.konten}>
+                      {item.konten}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-left">
+                    <span className={`status-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-extrabold uppercase tracking-wide border ${
+                      item.is_penting 
+                        ? 'bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 border-emas/30' 
+                        : 'bg-krem text-teks-500 border-garis'
+                    }`}>
+                      {item.is_penting ? 'Penting' : 'Biasa'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-center" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center justify-center gap-2">
+                      <button 
+                        onClick={() => handleOpenEdit(item)}
+                        className="p-2 bg-hijau-100 hover:bg-hijau-200 text-hijau-900 rounded-lg transition-colors border border-garis"
+                        title="Edit Pengumuman"
+                      >
+                        <svg className="w-4 h-4 stroke-hijau-900 stroke-2 fill-none" viewBox="0 0 24 24"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/></svg>
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(item.id)}
+                        className="p-2 bg-[#FBEAE8] hover:bg-[#FBEAE8]/80 text-[#B3423A] rounded-lg transition-colors border border-red-100"
+                        title="Hapus Pengumuman"
+                      >
+                        <svg className="w-4 h-4 stroke-[#B3423A] stroke-2 fill-none" viewBox="0 0 24 24"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {filteredData.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="px-6 py-12 text-center text-teks-300 italic">
+                    Tidak ada pengumuman yang ditemukan.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
+      {/* ----------------- DETAIL POPUP ----------------- */}
+      {selectedAnnouncement && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSelectedAnnouncement(null)}></div>
+          
+          <div className="relative w-full max-w-lg bg-white border border-garis rounded-[22px] shadow-2xl p-6 animate-in zoom-in-95 duration-200 text-left flex flex-col max-h-[80vh]">
+            <div className="flex justify-between items-start border-b border-garis pb-3 mb-4 shrink-0">
+              <div className="text-left pr-6">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-base font-bold text-teks-900">{selectedAnnouncement.judul}</h3>
+                  <span className={`status-pill inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border ${
+                    selectedAnnouncement.is_penting 
+                      ? 'bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 border-emas/30' 
+                      : 'bg-krem text-teks-500 border-garis'
+                  }`}>
+                    {selectedAnnouncement.is_penting ? 'Penting' : 'Biasa'}
+                  </span>
+                </div>
+                <p className="text-[10px] text-teks-500 mt-1">
+                  Disiarkan pada {new Date(selectedAnnouncement.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+                </p>
+              </div>
+              <button 
+                onClick={() => setSelectedAnnouncement(null)}
+                className="text-teks-300 hover:text-teks-900 p-1"
+              >
+                <svg className="w-5 h-5 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+
+            {/* Scrollable Content Body */}
+            <div className="overflow-y-auto custom-scrollbar flex-1 pr-1 max-h-[300px]">
+              <p className="text-xs text-teks-900 leading-relaxed whitespace-pre-wrap">
+                {selectedAnnouncement.konten}
+              </p>
+            </div>
+
+            {/* Footer with Edit and Delete */}
+            <div className="flex justify-end gap-2.5 mt-6 pt-4 border-t border-garis shrink-0">
+              <button 
+                type="button" 
+                onClick={() => {
+                  handleOpenEdit(selectedAnnouncement);
+                  setSelectedAnnouncement(null);
+                }} 
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-hijau-900 hover:bg-hijau-800 transition-colors shadow-md flex items-center gap-1.5"
+              >
+                <svg className="w-4 h-4 stroke-white stroke-2 fill-none" viewBox="0 0 24 24"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/></svg>
+                Edit
+              </button>
+              <button 
+                type="button" 
+                onClick={() => handleDelete(selectedAnnouncement.id)} 
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-[#B3423A] bg-[#FBEAE8] hover:bg-[#FBEAE8]/80 transition-colors border border-red-100 flex items-center gap-1.5"
+              >
+                <svg className="w-4 h-4 stroke-[#B3423A] stroke-2 fill-none" viewBox="0 0 24 24"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ----------------- CREATE/EDIT MODAL ----------------- */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-lg bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200">
-            <h2 className="text-xl font-bold text-emerald-900 mb-6 border-b border-emerald-100 pb-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
+          
+          <div className="relative w-full max-w-lg bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-7 animate-in zoom-in-95 duration-200 text-left">
+            <h2 className="text-base font-bold text-teks-900 mb-5 border-b border-garis pb-3">
               {editingData ? "Edit Pengumuman" : "Buat Pengumuman Baru"}
             </h2>
+            
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Judul Pengumuman</label>
-                <input name="judul" defaultValue={editingData?.judul} required className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Contoh: Pembaruan Jadwal Manasik" />
+                <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Judul Pengumuman</label>
+                <input 
+                  name="judul" 
+                  defaultValue={editingData?.judul} 
+                  required 
+                  className="w-full bg-krem border border-garis rounded-xl px-3 py-2.5 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                  placeholder="Contoh: Pembaruan Jadwal Manasik" 
+                />
               </div>
+              
               <div>
-                <label className="block text-xs font-bold text-emerald-900 uppercase tracking-wider font-bold mb-1">Isi Pesan</label>
-                <textarea name="konten" defaultValue={editingData?.konten} required rows={5} className="w-full bg-black/80 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none" placeholder="Tuliskan isi pengumuman lengkap di sini..."></textarea>
-              </div>
-              <div className="flex items-center gap-2 mt-2">
-                <input type="checkbox" name="is_penting" id="is_penting" defaultChecked={editingData?.is_penting} className="w-4 h-4 rounded bg-black/80 border-white/10 text-emerald-500 focus:ring-emerald-500" />
-                <label htmlFor="is_penting" className="text-sm font-medium text-gray-300">Tandai sebagai Informasi Penting (Sorotan Kuning)</label>
+                <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Isi Pesan</label>
+                <textarea 
+                  name="konten" 
+                  defaultValue={editingData?.konten} 
+                  required 
+                  rows={6} 
+                  className="w-full bg-krem border border-garis rounded-xl px-3 py-2.5 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 resize-none" 
+                  placeholder="Tuliskan isi pengumuman lengkap di sini..."
+                ></textarea>
               </div>
 
-              <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-white/10">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-300 bg-white/5 hover:bg-white/10 transition-colors">
+              <div className="flex items-center gap-2 mt-2">
+                <input 
+                  type="checkbox" 
+                  name="is_penting" 
+                  id="is_penting" 
+                  defaultChecked={editingData?.is_penting} 
+                  className="w-4 h-4 rounded border-garis text-hijau-900 focus:ring-hijau-900" 
+                />
+                <label htmlFor="is_penting" className="text-xs font-semibold text-teks-900">Tandai sebagai Informasi Penting (Badge Emas)</label>
+              </div>
+
+              <div className="flex justify-end gap-2.5 mt-6 pt-4 border-t border-garis">
+                <button 
+                  type="button" 
+                  onClick={() => setIsModalOpen(false)} 
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-teks-500 bg-krem hover:bg-garis/30 transition-colors"
+                >
                   Batal
                 </button>
-                <button type="submit" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg">
+                <button 
+                  type="submit" 
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-hijau-900 hover:bg-hijau-800 transition-colors shadow-md"
+                >
                   {editingData ? "Simpan Perubahan" : "Sebarkan"}
                 </button>
               </div>

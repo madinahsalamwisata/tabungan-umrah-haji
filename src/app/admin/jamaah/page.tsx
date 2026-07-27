@@ -10,7 +10,10 @@ export default async function AdminJamaahPage() {
     include: {
       RencanaTabungan: {
         include: {
-          paket: true
+          paket: true,
+          RiwayatSetoran: {
+            orderBy: { tanggal_setor: "desc" }
+          }
         }
       }
     }
@@ -30,7 +33,20 @@ export default async function AdminJamaahPage() {
       id: rt.id,
       paket_nama: rt.paket?.nama_paket || rt.paket_snapshot_nama || "Paket Dihapus",
       status: rt.status,
-      total_biaya: Number(rt.total_biaya)
+      total_biaya: Number(rt.total_biaya),
+      setoran_per_bulan: Number(rt.setoran_per_bulan),
+      periode_bulan: rt.periode_bulan,
+      tanggal_mulai: rt.tanggal_mulai.toISOString(),
+      jenis_kamar: rt.jenis_kamar,
+      jumlah_jamaah: rt.jumlah_jamaah,
+      riwayat_setoran: rt.RiwayatSetoran.map(rs => ({
+        id: rs.id,
+        bulan_ke: rs.bulan_ke,
+        tanggal_setor: rs.tanggal_setor.toISOString(),
+        nominal: Number(rs.nominal),
+        status_pembayaran: rs.status_pembayaran,
+        id_transaksi_gateway: rs.id_transaksi_gateway
+      }))
     }))
   }));
 

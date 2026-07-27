@@ -92,9 +92,11 @@ export default function DashboardLayout({
       <aside className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:w-[264px] z-30 bg-white border-r border-garis">
         {/* Sidebar Head */}
         <div className="bg-gradient-to-br from-hijau-900 to-hijau-700 px-5 py-[26px] flex items-center gap-3 shrink-0">
-          <div className="w-[42px] h-[42px] rounded-xl bg-white/14 border border-white/20 flex items-center justify-center font-serif font-bold text-white text-base shrink-0 select-none">
-            MS
-          </div>
+          <img 
+            src="/ms-wisata-new-logo.png" 
+            alt="MS Wisata Logo" 
+            className="w-[42px] h-[42px] rounded-xl bg-white/10 p-1 object-contain shrink-0 border border-white/15" 
+          />
           <div className="text-left flex flex-col justify-center">
             <h1 className="text-sm font-bold text-white leading-tight">
               Tabungan Umrah &amp; Haji

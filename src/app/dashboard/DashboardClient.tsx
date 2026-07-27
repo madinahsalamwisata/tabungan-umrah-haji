@@ -341,10 +341,12 @@ export default function DashboardClient({
                       >
                         <div className="w-2 h-2 rounded-full bg-hijau-700 mt-1.5 shrink-0 group-hover:scale-125 transition-transform"></div>
                         <div className="flex-1 text-left">
-                          <h4 className="text-[13px] font-bold text-teks-900 group-hover:text-hijau-900 transition-colors leading-snug">
-                            {item.judul}
+                          <h4 className="text-[13px] font-bold text-teks-900 group-hover:text-hijau-900 transition-colors leading-snug flex items-center justify-between gap-2">
+                            <span className="truncate" title={item.judul}>
+                              {item.judul}
+                            </span>
                             {item.is_penting && (
-                              <span className="badge inline-block ml-2 bg-emas text-hijau-900 text-[9.5px] font-extrabold px-2 py-0.5 rounded-full uppercase">
+                              <span className="badge inline-block bg-emas text-hijau-900 text-[9.5px] font-extrabold px-2 py-0.5 rounded-full uppercase shrink-0">
                                 PENTING
                               </span>
                             )}

@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
 
 type RiwayatSetoranItem = {
   id: string;
   bulan_ke: number;
-  tanggal_setor: string;
+  shadow_pembayaran?: string;
   nominal: number;
   status_pembayaran: string;
   id_transaksi_gateway: string | null;
+  tanggal_setor: string;
 };
 
 type RencanaTabunganItem = {
@@ -38,9 +40,21 @@ type JamaahData = {
 };
 
 export default function AdminJamaahClient({ initialData }: { initialData: JamaahData[] }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [data, setData] = useState<JamaahData[]>(initialData);
   const [search, setSearch] = useState("");
-  const [selectedJamaahId, setSelectedJamaahId] = useState<string | null>(null);
+  
+  const selectedJamaahId = searchParams.get("id");
+  const setSelectedJamaahId = (id: string | null) => {
+    const params = new URLSearchParams(window.location.search);
+    if (id) {
+      params.set("id", id);
+    } else {
+      params.delete("id");
+    }
+    router.push(`${window.location.pathname}?${params.toString()}`);
+  };
   
   // Modals state
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import AdminJamaahClient from "@/components/admin/AdminJamaahClient";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -57,7 +58,9 @@ export default async function AdminJamaahPage() {
         <p className="text-sm text-emerald-800 mt-1">Kelola seluruh data jamaah dan pantau tabungan mereka.</p>
       </div>
 
-      <AdminJamaahClient initialData={serializedJamaahs} />
+      <Suspense fallback={<div className="text-center py-10 text-sm text-teks-500 font-bold">Loading Data Jamaah...</div>}>
+        <AdminJamaahClient initialData={serializedJamaahs} />
+      </Suspense>
     </div>
   );
 }

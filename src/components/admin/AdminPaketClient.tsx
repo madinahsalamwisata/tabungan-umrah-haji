@@ -361,11 +361,19 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-8 animate-in zoom-in-95 duration-200 custom-scrollbar text-left">
-            <h2 className="text-base font-bold text-teks-900 mb-5 border-b border-garis pb-3">
-              {editingData ? "Edit Paket" : "Buat Paket Baru"}
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="relative w-full max-w-xl max-h-[85vh] overflow-y-auto bg-white border border-garis rounded-[22px] shadow-2xl p-5 sm:p-6 animate-in zoom-in-95 duration-200 custom-scrollbar text-left flex flex-col">
+            <div className="flex justify-between items-center border-b border-garis pb-3 mb-4 shrink-0">
+              <h2 className="text-sm font-extrabold text-teks-900 uppercase tracking-wider">
+                {editingData ? "Edit Paket Perjalanan" : "Buat Paket Baru"}
+              </h2>
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="text-teks-300 hover:text-teks-900 p-1"
+              >
+                <svg className="w-5 h-5 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-3.5 flex-1">
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">

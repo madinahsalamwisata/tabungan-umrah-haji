@@ -229,19 +229,19 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
             {paketPasti.map((item) => (
               <div 
                 key={item.id} 
-                className="bg-white border border-garis rounded-[22px] overflow-hidden shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col sm:flex-row group text-left"
+                className="bg-white border border-garis rounded-[22px] overflow-hidden shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] flex flex-col sm:flex-row sm:h-[300px] group text-left"
               >
                 {/* Poster Image Section */}
-                <div className="sm:w-2/5 h-48 sm:h-auto relative bg-krem shrink-0">
+                <div className="sm:w-[260px] h-48 sm:h-full relative bg-krem shrink-0">
                   <img 
                     src={item.poster_url || "/images/paket-umrah-rabiul-akhir-1448-h.jpeg"} 
                     alt={item.nama_paket} 
-                    className="w-full h-full object-cover transition-opacity duration-300" 
+                    className="w-full h-full object-cover object-top transition-opacity duration-300" 
                   />
                 </div>
                 
                 {/* Details Section */}
-                <div className="p-5 flex flex-col justify-between flex-1">
+                <div className="p-5 flex flex-col justify-between flex-1 min-w-0">
                   <div>
                     <h3 className="text-base font-bold text-teks-900 leading-snug">{item.nama_paket}</h3>
                     

@@ -146,15 +146,6 @@ export default function AdminLayout({
 
           {/* Sidebar Foot */}
           <div className="p-4 border-t border-garis shrink-0 mt-auto bg-white">
-            <div className="user-card flex items-center gap-3 p-2.5 rounded-2xl bg-krem mb-3 border border-garis/60">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold text-white text-base bg-gradient-to-br from-hijau-700 to-hijau-900 shrink-0">
-                {session?.user?.name?.[0] || "A"}
-              </div>
-              <div className="truncate text-left flex-1">
-                <div className="uname text-xs font-bold text-teks-900 leading-snug truncate">{session?.user?.name || "Administrator"}</div>
-                <div className="uemail text-[10px] text-teks-500 mt-0.5 truncate">{session?.user?.email || "admin@mswisata.com"}</div>
-              </div>
-            </div>
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
               className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-[13px] font-bold text-[#B3423A] hover:bg-[#FBEAE8] transition-colors text-left cursor-pointer"

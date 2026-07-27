@@ -41,20 +41,39 @@ type JamaahData = {
 
 export default function AdminJamaahClient({ initialData }: { initialData: JamaahData[] }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [data, setData] = useState<JamaahData[]>(initialData);
   const [search, setSearch] = useState("");
-  
-  const selectedJamaahId = searchParams.get("id");
+  const [selectedJamaahId, _setSelectedJamaahId] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+    return null;
+  });
+
   const setSelectedJamaahId = (id: string | null) => {
+    _setSelectedJamaahId(id);
     const params = new URLSearchParams(window.location.search);
     if (id) {
       params.set("id", id);
     } else {
       params.delete("id");
     }
-    router.push(`${window.location.pathname}?${params.toString()}`);
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.pushState(null, "", newUrl);
   };
+
+  // Listen to browser back/forward buttons
+  useState(() => {
+    if (typeof window !== "undefined") {
+      const handlePopState = () => {
+        const params = new URLSearchParams(window.location.search);
+        _setSelectedJamaahId(params.get("id"));
+      };
+      window.addEventListener("popstate", handlePopState);
+      return () => window.removeEventListener("popstate", handlePopState);
+    }
+  });
   
   // Modals state
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

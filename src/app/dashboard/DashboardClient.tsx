@@ -181,35 +181,31 @@ export default function DashboardClient({
       showCloseButton: true,
       showConfirmButton: true,
       confirmButtonText: 'Tutup',
-      confirmButtonColor: '#059669',
+      confirmButtonColor: '#146349',
       background: '#ffffff',
       backdrop: 'rgba(0,0,0,0.5)',
       html: `
-        <div class="text-left mt-2">
-          <div class="flex items-center gap-2 mb-3">
-             <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-             </div>
-             <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Informasi Pendaftaran</span>
+        <div class="text-left mt-1">
+          <div class="flex items-center gap-2 flex-wrap mb-1">
+            <h3 class="text-base font-bold text-gray-900 leading-snug">${item.judul}</h3>
+            ${item.is_penting ? '<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border bg-gradient-to-r from-yellow-500 to-yellow-600 text-white border-yellow-500/30">Penting</span>' : ''}
           </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-3 leading-snug">${item.judul}</h3>
-          
-          <div class="flex items-center gap-2 text-[11px] font-medium text-gray-500 mb-5 pb-4 border-b border-gray-100">
-            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
-            ${item.is_penting ? '<span class="ml-2 bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider">Penting</span>' : ''}
-          </div>
-          
-          <div class="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed max-h-[60vh] overflow-y-auto pr-2" style="scrollbar-width: thin;">
+          <p class="text-[10px] text-gray-400 mt-1">
+            Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
+          </p>
+          <div class="border-t border-gray-100 my-3"></div>
+          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[300px] overflow-y-auto pr-1" style="scrollbar-width: thin;">
             ${item.konten}
           </div>
+          <div class="border-t border-gray-100 mt-3.5 pb-2"></div>
         </div>
       `,
       customClass: {
-        popup: 'rounded-[24px] shadow-2xl pb-2',
-        htmlContainer: '!m-0 !px-4',
-        confirmButton: 'w-full md:w-auto rounded-xl shadow-sm hover:shadow-md transition-all font-bold px-8 py-3 text-sm mt-4',
-        actions: 'w-full px-4'
+        popup: 'rounded-[22px] border border-gray-100 shadow-2xl p-5 text-left',
+        htmlContainer: '!m-0 !p-0',
+        confirmButton: 'bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-semibold px-4 py-2 transition-colors shadow-md float-right mr-1 mb-1',
+        actions: 'w-full !m-0 !p-0 flex justify-end',
+        closeButton: 'text-gray-300 hover:text-gray-900 !outline-none'
       }
     });
   };

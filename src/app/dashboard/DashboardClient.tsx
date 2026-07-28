@@ -66,86 +66,8 @@ export default function DashboardClient({
     }
   };
 
-  const syncPayment = async (order_id: string, idRencana: string, nominal: number, cicilanKe: number) => {
-    try {
-      const res = await fetch("/api/tabungan/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ order_id, id_rencana_tabungan: idRencana, bulan_ke: cicilanKe, nominal })
-      });
-      const data = await res.json();
-      if (data.status === "success") {
-          Swal.fire({
-            title: 'Berhasil!',
-            text: 'Pembayaran berhasil!',
-            icon: 'success',
-            confirmButtonColor: '#059669',
-            customClass: { popup: 'rounded-3xl' }
-          }).then(() => {
-            window.location.reload();
-          });
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsPaying(null);
-    }
-  };
-
-  const handleBayar = async (idRencana: string, cicilanKe: number) => {
-    setIsPaying(idRencana);
-    try {
-      const resToken = await fetch("/api/tabungan/bayar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id_rencana_tabungan: idRencana })
-      });
-      const dataToken = await resToken.json();
-      if (!resToken.ok) {
-         let errMsg = dataToken.message || "Gagal membuat transaksi";
-         if (dataToken.detail && dataToken.detail.error_messages) {
-            errMsg += ": " + dataToken.detail.error_messages.join(', ');
-         } else if (dataToken.detail) {
-            errMsg += ": " + JSON.stringify(dataToken.detail);
-         }
-         throw new Error(errMsg);
-      }
-
-      if (typeof window !== "undefined" && window.snap) {
-        window.snap.pay(dataToken.token, {
-          onSuccess: async function() {
-            await syncPayment(dataToken.order_id, idRencana, dataToken.nominal, cicilanKe);
-          },
-          onPending: async function() {
-             await syncPayment(dataToken.order_id, idRencana, dataToken.nominal, cicilanKe);
-          },
-          onError: function() {
-            Swal.fire({
-              title: 'Gagal!',
-              text: 'Pembayaran gagal!',
-              icon: 'error',
-              confirmButtonColor: '#059669',
-              customClass: { popup: 'rounded-3xl' }
-            });
-            setIsPaying(null);
-          },
-          onClose: async function() {
-            await syncPayment(dataToken.order_id, idRencana, dataToken.nominal, cicilanKe);
-          }
-        });
-      } else {
-        throw new Error("Sistem pembayaran sedang memuat, mohon coba kembali dalam beberapa detik.");
-      }
-    } catch (err: any) {
-      Swal.fire({
-        title: 'Error',
-        text: err.message,
-        icon: 'error',
-        confirmButtonColor: '#059669',
-        customClass: { popup: 'rounded-3xl' }
-      });
-      setIsPaying(null);
-    }
+  const handleBayar = (idRencana: string) => {
+    router.push(`/dashboard/tabungan/${idRencana}/bayar`);
   };
 
   useEffect(() => {
@@ -266,17 +188,12 @@ export default function DashboardClient({
                         </div>
                         <div className="flex gap-3 mt-6 relative z-10">
                           <button
-                            onClick={() => handleBayar(plan.idRencana, plan.cicilanKe)}
-                            disabled={isPaying === plan.idRencana}
-                            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50"
+                            onClick={() => handleBayar(plan.idRencana)}
+                            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer"
                           >
-                            {isPaying === plan.idRencana ? (
-                              <div className="w-4 h-4 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
-                            ) : (
-                              <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                              </svg>
-                            )}
+                            <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
                             Setor
                           </button>
                           <button
@@ -456,16 +373,11 @@ export default function DashboardClient({
 
                     <div className="flex gap-3 mt-5">
                       <button 
-                        onClick={() => handleBayar(plan.idRencana, plan.cicilanKe)}
-                        disabled={isPaying === plan.idRencana}
+                        onClick={() => handleBayar(plan.idRencana)}
                         className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all"
                       >
-                        {isPaying === plan.idRencana ? "Proses..." : (
-                          <>
-                            <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                            Setor
-                          </>
-                        )}
+                        <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Setor
                       </button>
                       <button 
                         onClick={() => { setIsNavigatingRiwayat(plan.idRencana); router.push(`/dashboard/tabungan/${plan.idRencana}/riwayat`); }}

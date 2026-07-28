@@ -77,63 +77,8 @@ export default function TabunganDashboardClient({
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
   };
 
-  const handleBayar = async () => {
-    setIsPaying(true);
-    try {
-      const resToken = await fetch("/api/tabungan/bayar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id_rencana_tabungan: rencana.id })
-      });
-      const dataToken = await resToken.json();
-      if (!resToken.ok) {
-         let errMsg = dataToken.message || "Gagal membuat transaksi";
-         if (dataToken.detail && dataToken.detail.error_messages) {
-            errMsg += ": " + dataToken.detail.error_messages.join(', ');
-         } else if (dataToken.detail) {
-            errMsg += ": " + JSON.stringify(dataToken.detail);
-         }
-         throw new Error(errMsg);
-      }
-
-      window.snap.pay(dataToken.token, {
-        onSuccess: async function() {
-          await syncPayment(dataToken.order_id, cicilanKe, dataToken.nominal);
-        },
-        onPending: async function() {
-           await syncPayment(dataToken.order_id, cicilanKe, dataToken.nominal);
-        },
-        onError: function() {
-          MySwal.fire('Gagal!', 'Pembayaran gagal!', 'error');
-          setIsPaying(false);
-        },
-        onClose: async function() {
-          await syncPayment(dataToken.order_id, cicilanKe, dataToken.nominal);
-        }
-      });
-    } catch (err: any) {
-      MySwal.fire('Error', err.message, 'error');
-      setIsPaying(false);
-    }
-  };
-
-  const syncPayment = async (order_id: string, bulan_ke: number, nominal: number) => {
-    try {
-      const res = await fetch("/api/tabungan/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ order_id, id_rencana_tabungan: rencana.id, bulan_ke, nominal })
-      });
-      const data = await res.json();
-      if (data.status === "success") {
-          MySwal.fire('Berhasil!', 'Pembayaran berhasil!', 'success');
-          router.refresh();
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsPaying(false);
-    }
+  const handleBayar = () => {
+    router.push(`/dashboard/tabungan/${rencana.id}/bayar`);
   };
 
   const handleDelete = async () => {
@@ -269,16 +214,11 @@ export default function TabunganDashboardClient({
         <div className="flex gap-3 mt-6 relative z-10">
           <button
             onClick={handleBayar}
-            disabled={isPaying || sudahLunasBulanIni}
-            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50"
+            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer"
           >
-            {isPaying ? (
-              <div className="w-4 h-4 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-              </svg>
-            )}
+            <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
             Setor
           </button>
           <button
@@ -367,15 +307,10 @@ export default function TabunganDashboardClient({
           <div className="flex gap-2 mt-5 z-10 relative">
             <button 
               onClick={(e) => { e.stopPropagation(); handleBayar(); }}
-              disabled={isPaying || sudahLunasBulanIni}
               className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all"
             >
-              {isPaying ? "Proses..." : (
-                <>
-                  <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                  Setor
-                </>
-              )}
+              <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Setor
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); setIsNavigatingRiwayat(true); router.push(`/dashboard/tabungan/${rencana.id}/riwayat`); }}

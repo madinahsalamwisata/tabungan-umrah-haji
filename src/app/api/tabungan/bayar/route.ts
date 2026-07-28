@@ -39,30 +39,47 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Tabungan sudah lunas!" }, { status: 400 });
     }
 
-    // Inisialisasi Snap
-    const snap = new midtransClient.Snap({
+    // Inisialisasi Core API
+    const core = new midtransClient.CoreApi({
         isProduction : false,
         serverKey : process.env.MIDTRANS_SERVER_KEY,
         clientKey : process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY
     });
 
     const orderId = `UMR-${rencana.id.substring(0, 8)}-BLN${cicilanKe}-${Date.now()}`;
-    let nominal = Math.round(Number(rencana.setoran_per_bulan));
-    if (cicilanKe === 1) {
-        nominal += 500000;
-    }
+    const cicilanNominal = Math.round(Number(rencana.setoran_per_bulan));
+    const adminNominal = 4440;
+    const grossAmount = cicilanNominal + adminNominal;
+
+    const namaPaket = rencana.paket?.nama_paket || rencana.paket_snapshot_nama || 'Paket';
+    const prefix = "Cicilan Umrah ";
+    const suffix = ` Bulan ke-${cicilanKe}`;
+    const maxNamaLength = 50 - prefix.length - suffix.length;
+    const item1Name = `${prefix}${namaPaket.substring(0, maxNamaLength)}${suffix}`;
 
     const parameter = {
+        "payment_type": "bank_transfer",
+        "bank_transfer": {
+            "bank": "bsi"
+        },
         "transaction_details": {
             "order_id": orderId,
-            "gross_amount": nominal
+            "gross_amount": grossAmount
         },
-        "item_details": [{
-            "id": `CICILAN-${cicilanKe}`,
-            "price": nominal,
-            "quantity": 1,
-            "name": `Setoran Ke-${cicilanKe} Paket ${(rencana.paket?.nama_paket || rencana.paket_snapshot_nama || 'Paket Umrah').substring(0, 30)}`
-        }],
+        "item_details": [
+            {
+                "id": `CICILAN-${cicilanKe}`,
+                "price": cicilanNominal,
+                "quantity": 1,
+                "name": item1Name
+            },
+            {
+                "id": "ADMIN-FEE",
+                "price": adminNominal,
+                "quantity": 1,
+                "name": "Biaya Admin"
+            }
+        ],
         "customer_details": {
             "first_name": rencana.jamaah.nama,
             "email": rencana.jamaah.email,
@@ -70,13 +87,15 @@ export async function POST(req: Request) {
         }
     };
 
-    const transaction = await snap.createTransaction(parameter);
+    const transaction = await core.charge(parameter);
 
     return NextResponse.json({ 
-      token: transaction.token,
+      va_number: transaction.va_numbers?.[0]?.va_number || null,
       order_id: orderId,
       bulan_ke: cicilanKe,
-      nominal: nominal
+      nominal: cicilanNominal,
+      gross_amount: grossAmount,
+      expiry_time: transaction.expiry_time
     });
 
   } catch (error: any) {

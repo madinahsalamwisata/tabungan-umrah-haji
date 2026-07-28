@@ -25,8 +25,7 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
 
   const hargaPerOrang = getHargaKamar();
   const totalBiayaPaket = hargaPerOrang * jumlahJamaah;
-  const biayaAdmin = 500000;
-  const totalKeseluruhan = totalBiayaPaket + biayaAdmin;
+  const totalKeseluruhan = totalBiayaPaket;
   const setoranBulanan = Math.ceil(totalBiayaPaket / durasiBulan);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -185,11 +184,6 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
             <div className="flex justify-between items-center text-xs text-white/80 border-b border-white/10 pb-3">
               <span>Jumlah Jamaah</span>
               <span className="font-semibold">{jumlahJamaah} Orang</span>
-            </div>
-
-            <div className="flex justify-between items-center text-xs text-white/80 border-b border-white/10 pb-3">
-              <span>Biaya Admin (Hanya Awal)</span>
-              <span className="font-semibold">{formatRp(biayaAdmin)}</span>
             </div>
 
             <div className="flex justify-between items-center pt-1 text-sm font-semibold">

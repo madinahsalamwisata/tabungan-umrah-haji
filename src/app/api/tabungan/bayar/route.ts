@@ -40,10 +40,16 @@ export async function POST(req: Request) {
     }
 
     // Inisialisasi Core API
+    const rawServerKey = process.env.MIDTRANS_SERVER_KEY || '';
+    const rawClientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '';
+    const cleanServerKey = rawServerKey.replace(/"/g, '').trim();
+    const cleanClientKey = rawClientKey.replace(/"/g, '').trim();
+    const isProd = !cleanServerKey.startsWith('SB-');
+
     const core = new midtransClient.CoreApi({
-        isProduction : false,
-        serverKey : process.env.MIDTRANS_SERVER_KEY,
-        clientKey : process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY
+        isProduction : isProd,
+        serverKey : cleanServerKey,
+        clientKey : cleanClientKey
     });
 
     const orderId = `UMR-${rencana.id.substring(0, 8)}-BLN${cicilanKe}-${Date.now()}`;

@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const isProd = !cleanServerKey.startsWith('SB-');
 
     const core = new midtransClient.CoreApi({
-        isProduction : isProd,
+        isProduction : false,
         serverKey : cleanServerKey,
         clientKey : cleanClientKey
     });

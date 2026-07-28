@@ -51,7 +51,7 @@ export default function DashboardClient({
 }) {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [pengumumanList, setPengumumanList] = useState<any[]>(Array.isArray(initialPengumuman) ? initialPengumuman : []);
-  const [isPaying, setIsPaying] = useState<string | null>(null);
+  const [isNavigatingBayar, setIsNavigatingBayar] = useState<string | null>(null);
   const [isNavigatingRiwayat, setIsNavigatingRiwayat] = useState<string | null>(null);
   const router = useRouter();
 
@@ -67,7 +67,8 @@ export default function DashboardClient({
   };
 
   const handleBayar = (idRencana: string) => {
-    router.push(`/dashboard/tabungan/${idRencana}/bayar`);
+    setIsNavigatingBayar(idRencana);
+    router.push(`/dashboard/tabungan/${idRencana}/bayar?from=beranda`);
   };
 
   useEffect(() => {
@@ -189,12 +190,22 @@ export default function DashboardClient({
                         <div className="flex gap-3 mt-6 relative z-10">
                           <button
                             onClick={() => handleBayar(plan.idRencana)}
-                            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer"
+                            disabled={isNavigatingBayar === plan.idRencana}
+                            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50"
                           >
-                            <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                            </svg>
-                            Setor
+                            {isNavigatingBayar === plan.idRencana ? (
+                              <>
+                                <div className="w-4 h-4 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
+                                Proses...
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                Setor
+                              </>
+                            )}
                           </button>
                           <button
                             onClick={() => {
@@ -374,10 +385,20 @@ export default function DashboardClient({
                     <div className="flex gap-3 mt-5">
                       <button 
                         onClick={() => handleBayar(plan.idRencana)}
-                        className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all"
+                        disabled={isNavigatingBayar === plan.idRencana}
+                        className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all disabled:opacity-50"
                       >
-                        <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        Setor
+                        {isNavigatingBayar === plan.idRencana ? (
+                          <>
+                            <div className="w-3.5 h-3.5 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
+                            Proses...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            Setor
+                          </>
+                        )}
                       </button>
                       <button 
                         onClick={() => { setIsNavigatingRiwayat(plan.idRencana); router.push(`/dashboard/tabungan/${plan.idRencana}/riwayat`); }}

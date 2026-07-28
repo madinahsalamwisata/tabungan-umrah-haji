@@ -7,8 +7,15 @@ import BayarClient from "./BayarClient";
 
 export const revalidate = 0;
 
-export default async function TabunganBayarPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function TabunganBayarPage({ 
+  params,
+  searchParams
+}: { 
+  params: Promise<{ id: string }>,
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -36,6 +43,13 @@ export default async function TabunganBayarPage({ params }: { params: Promise<{ 
   if (!rencanaTabungan || rencanaTabungan.id_jamaah !== jamaah.id) {
     redirect("/dashboard/tabungan");
   }
+
+  // Calculate back URL
+  const from = resolvedSearchParams.from || "beranda";
+  const isHaji = rencanaTabungan.paket?.nama_paket?.toLowerCase().includes('haji') || rencanaTabungan.paket_snapshot_nama?.toLowerCase().includes('haji');
+  const backUrl = from === "tabungan" 
+    ? (isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah") 
+    : "/dashboard";
 
   // Calculate totals
   const totalTerkumpul = rencanaTabungan.RiwayatSetoran
@@ -92,7 +106,7 @@ export default async function TabunganBayarPage({ params }: { params: Promise<{ 
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
       <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-white/90 backdrop-blur-md border border-emerald-100 p-6 sm:p-8">
         <div className="flex items-center gap-4 mb-6">
-          <Link href="/dashboard" className="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition-colors">
+          <Link href={backUrl} className="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
           </Link>
           <div>

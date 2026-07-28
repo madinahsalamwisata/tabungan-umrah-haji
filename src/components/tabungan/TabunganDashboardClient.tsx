@@ -34,7 +34,7 @@ export default function TabunganDashboardClient({
   persentase: number 
 }) {
   const router = useRouter();
-  const [isPaying, setIsPaying] = useState(false);
+  const [isNavigatingBayar, setIsNavigatingBayar] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isNavigatingRiwayat, setIsNavigatingRiwayat] = useState(false);
@@ -78,7 +78,8 @@ export default function TabunganDashboardClient({
   };
 
   const handleBayar = () => {
-    router.push(`/dashboard/tabungan/${rencana.id}/bayar`);
+    setIsNavigatingBayar(true);
+    router.push(`/dashboard/tabungan/${rencana.id}/bayar?from=tabungan`);
   };
 
   const handleDelete = async () => {
@@ -214,12 +215,22 @@ export default function TabunganDashboardClient({
         <div className="flex gap-3 mt-6 relative z-10">
           <button
             onClick={handleBayar}
-            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer"
+            disabled={isNavigatingBayar}
+            className="px-5 py-3 rounded-xl text-[13.5px] font-bold bg-emas hover:bg-emas-deep text-hijau-900 flex items-center gap-2 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50"
           >
-            <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            Setor
+            {isNavigatingBayar ? (
+              <>
+                <div className="w-4 h-4 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
+                Proses...
+              </>
+            ) : (
+              <>
+                <svg className="w-[15px] h-[15px] stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                Setor
+              </>
+            )}
           </button>
           <button
             onClick={() => {
@@ -307,10 +318,20 @@ export default function TabunganDashboardClient({
           <div className="flex gap-2 mt-5 z-10 relative">
             <button 
               onClick={(e) => { e.stopPropagation(); handleBayar(); }}
-              className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all"
+              disabled={isNavigatingBayar}
+              className="flex-1 py-2.5 bg-emas hover:bg-emas/90 text-hijau-900 text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all disabled:opacity-50"
             >
-              <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              Setor
+              {isNavigatingBayar ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-hijau-900 border-t-transparent rounded-full animate-spin"></div>
+                  Proses...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4 stroke-hijau-900" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Setor
+                </>
+              )}
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); setIsNavigatingRiwayat(true); router.push(`/dashboard/tabungan/${rencana.id}/riwayat`); }}

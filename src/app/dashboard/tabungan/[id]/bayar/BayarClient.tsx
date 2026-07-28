@@ -39,6 +39,7 @@ export default function BayarClient({
     grossAmount: number;
     expiryTime?: string;
   } | null>(null);
+  const [activeTab, setActiveTab] = useState<"bsi" | "other">("bsi");
 
   const sudahBayarSemua = rencana.status === "Lunas" || persentase >= 100;
   const riwayatSuccess = rencana.RiwayatSetoran.filter((r: any) => r.status_pembayaran === "success");
@@ -131,7 +132,7 @@ export default function BayarClient({
               <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl" />
               
               <div className="flex justify-between items-center mb-3">
-                <span className="text-[10px] font-bold tracking-wider text-emerald-300 uppercase">Bank Syariah Indonesia (BSI) VA</span>
+                <span className="text-[10px] font-bold tracking-wider text-emerald-300 uppercase">Virtual Account</span>
                 <span className="text-xs font-semibold px-2 py-0.5 bg-emerald-800 rounded-md">Pending</span>
               </div>
               
@@ -173,33 +174,110 @@ export default function BayarClient({
             </div>
 
             {/* Instructions */}
-            <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 text-xs text-emerald-950 space-y-2">
-              <h5 className="font-bold flex items-center gap-1.5 text-emerald-900">
-                <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 text-xs text-emerald-950 space-y-3">
+              <h5 className="font-bold flex items-center gap-1.5 text-emerald-900 text-sm">
+                <svg className="w-4.5 h-4.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 Petunjuk Pembayaran
               </h5>
-              <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
-                <li>Buka aplikasi <strong>BYOND by BSI</strong> / BSI Mobile atau ke ATM BSI.</li>
-                <li>Pilih menu <strong>Pembayaran/Payment</strong> &gt; <strong>Virtual Account</strong>.</li>
-                <li>Masukkan Nomor Virtual Account <strong>{vaDetails.vaNumber}</strong>.</li>
-                <li>Konfirmasikan nama jamaah, cicilan, dan jumlah nominal transfer.</li>
-                <li>Setelah transfer berhasil, klik tombol <strong>Verifikasi Pembayaran</strong> di bawah ini.</li>
-              </ul>
+
+              {/* Tabs */}
+              <div className="flex border-b border-emerald-250/60">
+                <button
+                  onClick={() => setActiveTab("bsi")}
+                  className={`flex-1 pb-2 font-bold text-center border-b-2 transition-all ${
+                    activeTab === "bsi" 
+                      ? "border-emerald-600 text-emerald-900" 
+                      : "border-transparent text-emerald-650/70 hover:text-emerald-800"
+                  }`}
+                >
+                  Bank BSI
+                </button>
+                <button
+                  onClick={() => setActiveTab("other")}
+                  className={`flex-1 pb-2 font-bold text-center border-b-2 transition-all ${
+                    activeTab === "other" 
+                      ? "border-emerald-600 text-emerald-900" 
+                      : "border-transparent text-emerald-650/70 hover:text-emerald-800"
+                  }`}
+                >
+                  Bank Lain (BCA, Mandiri, dll)
+                </button>
+              </div>
+
+              {/* Tab Contents */}
+              {activeTab === "bsi" ? (
+                <div className="space-y-3 pt-1 animate-in fade-in duration-200">
+                  <div>
+                    <h6 className="font-bold text-emerald-900 mb-1">A. Lewat Aplikasi BYOND by BSI:</h6>
+                    <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+                      <li>Buka aplikasi <strong>BYOND by BSI</strong> di HP Anda.</li>
+                      <li>Pilih menu <strong>Bayar</strong> &gt; pilih <strong>Virtual Account</strong>.</li>
+                      <li>Masukkan Nomor Virtual Account: <strong>{vaDetails.vaNumber}</strong>.</li>
+                      <li>Konfirmasikan detail cicilan dan total bayar: <strong>{formatRp(vaDetails.grossAmount)}</strong>.</li>
+                      <li>Masukkan PIN Anda untuk menyelesaikan pembayaran.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h6 className="font-bold text-emerald-900 mb-1">B. Lewat BSI Mobile lama:</h6>
+                    <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+                      <li>Buka aplikasi <strong>BSI Mobile</strong>.</li>
+                      <li>Pilih menu <strong>Pembayaran</strong> &gt; pilih <strong>Institusi</strong> atau <strong>Akademik</strong>.</li>
+                      <li>Cari nama institusi / pilih <strong>Virtual Account</strong>.</li>
+                      <li>Masukkan Nomor VA <strong>{vaDetails.vaNumber}</strong>.</li>
+                      <li>Masukkan nominal transfer <strong>{formatRp(vaDetails.grossAmount)}</strong> (harus sama persis) dan selesaikan transaksi.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h6 className="font-bold text-emerald-900 mb-1">C. Lewat ATM BSI:</h6>
+                    <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+                      <li>Masukkan kartu ATM BSI dan PIN Anda.</li>
+                      <li>Pilih menu <strong>Pembayaran/Payment</strong> &gt; pilih <strong>Virtual Account</strong>.</li>
+                      <li>Masukkan Nomor Virtual Account <strong>{vaDetails.vaNumber}</strong>.</li>
+                      <li>Konfirmasi rincian pembayaran dan selesaikan transaksi.</li>
+                    </ul>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3 pt-1 animate-in fade-in duration-200">
+                  <div>
+                    <h6 className="font-bold text-emerald-900 mb-1">Lewat M-Banking / ATM Bank Lain (BCA, Mandiri, BRI, dll):</h6>
+                    <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+                      <li>Buka aplikasi M-Banking Anda (misal BCA Mobile, Livin by Mandiri, BRImo, dll).</li>
+                      <li>Pilih menu <strong>Transfer ke Bank Lain</strong> (Transfer Antar Bank).</li>
+                      <li>Pilih Bank Tujuan: <strong>Bank Syariah Indonesia (BSI)</strong> (Kode Bank: <strong>451</strong>).</li>
+                      <li>Masukkan nomor rekening tujuan: Nomor Virtual Account <strong>{vaDetails.vaNumber}</strong>.</li>
+                      <li>Masukkan nominal transfer: <strong>{formatRp(vaDetails.grossAmount)}</strong>. (PENTING: Jumlah transfer harus sama persis dengan nominal tagihan agar sistem otomatis mendeteksi pembayaran).</li>
+                      <li>Lanjutkan transaksi hingga selesai.</li>
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ) : (
           /* Nominal Card */
-          <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-[0_4px_20px_-10px_rgba(16,185,129,0.15)] relative overflow-hidden">
+          <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-[0_4px_20px_-10px_rgba(16,185,129,0.15)] relative overflow-hidden space-y-4">
             <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500" />
             
-            <div className="flex flex-col mb-4">
-              <span className="text-xs font-semibold text-gray-500 mb-1">Nominal Setoran (Termasuk Admin)</span>
+            <div className="flex flex-col">
+              <span className="text-xs font-semibold text-gray-500 mb-1">Total Nominal Pembayaran</span>
               <span className="text-3xl font-black text-emerald-950 tracking-tight">{formatRp(Number(rencana.setoran_per_bulan) + 4440)}</span>
             </div>
+
+            <div className="border-t border-dashed border-emerald-100 pt-3 space-y-2 text-xs text-gray-600">
+              <div className="flex justify-between">
+                <span>Setoran Cicilan (Bulan ke-{cicilanKe})</span>
+                <span className="font-semibold text-emerald-950">{formatRp(Number(rencana.setoran_per_bulan))}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Biaya Admin</span>
+                <span className="font-semibold text-emerald-950">{formatRp(4440)}</span>
+              </div>
+            </div>
             
-            <div className="pt-4 border-t border-dashed border-emerald-100 flex justify-between items-center text-xs">
+            <div className="pt-3 border-t border-emerald-100 flex justify-between items-center text-xs">
               <span className="font-medium text-gray-500">Terkumpul Sebelumnya</span>
               <span className="text-emerald-800 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg">{formatRp(totalTerkumpul)}</span>
             </div>

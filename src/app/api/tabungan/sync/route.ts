@@ -12,10 +12,33 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { order_id, id_rencana_tabungan, bulan_ke, nominal } = await req.json();
+    let { order_id, id_rencana_tabungan, bulan_ke, nominal } = await req.json();
 
-    if (!order_id || !id_rencana_tabungan || !bulan_ke || !nominal) {
-      return NextResponse.json({ message: "Data tidak lengkap" }, { status: 400 });
+    if (!order_id) {
+      return NextResponse.json({ message: "Order ID tidak boleh kosong" }, { status: 400 });
+    }
+
+    // Fallback: Parse details from order_id if they are missing
+    if (!id_rencana_tabungan || !bulan_ke || !nominal) {
+      const parts = order_id.split("-");
+      if (parts.length >= 3 && parts[0] === "UMR") {
+        const shortId = parts[1];
+        const blnPart = parts[2]; // e.g. "BLN1"
+        const parsedBulan = Number(blnPart.replace("BLN", ""));
+        
+        // Find the plans in DB and match by short ID prefix
+        const plans = await prisma.rencanaTabungan.findMany();
+        const matchedPlan = plans.find(p => p.id.startsWith(shortId));
+        if (matchedPlan) {
+          id_rencana_tabungan = matchedPlan.id;
+          bulan_ke = parsedBulan;
+          nominal = Math.round(Number(matchedPlan.setoran_per_bulan));
+        }
+      }
+    }
+
+    if (!id_rencana_tabungan || !bulan_ke || !nominal) {
+      return NextResponse.json({ message: "Gagal mencocokkan data rencana tabungan untuk Order ID ini" }, { status: 400 });
     }
 
     // Periksa ke Midtrans langsung

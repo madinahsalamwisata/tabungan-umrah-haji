@@ -12,9 +12,9 @@ export async function POST(req: Request) {
       signature_key,
       transaction_status,
       fraud_status,
-      custom_field1: id_rencana_tabungan,
-      custom_field2: bulan_ke_str,
-      custom_field3: nominal_str
+      custom_field1,
+      custom_field2,
+      custom_field3
     } = body;
 
     const rawServerKey = process.env.MIDTRANS_SERVER_KEY || '';
@@ -38,10 +38,30 @@ export async function POST(req: Request) {
       isSuccess = true;
     }
 
-    if (isSuccess && id_rencana_tabungan && bulan_ke_str && nominal_str) {
-      const bulan_ke = Number(bulan_ke_str);
-      const nominal = Number(nominal_str);
+    let id_rencana_tabungan = custom_field1 || null;
+    let bulan_ke = custom_field2 ? Number(custom_field2) : null;
+    let nominal = custom_field3 ? Number(custom_field3) : null;
 
+    // Fallback: Parse from order_id if custom fields are missing
+    if ((!id_rencana_tabungan || !bulan_ke) && order_id) {
+      const parts = order_id.split("-");
+      if (parts.length >= 3 && parts[0] === "UMR") {
+        const shortId = parts[1];
+        const blnPart = parts[2]; // e.g. "BLN1"
+        const parsedBulan = Number(blnPart.replace("BLN", ""));
+        
+        // Find the rencana tabungan matching the short ID prefix
+        const plans = await prisma.rencanaTabungan.findMany();
+        const matchedPlan = plans.find(p => p.id.startsWith(shortId));
+        if (matchedPlan) {
+          id_rencana_tabungan = matchedPlan.id;
+          bulan_ke = parsedBulan;
+          nominal = Math.round(Number(matchedPlan.setoran_per_bulan));
+        }
+      }
+    }
+
+    if (isSuccess && id_rencana_tabungan && bulan_ke && nominal) {
       // Check if already recorded
       const existing = await prisma.riwayatSetoran.findFirst({
         where: { id_transaksi_gateway: order_id }

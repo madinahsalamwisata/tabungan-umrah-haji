@@ -100,7 +100,13 @@ export default function BayarClient({
       const data = await res.json();
       if (data.status === "success") {
           MySwal.fire('Berhasil!', 'Pembayaran berhasil diverifikasi!', 'success').then(() => {
-            router.push("/dashboard/tabungan");
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromVal = urlParams.get("from") || "beranda";
+            const isHaji = rencana.paket?.nama_paket?.toLowerCase().includes('haji') || rencana.paket_snapshot_nama?.toLowerCase().includes('haji');
+            const targetUrl = fromVal === "tabungan" 
+              ? (isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah") 
+              : "/dashboard";
+            router.push(targetUrl);
           });
       } else {
           MySwal.fire('Info', 'Pembayaran belum terdeteksi. Silakan selesaikan pembayaran Anda via BSI Virtual Account.', 'info');

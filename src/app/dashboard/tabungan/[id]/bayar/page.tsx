@@ -102,6 +102,12 @@ export default async function TabunganBayarPage({
     }))
   };
 
+  // Clean year from package name if it is estimasi
+  const baseName = rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah";
+  const namaPaketDisplay = isHaji ? baseName : (isEstimasi
+    ? baseName.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
+    : baseName);
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
       <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-white/90 backdrop-blur-md border border-emerald-100 p-6 sm:p-8">
@@ -113,7 +119,7 @@ export default async function TabunganBayarPage({
             <h3 className="text-xl font-bold text-emerald-900 drop-shadow-md">
               Halaman Pembayaran
             </h3>
-            <p className="text-sm text-emerald-700">{rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah"}</p>
+            <p className="text-sm text-emerald-700">{namaPaketDisplay}</p>
           </div>
         </div>
         

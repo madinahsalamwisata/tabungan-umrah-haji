@@ -90,7 +90,10 @@ export async function POST(req: Request) {
             "first_name": rencana.jamaah.nama,
             "email": rencana.jamaah.email,
             "phone": rencana.jamaah.no_hp
-        }
+        },
+        "custom_field1": rencana.id,
+        "custom_field2": String(cicilanKe),
+        "custom_field3": String(cicilanNominal)
     };
 
     const transaction = await core.charge(parameter);

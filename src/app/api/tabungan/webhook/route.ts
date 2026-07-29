@@ -1,0 +1,91 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import crypto from "crypto";
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const {
+      order_id,
+      status_code,
+      gross_amount,
+      signature_key,
+      transaction_status,
+      fraud_status,
+      custom_field1: id_rencana_tabungan,
+      custom_field2: bulan_ke_str,
+      custom_field3: nominal_str
+    } = body;
+
+    const rawServerKey = process.env.MIDTRANS_SERVER_KEY || '';
+    const cleanServerKey = rawServerKey.replace(/"/g, '').trim();
+
+    // Verify signature to ensure it's from Midtrans
+    const payload = order_id + status_code + gross_amount + cleanServerKey;
+    const computedSignature = crypto.createHash("sha512").update(payload).digest("hex");
+
+    if (computedSignature !== signature_key) {
+      console.warn("Invalid signature for webhook order:", order_id);
+      return NextResponse.json({ message: "Invalid signature" }, { status: 400 });
+    }
+
+    let isSuccess = false;
+    if (transaction_status === 'capture') {
+      if (fraud_status === 'accept') {
+        isSuccess = true;
+      }
+    } else if (transaction_status === 'settlement') {
+      isSuccess = true;
+    }
+
+    if (isSuccess && id_rencana_tabungan && bulan_ke_str && nominal_str) {
+      const bulan_ke = Number(bulan_ke_str);
+      const nominal = Number(nominal_str);
+
+      // Check if already recorded
+      const existing = await prisma.riwayatSetoran.findFirst({
+        where: { id_transaksi_gateway: order_id }
+      });
+
+      if (!existing) {
+        await prisma.riwayatSetoran.create({
+          data: {
+            id_rencana_tabungan,
+            bulan_ke,
+            tanggal_setor: new Date(),
+            nominal,
+            status_pembayaran: "success",
+            id_transaksi_gateway: order_id
+          }
+        });
+
+        // Check if plan is fully paid (lunas)
+        const rencana = await prisma.rencanaTabungan.findUnique({
+          where: { id: id_rencana_tabungan }
+        });
+        
+        if (rencana) {
+          const allRiwayat = await prisma.riwayatSetoran.findMany({
+            where: { id_rencana_tabungan, status_pembayaran: "success" }
+          });
+          
+          const totalTerkumpul = allRiwayat.reduce((sum, item) => sum + Number(item.nominal), 0);
+          if (totalTerkumpul >= Number(rencana.total_biaya)) {
+            await prisma.rencanaTabungan.update({
+              where: { id: id_rencana_tabungan },
+              data: { status: "Lunas" }
+            });
+          }
+        }
+        console.log("Successfully recorded payment from webhook for order:", order_id);
+      }
+      return NextResponse.json({ message: "Webhook processed successfully" }, { status: 200 });
+    }
+
+    return NextResponse.json({ message: "Webhook ignored" }, { status: 200 });
+
+  } catch (error: any) {
+    console.error("Error handling Midtrans webhook:", error);
+    return NextResponse.json({ message: "Internal server error", error: error.message }, { status: 500 });
+  }
+}

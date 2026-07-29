@@ -241,7 +241,6 @@ export default function BayarClient({
                 </div>
               ) : (
                 <div className="space-y-3 pt-1 animate-in fade-in duration-200">
-                  <div>
                     <h6 className="font-bold text-emerald-900 mb-1">Lewat M-Banking / ATM Bank Lain (BCA, Mandiri, BRI, dll):</h6>
                     <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
                       <li>Buka aplikasi M-Banking Anda (misal BCA Mobile, Livin by Mandiri, BRImo, dll).</li>
@@ -249,8 +248,12 @@ export default function BayarClient({
                       <li>Pilih Bank Tujuan: <strong>Bank Syariah Indonesia (BSI)</strong> (Kode Bank: <strong>451</strong>).</li>
                       <li>Masukkan nomor rekening tujuan: Nomor Virtual Account <strong>{vaDetails.vaNumber}</strong>.</li>
                       <li>Masukkan nominal transfer: <strong>{formatRp(vaDetails.grossAmount)}</strong>. (PENTING: Jumlah transfer harus sama persis dengan nominal tagihan agar sistem otomatis mendeteksi pembayaran).</li>
+                      <li>Saat konfirmasi transfer, nama rekening tujuan yang muncul biasanya berformat <strong>MIDTRANS - [Nama Jamaah]</strong>.</li>
                       <li>Lanjutkan transaksi hingga selesai.</li>
                     </ul>
+                    <div className="mt-2.5 p-2 bg-amber-50 border border-amber-100 rounded-xl text-[10px] text-amber-800 leading-normal">
+                      <strong>Catatan Transfer Bank Lain</strong>: Pembayaran dari bank selain BSI dapat dikenai biaya transfer antar-bank standar oleh bank Anda (biasanya Rp6.500 atau Rp2.500 menggunakan BI-FAST). Tidak ada biaya tambahan lain dari pihak travel/Midtrans di luar biaya admin Rp4.440 yang sudah tercantum.
+                    </div>
                   </div>
                 </div>
               )}

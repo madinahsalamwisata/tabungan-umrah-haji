@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -50,6 +50,51 @@ export default function BayarClient({
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
   };
 
+  const handleVerifikasiAutomatic = async (details: any) => {
+    try {
+      const res = await fetch("/api/tabungan/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          order_id: details.orderId, 
+          id_rencana_tabungan: rencana.id, 
+          bulan_ke: cicilanKe, 
+          nominal: details.nominal 
+        })
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        localStorage.removeItem(`pending_payment_${rencana.id}`);
+        MySwal.fire('Berhasil!', 'Pembayaran berhasil diverifikasi!', 'success').then(() => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const fromVal = urlParams.get("from") || "beranda";
+          const isHaji = rencana.paket?.nama_paket?.toLowerCase().includes('haji') || rencana.paket_snapshot_nama?.toLowerCase().includes('haji');
+          const targetUrl = fromVal === "tabungan" 
+            ? (isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah") 
+            : "/dashboard";
+          router.push(targetUrl);
+        });
+      }
+    } catch (e) {
+      console.error("Failed automatic verification check:", e);
+    }
+  };
+
+  // Load pending payment from localStorage on mount and verify it
+  useEffect(() => {
+    const saved = localStorage.getItem(`pending_payment_${rencana.id}`);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setVaDetails(parsed);
+        // Automatically check the status of the saved transaction in the background
+        handleVerifikasiAutomatic(parsed);
+      } catch (e) {
+        console.error("Failed to parse saved payment details:", e);
+      }
+    }
+  }, [rencana.id]);
+
   const handleBayar = async () => {
     setIsPaying(true);
     try {
@@ -69,13 +114,16 @@ export default function BayarClient({
          throw new Error(errMsg);
       }
 
-      setVaDetails({
+      const newVaDetails = {
         vaNumber: dataToken.va_number,
         orderId: dataToken.order_id,
         nominal: dataToken.nominal,
         grossAmount: dataToken.gross_amount,
         expiryTime: dataToken.expiry_time
-      });
+      };
+
+      setVaDetails(newVaDetails);
+      localStorage.setItem(`pending_payment_${rencana.id}`, JSON.stringify(newVaDetails));
     } catch (err: any) {
       MySwal.fire('Error', err.message, 'error');
     } finally {
@@ -99,6 +147,7 @@ export default function BayarClient({
       });
       const data = await res.json();
       if (data.status === "success") {
+          localStorage.removeItem(`pending_payment_${rencana.id}`);
           MySwal.fire('Berhasil!', 'Pembayaran berhasil diverifikasi!', 'success').then(() => {
             const urlParams = new URLSearchParams(window.location.search);
             const fromVal = urlParams.get("from") || "beranda";
@@ -320,7 +369,10 @@ export default function BayarClient({
               ) : "Verifikasi Pembayaran"}
             </button>
             <button 
-              onClick={() => setVaDetails(null)}
+              onClick={() => {
+                localStorage.removeItem(`pending_payment_${rencana.id}`);
+                setVaDetails(null);
+              }}
               className="w-full font-medium py-2.5 px-4 rounded-2xl text-xs text-gray-500 hover:bg-gray-50 transition-colors border border-gray-200 flex items-center justify-center gap-1"
             >
               Kembali / Batalkan VA

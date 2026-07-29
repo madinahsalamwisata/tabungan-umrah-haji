@@ -17,6 +17,13 @@ export async function POST(req: Request) {
       custom_field3
     } = body;
 
+    console.log("=== WEBHOOK RECEIVED ===");
+    console.log("Order ID:", order_id);
+    console.log("Status Code:", status_code);
+    console.log("Gross Amount:", gross_amount);
+    console.log("Transaction Status:", transaction_status);
+    console.log("Signature Key from payload:", signature_key);
+
     const rawServerKey = process.env.MIDTRANS_SERVER_KEY || '';
     const cleanServerKey = rawServerKey.replace(/"/g, '').trim();
 
@@ -24,8 +31,10 @@ export async function POST(req: Request) {
     const payload = order_id + status_code + gross_amount + cleanServerKey;
     const computedSignature = crypto.createHash("sha512").update(payload).digest("hex");
 
+    console.log("Computed Signature:", computedSignature);
+
     if (computedSignature !== signature_key) {
-      console.warn("Invalid signature for webhook order:", order_id);
+      console.warn("Invalid signature for webhook order:", order_id, "Computed signature:", computedSignature, "Received:", signature_key);
       return NextResponse.json({ message: "Invalid signature" }, { status: 400 });
     }
 

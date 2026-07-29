@@ -157,7 +157,7 @@ export default function DashboardClient({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-6 items-start">
             {/* Kolom Kiri: Kartu Saldo / Empty State */}
             <div className="space-y-6">
               {savingsPlans && savingsPlans.length > 0 ? (

@@ -37,6 +37,19 @@ export default async function TabunganRiwayatPage({ params }: { params: Promise<
     redirect("/dashboard/tabungan");
   }
 
+  // Determine back URL and estimated package status
+  const isHaji = (rencanaTabungan.paket as any)?.kategori?.toLowerCase() === "haji" || 
+                 rencanaTabungan.paket?.nama_paket?.toLowerCase().includes("haji") ||
+                 rencanaTabungan.paket_snapshot_nama?.toLowerCase().includes("haji");
+  const isEstimasi = rencanaTabungan.paket?.is_estimasi || rencanaTabungan.paket_snapshot_is_estimasi || false;
+  
+  const baseName = rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah";
+  const namaPaketDisplay = isHaji ? baseName : (isEstimasi
+    ? baseName.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
+    : baseName);
+
+  const backUrl = isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah";
+
   // Format data
   const riwayat = rencanaTabungan.RiwayatSetoran.map((setoran) => ({
     id: setoran.id,
@@ -46,14 +59,8 @@ export default async function TabunganRiwayatPage({ params }: { params: Promise<
     id_transaksi_gateway: setoran.id_transaksi_gateway,
     nominal: setoran.nominal.toString(),
     tanggal_setor: setoran.tanggal_setor ? new Date(setoran.tanggal_setor).toISOString() : null,
-    nama_paket: rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah",
+    nama_paket: namaPaketDisplay,
   }));
-
-  // Determine back URL based on package category or name
-  const isHaji = (rencanaTabungan.paket as any)?.kategori?.toLowerCase() === "haji" || 
-                 rencanaTabungan.paket?.nama_paket?.toLowerCase().includes("haji") ||
-                 rencanaTabungan.paket_snapshot_nama?.toLowerCase().includes("haji");
-  const backUrl = isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah";
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
@@ -72,7 +79,7 @@ export default async function TabunganRiwayatPage({ params }: { params: Promise<
             <h3 className="text-xl font-bold text-emerald-900 drop-shadow-md">
               Riwayat Transaksi
             </h3>
-            <p className="text-sm text-emerald-700">{rencanaTabungan.paket?.nama_paket || rencanaTabungan.paket_snapshot_nama || "Paket Umrah"}</p>
+            <p className="text-sm text-emerald-700">{namaPaketDisplay}</p>
           </div>
         </div>
         

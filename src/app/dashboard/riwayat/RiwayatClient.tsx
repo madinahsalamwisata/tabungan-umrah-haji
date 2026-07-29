@@ -1,22 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
-
-const MySwal = Swal.mixin({
-  width: '360px',
-  customClass: {
-    title: 'text-lg',
-    htmlContainer: 'text-sm'
-  }
-});
-
 export default function RiwayatClient({ riwayat }: { riwayat: any[] }) {
-  const router = useRouter();
-  const [syncOrderId, setSyncOrderId] = useState("");
-  const [isSyncing, setIsSyncing] = useState(false);
-
   const formatRp = (num: number) => {
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
   };
@@ -32,77 +16,8 @@ export default function RiwayatClient({ riwayat }: { riwayat: any[] }) {
     }
   };
 
-  const handleSyncManual = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!syncOrderId.trim()) {
-      MySwal.fire("Info", "Silakan masukkan Order ID terlebih dahulu.", "info");
-      return;
-    }
-
-    setIsSyncing(true);
-    try {
-      const res = await fetch("/api/tabungan/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ order_id: syncOrderId.trim() })
-      });
-      const data = await res.json();
-      
-      if (res.ok && data.status === "success") {
-        await MySwal.fire({
-          title: "Sinkronisasi Berhasil!",
-          text: "Transaksi ditemukan dan saldo Anda telah diperbarui.",
-          icon: "success"
-        });
-        setSyncOrderId("");
-        router.refresh();
-      } else {
-        MySwal.fire("Gagal", data.message || "Transaksi tidak ditemukan atau belum dibayar.", "error");
-      }
-    } catch (err: any) {
-      console.error(err);
-      MySwal.fire("Error", "Terjadi kesalahan koneksi atau server.", "error");
-    } finally {
-      setIsSyncing(false);
-    }
-  };
-
   return (
-    <div className="space-y-6">
-      {/* Manual Sync Input Box */}
-      <div className="bg-emerald-50/40 border border-emerald-100/80 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-sm">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none" />
-        <h4 className="text-xs sm:text-sm font-bold text-emerald-950 mb-1.5 flex items-center gap-1.5">
-          <svg className="w-4 h-4 text-emerald-600" style={{ animation: isSyncing ? 'spin 1s linear infinite' : 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3 3L22 4" />
-          </svg>
-          Sinkronisasi Pembayaran Manual
-        </h4>
-        <p className="text-[10px] sm:text-xs text-gray-500 mb-3.5 leading-relaxed">
-          Pernah membayar cicilan tapi lupa menekan tombol verifikasi atau langsung menutup browser? Masukkan <strong>Order ID</strong> transaksi tersebut di bawah ini untuk mensinkronkan saldo Anda secara instan.
-        </p>
-        <form onSubmit={handleSyncManual} className="flex flex-col sm:flex-row gap-2">
-          <input
-            type="text"
-            placeholder="Contoh: UMR-0c03eda6-BLN1-1785300300957"
-            value={syncOrderId}
-            onChange={(e) => setSyncOrderId(e.target.value)}
-            disabled={isSyncing}
-            className="flex-1 px-3.5 py-2.5 rounded-xl text-xs bg-white border border-emerald-100 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-mono disabled:bg-gray-50"
-          />
-          <button
-            type="submit"
-            disabled={isSyncing}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs text-white shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5 shrink-0 ${
-              isSyncing ? "bg-emerald-400 cursor-wait" : "bg-emerald-600 hover:bg-emerald-700 cursor-pointer"
-            }`}
-          >
-            {isSyncing ? "Mensinkronkan..." : "Sinkronkan"}
-          </button>
-        </form>
-      </div>
-
-      <div className="bg-slate-50/50 rounded-2xl overflow-hidden">
+    <div className="bg-slate-50/50 rounded-2xl overflow-hidden mt-4">
       {riwayat.length > 0 ? (
         <div className="flex flex-col gap-2">
           {riwayat.map((item, idx) => (
@@ -160,7 +75,6 @@ export default function RiwayatClient({ riwayat }: { riwayat: any[] }) {
           <span className="text-sm font-semibold text-gray-500">Belum ada riwayat transaksi.</span>
         </div>
       )}
-      </div>
     </div>
   );
 }

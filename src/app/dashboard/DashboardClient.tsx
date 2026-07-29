@@ -157,9 +157,9 @@ export default function DashboardClient({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
             {/* Kolom Kiri: Kartu Saldo / Empty State */}
-            <div className="space-y-6">
+            <div className="space-y-6 min-w-0">
               {savingsPlans && savingsPlans.length > 0 ? (
                 <div className="relative group/slider">
                   <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 scrollbar-none pb-2">
@@ -252,7 +252,7 @@ export default function DashboardClient({
             </div>
  
             {/* Kolom Kanan: Informasi & Update + Kantor Pusat */}
-            <div className="space-y-6">
+            <div className="space-y-6 min-w-0">
               {/* Informasi & Update */}
               <div className="bg-white border border-garis rounded-[22px] p-6 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)]">
                 <div className="flex justify-between items-center mb-4 gap-2">

@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { id_rencana_tabungan } = await req.json();
+    const { id_rencana_tabungan, bank = "bsi" } = await req.json();
 
     if (!id_rencana_tabungan) {
       return NextResponse.json({ message: "Missing id_rencana_tabungan" }, { status: 400 });
@@ -63,11 +63,8 @@ export async function POST(req: Request) {
     const maxNamaLength = 50 - prefix.length - suffix.length;
     const item1Name = `${prefix}${namaPaket.substring(0, maxNamaLength)}${suffix}`;
 
-    const parameter = {
-        "payment_type": "bank_transfer",
-        "bank_transfer": {
-            "bank": "bsi"
-        },
+    // Construct bank transfer parameter based on chosen bank
+    let paymentParams: any = {
         "transaction_details": {
             "order_id": orderId,
             "gross_amount": grossAmount
@@ -96,15 +93,30 @@ export async function POST(req: Request) {
         "custom_field3": String(cicilanNominal)
     };
 
-    const transaction = await core.charge(parameter);
+    if (bank === "mandiri") {
+        paymentParams.payment_type = "echannel";
+        paymentParams.echannel = {
+            "bill_info1": "Pembayaran",
+            "bill_info2": "Cicilan Tabungan"
+        };
+    } else {
+        paymentParams.payment_type = "bank_transfer";
+        paymentParams.bank_transfer = {
+            "bank": bank
+        };
+    }
+
+    const transaction = await core.charge(paymentParams);
 
     return NextResponse.json({ 
-      va_number: transaction.va_numbers?.[0]?.va_number || null,
+      va_number: transaction.va_numbers?.[0]?.va_number || transaction.permata_va_number || transaction.bill_key || null,
+      biller_code: transaction.biller_code || null,
+      bank_name: bank,
       order_id: orderId,
       bulan_ke: cicilanKe,
       nominal: cicilanNominal,
       gross_amount: grossAmount,
-      expiry_time: transaction.expiry_time
+      expiry_time: transaction.expiry_time || null
     });
 
   } catch (error: any) {

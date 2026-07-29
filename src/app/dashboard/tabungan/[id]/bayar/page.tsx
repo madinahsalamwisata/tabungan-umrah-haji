@@ -47,6 +47,7 @@ export default async function TabunganBayarPage({
   // Calculate back URL
   const from = resolvedSearchParams.from || "beranda";
   const isHaji = rencanaTabungan.paket?.nama_paket?.toLowerCase().includes('haji') || rencanaTabungan.paket_snapshot_nama?.toLowerCase().includes('haji');
+  const isEstimasi = rencanaTabungan.paket?.is_estimasi || rencanaTabungan.paket_snapshot_is_estimasi || false;
   const backUrl = from === "tabungan" 
     ? (isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah") 
     : "/dashboard";

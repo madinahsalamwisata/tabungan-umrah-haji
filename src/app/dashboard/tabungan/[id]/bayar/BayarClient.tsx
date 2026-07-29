@@ -241,6 +241,7 @@ export default function BayarClient({
                 </div>
               ) : (
                 <div className="space-y-3 pt-1 animate-in fade-in duration-200">
+                  <div>
                     <h6 className="font-bold text-emerald-900 mb-1">Lewat M-Banking / ATM Bank Lain (BCA, Mandiri, BRI, dll):</h6>
                     <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
                       <li>Buka aplikasi M-Banking Anda (misal BCA Mobile, Livin by Mandiri, BRImo, dll).</li>

@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { id_rencana_tabungan, bank = "bsi" } = await req.json();
+    const { id_rencana_tabungan, bank = "bca" } = await req.json();
 
     if (!id_rencana_tabungan) {
       return NextResponse.json({ message: "Missing id_rencana_tabungan" }, { status: 400 });

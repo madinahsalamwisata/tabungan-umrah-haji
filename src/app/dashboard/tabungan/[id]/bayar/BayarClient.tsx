@@ -41,7 +41,7 @@ export default function BayarClient({
     bankName: string;
     billerCode?: string;
   } | null>(null);
-  const [selectedBank, setSelectedBank] = useState<string>("bsi");
+  const [selectedBank, setSelectedBank] = useState<string>("bca");
   const [activeTab, setActiveTab] = useState<"primary" | "other">("primary");
 
   const sudahBayarSemua = rencana.status === "Lunas" || persentase >= 100;
@@ -163,7 +163,7 @@ export default function BayarClient({
             router.push(targetUrl);
           });
       } else {
-          MySwal.fire('Info', 'Pembayaran belum terdeteksi. Silakan selesaikan pembayaran Anda via BSI Virtual Account.', 'info');
+          MySwal.fire('Info', `Pembayaran belum terdeteksi. Silakan selesaikan pembayaran Anda via ${bankLabels[vaDetails.bankName.toLowerCase()] || "Virtual Account"}.`, 'info');
       }
     } catch (e) {
       console.error(e);
@@ -184,7 +184,7 @@ export default function BayarClient({
   };
 
   const renderInstructions = () => {
-    const bank = vaDetails?.bankName.toLowerCase() || "bsi";
+    const bank = vaDetails?.bankName.toLowerCase() || "bca";
 
     if (bank === "bsi") {
       return (
@@ -606,13 +606,10 @@ export default function BayarClient({
               </h5>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: "bsi", name: "BSI", desc: "Bank Syariah Indonesia" },
                   { id: "bca", name: "BCA", desc: "Bank Central Asia" },
                   { id: "mandiri", name: "Mandiri", desc: "Bank Mandiri" },
                   { id: "bri", name: "BRI", desc: "Bank Rakyat Indonesia" },
                   { id: "bni", name: "BNI", desc: "Bank Negara Indonesia" },
-                  { id: "cimb", name: "CIMB", desc: "CIMB Niaga" },
-                  { id: "danamon", name: "Danamon", desc: "Bank Danamon" },
                 ].map((b) => (
                   <button
                     key={b.id}

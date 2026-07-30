@@ -41,7 +41,7 @@ export default function BayarClient({
     bankName: string;
     billerCode?: string;
   } | null>(null);
-  const [selectedBank, setSelectedBank] = useState<string>("bca");
+  const [selectedBank, setSelectedBank] = useState<string>("bsi");
   const [activeTab, setActiveTab] = useState<"primary" | "other">("primary");
 
   const sudahBayarSemua = rencana.status === "Lunas" || persentase >= 100;
@@ -184,7 +184,7 @@ export default function BayarClient({
   };
 
   const renderInstructions = () => {
-    const bank = vaDetails?.bankName.toLowerCase() || "bca";
+    const bank = vaDetails?.bankName.toLowerCase() || "bsi";
 
     if (bank === "bsi") {
       return (
@@ -606,6 +606,7 @@ export default function BayarClient({
               </h5>
               <div className="grid grid-cols-2 gap-2">
                 {[
+                  { id: "bsi", name: "BSI", desc: "Bank Syariah Indonesia" },
                   { id: "bca", name: "BCA", desc: "Bank Central Asia" },
                   { id: "mandiri", name: "Mandiri", desc: "Bank Mandiri" },
                   { id: "bri", name: "BRI", desc: "Bank Rakyat Indonesia" },

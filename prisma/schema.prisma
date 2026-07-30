@@ -17,6 +17,7 @@ model Jamaah {
   alamat             String?
   foto_url           String?
   password_hash      String
+  password_plain     String?
   reset_token        String?
   reset_token_expiry DateTime?
   created_at         DateTime          @default(now())

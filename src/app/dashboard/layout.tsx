@@ -329,7 +329,17 @@ export default function DashboardLayout({
           <div className="flex items-center gap-3">
             <button
               onClick={() => {
-                if (pathname.startsWith("/dashboard/tabungan/")) {
+                if (pathname.startsWith("/dashboard/tabungan/") && pathname.endsWith("/bayar")) {
+                  const urlParams = new URLSearchParams(window.location.search);
+                  const fromQuery = urlParams.get("from");
+                  if (fromQuery === "tabungan-haji") {
+                    router.push("/dashboard/tabungan/haji");
+                  } else if (fromQuery === "tabungan-umrah") {
+                    router.push("/dashboard/tabungan/umrah");
+                  } else {
+                    router.push("/dashboard");
+                  }
+                } else if (pathname.startsWith("/dashboard/tabungan/")) {
                   router.push("/dashboard/tabungan");
                 } else if (pathname.startsWith("/dashboard/paket/")) {
                   router.push("/dashboard/paket");

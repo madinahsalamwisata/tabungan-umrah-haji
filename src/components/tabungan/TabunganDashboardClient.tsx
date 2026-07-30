@@ -79,7 +79,9 @@ export default function TabunganDashboardClient({
 
   const handleBayar = () => {
     setIsNavigatingBayar(true);
-    router.push(`/dashboard/tabungan/${rencana.id}/bayar?from=tabungan`);
+    const isHaji = rencana.paket?.nama_paket?.toLowerCase().includes('haji') || rencana.paket_snapshot_nama?.toLowerCase().includes('haji');
+    const fromVal = isHaji ? "tabungan-haji" : "tabungan-umrah";
+    router.push(`/dashboard/tabungan/${rencana.id}/bayar?from=${fromVal}`);
   };
 
   const handleDelete = async () => {

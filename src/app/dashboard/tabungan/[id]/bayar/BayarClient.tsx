@@ -72,9 +72,12 @@ export default function BayarClient({
           const urlParams = new URLSearchParams(window.location.search);
           const fromVal = urlParams.get("from") || "beranda";
           const isHaji = rencana.paket?.nama_paket?.toLowerCase().includes('haji') || rencana.paket_snapshot_nama?.toLowerCase().includes('haji');
-          const targetUrl = fromVal === "tabungan" 
-            ? (isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah") 
-            : "/dashboard";
+          let targetUrl = "/dashboard";
+          if (fromVal === "tabungan-haji" || (fromVal === "tabungan" && isHaji)) {
+            targetUrl = "/dashboard/tabungan/haji";
+          } else if (fromVal === "tabungan-umrah" || (fromVal === "tabungan" && !isHaji)) {
+            targetUrl = "/dashboard/tabungan/umrah";
+          }
           router.push(targetUrl);
         });
       }
@@ -157,9 +160,12 @@ export default function BayarClient({
             const urlParams = new URLSearchParams(window.location.search);
             const fromVal = urlParams.get("from") || "beranda";
             const isHaji = rencana.paket?.nama_paket?.toLowerCase().includes('haji') || rencana.paket_snapshot_nama?.toLowerCase().includes('haji');
-            const targetUrl = fromVal === "tabungan" 
-              ? (isHaji ? "/dashboard/tabungan/haji" : "/dashboard/tabungan/umrah") 
-              : "/dashboard";
+            let targetUrl = "/dashboard";
+            if (fromVal === "tabungan-haji" || (fromVal === "tabungan" && isHaji)) {
+              targetUrl = "/dashboard/tabungan/haji";
+            } else if (fromVal === "tabungan-umrah" || (fromVal === "tabungan" && !isHaji)) {
+              targetUrl = "/dashboard/tabungan/umrah";
+            }
             router.push(targetUrl);
           });
       } else {
@@ -418,9 +424,11 @@ export default function BayarClient({
               {vaDetails.bankName.toLowerCase() === "mandiri" ? (
                 <div className="flex flex-col gap-3.5 mb-4">
                   <div className="flex flex-col">
-                    <span className="text-[10px] text-emerald-300/80 mb-0.5">Kode Perusahaan (Biller Code)</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl font-bold tracking-widest">{vaDetails.billerCode}</span>
+                    <span className="text-[10px] text-emerald-300/80 mb-1.5">Kode Perusahaan (Biller Code)</span>
+                    <div className="flex items-center justify-between gap-2 bg-black/20 px-3 py-2 rounded-xl border border-white/5">
+                      <span className="text-base sm:text-lg md:text-xl font-mono font-bold tracking-normal sm:tracking-widest break-all select-all">
+                        {vaDetails.billerCode}
+                      </span>
                       <button 
                         onClick={() => {
                           navigator.clipboard.writeText(vaDetails.billerCode || "");
@@ -432,19 +440,22 @@ export default function BayarClient({
                             showConfirmButton: false
                           });
                         }}
-                        className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-emerald-300 hover:text-white"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer"
                         title="Salin Kode Biller"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
                         </svg>
+                        Salin
                       </button>
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[10px] text-emerald-300/80 mb-0.5">Bill Key (No. Rekening Mandiri VA)</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl font-bold tracking-widest">{vaDetails.vaNumber}</span>
+                    <span className="text-[10px] text-emerald-300/80 mb-1.5">Bill Key (No. Rekening Mandiri VA)</span>
+                    <div className="flex items-center justify-between gap-2 bg-black/20 px-3 py-2 rounded-xl border border-white/5">
+                      <span className="text-base sm:text-lg md:text-xl font-mono font-bold tracking-normal sm:tracking-widest break-all select-all">
+                        {vaDetails.vaNumber}
+                      </span>
                       <button 
                         onClick={() => {
                           navigator.clipboard.writeText(vaDetails.vaNumber);
@@ -456,21 +467,24 @@ export default function BayarClient({
                             showConfirmButton: false
                           });
                         }}
-                        className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-emerald-300 hover:text-white"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer"
                         title="Salin Bill Key"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
                         </svg>
+                        Salin
                       </button>
                     </div>
                   </div>
                 </div>
               ) : (
                 <div className="flex flex-col mb-4">
-                  <span className="text-[10px] text-emerald-300/80 mb-0.5">Nomor Virtual Account</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold tracking-widest">{vaDetails.vaNumber}</span>
+                  <span className="text-[10px] text-emerald-300/80 mb-1.5">Nomor Virtual Account</span>
+                  <div className="flex items-center justify-between gap-2 bg-black/20 px-3 py-2.5 rounded-xl border border-white/5">
+                    <span className="text-base sm:text-lg md:text-xl font-mono font-bold tracking-normal sm:tracking-widest break-all select-all">
+                      {vaDetails.vaNumber}
+                    </span>
                     <button 
                       onClick={() => {
                         navigator.clipboard.writeText(vaDetails.vaNumber);
@@ -482,12 +496,13 @@ export default function BayarClient({
                           showConfirmButton: false
                         });
                       }}
-                      className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-emerald-300 hover:text-white"
+                      className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer"
                       title="Salin Nomor VA"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
                       </svg>
+                      Salin
                     </button>
                   </div>
                 </div>

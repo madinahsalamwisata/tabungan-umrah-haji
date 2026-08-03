@@ -42,6 +42,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const [activeTab, setActiveTab] = useState<"pasti" | "estimasi" | "pilihan">("pasti");
   const [selectedPilihanPaketId, setSelectedPilihanPaketId] = useState<string | null>(null);
   const [peminatSearch, setPeminatSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<'all' | 'aktif' | 'selesai' | 'dibatalkan'>('all');
   const [isEstimasiForm, setIsEstimasiForm] = useState(false);
 
   // Helper Swal Notifications
@@ -405,12 +406,37 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                 const selectedPaket = data.find(p => p.id === selectedPilihanPaketId);
                 if (!selectedPaket) return null;
                 
-                const filteredPeminat = selectedPaket.peminat.filter(pm => 
-                  pm.nama.toLowerCase().includes(peminatSearch.toLowerCase()) ||
-                  pm.email.toLowerCase().includes(peminatSearch.toLowerCase()) ||
-                  pm.nik.includes(peminatSearch) ||
-                  pm.no_hp.includes(peminatSearch)
-                );
+                const countAktif = selectedPaket.peminat.filter(p => {
+                  const isDibatalkan = p.status_rencana === "Dibatalkan";
+                  const isSelesai = p.status_rencana === "Selesai" || p.status_rencana === "Lunas" || p.setoran_terkumpul >= p.total_biaya;
+                  return !isDibatalkan && !isSelesai;
+                }).length;
+
+                const countDibatalkan = selectedPaket.peminat.filter(p => p.status_rencana === "Dibatalkan").length;
+
+                const countSelesai = selectedPaket.peminat.filter(p => {
+                  const isDibatalkan = p.status_rencana === "Dibatalkan";
+                  const isSelesai = p.status_rencana === "Selesai" || p.status_rencana === "Lunas" || p.setoran_terkumpul >= p.total_biaya;
+                  return !isDibatalkan && isSelesai;
+                }).length;
+
+                const filteredPeminat = selectedPaket.peminat.filter(pm => {
+                  const matchesSearch = pm.nama.toLowerCase().includes(peminatSearch.toLowerCase()) ||
+                    pm.email.toLowerCase().includes(peminatSearch.toLowerCase()) ||
+                    pm.nik.includes(peminatSearch) ||
+                    pm.no_hp.includes(peminatSearch);
+
+                  if (!matchesSearch) return false;
+
+                  const isDibatalkan = pm.status_rencana === "Dibatalkan";
+                  const isSelesai = pm.status_rencana === "Selesai" || pm.status_rencana === "Lunas" || pm.setoran_terkumpul >= pm.total_biaya;
+                  const isAktif = !isDibatalkan && !isSelesai;
+
+                  if (statusFilter === 'aktif') return isAktif;
+                  if (statusFilter === 'selesai') return isSelesai;
+                  if (statusFilter === 'dibatalkan') return isDibatalkan;
+                  return true;
+                });
 
                 return (
                   <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
@@ -443,23 +469,91 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                           </span> | ✈️ Maskapai: <span className="font-bold text-teks-900">{selectedPaket.maskapai}</span>
                         </p>
                       </div>
-                      <div className="bg-krem border border-garis/80 px-4 py-3 rounded-2xl shrink-0 text-center md:text-right">
-                        <div className="text-[10px] uppercase font-extrabold text-teks-500 tracking-wide">Peminat Terdaftar</div>
-                        <div className="text-base font-black text-hijau-900 mt-0.5">{selectedPaket.peminat.length} Calon Jamaah</div>
+                      <div className="flex flex-wrap sm:flex-nowrap gap-3 shrink-0">
+                        <div className="bg-white border border-garis px-4 py-3 rounded-2xl text-center flex flex-col justify-center min-w-[100px]">
+                          <div className="text-[9px] uppercase font-extrabold text-teks-500 tracking-wide">Total Peminat</div>
+                          <div className="text-base font-black text-teks-900 mt-0.5">{selectedPaket.peminat.length} Calon Jamaah</div>
+                        </div>
+                        <div className="bg-krem border border-garis/80 px-4 py-3 rounded-2xl text-left flex flex-col gap-1 text-[10px] font-bold min-w-[150px]">
+                          <div className="text-[9px] uppercase font-extrabold text-teks-500 tracking-wide mb-1 border-b border-garis/50 pb-1">Kategori Status</div>
+                          <div className="flex justify-between gap-4">
+                            <span className="flex items-center gap-1 font-semibold">🟢 Paket Aktif:</span>
+                            <span className="text-hijau-800 font-extrabold">{countAktif} Jamaah</span>
+                          </div>
+                          <div className="flex justify-between gap-4">
+                            <span className="flex items-center gap-1 font-semibold">🔵 Paket Selesai:</span>
+                            <span className="text-blue-800 font-extrabold">{countSelesai} Jamaah</span>
+                          </div>
+                          <div className="flex justify-between gap-4">
+                            <span className="flex items-center gap-1 font-semibold">🔴 Paket Dibatalkan:</span>
+                            <span className="text-red-800 font-extrabold">{countDibatalkan} Jamaah</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Search bar & Table */}
+                    {/* Search bar & Filter */}
                     <div className="space-y-4">
-                      <div className="flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full sm:w-80">
-                        <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                        <input 
-                          type="text" 
-                          placeholder="Cari nama, email, NIK, HP..." 
-                          value={peminatSearch}
-                          onChange={(e) => setPeminatSearch(e.target.value)}
-                          className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
-                        />
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        {/* Search bar */}
+                        <div className="flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full sm:w-80">
+                          <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                          <input 
+                            type="text" 
+                            placeholder="Cari nama, email, NIK, HP..." 
+                            value={peminatSearch}
+                            onChange={(e) => setPeminatSearch(e.target.value)}
+                            className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
+                          />
+                        </div>
+
+                        {/* Status Filter Buttons */}
+                        <div className="flex p-1 bg-krem border border-garis rounded-xl w-fit shrink-0 gap-1">
+                          <button
+                            type="button"
+                            onClick={() => setStatusFilter('all')}
+                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
+                              statusFilter === 'all'
+                                ? 'bg-white text-teks-900 shadow-sm border border-garis/30'
+                                : 'text-teks-500 hover:text-teks-900'
+                            }`}
+                          >
+                            Semua ({selectedPaket.peminat.length})
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setStatusFilter('aktif')}
+                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
+                              statusFilter === 'aktif'
+                                ? 'bg-hijau-900 text-white shadow-sm'
+                                : 'text-teks-500 hover:text-teks-900'
+                            }`}
+                          >
+                            🟢 Aktif ({countAktif})
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setStatusFilter('selesai')}
+                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
+                              statusFilter === 'selesai'
+                                ? 'bg-blue-900 text-white shadow-sm'
+                                : 'text-teks-500 hover:text-teks-900'
+                            }`}
+                          >
+                            🔵 Selesai ({countSelesai})
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setStatusFilter('dibatalkan')}
+                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
+                              statusFilter === 'dibatalkan'
+                                ? 'bg-red-900 text-white shadow-sm'
+                                : 'text-teks-500 hover:text-teks-900'
+                            }`}
+                          >
+                            🔴 Dibatalkan ({countDibatalkan})
+                          </button>
+                        </div>
                       </div>
 
                       <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden">
@@ -503,15 +597,30 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                                     {pm.jenis_kamar}
                                   </td>
                                   <td className="px-6 py-4 text-left">
-                                    <span className={`text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border ${
-                                      pm.status_rencana === 'Aktif' 
-                                        ? 'bg-hijau-100 text-hijau-800 border-hijau-200/50' 
-                                        : pm.status_rencana === 'Dibatalkan'
-                                        ? 'bg-red-50 text-red-600 border-red-100/50'
-                                        : 'bg-teks-300/10 text-teks-500 border-garis'
-                                    }`}>
-                                      {pm.status_rencana}
-                                    </span>
+                                    {(() => {
+                                      const isDibatalkan = pm.status_rencana === "Dibatalkan";
+                                      const isSelesai = pm.status_rencana === "Selesai" || pm.status_rencana === "Lunas" || pm.setoran_terkumpul >= pm.total_biaya;
+                                      
+                                      if (isDibatalkan) {
+                                        return (
+                                          <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-red-50 text-red-600 border-red-100/50">
+                                            Dibatalkan
+                                          </span>
+                                        );
+                                      } else if (isSelesai) {
+                                        return (
+                                          <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-blue-50 text-blue-600 border-blue-100/50">
+                                            Selesai
+                                          </span>
+                                        );
+                                      } else {
+                                        return (
+                                          <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-hijau-100 text-hijau-800 border-hijau-200/50">
+                                            Aktif
+                                          </span>
+                                        );
+                                      }
+                                    })()}
                                   </td>
                                   <td className="px-6 py-4 text-right font-extrabold text-sm text-hijau-900">
                                     Rp {pm.setoran_terkumpul.toLocaleString('id-ID')}
@@ -550,6 +659,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                           onClick={() => {
                             setSelectedPilihanPaketId(item.id);
                             setPeminatSearch("");
+                            setStatusFilter("all");
                           }}
                           className="bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left flex flex-col justify-between transition-all duration-300 cursor-pointer hover:border-hijau-800 hover:shadow-lg hover:-translate-y-0.5"
                         >

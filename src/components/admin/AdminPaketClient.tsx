@@ -653,51 +653,73 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                   
                   return (
                     <>
-                      {chosenPackages.map((item) => (
-                        <div 
-                          key={item.id} 
-                          onClick={() => {
-                            setSelectedPilihanPaketId(item.id);
-                            setPeminatSearch("");
-                            setStatusFilter("all");
-                          }}
-                          className="bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left flex flex-col justify-between transition-all duration-300 cursor-pointer hover:border-hijau-800 hover:shadow-lg hover:-translate-y-0.5"
-                        >
-                          <div>
-                            <div className="flex justify-between items-start mb-2.5 gap-2">
-                              <h3 className="text-sm font-bold text-teks-900 leading-snug">{cleanTitle(item.nama_paket, item.is_estimasi)}</h3>
-                              {item.is_estimasi && (
-                                <span className="bg-yellow-50 text-yellow-700 border border-yellow-200/50 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Estimasi</span>
-                              )}
+                      {chosenPackages.map((item) => {
+                        const countAktif = item.peminat.filter(p => {
+                          const isDibatalkan = p.status_rencana === "Dibatalkan";
+                          const isSelesai = p.status_rencana === "Selesai" || p.status_rencana === "Lunas" || p.setoran_terkumpul >= p.total_biaya;
+                          return !isDibatalkan && !isSelesai;
+                        }).length;
+
+                        const countDibatalkan = item.peminat.filter(p => p.status_rencana === "Dibatalkan").length;
+
+                        const countSelesai = item.peminat.filter(p => {
+                          const isDibatalkan = p.status_rencana === "Dibatalkan";
+                          const isSelesai = p.status_rencana === "Selesai" || p.status_rencana === "Lunas" || p.setoran_terkumpul >= p.total_biaya;
+                          return !isDibatalkan && isSelesai;
+                        }).length;
+
+                        return (
+                          <div 
+                            key={item.id} 
+                            onClick={() => {
+                              setSelectedPilihanPaketId(item.id);
+                              setPeminatSearch("");
+                              setStatusFilter("all");
+                            }}
+                            className="bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left flex flex-col justify-between transition-all duration-300 cursor-pointer hover:border-hijau-800 hover:shadow-lg hover:-translate-y-0.5"
+                          >
+                            <div>
+                              <div className="flex justify-between items-start mb-2.5 gap-2">
+                                <h3 className="text-sm font-bold text-teks-900 leading-snug">{cleanTitle(item.nama_paket, item.is_estimasi)}</h3>
+                                {item.is_estimasi && (
+                                  <span className="bg-yellow-50 text-yellow-700 border border-yellow-200/50 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Estimasi</span>
+                                )}
+                              </div>
+
+                              <div className="mt-3.5 space-y-1.5 text-[11px] text-teks-500">
+                                <p>🗓️ {item.is_estimasi ? "Estimasi Keberangkatan:" : "Keberangkatan:"} <span className="font-bold text-teks-900">
+                                  {item.is_estimasi 
+                                    ? formatMonth(item.tanggal_keberangkatan)
+                                    : new Date(item.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+                                  }
+                                </span></p>
+                                <p>✈️ Maskapai: <span className="font-bold text-teks-900">{item.maskapai}</span></p>
+                              </div>
                             </div>
 
-                            <div className="mt-3.5 space-y-1.5 text-[11px] text-teks-500">
-                              <p>🗓️ {item.is_estimasi ? "Estimasi Keberangkatan:" : "Keberangkatan:"} <span className="font-bold text-teks-900">
-                                {item.is_estimasi 
-                                  ? formatMonth(item.tanggal_keberangkatan)
-                                  : new Date(item.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-                                }
-                              </span></p>
-                              <p>✈️ Maskapai: <span className="font-bold text-teks-900">{item.maskapai}</span></p>
+                            <div className="mt-5 pt-3 border-t border-garis/60 flex flex-col gap-2">
+                              <div className="flex items-center justify-between text-[10px]">
+                                <span className="font-bold text-teks-400 flex items-center gap-1">🟢 Paket Aktif:</span>
+                                <span className="font-black text-hijau-800 bg-hijau-100 px-2 py-0.5 rounded-lg border border-hijau-200/30">
+                                  {countAktif} Calon Jamaah
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between text-[10px]">
+                                <span className="font-bold text-teks-400 flex items-center gap-1">🔵 Paket Selesai:</span>
+                                <span className="font-black text-blue-800 bg-blue-100 px-2 py-0.5 rounded-lg border border-blue-200/30">
+                                  {countSelesai} Calon Jamaah
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between text-[10px]">
+                                <span className="font-bold text-teks-400 flex items-center gap-1">🔴 Paket Dibatalkan:</span>
+                                <span className="font-black text-red-800 bg-red-100 px-2 py-0.5 rounded-lg border border-red-200/30">
+                                  {countDibatalkan} Calon Jamaah
+                                </span>
+                              </div>
                             </div>
                           </div>
-
-                          <div className="mt-5 pt-3 border-t border-garis/60 flex flex-col gap-2">
-                            <div className="flex items-center justify-between text-[10px]">
-                              <span className="font-bold text-teks-400 flex items-center gap-1">🟢 Paket Aktif:</span>
-                              <span className="font-black text-hijau-800 bg-hijau-100 px-2 py-0.5 rounded-lg border border-hijau-200/30">
-                                {item.peminat.filter(p => p.status_rencana !== "Dibatalkan").length} Calon Jamaah
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between text-[10px]">
-                              <span className="font-bold text-teks-400 flex items-center gap-1">🔴 Paket Dibatalkan:</span>
-                              <span className="font-black text-red-800 bg-red-100 px-2 py-0.5 rounded-lg border border-red-200/30">
-                                {item.peminat.filter(p => p.status_rencana === "Dibatalkan").length} Calon Jamaah
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                       {chosenPackages.length === 0 && (
                         <div className="col-span-1 md:col-span-2 lg:col-span-3 py-12 text-center text-teks-400 font-medium bg-white border border-garis rounded-[22px]">
                           Belum ada paket yang dipilih oleh calon jamaah.

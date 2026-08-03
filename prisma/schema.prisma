@@ -85,3 +85,8 @@ model RiwayatSetoran {
   id_transaksi_gateway String?
   rencana_tabungan     RencanaTabungan @relation(fields: [id_rencana_tabungan], references: [id])
 }
+
+model Setting {
+  key   String @id
+  value String
+}

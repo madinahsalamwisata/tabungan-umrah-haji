@@ -73,6 +73,13 @@ export default function AdminLayout({
         <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
       )
     },
+    { 
+      name: "Informasi Halaman", 
+      href: "/admin/informasi", 
+      icon: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      )
+    },
   ];
 
   if (status === "loading" || session?.user?.email !== "madinahsalamwisata@gmail.com") {

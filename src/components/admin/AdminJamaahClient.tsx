@@ -387,9 +387,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
                 </div>
                 <div>
                   <span className="text-teks-300 font-extrabold uppercase text-[9.5px] block tracking-wide">Password Akun</span>
-                  <span className="text-teks-900 font-bold mt-1 block font-mono bg-krem px-2.5 py-1.5 rounded-lg border border-garis/80 select-all max-w-max">
-                    {selectedJamaah.password_plain || "Terenkripsi (Ubah via Edit)"}
-                  </span>
+                  <span className="text-teks-900 font-bold mt-1 block">{selectedJamaah.password_plain || "-"}</span>
                 </div>
               </div>
             </div>

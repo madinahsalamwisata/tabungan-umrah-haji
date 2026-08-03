@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
 
 type PeminatItem = {
@@ -39,11 +40,36 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingData, setEditingData] = useState<PaketData | null>(null);
   
-  const [activeTab, setActiveTab] = useState<"pasti" | "estimasi" | "pilihan">("pasti");
-  const [selectedPilihanPaketId, setSelectedPilihanPaketId] = useState<string | null>(null);
-  const [peminatSearch, setPeminatSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<'all' | 'aktif' | 'selesai' | 'dibatalkan'>('all');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Read initial states from URL query parameters
+  const urlTab = searchParams.get("tab") as "pasti" | "estimasi" | "pilihan" | null;
+  const urlPaketId = searchParams.get("paketId");
+  const urlSearch = searchParams.get("search") || "";
+  const urlFilter = searchParams.get("filter") as 'all' | 'aktif' | 'selesai' | 'dibatalkan' | null;
+
+  const [activeTab, setActiveTab] = useState<"pasti" | "estimasi" | "pilihan">(urlTab || "pasti");
+  const [selectedPilihanPaketId, setSelectedPilihanPaketId] = useState<string | null>(urlPaketId);
+  const [peminatSearch, setPeminatSearch] = useState(urlSearch);
+  const [statusFilter, setStatusFilter] = useState<'all' | 'aktif' | 'selesai' | 'dibatalkan'>(urlFilter || 'all');
   const [isEstimasiForm, setIsEstimasiForm] = useState(false);
+
+  // Sync state variables with URL query parameters
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("tab", activeTab);
+    if (selectedPilihanPaketId) {
+      params.set("paketId", selectedPilihanPaketId);
+    }
+    if (peminatSearch) {
+      params.set("search", peminatSearch);
+    }
+    if (statusFilter !== 'all') {
+      params.set("filter", statusFilter);
+    }
+    router.replace(`/admin/paket?${params.toString()}`, { scroll: false });
+  }, [activeTab, selectedPilihanPaketId, peminatSearch, statusFilter, router]);
 
   // Helper Swal Notifications
   const showNotification = (title: string, text: string, icon: 'success' | 'error' | 'warning') => {

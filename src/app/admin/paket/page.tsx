@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import AdminPaketClient from "@/components/admin/AdminPaketClient";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -62,7 +63,13 @@ export default async function AdminPaketPage() {
         <p className="text-sm text-emerald-800 mt-1">Kelola daftar paket perjalanan, status keberangkatan, dan poster.</p>
       </div>
 
-      <AdminPaketClient initialData={serialized} />
+      <Suspense fallback={
+        <div className="w-full py-12 flex justify-center items-center">
+          <div className="w-8 h-8 border-4 border-emerald-200 border-t-emerald-800 rounded-full animate-spin"></div>
+        </div>
+      }>
+        <AdminPaketClient initialData={serialized} />
+      </Suspense>
     </div>
   );
 }

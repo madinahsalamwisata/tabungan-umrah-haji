@@ -34,6 +34,7 @@ export default async function DashboardPage() {
   // Fetch announcements
   const pengumuman = await prisma.pengumuman.findMany({
     orderBy: [
+      { is_pinned: 'desc' },
       { is_penting: 'desc' },
       { created_at: 'desc' }
     ],

@@ -6,6 +6,7 @@ export const revalidate = 0;
 export default async function InformasiPage() {
   const pengumuman = await prisma.pengumuman.findMany({
     orderBy: [
+      { is_pinned: 'desc' },
       { is_penting: 'desc' },
       { created_at: 'desc' }
     ]

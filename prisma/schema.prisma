@@ -47,6 +47,7 @@ model Pengumuman {
   judul      String
   konten     String
   is_penting Boolean  @default(false)
+  is_pinned  Boolean  @default(false)
   created_at DateTime @default(now())
 }
 

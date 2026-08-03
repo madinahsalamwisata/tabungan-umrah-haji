@@ -5,7 +5,10 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminPengumumanPage() {
   const pengumuman = await prisma.pengumuman.findMany({
-    orderBy: { created_at: "desc" }
+    orderBy: [
+      { is_pinned: "desc" },
+      { created_at: "desc" }
+    ]
   });
 
   const serialized = pengumuman.map(p => ({

@@ -11,7 +11,10 @@ async function isAdmin() {
 export async function GET() {
   try {
     const pengumuman = await prisma.pengumuman.findMany({
-      orderBy: { created_at: "desc" }
+      orderBy: [
+        { is_pinned: "desc" },
+        { created_at: "desc" }
+      ]
     });
     return NextResponse.json(pengumuman);
   } catch (error: any) {
@@ -25,7 +28,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { judul, konten, is_penting } = await req.json();
+    const { judul, konten, is_penting, is_pinned } = await req.json();
 
     if (!judul || !konten) {
       return NextResponse.json({ message: "Judul dan konten wajib diisi" }, { status: 400 });
@@ -35,7 +38,8 @@ export async function POST(req: Request) {
       data: {
         judul,
         konten,
-        is_penting: is_penting || false
+        is_penting: is_penting || false,
+        is_pinned: is_pinned || false
       }
     });
 
@@ -51,7 +55,7 @@ export async function PUT(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { id, judul, konten, is_penting } = await req.json();
+    const { id, judul, konten, is_penting, is_pinned } = await req.json();
 
     if (!id || !judul || !konten) {
       return NextResponse.json({ message: "ID, Judul, dan konten wajib diisi" }, { status: 400 });
@@ -59,7 +63,7 @@ export async function PUT(req: Request) {
 
     const updated = await prisma.pengumuman.update({
       where: { id },
-      data: { judul, konten, is_penting }
+      data: { judul, konten, is_penting, is_pinned }
     });
 
     return NextResponse.json(updated);

@@ -9,6 +9,7 @@ type PengumumanData = {
   judul: string;
   konten: string;
   is_penting: boolean;
+  is_pinned: boolean;
   created_at: string;
 };
 
@@ -145,6 +146,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
       judul: formData.get("judul") as string,
       konten: konten,
       is_penting: formData.get("is_penting") === "on",
+      is_pinned: formData.get("is_pinned") === "on",
     };
 
     try {
@@ -245,8 +247,9 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
                   onClick={() => setSelectedAnnouncement(item)}
                 >
                   <td className="px-6 py-4">
-                    <div className="font-bold text-teks-900 text-sm max-w-[200px] truncate" title={item.judul}>
-                      {item.judul}
+                    <div className="font-bold text-teks-900 text-sm max-w-[200px] truncate flex items-center gap-1.5" title={item.judul}>
+                      {item.is_pinned && <span className="text-emerald-700 shrink-0">📌</span>}
+                      <span className="truncate">{item.judul}</span>
                     </div>
                     <div className="text-teks-500 text-[10px] mt-0.5">
                       {new Date(item.created_at).toLocaleDateString('id-ID', { dateStyle: 'medium' })}
@@ -258,13 +261,20 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
                     </div>
                   </td>
                   <td className="px-6 py-4 text-left">
-                    <span className={`status-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-extrabold uppercase tracking-wide border ${
-                      item.is_penting 
-                        ? 'bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 border-emas/30' 
-                        : 'bg-krem text-teks-500 border-garis'
-                    }`}>
-                      {item.is_penting ? 'Penting' : 'Biasa'}
-                    </span>
+                    <div className="flex flex-wrap gap-1.5 items-center">
+                      {item.is_pinned && (
+                        <span className="status-pill inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[9px] font-extrabold uppercase tracking-wide border bg-emerald-100 text-emerald-900 border-emerald-250">
+                          📌 Di-pin
+                        </span>
+                      )}
+                      <span className={`status-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-extrabold uppercase tracking-wide border ${
+                        item.is_penting 
+                          ? 'bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 border-emas/30' 
+                          : 'bg-krem text-teks-500 border-garis'
+                      }`}>
+                        {item.is_penting ? 'Penting' : 'Biasa'}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-center" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-center gap-2">
@@ -308,6 +318,11 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
               <div className="text-left pr-6">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="text-base font-bold text-teks-900">{selectedAnnouncement.judul}</h3>
+                  {selectedAnnouncement.is_pinned && (
+                    <span className="status-pill inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border bg-emerald-100 text-emerald-900 border-emerald-250">
+                      📌 Di-pin
+                    </span>
+                  )}
                   <span className={`status-pill inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border ${
                     selectedAnnouncement.is_penting 
                       ? 'bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 border-emas/30' 
@@ -444,15 +459,28 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
                 ></textarea>
               </div>
 
-              <div className="flex items-center gap-2 mt-2">
-                <input 
-                  type="checkbox" 
-                  name="is_penting" 
-                  id="is_penting" 
-                  defaultChecked={editingData?.is_penting} 
-                  className="w-4 h-4 rounded border-garis text-hijau-900 focus:ring-hijau-900" 
-                />
-                <label htmlFor="is_penting" className="text-xs font-semibold text-teks-900">Tandai sebagai Informasi Penting (Badge Emas)</label>
+              <div className="space-y-2 mt-2">
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="checkbox" 
+                    name="is_pinned" 
+                    id="is_pinned" 
+                    defaultChecked={editingData?.is_pinned} 
+                    className="w-4 h-4 rounded border-garis text-hijau-900 focus:ring-hijau-900" 
+                  />
+                  <label htmlFor="is_pinned" className="text-xs font-semibold text-teks-900 cursor-pointer">Pin Informasi ini (Tampilkan paling atas)</label>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="checkbox" 
+                    name="is_penting" 
+                    id="is_penting" 
+                    defaultChecked={editingData?.is_penting} 
+                    className="w-4 h-4 rounded border-garis text-hijau-900 focus:ring-hijau-900" 
+                  />
+                  <label htmlFor="is_penting" className="text-xs font-semibold text-teks-900 cursor-pointer">Tandai sebagai Informasi Penting (Badge Emas)</label>
+                </div>
               </div>
 
               <div className="flex justify-end gap-2.5 mt-6 pt-4 border-t border-garis">

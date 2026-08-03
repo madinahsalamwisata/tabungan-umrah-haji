@@ -495,7 +495,12 @@ export default function DashboardClient({
                         : "bg-white text-teks-900 border-garis"
                     }`}
                   >
-                    {item.is_penting && (
+                    {item.is_pinned && (
+                      <span className="absolute top-4 right-4 bg-emerald-100 text-emerald-900 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                        📌 Di-pin
+                      </span>
+                    )}
+                    {item.is_penting && !item.is_pinned && (
                       <span className="absolute top-4 right-4 bg-emas text-hijau-900 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
                         Penting
                       </span>
@@ -504,8 +509,9 @@ export default function DashboardClient({
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
                       {formatSafeDate(item.created_at, { day: 'numeric', month: 'short', year: 'numeric' })}
                     </div>
-                    <div className="text-sm font-bold mt-2 line-clamp-2 leading-snug">
-                      {item.judul}
+                    <div className="text-sm font-bold mt-2 line-clamp-2 leading-snug flex items-center gap-1">
+                      {item.is_pinned && <span className="shrink-0 text-xs">📌</span>}
+                      <span>{item.judul}</span>
                     </div>
                   </div>
                 ))

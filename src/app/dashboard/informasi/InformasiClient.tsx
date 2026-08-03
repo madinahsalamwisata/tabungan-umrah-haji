@@ -142,7 +142,12 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
                   : "bg-white text-teks-900 border-garis"
               }`}
             >
-              {item.is_penting && (
+              {item.is_pinned && (
+                <span className="absolute top-5 right-5 bg-emerald-100 text-emerald-900 text-[8px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                  📌 Di-pin
+                </span>
+              )}
+              {item.is_penting && !item.is_pinned && (
                 <span className="absolute top-5 right-5 bg-emas text-hijau-900 text-[8px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
                   Penting
                 </span>
@@ -155,8 +160,9 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
                 {formatSafeDate(item.created_at, { dateStyle: 'medium' })}
               </div>
 
-              <h3 className="text-base font-bold mt-2.5 font-serif leading-snug">
-                {item.judul}
+              <h3 className="text-base font-bold mt-2.5 font-serif leading-snug flex items-center gap-1.5">
+                {item.is_pinned && <span className="shrink-0 text-xs">📌</span>}
+                <span>{item.judul}</span>
               </h3>
 
               <p className={`text-xs mt-2 line-clamp-2 leading-relaxed ${

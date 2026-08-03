@@ -247,7 +247,8 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
                       <button 
                         onClick={() => {
                           setNavigatingId(paket.id);
-                          router.push(`/dashboard/tabungan/baru?paketId=${paket.id}`);
+                          const isHaji = paket.nama_paket.toLowerCase().includes("haji");
+                          router.push(`/dashboard/tabungan/baru?paketId=${paket.id}&source=${isHaji ? "haji" : "umrah"}`);
                         }}
                         disabled={navigatingId === paket.id}
                         className={`w-full font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm border border-emerald-800 ${

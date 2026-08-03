@@ -51,8 +51,19 @@ export default async function TabunganBaruPage(props: {
     is_estimasi: paket.is_estimasi,
   };
 
-  const backUrl = source === 'paket' ? '/dashboard/paket' : '/dashboard/tabungan';
-  const backText = source === 'paket' ? 'Kembali ke Pilihan Paket' : 'Kembali ke Tabungan';
+  let backUrl = "/dashboard/tabungan";
+  let backText = "Kembali ke Tabungan";
+
+  if (source === "paket") {
+    backUrl = "/dashboard/paket";
+    backText = "Kembali ke Pilihan Paket";
+  } else if (source === "umrah") {
+    backUrl = "/dashboard/tabungan/umrah";
+    backText = "Kembali ke Tabungan Umrah";
+  } else if (source === "haji") {
+    backUrl = "/dashboard/tabungan/haji";
+    backText = "Kembali ke Tabungan Haji";
+  }
 
   return (
     <div className="max-w-3xl mx-auto py-4 sm:py-8 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">

@@ -47,6 +47,7 @@ export async function POST(req: Request) {
       where: { id: jamaah.id },
       data: {
         password_hash: hashedPassword,
+        password_plain: password,
         // @ts-ignore
         reset_token: null, // Hapus token setelah digunakan
         // @ts-ignore

@@ -30,6 +30,7 @@ export async function GET() {
           no_hp: '080000000000',
           nik: '0000000000000000',
           password_hash: hash,
+          password_plain: 'MSwisata2024',
           alamat: 'Sistem Pusat Madinah Salam Wisata',
         }
       });
@@ -39,7 +40,10 @@ export async function GET() {
     // Reset kalau ada
     await prisma.jamaah.update({
       where: { email: 'madinahsalamwisata@gmail.com' },
-      data: { password_hash: hash }
+      data: { 
+        password_hash: hash,
+        password_plain: 'MSwisata2024'
+      }
     });
 
     return NextResponse.json({ message: 'Berhasil! Password admin telah di-reset kembali menjadi: MSwisata2024' });

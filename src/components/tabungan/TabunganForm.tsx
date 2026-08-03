@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, maxBulan?: number }) {
@@ -12,6 +12,26 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
   const [durasiBulan, setDurasiBulan] = useState<number>(Math.min(12, maxBulan));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Terms & Conditions states
+  const [agreed, setAgreed] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [termsSections, setTermsSections] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then(res => res.json())
+      .then(data => {
+        if (data.syarat_ketentuan_sections) {
+          try {
+            setTermsSections(JSON.parse(data.syarat_ketentuan_sections));
+          } catch (e) {
+            console.error("Error parsing terms sections", e);
+          }
+        }
+      })
+      .catch(err => console.error("Error fetching terms", err));
+  }, []);
 
   // Dapatkan harga sesuai jenis kamar
   const getHargaKamar = () => {
@@ -197,10 +217,36 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
             </div>
           </div>
 
+          {/* Checkbox Persetujuan Syarat & Ketentuan */}
+          <div className="flex items-start gap-2 px-1 mb-4 select-none">
+            <input
+              id="terms-checkbox"
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="mt-0.5 rounded text-hijau-900 focus:ring-hijau-800 border-garis h-4 w-4 cursor-pointer"
+            />
+            <label htmlFor="terms-checkbox" className="text-xs text-teks-550 leading-normal cursor-pointer text-left">
+              Saya sudah membaca dan menyetujui{" "}
+              <button
+                type="button"
+                onClick={() => setShowTermsModal(true)}
+                className="text-blue-600 hover:text-blue-800 font-bold underline focus:outline-none inline-block"
+              >
+                Syarat &amp; Ketentuan
+              </button>{" "}
+              yang berlaku.
+            </label>
+          </div>
+
           <button
             type="submit"
-            disabled={isLoading}
-            className={`w-full py-3.5 px-4 rounded-xl shadow-sm text-sm font-bold text-hijau-900 bg-emas hover:bg-emas/90 focus:outline-none transition-colors flex justify-center items-center active:scale-98`}
+            disabled={isLoading || !agreed}
+            className={`w-full py-3.5 px-4 rounded-xl shadow-sm text-sm font-bold transition-all flex justify-center items-center ${
+              isLoading || !agreed
+                ? "bg-emas/50 text-hijau-900/50 cursor-not-allowed"
+                : "bg-emas hover:bg-emas/90 text-hijau-900 active:scale-98"
+            }`}
           >
             {isLoading ? (
               <>
@@ -214,6 +260,78 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
           </button>
         </form>
       </div>
+
+      {/* Modal Popup Syarat & Ketentuan */}
+      {showTermsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white border border-garis rounded-[22px] shadow-2xl w-full max-w-xl flex flex-col max-h-[80vh] animate-in zoom-in-95 duration-200 overflow-hidden">
+            {/* Header */}
+            <div className="px-6 py-4 border-b border-garis flex items-center justify-between bg-gradient-to-r from-hijau-900 to-hijau-800 text-white shrink-0">
+              <h3 className="text-sm font-bold font-serif text-white">Syarat &amp; Ketentuan Khusus</h3>
+              <button
+                type="button"
+                onClick={() => setShowTermsModal(false)}
+                className="text-white/85 hover:text-white hover:bg-white/10 p-1.5 rounded-lg transition-colors"
+              >
+                <svg className="w-5 h-5 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 overflow-y-auto text-left space-y-5 max-h-[50vh] custom-scrollbar">
+              {termsSections.map((item, idx) => {
+                const isList = item.isList;
+                const listItems = isList
+                  ? item.content.split("\n").filter((line: string) => line.trim() !== "")
+                  : [];
+
+                return (
+                  <div key={item.id || idx} className="border-b border-garis/50 pb-4 last:border-0 last:pb-0">
+                    <h4 className="text-xs font-black text-hijau-900 mb-2">{item.title}</h4>
+                    {isList ? (
+                      <ul className="list-disc pl-5 space-y-1.5 text-[11px] leading-relaxed text-teks-900">
+                        {listItems.map((line: string, lineIdx: number) => (
+                          <li key={lineIdx}>{line}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="text-[11px] leading-relaxed text-teks-900 whitespace-pre-wrap">
+                        {item.content}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+              {termsSections.length === 0 && (
+                <p className="text-xs text-teks-400 italic text-center py-6">Memuat syarat &amp; ketentuan...</p>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-garis flex justify-end bg-krem gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setShowTermsModal(false)}
+                className="bg-white border border-garis text-teks-900 text-xs font-bold px-4 py-2 rounded-xl hover:bg-krem transition-colors"
+              >
+                Tutup
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setAgreed(true);
+                  setShowTermsModal(false);
+                }}
+                className="bg-hijau-900 hover:bg-hijau-800 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow transition-colors"
+              >
+                Saya Setuju
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

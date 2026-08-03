@@ -56,6 +56,17 @@ export default async function TabunganBaruPage(props: {
 
   return (
     <div className="max-w-3xl mx-auto py-4 sm:py-8 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
+      <div className="hidden md:flex mb-4">
+        <Link
+          href={backUrl}
+          className="flex items-center gap-1.5 text-xs font-bold text-hijau-700 hover:text-hijau-900 transition-colors bg-hijau-100/50 hover:bg-hijau-100 px-3.5 py-2 rounded-xl"
+        >
+          <svg className="w-4 h-4 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          {backText}
+        </Link>
+      </div>
       <TabunganForm paket={serializedPaket} maxBulan={maxBulan} />
     </div>
   );

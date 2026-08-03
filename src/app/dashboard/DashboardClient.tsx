@@ -14,6 +14,7 @@ import {
   Briefcase 
 } from "lucide-react";
 import Swal from "sweetalert2";
+import { parseFormattedText } from "@/lib/formatter";
 
 declare global {
   interface Window {
@@ -86,8 +87,8 @@ export default function DashboardClient({
     // Panggil pertama kali
     fetchPengumuman();
 
-    // Polling setiap 60 detik (60000 ms) agar tidak membebani koneksi/server
-    const interval = setInterval(fetchPengumuman, 60000);
+    // Polling setiap 3 detik (3000 ms) agar update instan tanpa refresh
+    const interval = setInterval(fetchPengumuman, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -100,7 +101,7 @@ export default function DashboardClient({
     }
   };
   const showPengumumanPopup = (item: any) => {
-    const cleanKonten = item.konten ? item.konten.split('\n').map((line: string) => line.trim()).join('\n') : "";
+    const parsedKonten = parseFormattedText(item.konten);
 
     Swal.fire({
       showCloseButton: true,
@@ -117,7 +118,7 @@ export default function DashboardClient({
             Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
           </p>
           <div class="border-t border-gray-100 my-3"></div>
-          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">${cleanKonten}</div>
+          <div class="text-xs text-gray-700 leading-relaxed max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">${parsedKonten}</div>
           <div class="border-t border-gray-100 my-3.5"></div>
           <div class="flex justify-end">
             <button class="tutup-btn-custom bg-[#146349] hover:bg-[#0B3D30] text-white rounded-xl text-xs font-bold px-5 py-2.5 transition-colors shadow-md cursor-pointer">

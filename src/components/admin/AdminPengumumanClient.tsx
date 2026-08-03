@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
+import { parseFormattedText } from "@/lib/formatter";
 
 type PengumumanData = {
   id: string;
@@ -20,6 +21,60 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingData, setEditingData] = useState<PengumumanData | null>(null);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<PengumumanData | null>(null);
+
+  // Formatting state & refs
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [konten, setKonten] = useState("");
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setKonten(editingData?.konten || "");
+    }
+  }, [isModalOpen, editingData]);
+
+  const insertFormat = (type: 'bold' | 'italic' | 'underline' | 'bullet' | 'number') => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selectedText = text.substring(start, end);
+
+    let formatted = "";
+    let cursorOffset = 0;
+
+    switch (type) {
+      case 'bold':
+        formatted = `**${selectedText || 'teks'}**`;
+        cursorOffset = selectedText ? 0 : 2;
+        break;
+      case 'italic':
+        formatted = `*${selectedText || 'teks'}*`;
+        cursorOffset = selectedText ? 0 : 1;
+        break;
+      case 'underline':
+        formatted = `<u>${selectedText || 'teks'}</u>`;
+        cursorOffset = selectedText ? 0 : 4;
+        break;
+      case 'bullet':
+        formatted = `\n- ${selectedText}`;
+        break;
+      case 'number':
+        formatted = `\n1. ${selectedText}`;
+        break;
+    }
+
+    const newContent = text.substring(0, start) + formatted + text.substring(end);
+    setKonten(newContent);
+
+    // Refocus and place cursor
+    setTimeout(() => {
+      textarea.focus();
+      const newCursorPos = start + formatted.length - cursorOffset;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
+  };
 
   // Helper Swal Notifications
   const showNotification = (title: string, text: string, icon: 'success' | 'error' | 'warning') => {
@@ -88,7 +143,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
     const payload = {
       id: editingData?.id,
       judul: formData.get("judul") as string,
-      konten: formData.get("konten") as string,
+      konten: konten,
       is_penting: formData.get("is_penting") === "on",
     };
 
@@ -275,9 +330,10 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
 
             {/* Scrollable Content Body */}
             <div className="overflow-y-auto custom-scrollbar flex-1 pr-1 max-h-[300px]">
-              <p className="text-xs text-teks-900 leading-relaxed whitespace-pre-wrap">
-                {selectedAnnouncement.konten}
-              </p>
+              <div 
+                className="text-xs text-teks-900 leading-relaxed announcement-content text-justify"
+                dangerouslySetInnerHTML={{ __html: parseFormattedText(selectedAnnouncement.konten) }}
+              />
             </div>
 
             {/* Footer with Edit and Delete */}
@@ -330,12 +386,60 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
               
               <div>
                 <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Isi Pesan</label>
+                
+                {/* Toolbar Format */}
+                <div className="flex items-center gap-1.5 bg-krem border border-garis rounded-t-xl px-2.5 py-1.5 border-b-0 select-none">
+                  <button
+                    type="button"
+                    onClick={() => insertFormat('bold')}
+                    className="p-1 hover:bg-garis/50 rounded font-bold text-xs w-6 h-6 flex items-center justify-center text-teks-900 border border-garis/40 bg-white"
+                    title="Tebal (Bold)"
+                  >
+                    B
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertFormat('italic')}
+                    className="p-1 hover:bg-garis/50 rounded italic text-xs w-6 h-6 flex items-center justify-center text-teks-900 border border-garis/40 bg-white"
+                    title="Miring (Italic)"
+                  >
+                    I
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertFormat('underline')}
+                    className="p-1 hover:bg-garis/50 rounded underline text-xs w-6 h-6 flex items-center justify-center text-teks-900 border border-garis/40 bg-white"
+                    title="Garis Bawah (Underline)"
+                  >
+                    U
+                  </button>
+                  <div className="w-px h-3.5 bg-garis/60 mx-1"></div>
+                  <button
+                    type="button"
+                    onClick={() => insertFormat('bullet')}
+                    className="p-1 hover:bg-garis/50 rounded text-xs w-6 h-6 flex items-center justify-center text-teks-900 font-bold border border-garis/40 bg-white"
+                    title="Daftar Poin (Bullet List)"
+                  >
+                    •
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertFormat('number')}
+                    className="p-1 hover:bg-garis/50 rounded text-[10px] w-6 h-6 flex items-center justify-center text-teks-900 font-bold border border-garis/40 bg-white"
+                    title="Daftar Angka (Numbered List)"
+                  >
+                    1.
+                  </button>
+                </div>
+
                 <textarea 
+                  ref={textareaRef}
                   name="konten" 
-                  defaultValue={editingData?.konten} 
+                  value={konten}
+                  onChange={(e) => setKonten(e.target.value)}
                   required 
                   rows={6} 
-                  className="w-full bg-krem border border-garis rounded-xl px-3 py-2.5 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 resize-none" 
+                  className="w-full bg-krem border border-garis rounded-b-xl px-3 py-2.5 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 resize-none border-t-0" 
                   placeholder="Tuliskan isi pengumuman lengkap di sini..."
                 ></textarea>
               </div>

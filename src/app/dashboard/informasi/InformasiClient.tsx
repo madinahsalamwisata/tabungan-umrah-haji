@@ -1,12 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Bell, Calendar } from "lucide-react";
 import Swal from "sweetalert2";
+import { parseFormattedText } from "@/lib/formatter";
 
 export default function InformasiClient({ initialPengumuman }: { initialPengumuman: any[] }) {
+  const [pengumumanList, setPengumumanList] = useState<any[]>(initialPengumuman);
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState<"semua" | "penting">("semua");
+
+  useEffect(() => {
+    const fetchPengumuman = () => {
+      fetch("/api/admin/pengumuman")
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            setPengumumanList(data);
+          }
+        })
+        .catch(err => console.error("Gagal load pengumuman", err));
+    };
+
+    const interval = setInterval(fetchPengumuman, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
     try {
@@ -20,7 +38,7 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
   };
 
   const showDetail = (item: any) => {
-    const cleanKonten = item.konten ? item.konten.split('\n').map((line: string) => line.trim()).join('\n') : "";
+    const parsedKonten = parseFormattedText(item.konten);
 
     Swal.fire({
       showCloseButton: true,
@@ -37,7 +55,7 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
             Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
           </p>
           <div class="border-t border-gray-100 my-3"></div>
-          <div class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">${cleanKonten}</div>
+          <div class="text-xs text-gray-700 leading-relaxed max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">${parsedKonten}</div>
           <div class="border-t border-gray-100 my-3.5"></div>
           <div class="flex justify-end">
             <button class="tutup-btn-custom bg-[#146349] hover:bg-[#0B3D30] text-white rounded-xl text-xs font-bold px-5 py-2.5 transition-colors shadow-md cursor-pointer">
@@ -62,7 +80,7 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
     });
   };
 
-  const filteredList = initialPengumuman.filter((item) => {
+  const filteredList = pengumumanList.filter((item) => {
     const matchesSearch = item.judul.toLowerCase().includes(search.toLowerCase()) || 
                           item.konten.toLowerCase().includes(search.toLowerCase());
     const matchesFilter = filterType === "semua" ? true : item.is_penting;

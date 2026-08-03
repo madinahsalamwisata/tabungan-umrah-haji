@@ -191,9 +191,11 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
     return new Date(dateStr).toLocaleDateString('id-ID', { month: 'long' });
   };
 
-  const cleanTitle = (title: string) => {
-    // Strip year like "1448H", "2026", "2027" from titles for estimation plans
-    return title.replace(/\b\d{4}H?\b/gi, '').trim();
+  const cleanTitle = (title: string, isEstimasi?: boolean) => {
+    if (isEstimasi || title.toLowerCase().includes('estimasi')) {
+      return title.replace(/\s*\d{4}\s*H?\s*/gi, ' ').replace(/\s+/g, ' ').trim();
+    }
+    return title;
   };
 
   const paketPasti = data.filter(item => !item.is_estimasi);
@@ -343,7 +345,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
               >
                 <div>
                   <div className="flex justify-between items-start mb-2.5 gap-2">
-                    <h3 className="text-base font-bold text-teks-900 leading-snug">{cleanTitle(item.nama_paket)}</h3>
+                    <h3 className="text-base font-bold text-teks-900 leading-snug">{cleanTitle(item.nama_paket, item.is_estimasi)}</h3>
                     <span className="bg-yellow-50 text-yellow-700 border border-yellow-200/50 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Estimasi</span>
                   </div>
 
@@ -431,9 +433,14 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                         <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-hijau-100 text-hijau-800 tracking-wider">
                           Pilihan Paket
                         </span>
-                        <h2 className="text-lg font-bold text-teks-900 mt-2">{selectedPaket.nama_paket}</h2>
+                        <h2 className="text-lg font-bold text-teks-900 mt-2">{cleanTitle(selectedPaket.nama_paket, selectedPaket.is_estimasi)}</h2>
                         <p className="text-xs text-teks-500 mt-1">
-                          🗓️ Keberangkatan: {new Date(selectedPaket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} | ✈️ Maskapai: {selectedPaket.maskapai}
+                          🗓️ {selectedPaket.is_estimasi ? "Estimasi Keberangkatan:" : "Keberangkatan:"} <span className="font-bold text-teks-900">
+                            {selectedPaket.is_estimasi 
+                              ? formatMonth(selectedPaket.tanggal_keberangkatan)
+                              : new Date(selectedPaket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                            }
+                          </span> | ✈️ Maskapai: <span className="font-bold text-teks-900">{selectedPaket.maskapai}</span>
                         </p>
                       </div>
                       <div className="bg-krem border border-garis/80 px-4 py-3 rounded-2xl shrink-0 text-center md:text-right">
@@ -532,60 +539,63 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
             ) : (
               // List View of Packages containing choices
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-                {data.map((item) => (
-                  <div 
-                    key={item.id} 
-                    onClick={() => {
-                      if (item.peminat.length > 0) {
-                        setSelectedPilihanPaketId(item.id);
-                        setPeminatSearch("");
-                      }
-                    }}
-                    className={`bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left flex flex-col justify-between transition-all duration-300 ${
-                      item.peminat.length > 0 
-                        ? 'cursor-pointer hover:border-hijau-800 hover:shadow-lg hover:-translate-y-0.5' 
-                        : 'opacity-55 hover:border-garis/60'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex justify-between items-start mb-2.5 gap-2">
-                        <h3 className="text-sm font-bold text-teks-900 leading-snug">{item.nama_paket}</h3>
-                        {item.is_estimasi && (
-                          <span className="bg-yellow-50 text-yellow-700 border border-yellow-200/50 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Estimasi</span>
-                        )}
-                      </div>
+                {(() => {
+                  const chosenPackages = data.filter(item => item.peminat.length > 0);
+                  
+                  return (
+                    <>
+                      {chosenPackages.map((item) => (
+                        <div 
+                          key={item.id} 
+                          onClick={() => {
+                            setSelectedPilihanPaketId(item.id);
+                            setPeminatSearch("");
+                          }}
+                          className="bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left flex flex-col justify-between transition-all duration-300 cursor-pointer hover:border-hijau-800 hover:shadow-lg hover:-translate-y-0.5"
+                        >
+                          <div>
+                            <div className="flex justify-between items-start mb-2.5 gap-2">
+                              <h3 className="text-sm font-bold text-teks-900 leading-snug">{cleanTitle(item.nama_paket, item.is_estimasi)}</h3>
+                              {item.is_estimasi && (
+                                <span className="bg-yellow-50 text-yellow-700 border border-yellow-200/50 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Estimasi</span>
+                              )}
+                            </div>
 
-                      <div className="mt-3.5 space-y-1.5 text-[11px] text-teks-500">
-                        <p>🗓️ {item.is_estimasi ? "Estimasi Keberangkatan:" : "Keberangkatan:"} <span className="font-bold text-teks-900">
-                          {item.is_estimasi 
-                            ? formatMonth(item.tanggal_keberangkatan)
-                            : new Date(item.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-                          }
-                        </span></p>
-                        <p>✈️ Maskapai: <span className="font-bold text-teks-900">{item.maskapai}</span></p>
-                      </div>
-                    </div>
+                            <div className="mt-3.5 space-y-1.5 text-[11px] text-teks-500">
+                              <p>🗓️ {item.is_estimasi ? "Estimasi Keberangkatan:" : "Keberangkatan:"} <span className="font-bold text-teks-900">
+                                {item.is_estimasi 
+                                  ? formatMonth(item.tanggal_keberangkatan)
+                                  : new Date(item.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+                                }
+                              </span></p>
+                              <p>✈️ Maskapai: <span className="font-bold text-teks-900">{item.maskapai}</span></p>
+                            </div>
+                          </div>
 
-                    <div className="mt-5 pt-3 border-t border-garis/60 flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <span className="text-base">👥</span>
-                        <span className="text-[10px] font-bold text-teks-400">Pilihan Jamaah:</span>
-                      </div>
-                      <span className={`text-[10px] font-black px-2.5 py-1 rounded-xl border ${
-                        item.peminat.length > 0 
-                          ? 'bg-hijau-100 text-hijau-800 border-hijau-200/50' 
-                          : 'bg-krem text-teks-300 border-garis'
-                      }`}>
-                        {item.peminat.length} Calon Jamaah
-                      </span>
-                    </div>
-                  </div>
-                ))}
-                {data.length === 0 && (
-                  <div className="col-span-1 md:col-span-2 lg:col-span-3 py-12 text-center text-teks-300 italic bg-white border border-garis rounded-[22px]">
-                    Belum ada paket yang tersedia.
-                  </div>
-                )}
+                          <div className="mt-5 pt-3 border-t border-garis/60 flex flex-col gap-2">
+                            <div className="flex items-center justify-between text-[10px]">
+                              <span className="font-bold text-teks-400 flex items-center gap-1">🟢 Paket Aktif:</span>
+                              <span className="font-black text-hijau-800 bg-hijau-100 px-2 py-0.5 rounded-lg border border-hijau-200/30">
+                                {item.peminat.filter(p => p.status_rencana !== "Dibatalkan").length} Calon Jamaah
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-[10px]">
+                              <span className="font-bold text-teks-400 flex items-center gap-1">🔴 Paket Dibatalkan:</span>
+                              <span className="font-black text-red-800 bg-red-100 px-2 py-0.5 rounded-lg border border-red-200/30">
+                                {item.peminat.filter(p => p.status_rencana === "Dibatalkan").length} Calon Jamaah
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {chosenPackages.length === 0 && (
+                        <div className="col-span-1 md:col-span-2 lg:col-span-3 py-12 text-center text-teks-400 font-medium bg-white border border-garis rounded-[22px]">
+                          Belum ada paket yang dipilih oleh calon jamaah.
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             )}
           </div>

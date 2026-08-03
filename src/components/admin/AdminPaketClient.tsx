@@ -3,6 +3,19 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 
+type PeminatItem = {
+  jamaah_id: string;
+  nama: string;
+  email: string;
+  no_hp: string;
+  nik: string;
+  foto_url: string | null;
+  jenis_kamar: string;
+  status_rencana: string;
+  setoran_terkumpul: number;
+  total_biaya: number;
+};
+
 type PaketData = {
   id: string;
   nama_paket: string;
@@ -18,6 +31,7 @@ type PaketData = {
   deskripsi_fasilitas: string | null;
   poster_url: string | null;
   is_estimasi: boolean;
+  peminat: PeminatItem[];
 };
 
 export default function AdminPaketClient({ initialData }: { initialData: PaketData[] }) {
@@ -25,7 +39,9 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingData, setEditingData] = useState<PaketData | null>(null);
   
-  const [activeTab, setActiveTab] = useState<"pasti" | "estimasi">("pasti");
+  const [activeTab, setActiveTab] = useState<"pasti" | "estimasi" | "pilihan">("pasti");
+  const [selectedPilihanPaketId, setSelectedPilihanPaketId] = useState<string | null>(null);
+  const [peminatSearch, setPeminatSearch] = useState("");
   const [isEstimasiForm, setIsEstimasiForm] = useState(false);
 
   // Helper Swal Notifications
@@ -190,7 +206,10 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
         {/* Tabs */}
         <div className="flex p-1 bg-krem border border-garis rounded-xl w-fit">
           <button 
-            onClick={() => setActiveTab('pasti')}
+            onClick={() => {
+              setActiveTab('pasti');
+              setSelectedPilihanPaketId(null);
+            }}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
               activeTab === 'pasti' 
                 ? 'bg-hijau-900 text-white shadow-md' 
@@ -200,7 +219,10 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
             Paket Pasti Berangkat
           </button>
           <button 
-            onClick={() => setActiveTab('estimasi')}
+            onClick={() => {
+              setActiveTab('estimasi');
+              setSelectedPilihanPaketId(null);
+            }}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
               activeTab === 'estimasi' 
                 ? 'bg-hijau-900 text-white shadow-md' 
@@ -209,22 +231,37 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
           >
             Rencana / Estimasi
           </button>
+          <button 
+            onClick={() => {
+              setActiveTab('pilihan');
+              setSelectedPilihanPaketId(null);
+            }}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
+              activeTab === 'pilihan' 
+                ? 'bg-hijau-900 text-white shadow-md' 
+                : 'text-teks-500 hover:text-teks-900 hover:bg-white/50'
+            }`}
+          >
+            Paket Pilihan Jamaah
+          </button>
         </div>
 
-        <button 
-          onClick={handleOpenAdd}
-          className="flex items-center justify-center gap-2 bg-hijau-900 hover:bg-hijau-800 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-lg shrink-0"
-        >
-          <svg fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-          Tambah Paket
-        </button>
+        {activeTab !== 'pilihan' && (
+          <button 
+            onClick={handleOpenAdd}
+            className="flex items-center justify-center gap-2 bg-hijau-900 hover:bg-hijau-800 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-lg shrink-0"
+          >
+            <svg fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Tambah Paket
+          </button>
+        )}
       </div>
 
       {/* Main Flex Column Content */}
       <div className="flex flex-col gap-6">
-        {activeTab === 'pasti' ? (
+        {activeTab === 'pasti' && (
           <>
             {paketPasti.map((item) => (
               <div 
@@ -295,7 +332,9 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
               </div>
             )}
           </>
-        ) : (
+        )}
+
+        {activeTab === 'estimasi' && (
           <>
             {paketEstimasi.map((item) => (
               <div 
@@ -354,6 +393,202 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
               </div>
             )}
           </>
+        )}
+
+        {activeTab === 'pilihan' && (
+          <div className="space-y-6">
+            {selectedPilihanPaketId ? (
+              // Detail View for a package's pilgrims selection
+              (() => {
+                const selectedPaket = data.find(p => p.id === selectedPilihanPaketId);
+                if (!selectedPaket) return null;
+                
+                const filteredPeminat = selectedPaket.peminat.filter(pm => 
+                  pm.nama.toLowerCase().includes(peminatSearch.toLowerCase()) ||
+                  pm.email.toLowerCase().includes(peminatSearch.toLowerCase()) ||
+                  pm.nik.includes(peminatSearch) ||
+                  pm.no_hp.includes(peminatSearch)
+                );
+
+                return (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    {/* Header Action Row */}
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={() => setSelectedPilihanPaketId(null)}
+                        className="flex items-center gap-1.5 text-xs font-bold text-hijau-700 hover:text-hijau-900 transition-colors bg-hijau-100/50 hover:bg-hijau-100 px-3 py-2 rounded-xl"
+                      >
+                        <svg className="w-4 h-4 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Kembali ke Daftar Paket
+                      </button>
+                    </div>
+
+                    {/* Package Info card */}
+                    <div className="p-6 bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                      <div>
+                        <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-hijau-100 text-hijau-800 tracking-wider">
+                          Pilihan Paket
+                        </span>
+                        <h2 className="text-lg font-bold text-teks-900 mt-2">{selectedPaket.nama_paket}</h2>
+                        <p className="text-xs text-teks-500 mt-1">
+                          🗓️ Keberangkatan: {new Date(selectedPaket.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} | ✈️ Maskapai: {selectedPaket.maskapai}
+                        </p>
+                      </div>
+                      <div className="bg-krem border border-garis/80 px-4 py-3 rounded-2xl shrink-0 text-center md:text-right">
+                        <div className="text-[10px] uppercase font-extrabold text-teks-500 tracking-wide">Peminat Terdaftar</div>
+                        <div className="text-base font-black text-hijau-900 mt-0.5">{selectedPaket.peminat.length} Calon Jamaah</div>
+                      </div>
+                    </div>
+
+                    {/* Search bar & Table */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full sm:w-80">
+                        <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        <input 
+                          type="text" 
+                          placeholder="Cari nama, email, NIK, HP..." 
+                          value={peminatSearch}
+                          onChange={(e) => setPeminatSearch(e.target.value)}
+                          className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
+                        />
+                      </div>
+
+                      <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden">
+                        <div className="overflow-x-auto w-full">
+                          <table className="w-full text-left text-xs border-collapse">
+                            <thead className="bg-gradient-to-r from-hijau-900 to-hijau-800 text-white">
+                              <tr>
+                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Calon Jamaah</th>
+                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Kontak & NIK</th>
+                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Pilihan Kamar</th>
+                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Status Rencana</th>
+                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase text-right">Tabungan Terkumpul</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-garis">
+                              {filteredPeminat.map((pm, idx) => (
+                                <tr key={idx} className="hover:bg-krem/40 transition-colors">
+                                  <td className="px-6 py-4">
+                                    <div className="flex items-center gap-3">
+                                      {pm.foto_url ? (
+                                        <img 
+                                          src={pm.foto_url} 
+                                          alt={pm.nama} 
+                                          className="w-[34px] h-[34px] rounded-full object-cover shrink-0 border border-garis"
+                                        />
+                                      ) : (
+                                        <div className="w-[34px] h-[34px] rounded-full flex items-center justify-center font-bold text-white text-[12px] bg-gradient-to-br from-hijau-700 to-hijau-900 shrink-0">
+                                          {pm.nama?.[0] || "J"}
+                                        </div>
+                                      )}
+                                      <div className="text-left">
+                                        <div className="font-bold text-teks-900 text-sm">{pm.nama}</div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className="px-6 py-4 text-left">
+                                    <div className="font-semibold text-teks-900">{pm.email}</div>
+                                    <div className="text-teks-500 text-[10px] mt-0.5">{pm.no_hp} • NIK: {pm.nik}</div>
+                                  </td>
+                                  <td className="px-6 py-4 text-left capitalize font-bold text-teks-900">
+                                    {pm.jenis_kamar}
+                                  </td>
+                                  <td className="px-6 py-4 text-left">
+                                    <span className={`text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border ${
+                                      pm.status_rencana === 'Aktif' 
+                                        ? 'bg-hijau-100 text-hijau-800 border-hijau-200/50' 
+                                        : pm.status_rencana === 'Dibatalkan'
+                                        ? 'bg-red-50 text-red-600 border-red-100/50'
+                                        : 'bg-teks-300/10 text-teks-500 border-garis'
+                                    }`}>
+                                      {pm.status_rencana}
+                                    </span>
+                                  </td>
+                                  <td className="px-6 py-4 text-right font-extrabold text-sm text-hijau-900">
+                                    Rp {pm.setoran_terkumpul.toLocaleString('id-ID')}
+                                    <span className="text-[10px] text-teks-300 font-medium block mt-0.5">
+                                      dari Rp {pm.total_biaya.toLocaleString('id-ID')}
+                                    </span>
+                                  </td>
+                                </tr>
+                              ))}
+                              {filteredPeminat.length === 0 && (
+                                <tr>
+                                  <td colSpan={5} className="px-6 py-12 text-center text-teks-300 italic">
+                                    Tidak ada calon jamaah yang cocok dengan pencarian.
+                                  </td>
+                                </tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()
+            ) : (
+              // List View of Packages containing choices
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                {data.map((item) => (
+                  <div 
+                    key={item.id} 
+                    onClick={() => {
+                      if (item.peminat.length > 0) {
+                        setSelectedPilihanPaketId(item.id);
+                        setPeminatSearch("");
+                      }
+                    }}
+                    className={`bg-white border border-garis rounded-[22px] p-5 shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left flex flex-col justify-between transition-all duration-300 ${
+                      item.peminat.length > 0 
+                        ? 'cursor-pointer hover:border-hijau-800 hover:shadow-lg hover:-translate-y-0.5' 
+                        : 'opacity-55 hover:border-garis/60'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-2.5 gap-2">
+                        <h3 className="text-sm font-bold text-teks-900 leading-snug">{item.nama_paket}</h3>
+                        {item.is_estimasi && (
+                          <span className="bg-yellow-50 text-yellow-700 border border-yellow-200/50 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Estimasi</span>
+                        )}
+                      </div>
+
+                      <div className="mt-3.5 space-y-1.5 text-[11px] text-teks-500">
+                        <p>🗓️ {item.is_estimasi ? "Estimasi Keberangkatan:" : "Keberangkatan:"} <span className="font-bold text-teks-900">
+                          {item.is_estimasi 
+                            ? formatMonth(item.tanggal_keberangkatan)
+                            : new Date(item.tanggal_keberangkatan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+                          }
+                        </span></p>
+                        <p>✈️ Maskapai: <span className="font-bold text-teks-900">{item.maskapai}</span></p>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 pt-3 border-t border-garis/60 flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <span className="text-base">👥</span>
+                        <span className="text-[10px] font-bold text-teks-400">Pilihan Jamaah:</span>
+                      </div>
+                      <span className={`text-[10px] font-black px-2.5 py-1 rounded-xl border ${
+                        item.peminat.length > 0 
+                          ? 'bg-hijau-100 text-hijau-800 border-hijau-200/50' 
+                          : 'bg-krem text-teks-300 border-garis'
+                      }`}>
+                        {item.peminat.length} Calon Jamaah
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                {data.length === 0 && (
+                  <div className="col-span-1 md:col-span-2 lg:col-span-3 py-12 text-center text-teks-300 italic bg-white border border-garis rounded-[22px]">
+                    Belum ada paket yang tersedia.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         )}
       </div>
 

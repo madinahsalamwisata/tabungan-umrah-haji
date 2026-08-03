@@ -5,16 +5,54 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminPaketPage() {
   const paket = await prisma.paket.findMany({
-    orderBy: { tanggal_keberangkatan: 'asc' }
+    orderBy: { tanggal_keberangkatan: 'asc' },
+    include: {
+      RencanaTabungan: {
+        include: {
+          jamaah: true,
+          RiwayatSetoran: true
+        }
+      }
+    }
   });
 
   const serialized = paket.map(p => ({
-    ...p,
+    id: p.id,
+    nama_paket: p.nama_paket,
+    tanggal_keberangkatan: p.tanggal_keberangkatan.toISOString(),
+    tanggal_kepulangan: p.tanggal_kepulangan.toISOString(),
+    hotel_makkah: p.hotel_makkah,
+    hotel_madinah: p.hotel_madinah,
+    maskapai: p.maskapai,
     harga_quad: Number(p.harga_quad),
     harga_double: Number(p.harga_double),
     harga_triple: Number(p.harga_triple),
-    tanggal_keberangkatan: p.tanggal_keberangkatan.toISOString(),
-    tanggal_kepulangan: p.tanggal_kepulangan.toISOString(),
+    kuota: p.kuota,
+    deskripsi_fasilitas: p.deskripsi_fasilitas,
+    poster_url: p.poster_url,
+    is_estimasi: p.is_estimasi,
+    peminat: p.RencanaTabungan.map(rt => {
+      const totalTerkumpul = rt.RiwayatSetoran
+        .filter(rs => rs.status_pembayaran === 'Lunas' || rs.status_pembayaran === 'settlement' || rs.status_pembayaran === 'success')
+        .reduce((sum, rs) => sum + Number(rs.nominal), 0);
+
+      const totalRefund = rt.RiwayatSetoran
+        .filter(rs => rs.status_pembayaran === 'refund')
+        .reduce((sum, rs) => sum + Math.abs(Number(rs.nominal)), 0);
+
+      return {
+        jamaah_id: rt.jamaah.id,
+        nama: rt.jamaah.nama,
+        email: rt.jamaah.email,
+        no_hp: rt.jamaah.no_hp,
+        nik: rt.jamaah.nik,
+        foto_url: rt.jamaah.foto_url,
+        jenis_kamar: rt.jenis_kamar,
+        status_rencana: rt.status,
+        setoran_terkumpul: totalTerkumpul - totalRefund,
+        total_biaya: Number(rt.total_biaya)
+      };
+    })
   }));
 
   return (

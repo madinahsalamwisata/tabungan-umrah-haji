@@ -8,8 +8,7 @@ export default function TentangKamiPage() {
     tentang_kami_company_name: "PT Madinah Salam Wisata",
     tentang_kami_description: "Penyelenggara perjalanan ibadah Umrah dan Haji yang berfokus pada layanan yang amanah, profesional, dan sesuai dengan tuntunan syariat. Kami berkomitmen memberikan pengalaman ibadah terbaik bagi jamaah.",
     tentang_kami_ppiu_no: "03012400173490004",
-    tentang_kami_visi: "Menjadi penyelenggara perjalanan ibadah Umrah, Haji, dan wisata terpercaya yang berkomitmen menghadirkan layanan sesuai tuntunan sunnah Rasulullah ﷺ.",
-    tentang_kami_misi: "Menyelenggarakan perjalanan ibadah Umrah dan Haji yang sesuai dengan tuntunan syariat dan sunnah.\nMemberikan pelayanan yang amanah, profesional, dan penuh kepedulian kepada jamaah.\nMembimbing jamaah secara ruhiyah dan teknis agar meraih ibadah yang sah, khusyuk, dan mabrur.\nMenghadirkan pengalaman berwisata yang edukatif, berkesan, dan memperkuat iman.\nMenjalin kemitraan yang transparan dan berkelanjutan dengan stakeholder lokal dan internasional."
+    tentang_kami_sections: "[]"
   });
 
   useEffect(() => {
@@ -30,12 +29,15 @@ export default function TentangKamiPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const misiList = settings.tentang_kami_misi
-    ? settings.tentang_kami_misi.split("\n").filter(line => line.trim() !== "")
-    : [];
+  let sections: Array<{ id: string; title: string; content: string; isList?: boolean }> = [];
+  try {
+    sections = JSON.parse(settings.tentang_kami_sections || "[]");
+  } catch (err) {
+    console.error("Error parsing tentang kami sections:", err);
+  }
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-6 max-w-2xl mx-auto pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500 text-left">
       {/* Intro Card */}
       <div className="bg-gradient-to-br from-hijau-900 to-hijau-800 rounded-3xl p-6 text-white shadow-card relative overflow-hidden">
         <div className="absolute -right-10 -bottom-10 w-36 h-36 rounded-full border border-white/5 pointer-events-none"></div>
@@ -55,34 +57,38 @@ export default function TentangKamiPage() {
         </div>
       </div>
 
-      {/* Visi Card */}
-      <div className="bg-white border border-garis rounded-3xl p-6 shadow-sm">
-        <h3 className="text-base font-bold text-hijau-900 font-serif mb-3 flex items-center gap-2">
-          <CheckCircle2 className="w-5 h-5 text-hijau-800" />
-          Visi Kami
-        </h3>
-        <p className="text-sm text-teks-900 leading-relaxed italic bg-krem/40 p-4 rounded-2xl border border-garis/55 whitespace-pre-wrap">
-          &quot;{settings.tentang_kami_visi}&quot;
-        </p>
-      </div>
+      {/* Dynamic Sections */}
+      {sections.map((section, idx) => {
+        const isList = section.isList;
+        const listItems = isList
+          ? section.content.split("\n").filter(line => line.trim() !== "")
+          : [];
 
-      {/* Misi Card */}
-      <div className="bg-white border border-garis rounded-3xl p-6 shadow-sm">
-        <h3 className="text-base font-bold text-hijau-900 font-serif mb-4 flex items-center gap-2">
-          <CheckCircle2 className="w-5 h-5 text-hijau-800" />
-          Misi Kami
-        </h3>
-        <ul className="space-y-3.5">
-          {misiList.map((misi, idx) => (
-            <li key={idx} className="flex gap-3 items-start animate-in fade-in duration-300">
-              <span className="w-5 h-5 rounded-full bg-hijau-100 flex items-center justify-center text-[11px] font-bold text-hijau-900 shrink-0 mt-0.5">
-                {idx + 1}
-              </span>
-              <span className="text-sm text-gray-700 leading-relaxed">{misi}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+        return (
+          <div key={section.id || idx} className="bg-white border border-garis rounded-3xl p-6 shadow-sm animate-in fade-in duration-300">
+            <h3 className="text-base font-bold text-hijau-900 font-serif mb-3 flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-hijau-800" />
+              {section.title}
+            </h3>
+            {isList ? (
+              <ul className="space-y-3.5">
+                {listItems.map((item, itemIdx) => (
+                  <li key={itemIdx} className="flex gap-3 items-start">
+                    <span className="w-5 h-5 rounded-full bg-hijau-100 flex items-center justify-center text-[11px] font-bold text-hijau-900 shrink-0 mt-0.5">
+                      {itemIdx + 1}
+                    </span>
+                    <span className="text-sm text-gray-700 leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-teks-900 leading-relaxed bg-krem/40 p-4 rounded-2xl border border-garis/55 whitespace-pre-wrap">
+                {section.content}
+              </p>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

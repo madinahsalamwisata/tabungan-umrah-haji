@@ -35,6 +35,7 @@ type JamaahData = {
   nik: string;
   alamat: string | null;
   foto_url: string | null;
+  password_plain: string | null;
   created_at: string;
   rencana_tabungan: RencanaTabunganItem[];
 };
@@ -155,7 +156,7 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
     if (!editingJamaah) return;
     
     const formData = new FormData(e.currentTarget);
-    const updatedData = {
+    const updatedData: any = {
       id: editingJamaah.id,
       nama: formData.get("nama") as string,
       email: formData.get("email") as string,
@@ -163,6 +164,11 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
       nik: formData.get("nik") as string,
       alamat: formData.get("alamat") as string,
     };
+
+    const password = formData.get("password") as string;
+    if (password) {
+      updatedData.password = password;
+    }
 
     try {
       const res = await fetch("/api/admin/jamaah", {
@@ -173,8 +179,8 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
 
       if (res.ok) {
         const result = await res.json();
-        // Update local state
-        setData(prev => prev.map(j => j.id === result.id ? { ...j, ...updatedData } : j));
+        // Update local state using full result
+        setData(prev => prev.map(j => j.id === result.id ? { ...j, ...result } : j));
         setIsEditModalOpen(false);
         showNotification('Berhasil', 'Data berhasil diperbarui!', 'success');
       } else {
@@ -378,6 +384,12 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
                 <div>
                   <span className="text-teks-300 font-extrabold uppercase text-[9.5px] block tracking-wide">Alamat Tempat Tinggal</span>
                   <span className="text-teks-900 font-medium mt-1 block leading-relaxed">{selectedJamaah.alamat || "-"}</span>
+                </div>
+                <div>
+                  <span className="text-teks-300 font-extrabold uppercase text-[9.5px] block tracking-wide">Password Akun</span>
+                  <span className="text-teks-900 font-bold mt-1 block font-mono bg-krem px-2.5 py-1.5 rounded-lg border border-garis/80 select-all max-w-max">
+                    {selectedJamaah.password_plain || "Terenkripsi (Ubah via Edit)"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -609,7 +621,11 @@ export default function AdminJamaahClient({ initialData }: { initialData: Jamaah
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Alamat Lengkap</label>
-                  <textarea name="alamat" defaultValue={editingJamaah.alamat || ""} rows={3} className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 resize-none"></textarea>
+                  <textarea name="alamat" defaultValue={editingJamaah.alamat || ""} rows={2} className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 resize-none"></textarea>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Password Baru (Kosongkan jika tidak diubah)</label>
+                  <input name="password" type="password" className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" placeholder="Masukkan password baru jika ingin mengubah" />
                 </div>
               </div>
 

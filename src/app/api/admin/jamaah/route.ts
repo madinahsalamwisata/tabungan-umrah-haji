@@ -45,7 +45,8 @@ export async function POST(req: Request) {
         nik,
         no_hp,
         alamat: alamat || "",
-        password_hash: hashedPassword
+        password_hash: hashedPassword,
+        password_plain: password
       }
     });
 
@@ -69,21 +70,28 @@ export async function PUT(req: Request) {
     }
 
     const body = await req.json();
-    const { id, nama, email, nik, no_hp, alamat } = body;
+    const { id, nama, email, nik, no_hp, alamat, password } = body;
 
     if (!id) {
       return NextResponse.json({ message: "ID Jamaah tidak ditemukan" }, { status: 400 });
     }
 
+    const updateData: any = {
+      nama,
+      email,
+      nik,
+      no_hp,
+      alamat
+    };
+
+    if (password) {
+      updateData.password_hash = await bcrypt.hash(password, 10);
+      updateData.password_plain = password;
+    }
+
     const updatedJamaah = await prisma.jamaah.update({
       where: { id },
-      data: {
-        nama,
-        email,
-        nik,
-        no_hp,
-        alamat
-      }
+      data: updateData
     });
 
     return NextResponse.json(updatedJamaah);

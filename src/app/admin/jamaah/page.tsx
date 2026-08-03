@@ -29,6 +29,7 @@ export default async function AdminJamaahPage() {
     nik: j.nik,
     alamat: j.alamat,
     foto_url: j.foto_url,
+    password_plain: j.password_plain,
     created_at: j.created_at.toISOString(),
     rencana_tabungan: j.RencanaTabungan.map(rt => ({
       id: rt.id,

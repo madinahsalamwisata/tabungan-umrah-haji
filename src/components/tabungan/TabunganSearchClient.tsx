@@ -70,12 +70,57 @@ function CustomSelect({
 
 export default function TabunganSearchClient({ pakets, activePaketIds }: { pakets: any[], activePaketIds: string[] }) {
   const router = useRouter();
+  const [currentPakets, setCurrentPakets] = useState<any[]>(pakets);
   const [navigatingId, setNavigatingId] = useState<string | null>(null);
   
   const [pesawat, setPesawat] = useState("");
   const [hotel, setHotel] = useState("");
   const [bulan, setBulan] = useState("");
   const [hasSearched, setHasSearched] = useState(true);
+
+  // Polling /api/paket every 3 seconds for instant updates from admin changes
+  useEffect(() => {
+    let active = true;
+    async function fetchUpdatedPakets() {
+      try {
+        const res = await fetch("/api/paket");
+        if (res.ok) {
+          const rawPakets: any[] = await res.json();
+          
+          const filtered = rawPakets.filter(p => {
+             return p.is_estimasi === true || p.nama_paket.includes("(Estimasi)");
+          }).map(p => ({
+             id: p.id,
+             nama_paket: p.nama_paket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim(),
+             tanggal_keberangkatan: p.tanggal_keberangkatan,
+             tanggal_kepulangan: p.tanggal_kepulangan,
+             hotel_makkah: p.hotel_makkah,
+             hotel_madinah: p.hotel_madinah,
+             maskapai: p.maskapai,
+             harga_quad: p.harga_quad.toString(),
+             harga_triple: p.harga_triple.toString(),
+             harga_double: p.harga_double.toString(),
+             kuota: p.kuota,
+             deskripsi_fasilitas: p.deskripsi_fasilitas,
+             poster_url: p.poster_url,
+             is_estimasi: p.is_estimasi,
+          }));
+
+          if (active) {
+            setCurrentPakets(filtered);
+          }
+        }
+      } catch (err) {
+        console.error("Gagal polling paket:", err);
+      }
+    }
+
+    const interval = setInterval(fetchUpdatedPakets, 3000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
     try {
@@ -89,8 +134,8 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
   };
 
   // Extract unique options for dropdowns
-  const pesawatOptions = Array.from(new Set(pakets.map(p => p.maskapai).filter(Boolean)));
-  const hotelOptions = Array.from(new Set(pakets.map(p => p.hotel_makkah).filter(Boolean)));
+  const pesawatOptions = Array.from(new Set(currentPakets.map(p => p.maskapai).filter(Boolean)));
+  const hotelOptions = Array.from(new Set(currentPakets.map(p => p.hotel_makkah).filter(Boolean)));
   const bulanOptions = [
     "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
     "Juli", "Agustus", "September", "Oktober", "November", "Desember"
@@ -111,7 +156,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
     setHasSearched(true);
   };
 
-  const filteredPakets = pakets.filter(p => {
+  const filteredPakets = currentPakets.filter(p => {
     const matchPesawat = pesawat === "" || p.maskapai === pesawat;
     const matchHotel = hotel === "" || p.hotel_makkah === hotel;
     const pBulan = formatSafeDate(p.tanggal_keberangkatan, { month: 'long' });

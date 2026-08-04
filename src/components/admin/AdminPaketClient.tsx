@@ -43,6 +43,30 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Dynamic 3-second polling for real-time updates
+  useEffect(() => {
+    let active = true;
+    async function fetchPakets() {
+      try {
+        const res = await fetch("/api/admin/paket");
+        if (res.ok) {
+          const fetchedData = await res.json();
+          if (active) {
+            setData(fetchedData);
+          }
+        }
+      } catch (err) {
+        console.error("Gagal polling paket data:", err);
+      }
+    }
+
+    const interval = setInterval(fetchPakets, 3000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
+
   // Read initial states from URL query parameters
   const urlTab = searchParams.get("tab") as "pasti" | "estimasi" | "pilihan" | null;
   const urlPaketId = searchParams.get("paketId");

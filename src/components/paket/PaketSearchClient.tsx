@@ -68,12 +68,71 @@ function CustomSelect({
 }
 
 export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: any[], activePaketIds: string[] }) {
+  const [currentPakets, setCurrentPakets] = useState<any[]>(pakets);
   const [tipePaket, setTipePaket] = useState("");
   const [bulanTahun, setBulanTahun] = useState("");
   const [durasi, setDurasi] = useState("");
 
+  // Polling /api/paket every 3 seconds for instant updates from admin changes
+  useEffect(() => {
+    let active = true;
+    async function fetchUpdatedPakets() {
+      try {
+        const res = await fetch("/api/paket");
+        if (res.ok) {
+          const rawPakets: any[] = await res.json();
+          
+          const uniqueNames = new Set();
+          const filtered = rawPakets.filter(paket => {
+            if (paket.is_estimasi === true || paket.nama_paket.includes("(Estimasi)")) return false;
+            
+            let baseName = paket.nama_paket;
+            if (baseName.includes('< 1 Tahun')) baseName = 'Umrah Reguler';
+            if (baseName.includes('Tepat > 1 Tahun')) baseName = 'Umrah Spesial';
+            if (baseName.includes('1.5 Tahun')) baseName = 'Umrah Plus';
+            
+            if (paket.nama_paket !== baseName) {
+                paket.nama_paket = baseName;
+            }
+
+            if (uniqueNames.has(baseName)) return false;
+            uniqueNames.add(baseName);
+            return true;
+          }).map(paket => ({
+            id: paket.id,
+            nama_paket: paket.nama_paket,
+            tanggal_keberangkatan: paket.tanggal_keberangkatan,
+            tanggal_kepulangan: paket.tanggal_kepulangan,
+            hotel_makkah: paket.hotel_makkah,
+            hotel_madinah: paket.hotel_madinah,
+            maskapai: paket.maskapai,
+            harga_quad: paket.harga_quad.toString(),
+            harga_triple: paket.harga_triple.toString(),
+            harga_double: paket.harga_double.toString(),
+            kuota: paket.kuota,
+            deskripsi_fasilitas: paket.deskripsi_fasilitas,
+            poster_url: paket.poster_url,
+            is_estimasi: paket.is_estimasi,
+          }));
+
+          if (active) {
+            setCurrentPakets(filtered);
+          }
+        }
+      } catch (err) {
+        console.error("Gagal polling paket:", err);
+      }
+    }
+
+    const interval = setInterval(fetchUpdatedPakets, 3000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
+
   // Extract unique options
-  const tipePaketOptions = Array.from(new Set(pakets.map(p => p.nama_paket).filter(Boolean)));
+  const tipePaketOptions = Array.from(new Set(currentPakets.map(p => p.nama_paket).filter(Boolean)));
   
   const formatSafeDate = (d: any, options?: Intl.DateTimeFormatOptions, fallback = "-") => {
     try {
@@ -89,14 +148,14 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
   const getBulanTahun = (date: Date) => {
     return formatSafeDate(date, { month: 'long', year: 'numeric' });
   };
-  const bulanTahunOptions = Array.from(new Set(pakets.map(p => getBulanTahun(p.tanggal_keberangkatan))));
+  const bulanTahunOptions = Array.from(new Set(currentPakets.map(p => getBulanTahun(p.tanggal_keberangkatan))));
   
   const getDurasiHari = (p: any) => {
     return Math.round((new Date(p.tanggal_kepulangan).getTime() - new Date(p.tanggal_keberangkatan).getTime()) / (1000 * 60 * 60 * 24));
   };
-  const durasiOptions = Array.from(new Set(pakets.map(p => `${getDurasiHari(p)} Hari`))).sort((a, b) => parseInt(a) - parseInt(b));
+  const durasiOptions = Array.from(new Set(currentPakets.map(p => `${getDurasiHari(p)} Hari`))).sort((a, b) => parseInt(a) - parseInt(b));
 
-  const filteredPakets = pakets.filter(p => {
+  const filteredPakets = currentPakets.filter(p => {
     const matchTipe = tipePaket === "" || p.nama_paket === tipePaket;
     const matchBulan = bulanTahun === "" || getBulanTahun(p.tanggal_keberangkatan) === bulanTahun;
     const matchDurasi = durasi === "" || `${getDurasiHari(p)} Hari` === durasi;

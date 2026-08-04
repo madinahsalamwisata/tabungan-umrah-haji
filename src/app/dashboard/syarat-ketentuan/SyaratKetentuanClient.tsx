@@ -10,13 +10,11 @@ interface AccordionItem {
   content: React.ReactNode;
 }
 
-export default function SyaratKetentuanClient() {
+export default function SyaratKetentuanClient({ initialSettings }: { initialSettings: Record<string, string> }) {
   const router = useRouter();
   const [openId, setOpenId] = useState<string>("");
 
-  const [settings, setSettings] = useState<Record<string, string>>({
-    syarat_ketentuan_sections: "[]"
-  });
+  const [settings, setSettings] = useState<Record<string, string>>(initialSettings);
 
   useEffect(() => {
     async function fetchSettings() {

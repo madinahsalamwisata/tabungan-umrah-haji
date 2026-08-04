@@ -80,7 +80,7 @@ export async function POST(req: Request) {
                 "id": "ADMIN-FEE",
                 "price": adminNominal,
                 "quantity": 1,
-                "name": "Biaya Admin"
+                "name": "Biaya Admin Payment Gateway Midtrans"
             }
         ],
         "customer_details": {

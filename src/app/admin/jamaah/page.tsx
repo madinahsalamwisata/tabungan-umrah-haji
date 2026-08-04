@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminJamaahPage() {
   // Ambil semua data jamaah beserta relasi rencana tabungannya
   const jamaahs = await prisma.jamaah.findMany({
+    where: { email: { not: "madinahsalamwisata@gmail.com" } },
     orderBy: { created_at: "desc" },
     include: {
       RencanaTabungan: {

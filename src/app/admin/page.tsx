@@ -73,7 +73,14 @@ export default async function AdminDashboardPage() {
     status_pembayaran: s.status_pembayaran,
     rencana_tabungan: {
       id: s.rencana_tabungan.id,
-      paket_nama: s.rencana_tabungan.paket?.nama_paket || (s.rencana_tabungan as any).paket_snapshot_nama || "Paket Dihapus",
+      paket_nama: (() => {
+        const rawName = s.rencana_tabungan.paket?.nama_paket || (s.rencana_tabungan as any).paket_snapshot_nama || "Paket Dihapus";
+        const isEstimasi = s.rencana_tabungan.paket?.is_estimasi || (s.rencana_tabungan as any).paket_snapshot_is_estimasi || rawName.includes("(Estimasi)");
+        if (isEstimasi) {
+          return rawName.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim();
+        }
+        return rawName;
+      })(),
       jamaah: {
         id: s.rencana_tabungan.jamaah.id,
         nama: s.rencana_tabungan.jamaah.nama,

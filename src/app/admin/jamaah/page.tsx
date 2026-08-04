@@ -33,7 +33,14 @@ export default async function AdminJamaahPage() {
     created_at: j.created_at.toISOString(),
     rencana_tabungan: j.RencanaTabungan.map(rt => ({
       id: rt.id,
-      paket_nama: rt.paket?.nama_paket || rt.paket_snapshot_nama || "Paket Dihapus",
+      paket_nama: (() => {
+        const rawName = rt.paket?.nama_paket || rt.paket_snapshot_nama || "Paket Dihapus";
+        const isEstimasi = rt.paket?.is_estimasi || rt.paket_snapshot_is_estimasi || rawName.includes("(Estimasi)");
+        if (isEstimasi) {
+          return rawName.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim();
+        }
+        return rawName;
+      })(),
       status: rt.status,
       total_biaya: Number(rt.total_biaya),
       setoran_per_bulan: Number(rt.setoran_per_bulan),

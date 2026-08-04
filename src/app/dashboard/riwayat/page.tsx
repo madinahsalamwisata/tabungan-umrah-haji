@@ -44,7 +44,14 @@ export default async function RiwayatPage() {
         id_transaksi_gateway: setoran.id_transaksi_gateway,
         nominal: setoran.nominal.toString(),
         tanggal_setor: setoran.tanggal_setor ? new Date(setoran.tanggal_setor).toISOString() : null,
-        nama_paket: rencana.paket?.nama_paket || (rencana as any).paket_snapshot_nama || "Paket Dihapus",
+        nama_paket: (() => {
+          const rawName = rencana.paket?.nama_paket || (rencana as any).paket_snapshot_nama || "Paket Dihapus";
+          const isEstimasi = rencana.paket?.is_estimasi || (rencana as any).paket_snapshot_is_estimasi || rawName.includes("(Estimasi)");
+          if (isEstimasi) {
+            return rawName.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim();
+          }
+          return rawName;
+        })(),
       });
     });
   });

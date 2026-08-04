@@ -52,10 +52,13 @@ export default function RiwayatTabunganClient({ riwayatList }: { riwayatList: an
             const isLunas = rencana.status === "Lunas";
             
             // Prioritize snapshot data, fallback to paket (if still exists and not soft-deleted by admin)
-            const namaPaket = rencana.paket_snapshot_nama || rencana.paket?.nama_paket || "Paket Tidak Diketahui";
+            const rawNamaPaket = rencana.paket_snapshot_nama || rencana.paket?.nama_paket || "Paket Tidak Diketahui";
             const isEstimasi = rencana.paket_snapshot_is_estimasi !== null 
               ? rencana.paket_snapshot_is_estimasi 
               : (rencana.paket?.is_estimasi || false);
+            const namaPaket = isEstimasi 
+              ? rawNamaPaket.replace(/\s*\d{4}\s*H?\s*/i, ' ').replace(/\s+/g, ' ').trim()
+              : rawNamaPaket;
             const tglBerangkat = rencana.paket_snapshot_tanggal_berangkat || rencana.paket?.tanggal_keberangkatan || new Date();
             
             const totalTerkumpul = rencana.RiwayatSetoran

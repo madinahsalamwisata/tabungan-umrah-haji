@@ -17,6 +17,30 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
   const [data, setData] = useState<PengumumanData[]>(initialData);
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState<"semua" | "penting" | "biasa">("semua");
+
+  // Dynamic 3-second polling for real-time updates from admin changes
+  useEffect(() => {
+    let active = true;
+    async function fetchPengumuman() {
+      try {
+        const res = await fetch("/api/admin/pengumuman");
+        if (res.ok) {
+          const fetchedData = await res.json();
+          if (active) {
+            setData(fetchedData);
+          }
+        }
+      } catch (err) {
+        console.error("Gagal polling pengumuman data:", err);
+      }
+    }
+
+    const interval = setInterval(fetchPengumuman, 3000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
   
   // Modals & detail popup state
   const [isModalOpen, setIsModalOpen] = useState(false);

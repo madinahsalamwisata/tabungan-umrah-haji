@@ -42,10 +42,7 @@ export default async function DashboardPage() {
   });
 
   const serializedPengumuman = pengumuman.map(p => ({
-    id: p.id,
-    judul: p.judul,
-    konten: p.konten,
-    is_penting: p.is_penting,
+    ...p,
     created_at: p.created_at.toISOString(),
   }));
 

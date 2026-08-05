@@ -44,7 +44,8 @@ export async function POST(req: Request) {
     const rawClientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '';
     const cleanServerKey = rawServerKey.replace(/"/g, '').trim();
     const cleanClientKey = rawClientKey.replace(/"/g, '').trim();
-    const isProd = !cleanServerKey.startsWith('SB-');
+    const isProd = process.env.MIDTRANS_IS_PRODUCTION === 'true' || 
+                   (!cleanServerKey.startsWith('SB-') && process.env.MIDTRANS_IS_PRODUCTION !== 'false');
 
     const core = new midtransClient.CoreApi({
         isProduction : isProd,

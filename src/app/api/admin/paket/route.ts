@@ -38,13 +38,17 @@ export async function GET() {
       poster_url: p.poster_url,
       is_estimasi: p.is_estimasi,
       peminat: p.RencanaTabungan.map(rt => {
-        const totalTerkumpul = rt.RiwayatSetoran
-          .filter(rs => rs.status_pembayaran === 'Lunas' || rs.status_pembayaran === 'settlement' || rs.status_pembayaran === 'success')
-          .reduce((sum, rs) => sum + Number(rs.nominal), 0);
+        const successfulPayments = rt.RiwayatSetoran
+          .filter(rs => rs.status_pembayaran === 'Lunas' || rs.status_pembayaran === 'settlement' || rs.status_pembayaran === 'success');
+        
+        const totalTerkumpul = successfulPayments.reduce((sum, rs) => sum + Number(rs.nominal), 0);
 
         const totalRefund = rt.RiwayatSetoran
           .filter(rs => rs.status_pembayaran === 'refund')
           .reduce((sum, rs) => sum + Math.abs(Number(rs.nominal)), 0);
+
+        const bulanTerbayar = successfulPayments.length;
+        const sisaBulan = Math.max(0, rt.periode_bulan - bulanTerbayar);
 
         return {
           jamaah_id: rt.jamaah.id,
@@ -56,7 +60,10 @@ export async function GET() {
           jenis_kamar: rt.jenis_kamar,
           status_rencana: rt.status,
           setoran_terkumpul: totalTerkumpul - totalRefund,
-          total_biaya: Number(rt.total_biaya)
+          total_biaya: Number(rt.total_biaya),
+          periode_bulan: rt.periode_bulan,
+          bulan_terbayar: bulanTerbayar,
+          sisa_bulan: sisaBulan
         };
       })
     }));

@@ -15,6 +15,9 @@ type PeminatItem = {
   status_rencana: string;
   setoran_terkumpul: number;
   total_biaya: number;
+  periode_bulan?: number;
+  bulan_terbayar?: number;
+  sisa_bulan?: number;
 };
 
 type PaketData = {
@@ -79,6 +82,12 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const [peminatSearch, setPeminatSearch] = useState(urlSearch);
   const [statusFilter, setStatusFilter] = useState<'all' | 'aktif' | 'selesai' | 'dibatalkan'>(urlFilter || 'all');
   const [isEstimasiForm, setIsEstimasiForm] = useState(false);
+  const [selectedSisaBulanDrilldown, setSelectedSisaBulanDrilldown] = useState<number | null>(null);
+
+  // Reset drilldown when switching packages
+  useEffect(() => {
+    setSelectedSisaBulanDrilldown(null);
+  }, [selectedPilihanPaketId]);
 
   // Sync state variables with URL query parameters
   useEffect(() => {
@@ -547,156 +556,412 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                       </div>
                     </div>
 
-                    {/* Search bar & Filter */}
-                    <div className="space-y-4">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        {/* Search bar */}
-                        <div className="flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full sm:w-80">
-                          <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                          <input 
-                            type="text" 
-                            placeholder="Cari nama, email, NIK, HP..." 
-                            value={peminatSearch}
-                            onChange={(e) => setPeminatSearch(e.target.value)}
-                            className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
-                          />
-                        </div>
-
-                        {/* Status Filter Buttons */}
-                        <div className="flex p-1 bg-krem border border-garis rounded-xl w-fit shrink-0 gap-1">
+                    {/* Interactive Tenor Chart & Drilldown View */}
+                    {selectedSisaBulanDrilldown !== null ? (
+                      /* ----------------- DRILLDOWN SUB-VIEW ----------------- */
+                      <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                        {/* Header card for Drilldown */}
+                        <div className="p-6 bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                          <div>
+                            <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-hijau-100 text-hijau-800 tracking-wider">
+                              Rincian Durasi Tenor
+                            </span>
+                            <h2 className="text-lg font-bold text-teks-900 mt-2">
+                              Jamaah dengan Sisa Tenor {selectedSisaBulanDrilldown} Bulan
+                            </h2>
+                            <p className="text-xs text-teks-500 mt-1">
+                              Daftar akun jamaah yang memiliki sisa waktu pembayaran {selectedSisaBulanDrilldown} bulan lagi untuk paket ini.
+                            </p>
+                          </div>
+                          
                           <button
-                            type="button"
-                            onClick={() => setStatusFilter('all')}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
-                              statusFilter === 'all'
-                                ? 'bg-white text-teks-900 shadow-sm border border-garis/30'
-                                : 'text-teks-500 hover:text-teks-900'
-                            }`}
+                            onClick={() => setSelectedSisaBulanDrilldown(null)}
+                            className="flex items-center gap-1.5 text-xs font-bold text-hijau-700 hover:text-hijau-900 transition-colors bg-hijau-100/50 hover:bg-hijau-100 px-3.5 py-2.5 rounded-xl shadow-sm shrink-0 cursor-pointer"
                           >
-                            Semua ({selectedPaket.peminat.length})
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setStatusFilter('aktif')}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
-                              statusFilter === 'aktif'
-                                ? 'bg-hijau-900 text-white shadow-sm'
-                                : 'text-teks-500 hover:text-teks-900'
-                            }`}
-                          >
-                            🟢 Aktif ({countAktif})
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setStatusFilter('selesai')}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
-                              statusFilter === 'selesai'
-                                ? 'bg-blue-900 text-white shadow-sm'
-                                : 'text-teks-500 hover:text-teks-900'
-                            }`}
-                          >
-                            🔵 Selesai ({countSelesai})
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setStatusFilter('dibatalkan')}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
-                              statusFilter === 'dibatalkan'
-                                ? 'bg-red-900 text-white shadow-sm'
-                                : 'text-teks-500 hover:text-teks-900'
-                            }`}
-                          >
-                            🔴 Dibatalkan ({countDibatalkan})
+                            <svg className="w-4 h-4 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Kembali ke Detail Paket
                           </button>
                         </div>
-                      </div>
 
-                      <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden">
-                        <div className="overflow-x-auto w-full">
-                          <table className="w-full text-left text-xs border-collapse">
-                            <thead className="bg-gradient-to-r from-hijau-900 to-hijau-800 text-white">
-                              <tr>
-                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Calon Jamaah</th>
-                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Kontak & NIK</th>
-                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Pilihan Kamar</th>
-                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Status Rencana</th>
-                                <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase text-right">Tabungan Terkumpul</th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-garis">
-                              {filteredPeminat.map((pm, idx) => (
-                                <tr key={idx} className="hover:bg-krem/40 transition-colors">
-                                  <td className="px-6 py-4">
-                                    <div className="flex items-center gap-3">
-                                      {pm.foto_url ? (
-                                        <img 
-                                          src={pm.foto_url} 
-                                          alt={pm.nama} 
-                                          className="w-[34px] h-[34px] rounded-full object-cover shrink-0 border border-garis"
-                                        />
-                                      ) : (
-                                        <div className="w-[34px] h-[34px] rounded-full flex items-center justify-center font-bold text-white text-[12px] bg-gradient-to-br from-hijau-700 to-hijau-900 shrink-0">
-                                          {pm.nama?.[0] || "J"}
-                                        </div>
-                                      )}
-                                      <div className="text-left">
-                                        <div className="font-bold text-teks-900 text-sm">{pm.nama}</div>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td className="px-6 py-4 text-left">
-                                    <div className="font-semibold text-teks-900">{pm.email}</div>
-                                    <div className="text-teks-500 text-[10px] mt-0.5">{pm.no_hp} • NIK: {pm.nik}</div>
-                                  </td>
-                                  <td className="px-6 py-4 text-left capitalize font-bold text-teks-900">
-                                    {pm.jenis_kamar}
-                                  </td>
-                                  <td className="px-6 py-4 text-left">
-                                    {(() => {
-                                      const isDibatalkan = pm.status_rencana === "Dibatalkan";
-                                      const isSelesai = pm.status_rencana === "Selesai" || pm.status_rencana === "Lunas" || pm.setoran_terkumpul >= pm.total_biaya;
-                                      
-                                      if (isDibatalkan) {
-                                        return (
-                                          <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-red-50 text-red-600 border-red-100/50">
-                                            Dibatalkan
-                                          </span>
-                                        );
-                                      } else if (isSelesai) {
-                                        return (
-                                          <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-blue-50 text-blue-600 border-blue-100/50">
-                                            Selesai
-                                          </span>
-                                        );
-                                      } else {
-                                        return (
-                                          <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-hijau-100 text-hijau-800 border-hijau-200/50">
-                                            Aktif
-                                          </span>
-                                        );
-                                      }
-                                    })()}
-                                  </td>
-                                  <td className="px-6 py-4 text-right font-extrabold text-sm text-hijau-900">
-                                    Rp {pm.setoran_terkumpul.toLocaleString('id-ID')}
-                                    <span className="text-[10px] text-teks-300 font-medium block mt-0.5">
-                                      dari Rp {pm.total_biaya.toLocaleString('id-ID')}
-                                    </span>
-                                  </td>
-                                </tr>
-                              ))}
-                              {filteredPeminat.length === 0 && (
+                        {/* Drilldown Table container */}
+                        <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden text-left">
+                          <div className="overflow-x-auto w-full">
+                            <table className="w-full text-left text-xs border-collapse">
+                              <thead className="bg-gradient-to-r from-hijau-900 to-hijau-800 text-white">
                                 <tr>
-                                  <td colSpan={5} className="px-6 py-12 text-center text-teks-300 italic">
-                                    Tidak ada calon jamaah yang cocok dengan pencarian.
-                                  </td>
+                                  <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Calon Jamaah</th>
+                                  <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Kontak & NIK</th>
+                                  <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Pilihan Kamar</th>
+                                  <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Tenor Berjalan</th>
+                                  <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Status Rencana</th>
+                                  <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase text-right">Tabungan Terkumpul</th>
                                 </tr>
-                              )}
-                            </tbody>
-                          </table>
+                              </thead>
+                              <tbody className="divide-y divide-garis">
+                                {selectedPaket.peminat
+                                  .filter(pm => pm.status_rencana !== 'Dibatalkan' && (pm.sisa_bulan ?? 0) === selectedSisaBulanDrilldown)
+                                  .map((pm) => (
+                                    <tr key={pm.jamaah_id} className="hover:bg-krem/40 transition-colors">
+                                      <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                          {pm.foto_url ? (
+                                            <img 
+                                              src={pm.foto_url} 
+                                              alt={pm.nama} 
+                                              className="w-[34px] h-[34px] rounded-full object-cover shrink-0 border border-garis"
+                                            />
+                                          ) : (
+                                            <div className="w-[34px] h-[34px] rounded-full flex items-center justify-center font-bold text-white text-[12px] bg-gradient-to-br from-hijau-700 to-hijau-900 shrink-0">
+                                              {pm.nama?.[0] || "J"}
+                                            </div>
+                                          )}
+                                          <div className="text-left">
+                                            <div className="font-bold text-teks-900 text-sm">{pm.nama}</div>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td className="px-6 py-4 text-left">
+                                        <div className="font-semibold text-teks-900">{pm.email}</div>
+                                        <div className="text-teks-500 text-[10px] mt-0.5">{pm.no_hp} • NIK: {pm.nik}</div>
+                                      </td>
+                                      <td className="px-6 py-4 text-left capitalize font-semibold text-teks-900">
+                                        {pm.jenis_kamar}
+                                      </td>
+                                      <td className="px-6 py-4 text-left text-teks-900 font-medium">
+                                        <div>Tenor: <b>{pm.periode_bulan} Bln</b></div>
+                                        <div className="text-[10px] text-teks-500 mt-0.5">Terbayar: {pm.bulan_terbayar} Bln</div>
+                                      </td>
+                                      <td className="px-6 py-4 text-left">
+                                        <span className={`status-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded border text-[9.5px] font-extrabold uppercase tracking-wide ${
+                                          pm.status_rencana === 'Aktif'
+                                            ? 'bg-hijau-100 text-hijau-800 border-hijau-200/50'
+                                            : 'bg-blue-50 text-blue-600 border-blue-100/50'
+                                        }`}>
+                                          {pm.status_rencana}
+                                        </span>
+                                      </td>
+                                      <td className="px-6 py-4 text-right">
+                                        <div className="font-extrabold text-sm text-hijau-900">
+                                          Rp {pm.setoran_terkumpul.toLocaleString('id-ID')}
+                                        </div>
+                                        <div className="text-[10px] text-teks-300 mt-0.5">
+                                          dari Rp {pm.total_biaya.toLocaleString('id-ID')}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ))}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      /* ----------------- MAIN DETAIL VIEW (CHART & TABLE) ----------------- */
+                      <>
+                        {/* Custom Interactive SVG Line Chart */}
+                        {(() => {
+                          const chartPoints = (() => {
+                            const sisaBulanGroups: { [key: number]: number } = {};
+                            selectedPaket.peminat.forEach(pm => {
+                              if (pm.status_rencana === 'Dibatalkan') return;
+                              const sisa = pm.sisa_bulan ?? 0;
+                              sisaBulanGroups[sisa] = (sisaBulanGroups[sisa] || 0) + 1;
+                            });
+
+                            const sortedKeys = Object.keys(sisaBulanGroups)
+                              .map(Number)
+                              .sort((a, b) => a - b);
+
+                            return sortedKeys.map(sisa => ({
+                              sisa,
+                              count: sisaBulanGroups[sisa]
+                            }));
+                          })();
+
+                          if (chartPoints.length === 0) {
+                            return (
+                              <div className="p-6 bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-center text-teks-300 italic text-xs">
+                                Belum ada data sisa tenor tabungan jamaah aktif pada paket ini.
+                              </div>
+                            );
+                          }
+
+                          // Setup Chart Dimensions
+                          const svgWidth = Math.max(680, chartPoints.length * 130);
+                          const svgHeight = 220;
+                          const paddingLeft = 60;
+                          const paddingRight = 60;
+                          const paddingTop = 45;
+                          const paddingBottom = 45;
+
+                          const maxCount = Math.max(...chartPoints.map(p => p.count), 1);
+                          const points = chartPoints.map((pt, idx) => {
+                            const x = chartPoints.length === 1
+                              ? svgWidth / 2
+                              : paddingLeft + (idx * (svgWidth - paddingLeft - paddingRight)) / (chartPoints.length - 1);
+                            
+                            const y = svgHeight - paddingBottom - (pt.count * (svgHeight - paddingTop - paddingBottom)) / maxCount;
+                            
+                            return { ...pt, x, y };
+                          });
+
+                          const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+                          const areaPath = points.length > 0
+                            ? `${linePath} L ${points[points.length - 1].x} ${svgHeight - paddingBottom} L ${points[0].x} ${svgHeight - paddingBottom} Z`
+                            : '';
+
+                          return (
+                            <div className="p-6 bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                              <div>
+                                <h3 className="text-sm font-bold text-teks-900 flex items-center gap-2">
+                                  <svg className="w-4 h-4 stroke-hijau-900 stroke-2 fill-none" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m18.7 8-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                                  Grafik Durasi Sisa Tabungan Jamaah
+                                </h3>
+                                <p className="text-[11px] text-teks-500 mt-0.5">
+                                  Distribusi tenor pembayaran bulanan yang tersisa. Klik lingkaran jumlah jamaah untuk melihat detail akun mereka.
+                                </p>
+                              </div>
+
+                              {/* SVG Scroll Container */}
+                              <div className="overflow-x-auto w-full scrollbar-thin scrollbar-thumb-emerald-800/10 scrollbar-track-transparent">
+                                <div style={{ width: svgWidth, height: svgHeight }} className="mx-auto select-none">
+                                  <svg width="100%" height="100%" viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="overflow-visible">
+                                    <defs>
+                                      <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#146349" stopOpacity="0.25" />
+                                        <stop offset="100%" stopColor="#146349" stopOpacity="0" />
+                                      </linearGradient>
+                                    </defs>
+
+                                    {/* Horizontal Dashed Gridlines */}
+                                    <line x1={paddingLeft} y1={svgHeight - paddingBottom} x2={svgWidth - paddingRight} y2={svgHeight - paddingBottom} stroke="#E7E2D6" strokeWidth="1" />
+                                    <line x1={paddingLeft} y1={paddingTop + (svgHeight - paddingTop - paddingBottom) / 2} x2={svgWidth - paddingRight} y2={paddingTop + (svgHeight - paddingTop - paddingBottom) / 2} stroke="#E7E2D6" strokeDasharray="3 3" strokeWidth="1" />
+                                    <line x1={paddingLeft} y1={paddingTop} x2={svgWidth - paddingRight} y2={paddingTop} stroke="#E7E2D6" strokeDasharray="3 3" strokeWidth="1" />
+
+                                    {/* Grid Axis Labels (Y Axis) */}
+                                    <text x={paddingLeft - 12} y={svgHeight - paddingBottom + 4} textAnchor="end" className="text-[10px] fill-teks-300 font-extrabold font-sans">0</text>
+                                    <text x={paddingLeft - 12} y={paddingTop + (svgHeight - paddingTop - paddingBottom) / 2 + 4} textAnchor="end" className="text-[10px] fill-teks-300 font-extrabold font-sans">{Math.round(maxCount / 2)}</text>
+                                    <text x={paddingLeft - 12} y={paddingTop + 4} textAnchor="end" className="text-[10px] fill-teks-300 font-extrabold font-sans">{maxCount}</text>
+
+                                    {/* Gradient Area Fill under the line */}
+                                    {areaPath && (
+                                      <path d={areaPath} fill="url(#chart-gradient)" />
+                                    )}
+
+                                    {/* Line Stroke */}
+                                    {linePath && (
+                                      <path d={linePath} fill="none" stroke="#146349" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                                    )}
+
+                                    {/* Interactive Dots & Tooltip Badges */}
+                                    {points.map(pt => (
+                                      <g 
+                                        key={pt.sisa} 
+                                        className="group cursor-pointer"
+                                        onClick={() => setSelectedSisaBulanDrilldown(pt.sisa)}
+                                      >
+                                        {/* Outer glowing halo on hover */}
+                                        <circle cx={pt.x} cy={pt.y} r="10" fill="#146349" className="opacity-0 group-hover:opacity-15 transition-opacity duration-200" />
+                                        {/* Main Dot Border */}
+                                        <circle cx={pt.x} cy={pt.y} r="6.5" fill="#146349" stroke="white" strokeWidth="2.5" className="transition-transform duration-200 group-hover:scale-110" />
+                                        {/* Main Dot Center */}
+                                        <circle cx={pt.x} cy={pt.y} r="2" fill="white" />
+
+                                        {/* Floating Badge (Pill) above the dot */}
+                                        <g className="transition-all duration-200 transform translate-y-0 group-hover:-translate-y-0.5">
+                                          {/* Pill rect */}
+                                          <rect 
+                                            x={pt.x - 33} 
+                                            y={pt.y - 25} 
+                                            width="66" 
+                                            height="17" 
+                                            rx="5" 
+                                            fill="#146349" 
+                                            className="stroke-emerald-800"
+                                          />
+                                          {/* Pill text */}
+                                          <text 
+                                            x={pt.x} 
+                                            y={pt.y - 13} 
+                                            textAnchor="middle" 
+                                            className="text-[9px] fill-white font-black font-sans"
+                                          >
+                                            {pt.count} Jamaah
+                                          </text>
+                                        </g>
+
+                                        {/* Axis Label (X Axis) */}
+                                        <text 
+                                          x={pt.x} 
+                                          y={svgHeight - paddingBottom + 18} 
+                                          textAnchor="middle" 
+                                          className="text-[10px] fill-teks-900 font-extrabold font-sans transition-colors duration-200 group-hover:fill-hijau-900 group-hover:text-xs"
+                                        >
+                                          Sisa {pt.sisa} Bln
+                                        </text>
+                                      </g>
+                                    ))}
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Search bar & Filter */}
+                        <div className="space-y-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            {/* Search bar */}
+                            <div className="flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full sm:w-80">
+                              <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                              <input 
+                                type="text" 
+                                placeholder="Cari nama, email, NIK, HP..." 
+                                value={peminatSearch}
+                                onChange={(e) => setPeminatSearch(e.target.value)}
+                                className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
+                              />
+                            </div>
+
+                            {/* Status Filter Buttons */}
+                            <div className="flex p-1 bg-krem border border-garis rounded-xl w-fit shrink-0 gap-1">
+                              <button
+                                type="button"
+                                onClick={() => setStatusFilter('all')}
+                                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
+                                  statusFilter === 'all'
+                                    ? 'bg-white text-teks-900 shadow-sm border border-garis/30'
+                                    : 'text-teks-500 hover:text-teks-900'
+                                }`}
+                              >
+                                Semua ({selectedPaket.peminat.length})
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setStatusFilter('aktif')}
+                                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
+                                  statusFilter === 'aktif'
+                                    ? 'bg-hijau-900 text-white shadow-sm'
+                                    : 'text-teks-500 hover:text-teks-900'
+                                }`}
+                              >
+                                🟢 Aktif ({countAktif})
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setStatusFilter('selesai')}
+                                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
+                                  statusFilter === 'selesai'
+                                    ? 'bg-blue-900 text-white shadow-sm'
+                                    : 'text-teks-500 hover:text-teks-900'
+                                }`}
+                              >
+                                🔵 Selesai ({countSelesai})
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setStatusFilter('dibatalkan')}
+                                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 ${
+                                  statusFilter === 'dibatalkan'
+                                    ? 'bg-red-900 text-white shadow-sm'
+                                    : 'text-teks-500 hover:text-teks-900'
+                                }`}
+                              >
+                                🔴 Dibatalkan ({countDibatalkan})
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden">
+                            <div className="overflow-x-auto w-full">
+                              <table className="w-full text-left text-xs border-collapse">
+                                <thead className="bg-gradient-to-r from-hijau-900 to-hijau-800 text-white">
+                                  <tr>
+                                    <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Calon Jamaah</th>
+                                    <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Kontak & NIK</th>
+                                    <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Pilihan Kamar</th>
+                                    <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase">Status Rencana</th>
+                                    <th scope="col" className="px-6 py-4 font-bold tracking-wider text-[10.5px] uppercase text-right">Tabungan Terkumpul</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-garis">
+                                  {filteredPeminat.map((pm, idx) => (
+                                    <tr key={idx} className="hover:bg-krem/40 transition-colors">
+                                      <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                          {pm.foto_url ? (
+                                            <img 
+                                              src={pm.foto_url} 
+                                              alt={pm.nama} 
+                                              className="w-[34px] h-[34px] rounded-full object-cover shrink-0 border border-garis"
+                                            />
+                                          ) : (
+                                            <div className="w-[34px] h-[34px] rounded-full flex items-center justify-center font-bold text-white text-[12px] bg-gradient-to-br from-hijau-700 to-hijau-900 shrink-0">
+                                              {pm.nama?.[0] || "J"}
+                                            </div>
+                                          )}
+                                          <div className="text-left">
+                                            <div className="font-bold text-teks-900 text-sm">{pm.nama}</div>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td className="px-6 py-4 text-left">
+                                        <div className="font-semibold text-teks-900">{pm.email}</div>
+                                        <div className="text-teks-500 text-[10px] mt-0.5">{pm.no_hp} • NIK: {pm.nik}</div>
+                                      </td>
+                                      <td className="px-6 py-4 text-left capitalize font-bold text-teks-900">
+                                        {pm.jenis_kamar}
+                                      </td>
+                                      <td className="px-6 py-4 text-left">
+                                        {(() => {
+                                          const isDibatalkan = pm.status_rencana === "Dibatalkan";
+                                          const isSelesai = pm.status_rencana === "Selesai" || pm.status_rencana === "Lunas" || pm.setoran_terkumpul >= pm.total_biaya;
+                                          
+                                          if (isDibatalkan) {
+                                            return (
+                                              <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-red-50 text-red-600 border-red-100/50">
+                                                Dibatalkan
+                                              </span>
+                                            );
+                                          } else if (isSelesai) {
+                                            return (
+                                              <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-blue-50 text-blue-600 border-blue-100/50">
+                                                Selesai
+                                              </span>
+                                            );
+                                          } else {
+                                            return (
+                                              <span className="text-[9.5px] font-extrabold uppercase px-2.5 py-1 rounded border bg-hijau-100 text-hijau-800 border-hijau-200/50">
+                                                Aktif
+                                              </span>
+                                            );
+                                          }
+                                        })()}
+                                      </td>
+                                      <td className="px-6 py-4 text-right font-extrabold text-sm text-hijau-900">
+                                        Rp {pm.setoran_terkumpul.toLocaleString('id-ID')}
+                                        <span className="text-[10px] text-teks-300 font-medium block mt-0.5">
+                                          dari Rp {pm.total_biaya.toLocaleString('id-ID')}
+                                        </span>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  {filteredPeminat.length === 0 && (
+                                    <tr>
+                                      <td colSpan={5} className="px-6 py-12 text-center text-teks-300 italic">
+                                        Tidak ada calon jamaah yang cocok dengan pencarian.
+                                      </td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 );
               })()

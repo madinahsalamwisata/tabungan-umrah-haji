@@ -666,7 +666,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                     ) : (
                       /* ----------------- MAIN DETAIL VIEW (CHART & TABLE) ----------------- */
                       <>
-                        {/* Custom Interactive SVG Line Chart */}
+                        {/* Custom Interactive SVG Bar Chart */}
                         {(() => {
                           const chartPoints = (() => {
                             const sisaBulanGroups: { [key: number]: number } = {};
@@ -696,37 +696,35 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
 
                           // Setup Chart Dimensions
                           const svgWidth = Math.max(680, chartPoints.length * 130);
-                          const svgHeight = 220;
+                          const svgHeight = 240;
                           const paddingLeft = 60;
                           const paddingRight = 60;
                           const paddingTop = 45;
                           const paddingBottom = 45;
 
                           const maxCount = Math.max(...chartPoints.map(p => p.count), 1);
+                          const barWidth = 46;
+
                           const points = chartPoints.map((pt, idx) => {
                             const x = chartPoints.length === 1
-                              ? svgWidth / 2
-                              : paddingLeft + (idx * (svgWidth - paddingLeft - paddingRight)) / (chartPoints.length - 1);
+                              ? (svgWidth - barWidth) / 2
+                              : paddingLeft + (idx * (svgWidth - paddingLeft - paddingRight - barWidth)) / (chartPoints.length - 1);
                             
-                            const y = svgHeight - paddingBottom - (pt.count * (svgHeight - paddingTop - paddingBottom)) / maxCount;
+                            const barHeight = (pt.count * (svgHeight - paddingTop - paddingBottom)) / maxCount;
+                            const y = svgHeight - paddingBottom - barHeight;
                             
-                            return { ...pt, x, y };
+                            return { ...pt, x, y, barHeight };
                           });
-
-                          const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
-                          const areaPath = points.length > 0
-                            ? `${linePath} L ${points[points.length - 1].x} ${svgHeight - paddingBottom} L ${points[0].x} ${svgHeight - paddingBottom} Z`
-                            : '';
 
                           return (
                             <div className="p-6 bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] text-left space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
                               <div>
                                 <h3 className="text-sm font-bold text-teks-900 flex items-center gap-2">
-                                  <svg className="w-4 h-4 stroke-hijau-900 stroke-2 fill-none" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m18.7 8-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                                  <svg className="w-4 h-4 stroke-hijau-900 stroke-2 fill-none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 17v-4M12 17V7M17 17v-7"/></svg>
                                   Grafik Durasi Sisa Tabungan Jamaah
                                 </h3>
                                 <p className="text-[11px] text-teks-500 mt-0.5">
-                                  Distribusi tenor pembayaran bulanan yang tersisa. Klik lingkaran jumlah jamaah untuk melihat detail akun mereka.
+                                  Distribusi tenor pembayaran bulanan yang tersisa. Klik batang grafik jumlah jamaah untuk melihat detail akun mereka.
                                 </p>
                               </div>
 
@@ -735,10 +733,18 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                                 <div style={{ width: svgWidth, height: svgHeight }} className="mx-auto select-none">
                                   <svg width="100%" height="100%" viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="overflow-visible">
                                     <defs>
-                                      <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#146349" stopOpacity="0.25" />
-                                        <stop offset="100%" stopColor="#146349" stopOpacity="0" />
+                                      {/* Premium Gradient for Bars */}
+                                      <linearGradient id="bar-gradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#1e8260" />
+                                        <stop offset="100%" stopColor="#146349" />
                                       </linearGradient>
+                                      <linearGradient id="bar-hover-gradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#2dba8b" />
+                                        <stop offset="100%" stopColor="#1a7859" />
+                                      </linearGradient>
+                                      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+                                        <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#0b3d30" floodOpacity="0.12" />
+                                      </filter>
                                     </defs>
 
                                     {/* Horizontal Dashed Gridlines */}
@@ -751,59 +757,67 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                                     <text x={paddingLeft - 12} y={paddingTop + (svgHeight - paddingTop - paddingBottom) / 2 + 4} textAnchor="end" className="text-[10px] fill-teks-300 font-extrabold font-sans">{Math.round(maxCount / 2)}</text>
                                     <text x={paddingLeft - 12} y={paddingTop + 4} textAnchor="end" className="text-[10px] fill-teks-300 font-extrabold font-sans">{maxCount}</text>
 
-                                    {/* Gradient Area Fill under the line */}
-                                    {areaPath && (
-                                      <path d={areaPath} fill="url(#chart-gradient)" />
-                                    )}
-
-                                    {/* Line Stroke */}
-                                    {linePath && (
-                                      <path d={linePath} fill="none" stroke="#146349" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                                    )}
-
-                                    {/* Interactive Dots & Tooltip Badges */}
+                                    {/* Interactive Bars */}
                                     {points.map(pt => (
                                       <g 
                                         key={pt.sisa} 
                                         className="group cursor-pointer"
                                         onClick={() => setSelectedSisaBulanDrilldown(pt.sisa)}
                                       >
-                                        {/* Outer glowing halo on hover */}
-                                        <circle cx={pt.x} cy={pt.y} r="10" fill="#146349" className="opacity-0 group-hover:opacity-15 transition-opacity duration-200" />
-                                        {/* Main Dot Border */}
-                                        <circle cx={pt.x} cy={pt.y} r="6.5" fill="#146349" stroke="white" strokeWidth="2.5" className="transition-transform duration-200 group-hover:scale-110" style={{ transformOrigin: `${pt.x}px ${pt.y}px` }} />
-                                        {/* Main Dot Center */}
-                                        <circle cx={pt.x} cy={pt.y} r="2" fill="white" />
+                                        {/* Hover Highlight Background Halo */}
+                                        <rect 
+                                          x={pt.x - 6} 
+                                          y={pt.y - 6} 
+                                          width={barWidth + 12} 
+                                          height={pt.barHeight + 6} 
+                                          rx="10" 
+                                          fill="#146349" 
+                                          className="opacity-0 group-hover:opacity-10 transition-opacity duration-200" 
+                                        />
 
-                                        {/* Floating Badge (Pill) above the dot */}
-                                        <g className="transition-all duration-200 transform translate-y-0 group-hover:-translate-y-0.5">
-                                          {/* Pill rect */}
+                                        {/* Main Rounded Bar */}
+                                        <rect 
+                                          x={pt.x} 
+                                          y={pt.y} 
+                                          width={barWidth} 
+                                          height={pt.barHeight} 
+                                          rx="6" 
+                                          fill="url(#bar-gradient)" 
+                                          filter="url(#shadow)"
+                                          className="transition-all duration-300 group-hover:fill-[url(#bar-hover-gradient)] group-hover:scale-y-[1.03]"
+                                          style={{ transformOrigin: `${pt.x + barWidth / 2}px ${svgHeight - paddingBottom}px` }}
+                                        />
+
+                                        {/* Floating Pill Badge above the Bar */}
+                                        <g className="transition-all duration-200 transform translate-y-0 group-hover:-translate-y-1">
+                                          {/* Pill border/bg */}
                                           <rect 
-                                            x={pt.x - 33} 
-                                            y={pt.y - 25} 
-                                            width="66" 
-                                            height="17" 
-                                            rx="5" 
+                                            x={pt.x + barWidth / 2 - 38} 
+                                            y={pt.y - 28} 
+                                            width="76" 
+                                            height="20" 
+                                            rx="6" 
                                             fill="#146349" 
                                             className="stroke-emerald-800"
                                           />
                                           {/* Pill text */}
                                           <text 
-                                            x={pt.x} 
-                                            y={pt.y - 13} 
+                                            x={pt.x + barWidth / 2} 
+                                            y={pt.y - 15} 
                                             textAnchor="middle" 
-                                            className="text-[9px] fill-white font-black font-sans"
+                                            className="text-[9.5px] fill-white font-black font-sans"
                                           >
                                             {pt.count} Jamaah
                                           </text>
                                         </g>
 
-                                        {/* Axis Label (X Axis) */}
+                                        {/* X Axis Label */}
                                         <text 
-                                          x={pt.x} 
+                                          x={pt.x + barWidth / 2} 
                                           y={svgHeight - paddingBottom + 18} 
                                           textAnchor="middle" 
-                                          className="text-[10px] fill-teks-900 font-extrabold font-sans transition-colors duration-200 group-hover:fill-hijau-900 group-hover:text-xs"
+                                          className="text-[10px] fill-teks-900 font-extrabold font-sans transition-colors duration-200 group-hover:fill-hijau-900 group-hover:scale-105"
+                                          style={{ transformOrigin: `${pt.x + barWidth / 2}px ${svgHeight - paddingBottom + 18}px` }}
                                         >
                                           Sisa {pt.sisa} Bln
                                         </text>

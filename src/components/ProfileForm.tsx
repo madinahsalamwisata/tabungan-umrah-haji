@@ -66,6 +66,72 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
     alamat: jamaah.alamat || "",
   });
 
+  const [passwordSekarang, setPasswordSekarang] = useState("");
+  const [passwordBaru, setPasswordBaru] = useState("");
+  const [konfirmasiPassword, setKonfirmasiPassword] = useState("");
+  const [loadingPassword, setLoadingPassword] = useState(false);
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (passwordBaru !== konfirmasiPassword) {
+      SmallSwal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        html: 'Password baru dan konfirmasi password tidak cocok.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Tutup'
+      });
+      return;
+    }
+
+    if (passwordBaru.length < 6) {
+      SmallSwal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        html: 'Password baru minimal harus 6 karakter.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Tutup'
+      });
+      return;
+    }
+
+    setLoadingPassword(true);
+    try {
+      const res = await fetch("/api/profil/ubah-password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passwordSekarang, passwordBaru }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Gagal memperbarui password");
+
+      SmallSwal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        html: 'Password berhasil diperbarui.',
+        confirmButtonColor: '#059669',
+        confirmButtonText: 'Tutup'
+      });
+      
+      // Clear fields
+      setPasswordSekarang("");
+      setPasswordBaru("");
+      setKonfirmasiPassword("");
+    } catch (err: any) {
+      SmallSwal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        html: err.message || 'Terjadi kesalahan.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Tutup'
+      });
+    } finally {
+      setLoadingPassword(false);
+    }
+  };
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -328,6 +394,71 @@ export default function ProfileForm({ jamaah, children }: { jamaah: Jamaah, chil
               )}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* CARD UBAH PASSWORD */}
+      <div className="rounded-3xl overflow-hidden bg-white border border-garis shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="px-5 py-4 border-b border-garis">
+          <h3 className="text-sm font-bold text-teks-900 font-serif flex items-center gap-2">
+            <svg className="w-4.5 h-4.5 text-emas" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            Ubah Password Akun
+          </h3>
+        </div>
+
+        <div className="p-5">
+          <form onSubmit={handlePasswordChange} className="space-y-4 max-w-xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-krem border border-garis rounded-2xl p-4 focus-within:ring-2 focus-within:ring-hijau-800 transition-all">
+                <label className="block text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Password Saat Ini</label>
+                <input
+                  type="password"
+                  required
+                  value={passwordSekarang}
+                  onChange={(e) => setPasswordSekarang(e.target.value)}
+                  placeholder="••••••••"
+                  className="block w-full bg-transparent border-none p-0 text-xs font-semibold text-teks-900 placeholder-teks-300 focus:outline-none focus:ring-0"
+                />
+              </div>
+
+              <div className="bg-krem border border-garis rounded-2xl p-4 focus-within:ring-2 focus-within:ring-hijau-800 transition-all">
+                <label className="block text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Password Baru</label>
+                <input
+                  type="password"
+                  required
+                  value={passwordBaru}
+                  onChange={(e) => setPasswordBaru(e.target.value)}
+                  placeholder="Minimal 6 karakter"
+                  className="block w-full bg-transparent border-none p-0 text-xs font-semibold text-teks-900 placeholder-teks-300 focus:outline-none focus:ring-0"
+                />
+              </div>
+
+              <div className="bg-krem border border-garis rounded-2xl p-4 focus-within:ring-2 focus-within:ring-hijau-800 transition-all">
+                <label className="block text-[9px] font-bold text-teks-500 uppercase tracking-wider mb-1">Konfirmasi Password Baru</label>
+                <input
+                  type="password"
+                  required
+                  value={konfirmasiPassword}
+                  onChange={(e) => setKonfirmasiPassword(e.target.value)}
+                  placeholder="Ulangi password baru"
+                  className="block w-full bg-transparent border-none p-0 text-xs font-semibold text-teks-900 placeholder-teks-300 focus:outline-none focus:ring-0"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={loadingPassword}
+                className="py-2.5 px-6 bg-emas hover:bg-emas/90 border border-emas rounded-xl text-xs font-bold text-hijau-900 transition-all shadow-sm flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                {loadingPassword ? "Memperbarui..." : "Ubah Password"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
 

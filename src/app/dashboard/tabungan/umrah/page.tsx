@@ -66,7 +66,7 @@ export default async function TabunganDashboard() {
       <div className="space-y-6 mt-6">
         <div className="bg-white/90 backdrop-blur-md rounded-xl p-6 border border-emerald-100 shadow-xl">
           <h2 className="text-xl font-bold text-emerald-900 mb-2">Belum Ada Rencana Tabungan</h2>
-          <p className="text-emerald-200">Pilih estimasi paket umrah di bawah ini untuk mulai menabung.</p>
+          <p className="text-teks-900">Pilih estimasi paket umrah di bawah ini untuk mulai menabung.</p>
         </div>
         <TabunganSearchClient pakets={estimasiPakets} activePaketIds={activePaketIds} />
       </div>

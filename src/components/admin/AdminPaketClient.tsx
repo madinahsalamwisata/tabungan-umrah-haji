@@ -507,13 +507,19 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                     {/* Header Action Row */}
                     <div className="flex items-center justify-between">
                       <button
-                        onClick={() => setSelectedPilihanPaketId(null)}
+                        onClick={() => {
+                          if (selectedSisaBulanDrilldown !== null) {
+                            setSelectedSisaBulanDrilldown(null);
+                          } else {
+                            setSelectedPilihanPaketId(null);
+                          }
+                        }}
                         className="flex items-center gap-1.5 text-xs font-bold text-hijau-700 hover:text-hijau-900 transition-colors bg-hijau-100/50 hover:bg-hijau-100 px-3 py-2 rounded-xl"
                       >
                         <svg className="w-4 h-4 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                         </svg>
-                        Kembali ke Daftar Paket
+                        {selectedSisaBulanDrilldown !== null ? "Kembali ke Detail Paket" : "Kembali ke Daftar Paket"}
                       </button>
                     </div>
 
@@ -765,7 +771,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                                         {/* Outer glowing halo on hover */}
                                         <circle cx={pt.x} cy={pt.y} r="10" fill="#146349" className="opacity-0 group-hover:opacity-15 transition-opacity duration-200" />
                                         {/* Main Dot Border */}
-                                        <circle cx={pt.x} cy={pt.y} r="6.5" fill="#146349" stroke="white" strokeWidth="2.5" className="transition-transform duration-200 group-hover:scale-110" />
+                                        <circle cx={pt.x} cy={pt.y} r="6.5" fill="#146349" stroke="white" strokeWidth="2.5" className="transition-transform duration-200 group-hover:scale-110" style={{ transformOrigin: `${pt.x}px ${pt.y}px` }} />
                                         {/* Main Dot Center */}
                                         <circle cx={pt.x} cy={pt.y} r="2" fill="white" />
 

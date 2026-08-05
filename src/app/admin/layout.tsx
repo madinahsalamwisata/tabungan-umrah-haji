@@ -167,7 +167,7 @@ export default function AdminLayout({
       {/* Main Content Pane */}
       <div className="flex-1 flex flex-col min-w-0 md:pl-[264px] relative z-10 h-screen overflow-hidden">
         {/* Topbar */}
-        <header className="h-[76px] flex-shrink-0 bg-white border-b border-garis flex items-center justify-between px-6 sm:px-8 sticky top-0 z-20">
+        <header className="hidden md:flex h-[76px] flex-shrink-0 bg-white border-b border-garis items-center justify-between px-6 sm:px-8 sticky top-0 z-20">
           <div className="search flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-72 sm:w-80">
             <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             <input 
@@ -200,21 +200,61 @@ export default function AdminLayout({
             <img src="/ms-wisata-new-logo.png" alt="Logo" className="h-9 w-auto" />
             <h1 className="text-sm font-bold text-white">Admin Panel</h1>
           </div>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-white hover:text-gray-200 p-2"
-          >
-            {mobileMenuOpen ? (
-              <svg className="w-6 h-6 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-            ) : (
-              <svg className="w-6 h-6 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
-            )}
-          </button>
+          <div className="flex items-center gap-2.5">
+            {/* Bell Notification for Mobile */}
+            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center relative cursor-pointer hover:bg-white/20 transition-colors">
+              <svg className="w-[18px] h-[18px] stroke-white stroke-2 fill-none" viewBox="0 0 24 24">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              <div className="dot absolute top-2 right-2 w-[7px] h-[7px] rounded-full bg-emas border-1.5 border-hijau-900"></div>
+            </div>
+
+            {/* Profile Avatar for Mobile */}
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-hijau-100 to-white flex items-center justify-center font-serif font-bold text-hijau-900 text-xs shrink-0 shadow-sm">
+              {session?.user?.name?.[0] || "A"}
+            </div>
+
+            {/* Mobile Menu Toggle Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-white hover:text-gray-200 p-2"
+            >
+              {mobileMenuOpen ? (
+                <svg className="w-6 h-6 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              ) : (
+                <svg className="w-6 h-6 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+              )}
+            </button>
+          </div>
         </div>
         
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-md shadow-2xl border-b border-garis z-30 transition-all">
-            <div className="px-4 py-4 space-y-2">
+            <div className="px-4 py-4 space-y-3">
+              {/* User Profile Card for Mobile */}
+              <div className="flex items-center gap-3 p-3.5 bg-hijau-100 rounded-xl border border-hijau-200">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-hijau-700 to-hijau-900 flex items-center justify-center font-serif font-bold text-white text-sm shrink-0">
+                  {session?.user?.name?.[0] || "A"}
+                </div>
+                <div className="text-left">
+                  <div className="text-xs font-bold text-teks-900 leading-tight">{session?.user?.name || "Administrator"}</div>
+                  <div className="text-[10px] text-teks-500 mt-0.5">Super Admin</div>
+                </div>
+              </div>
+
+              {/* Search Box for Mobile Menu */}
+              <div className="search flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full">
+                <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input 
+                  type="text" 
+                  placeholder="Cari jamaah, paket, atau pengumuman..." 
+                  className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
+                />
+              </div>
+
+              <div className="text-[10px] uppercase tracking-wider text-teks-300 font-extrabold pt-2">Menu Utama</div>
+
               {navigation.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href + '/'));
                 const count = item.countKey ? counts[item.countKey] : 0;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -53,7 +53,11 @@ export default function BayarClient({
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
   };
 
+  const isCheckingRef = useRef(false);
+
   const handleVerifikasiAutomatic = async (details: any) => {
+    if (isCheckingRef.current) return;
+    isCheckingRef.current = true;
     try {
       const res = await fetch("/api/tabungan/sync", {
         method: "POST",
@@ -68,6 +72,7 @@ export default function BayarClient({
       const data = await res.json();
       if (data.status === "success") {
         localStorage.removeItem(`pending_payment_${rencana.id}`);
+        setVaDetails(null);
         MySwal.fire('Berhasil!', 'Pembayaran berhasil diverifikasi!', 'success').then(() => {
           const urlParams = new URLSearchParams(window.location.search);
           const fromVal = urlParams.get("from") || "beranda";
@@ -83,23 +88,38 @@ export default function BayarClient({
       }
     } catch (e) {
       console.error("Failed automatic verification check:", e);
+    } finally {
+      isCheckingRef.current = false;
     }
   };
 
-  // Load pending payment from localStorage on mount and verify it
+  // Load pending payment from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem(`pending_payment_${rencana.id}`);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         setVaDetails(parsed);
-        // Automatically check the status of the saved transaction in the background
-        handleVerifikasiAutomatic(parsed);
       } catch (e) {
         console.error("Failed to parse saved payment details:", e);
       }
     }
   }, [rencana.id]);
+
+  // Polling check when vaDetails is present
+  useEffect(() => {
+    if (!vaDetails) return;
+
+    // Run the initial check immediately
+    handleVerifikasiAutomatic(vaDetails);
+
+    // Then set up an interval to check every 5 seconds
+    const intervalId = setInterval(() => {
+      handleVerifikasiAutomatic(vaDetails);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [vaDetails]);
 
   const handleBayar = async () => {
     setIsPaying(true);

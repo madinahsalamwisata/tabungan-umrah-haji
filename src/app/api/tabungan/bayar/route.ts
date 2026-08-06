@@ -64,6 +64,16 @@ export async function POST(req: Request) {
     const maxNamaLength = 50 - prefix.length - suffix.length;
     const item1Name = `${prefix}${namaPaket.substring(0, maxNamaLength)}${suffix}`;
 
+    // Clean and validate contact details to satisfy Midtrans requirements
+    const firstName = rencana.jamaah.nama ? rencana.jamaah.nama.trim() : 'Jamaah';
+    const email = rencana.jamaah.email || 'jamaah@example.com';
+    
+    // Midtrans phone must be 5-19 chars, containing only: numbers, +, -, space
+    let cleanPhone = rencana.jamaah.no_hp ? rencana.jamaah.no_hp.replace(/[^0-9+\-\s]/g, '').trim() : '';
+    if (cleanPhone.length < 5 || cleanPhone.length > 19) {
+      cleanPhone = '081234567890'; // fallback to valid dummy phone
+    }
+
     // Construct bank transfer parameter based on chosen bank
     let paymentParams: any = {
         "transaction_details": {
@@ -85,9 +95,9 @@ export async function POST(req: Request) {
             }
         ],
         "customer_details": {
-            "first_name": rencana.jamaah.nama,
-            "email": rencana.jamaah.email,
-            "phone": rencana.jamaah.no_hp
+            "first_name": firstName,
+            "email": email,
+            "phone": cleanPhone
         },
         "custom_field1": rencana.id,
         "custom_field2": String(cicilanKe),

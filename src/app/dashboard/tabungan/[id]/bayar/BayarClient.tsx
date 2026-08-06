@@ -53,6 +53,59 @@ export default function BayarClient({
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
   };
 
+  const copyToClipboard = async (text: string, label: string) => {
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(text);
+        MySwal.fire({
+          title: 'Tersalin!',
+          text: `${label} berhasil disalin.`,
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        return;
+      } catch (err) {
+        console.warn("navigator.clipboard error, trying fallback:", err);
+      }
+    }
+
+    try {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      if (successful) {
+        MySwal.fire({
+          title: 'Tersalin!',
+          text: `${label} berhasil disalin.`,
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } else {
+        throw new Error("execCommand copy returned false");
+      }
+    } catch (err) {
+      console.error("Fallback clipboard copy failed:", err);
+      MySwal.fire({
+        title: 'Gagal Menyalin',
+        text: `Silakan salin manual: ${text}`,
+        icon: 'info',
+        confirmButtonText: 'Tutup'
+      });
+    }
+  };
+
   const isCheckingRef = useRef(false);
 
   const handleVerifikasiAutomatic = async (details: any) => {
@@ -450,16 +503,7 @@ export default function BayarClient({
                         {vaDetails.billerCode}
                       </span>
                       <button 
-                        onClick={() => {
-                          navigator.clipboard.writeText(vaDetails.billerCode || "");
-                          MySwal.fire({
-                            title: 'Tersalin!',
-                            text: 'Kode Biller berhasil disalin.',
-                            icon: 'success',
-                            timer: 1500,
-                            showConfirmButton: false
-                          });
-                        }}
+                        onClick={() => copyToClipboard(vaDetails.billerCode || "", "Kode Biller")}
                         className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer"
                         title="Salin Kode Biller"
                       >
@@ -477,16 +521,7 @@ export default function BayarClient({
                         {vaDetails.vaNumber}
                       </span>
                       <button 
-                        onClick={() => {
-                          navigator.clipboard.writeText(vaDetails.vaNumber);
-                          MySwal.fire({
-                            title: 'Tersalin!',
-                            text: 'Nomor Bill Key berhasil disalin.',
-                            icon: 'success',
-                            timer: 1500,
-                            showConfirmButton: false
-                          });
-                        }}
+                        onClick={() => copyToClipboard(vaDetails.vaNumber, "Nomor Bill Key")}
                         className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer"
                         title="Salin Bill Key"
                       >
@@ -506,16 +541,7 @@ export default function BayarClient({
                       {vaDetails.vaNumber}
                     </span>
                     <button 
-                      onClick={() => {
-                        navigator.clipboard.writeText(vaDetails.vaNumber);
-                        MySwal.fire({
-                          title: 'Tersalin!',
-                          text: 'Nomor VA berhasil disalin.',
-                          icon: 'success',
-                          timer: 1500,
-                          showConfirmButton: false
-                        });
-                      }}
+                      onClick={() => copyToClipboard(vaDetails.vaNumber, "Nomor VA")}
                       className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer"
                       title="Salin Nomor VA"
                     >

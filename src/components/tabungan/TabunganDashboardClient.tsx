@@ -170,7 +170,6 @@ export default function TabunganDashboardClient({
         setTotalBiaya(Number(updatedData.total_biaya));
         setSetoranPerBulan(Number(updatedData.setoran_per_bulan));
 
-        MySwal.fire('Berhasil diperbarui!', 'Rencana Anda telah disesuaikan.', 'success');
         setIsEditing(false);
         router.refresh();
       } else {

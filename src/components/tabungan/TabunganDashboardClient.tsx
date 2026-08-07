@@ -65,11 +65,13 @@ export default function TabunganDashboardClient({
   };
 
   const [editJamaah, setEditJamaah] = useState(rencana.jumlah_jamaah || 1);
+  const [editPeriodeBulan, setEditPeriodeBulan] = useState(rencana.periode_bulan);
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
 
   const sudahBayarSemua = rencana.status === "Lunas" || persentase >= 100;
   
   const riwayatSuccess = rencana.RiwayatSetoran.filter((r: any) => r.status_pembayaran === "success");
+  const monthsPaid = riwayatSuccess.length;
   const cicilanKe = riwayatSuccess.length + 1;
   const sudahLunasBulanIni = cicilanKe > rencana.periode_bulan;
 
@@ -125,7 +127,12 @@ export default function TabunganDashboardClient({
       const res = await fetch("/api/tabungan/edit", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: rencana.id, jenis_kamar: editKamar, jumlah_jamaah: editJamaah })
+        body: JSON.stringify({ 
+          id: rencana.id, 
+          jenis_kamar: editKamar, 
+          jumlah_jamaah: editJamaah,
+          periode_bulan: editPeriodeBulan
+        })
       });
       if (res.ok) {
         MySwal.fire('Berhasil diperbarui!', 'Rencana Anda telah disesuaikan.', 'success');
@@ -382,6 +389,20 @@ export default function TabunganDashboardClient({
                   onChange={(e) => setEditJamaah(Number(e.target.value))}
                   className="w-full bg-white border border-gray-300 rounded-xl py-2 px-3 text-emerald-950 focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-emerald-900 mb-2">Durasi Menabung (Bulan)</label>
+                <input 
+                  type="number" 
+                  min={monthsPaid + 1}
+                  value={editPeriodeBulan}
+                  onChange={(e) => setEditPeriodeBulan(Number(e.target.value))}
+                  className="w-full bg-white border border-gray-300 rounded-xl py-2 px-3 text-emerald-950 focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
+                />
+                <p className="text-[10px] text-gray-500 mt-1">
+                  Minimal {monthsPaid + 1} bulan karena Anda sudah membayar {monthsPaid} bulan.
+                </p>
               </div>
 
               <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-xl text-xs text-emerald-800 leading-relaxed">

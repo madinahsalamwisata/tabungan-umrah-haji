@@ -25,8 +25,8 @@ declare global {
 export default function TabunganDashboardClient({ 
   rencana, 
   totalTerkumpul, 
-  sisaTagihan, 
-  persentase 
+  sisaTagihan: initialSisaTagihan, 
+  persentase: initialPersentase 
 }: { 
   rencana: any, 
   totalTerkumpul: number, 
@@ -39,8 +39,19 @@ export default function TabunganDashboardClient({
   const [isEditing, setIsEditing] = useState(false);
   const [isNavigatingRiwayat, setIsNavigatingRiwayat] = useState(false);
   
-  // Edit states
+  // Display states (for immediate/reactive UI updates without hard reload)
+  const [jenisKamar, setJenisKamar] = useState(rencana.jenis_kamar);
+  const [jumlahJamaah, setJumlahJamaah] = useState(rencana.jumlah_jamaah || 1);
+  const [periodeBulan, setPeriodeBulan] = useState(rencana.periode_bulan);
+  const [totalBiaya, setTotalBiaya] = useState(Number(rencana.total_biaya));
+  const [setoranPerBulan, setSetoranPerBulan] = useState(Number(rencana.setoran_per_bulan));
+
+  // Edit states (for form inputs)
   const [editKamar, setEditKamar] = useState(rencana.jenis_kamar);
+  const [editJamaah, setEditJamaah] = useState(rencana.jumlah_jamaah || 1);
+  const [editPeriodeBulan, setEditPeriodeBulan] = useState(rencana.periode_bulan);
+  const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
+
   // Gunakan data paket live (bukan snapshot) agar jika admin merubah data, di dashboard aktif ikut berubah
   const isEstimasi = rencana.paket?.is_estimasi || false;
     
@@ -64,16 +75,22 @@ export default function TabunganDashboardClient({
     }
   };
 
-  const [editJamaah, setEditJamaah] = useState(rencana.jumlah_jamaah || 1);
-  const [editPeriodeBulan, setEditPeriodeBulan] = useState(rencana.periode_bulan);
-  const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
-
-  const sudahBayarSemua = rencana.status === "Lunas" || persentase >= 100;
-  
   const riwayatSuccess = rencana.RiwayatSetoran.filter((r: any) => r.status_pembayaran === "success");
   const monthsPaid = riwayatSuccess.length;
   const cicilanKe = riwayatSuccess.length + 1;
-  const sudahLunasBulanIni = cicilanKe > rencana.periode_bulan;
+
+  // Recalculated reactive fields based on local display states
+  const sisaTagihan = Math.max(0, totalBiaya - totalTerkumpul);
+  const persentase = totalBiaya > 0 ? Math.min(100, (totalTerkumpul / totalBiaya) * 100) : 0;
+  const sudahBayarSemua = rencana.status === "Lunas" || persentase >= 100;
+  const sudahLunasBulanIni = cicilanKe > periodeBulan;
+
+  const openEditModal = () => {
+    setEditKamar(jenisKamar);
+    setEditJamaah(jumlahJamaah);
+    setEditPeriodeBulan(periodeBulan);
+    setIsEditing(true);
+  };
 
   const formatRp = (num: number) => {
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(num);
@@ -122,6 +139,15 @@ export default function TabunganDashboardClient({
   };
 
   const submitEdit = async () => {
+    if (editPeriodeBulan < monthsPaid + 1) {
+      MySwal.fire('Gagal', `Durasi menabung minimal adalah ${monthsPaid + 1} bulan karena Anda sudah membayar ${monthsPaid} bulan.`, 'error');
+      return;
+    }
+    if (editJamaah < 1) {
+      MySwal.fire('Gagal', 'Jumlah jamaah minimal adalah 1 orang.', 'error');
+      return;
+    }
+
     setIsSubmittingEdit(true);
     try {
       const res = await fetch("/api/tabungan/edit", {
@@ -134,13 +160,21 @@ export default function TabunganDashboardClient({
           periode_bulan: editPeriodeBulan
         })
       });
+      const responseData = await res.json();
       if (res.ok) {
+        // Update local display states
+        const updatedData = responseData.data;
+        setJenisKamar(updatedData.jenis_kamar);
+        setJumlahJamaah(Number(updatedData.jumlah_jamaah));
+        setPeriodeBulan(Number(updatedData.periode_bulan));
+        setTotalBiaya(Number(updatedData.total_biaya));
+        setSetoranPerBulan(Number(updatedData.setoran_per_bulan));
+
         MySwal.fire('Berhasil diperbarui!', 'Rencana Anda telah disesuaikan.', 'success');
         setIsEditing(false);
         router.refresh();
       } else {
-        const data = await res.json();
-        MySwal.fire('Gagal', data.message, 'error');
+        MySwal.fire('Gagal', responseData.message, 'error');
       }
     } catch (e) {
       MySwal.fire('Gagal', 'Terjadi kesalahan saat menyimpan', 'error');
@@ -169,7 +203,7 @@ export default function TabunganDashboardClient({
               )}
             </div>
             <p className="text-[12.5px] text-white/70 mt-1.5 text-left">
-              Kamar {rencana.jenis_kamar} • {rencana.jumlah_jamaah} Pax • {isEstimasi ? "Estimasi" : "Jadwal"}: {isEstimasi 
+              Kamar {jenisKamar} • {jumlahJamaah} Pax • {isEstimasi ? "Estimasi" : "Jadwal"}: {isEstimasi 
                 ? formatSafeDate(tglBerangkat, { month: 'long' })
                 : tglPulang 
                   ? `${formatSafeDate(tglBerangkat, { day: 'numeric', month: 'short', year: 'numeric' })} - ${formatSafeDate(tglPulang, { day: 'numeric', month: 'short', year: 'numeric' })}`
@@ -181,7 +215,7 @@ export default function TabunganDashboardClient({
           <div className="flex gap-2 shrink-0 z-10">
             {!sudahBayarSemua && (
               <button 
-                onClick={() => setIsEditing(true)} 
+                onClick={openEditModal} 
                 className="w-[32px] h-[32px] rounded-full bg-white/10 text-white hover:text-emas hover:bg-white/20 transition-all flex items-center justify-center border border-white/15 cursor-pointer"
                 title="Edit Rencana"
               >
@@ -204,7 +238,7 @@ export default function TabunganDashboardClient({
         <div className="font-serif text-[38px] font-semibold tracking-tight mt-1 flex items-baseline gap-2.5 text-left">
           {formatRp(totalTerkumpul)}
           <span className="font-sans text-[13.5px] text-white/55 font-semibold">
-            / {formatRp(Number(rencana.total_biaya))}
+            / {formatRp(totalBiaya)}
           </span>
         </div>
 
@@ -217,7 +251,7 @@ export default function TabunganDashboardClient({
         </div>
         <div className="flex justify-between items-center mt-2.5 text-xs text-white/60">
           <span>Terkumpul <b>{persentase.toFixed(1)}%</b></span>
-          <span>Setoran per bulan: <b>{formatRp(Number(rencana.setoran_per_bulan))}</b></span>
+          <span>Setoran per bulan: <b>{formatRp(setoranPerBulan)}</b></span>
         </div>
 
         {/* Action Buttons */}
@@ -283,7 +317,7 @@ export default function TabunganDashboardClient({
             </div>
             <div className="flex gap-2 shrink-0 z-10">
               {!sudahBayarSemua && (
-                <button onClick={(e) => { e.stopPropagation(); setIsEditing(true); }} className="p-1.5 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors">
+                <button onClick={(e) => { e.stopPropagation(); openEditModal(); }} className="p-1.5 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                 </button>
               )}
@@ -297,7 +331,7 @@ export default function TabunganDashboardClient({
             <span className="text-[10px] text-white/50 block">Dana Terkumpul</span>
             <div className="text-xl font-bold flex items-baseline gap-1 mt-0.5">
               {formatRp(totalTerkumpul)}
-              <span className="text-[11px] text-white/55 font-medium">/ {formatRp(Number(rencana.total_biaya))}</span>
+              <span className="text-[11px] text-white/55 font-medium">/ {formatRp(totalBiaya)}</span>
             </div>
           </div>
 
@@ -308,7 +342,7 @@ export default function TabunganDashboardClient({
             </div>
             <div className="flex justify-between items-center text-[9px] text-white/60 mt-2">
               <span>Progress {persentase.toFixed(0)}%</span>
-              <span>{rencana.jenis_kamar} • {rencana.jumlah_jamaah} Pax</span>
+              <span>{jenisKamar} • {jumlahJamaah} Pax</span>
             </div>
           </div>
 
@@ -385,8 +419,19 @@ export default function TabunganDashboardClient({
                   type="number" 
                   min="1"
                   max={rencana.paket?.kuota || 1}
-                  value={editJamaah}
-                  onChange={(e) => setEditJamaah(Number(e.target.value))}
+                  value={editJamaah === 0 ? "" : editJamaah}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
+                    setEditJamaah(val === '' ? 0 : Number(val));
+                  }}
+                  onBlur={() => {
+                    const maxQuota = rencana.paket?.kuota || 1;
+                    if (editJamaah < 1) {
+                      setEditJamaah(1);
+                    } else if (editJamaah > maxQuota) {
+                      setEditJamaah(maxQuota);
+                    }
+                  }}
                   className="w-full bg-white border border-gray-300 rounded-xl py-2 px-3 text-emerald-950 focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
                 />
               </div>
@@ -396,11 +441,19 @@ export default function TabunganDashboardClient({
                 <input 
                   type="number" 
                   min={monthsPaid + 1}
-                  value={editPeriodeBulan}
-                  onChange={(e) => setEditPeriodeBulan(Number(e.target.value))}
+                  value={editPeriodeBulan === 0 ? "" : editPeriodeBulan}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
+                    setEditPeriodeBulan(val === '' ? 0 : Number(val));
+                  }}
+                  onBlur={() => {
+                    if (editPeriodeBulan < monthsPaid + 1) {
+                      setEditPeriodeBulan(monthsPaid + 1);
+                    }
+                  }}
                   className="w-full bg-white border border-gray-300 rounded-xl py-2 px-3 text-emerald-950 focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
                 />
-                <p className="text-[10px] text-gray-500 mt-1">
+                <p className="text-[10px] text-red-500 font-semibold mt-1">
                   Minimal {monthsPaid + 1} bulan karena Anda sudah membayar {monthsPaid} bulan.
                 </p>
               </div>
@@ -414,7 +467,11 @@ export default function TabunganDashboardClient({
               <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">
                 Batal
               </button>
-              <button onClick={submitEdit} disabled={isSubmittingEdit} className="px-4 py-2 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-colors">
+              <button 
+                onClick={submitEdit} 
+                disabled={isSubmittingEdit || editPeriodeBulan < monthsPaid + 1 || editJamaah < 1} 
+                className="px-4 py-2 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 {isSubmittingEdit ? "Menyimpan..." : "Simpan Perubahan"}
               </button>
             </div>

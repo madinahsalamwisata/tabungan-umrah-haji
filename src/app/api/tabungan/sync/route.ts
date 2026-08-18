@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-const midtransClient = require('midtrans-client');
-
+import crypto from "crypto";
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -41,33 +40,34 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Gagal mencocokkan data rencana tabungan untuk Order ID ini" }, { status: 400 });
     }
 
-    // Periksa ke Midtrans langsung
-    const rawServerKey = process.env.MIDTRANS_SERVER_KEY || '';
-    const rawClientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '';
-    const cleanServerKey = rawServerKey.replace(/"/g, '').trim();
-    const cleanClientKey = rawClientKey.replace(/"/g, '').trim();
-    const isProd = process.env.MIDTRANS_IS_PRODUCTION === 'true' || 
-                   (!cleanServerKey.startsWith('SB-') && process.env.MIDTRANS_IS_PRODUCTION !== 'false');
+    // Periksa ke DOKU langsung
+    const isProd = process.env.DOKU_IS_PRODUCTION === 'true';
+    const baseUrl = isProd ? "https://api.doku.com" : "https://api-sandbox.doku.com";
+    const clientId = process.env.DOKU_CLIENT_ID || '';
+    const secretKey = process.env.DOKU_SECRET_KEY || '';
 
-    const core = new midtransClient.CoreApi({
-      isProduction: isProd,
-      serverKey: cleanServerKey,
-      clientKey: cleanClientKey
+    const targetPath = `/orders/v1/status/${order_id}`;
+    const requestId = crypto.randomUUID();
+    const requestTimestamp = new Date().toISOString().substring(0, 19) + "Z";
+    
+    // Dynamic import to use crypto
+    const dokuHelpers = await import("@/lib/doku");
+    const signature = dokuHelpers.generateDokuSignature(clientId, requestId, requestTimestamp, targetPath, null, secretKey);
+
+    const statusResponse = await fetch(`${baseUrl}${targetPath}`, {
+        headers: {
+            'Client-Id': clientId,
+            'Request-Id': requestId,
+            'Request-Timestamp': requestTimestamp,
+            'Signature': signature
+        }
     });
 
-    const statusResponse = await core.transaction.status(order_id);
-    const transactionStatus = statusResponse.transaction_status;
-    const fraudStatus = statusResponse.fraud_status;
+    const statusData = await statusResponse.json();
 
     let isSuccess = false;
-
-    if (transactionStatus == 'capture'){
-        if (fraudStatus == 'challenge'){
-            // TODO set transaction status on your database to 'challenge'
-        } else if (fraudStatus == 'accept'){
-            isSuccess = true;
-        }
-    } else if (transactionStatus == 'settlement'){
+    
+    if (statusData && statusData.transaction && statusData.transaction.status === 'SUCCESS') {
         isSuccess = true;
     }
 

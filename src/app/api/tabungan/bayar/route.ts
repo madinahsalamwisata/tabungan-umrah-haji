@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-// Using midtrans-client requires require() as it doesn't have proper types sometimes, or we can use the Midtrans Node API.
-const midtransClient = require('midtrans-client');
+import crypto from "crypto";
+import { generateDokuDigest, generateDokuSignature } from "@/lib/doku";
 
 export async function POST(req: Request) {
   try {
@@ -39,100 +39,106 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Tabungan sudah lunas!" }, { status: 400 });
     }
 
-    // Inisialisasi Core API
-    const rawServerKey = process.env.MIDTRANS_SERVER_KEY || '';
-    const rawClientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '';
-    const cleanServerKey = rawServerKey.replace(/"/g, '').trim();
-    const cleanClientKey = rawClientKey.replace(/"/g, '').trim();
-    const isProd = process.env.MIDTRANS_IS_PRODUCTION === 'true' || 
-                   (!cleanServerKey.startsWith('SB-') && process.env.MIDTRANS_IS_PRODUCTION !== 'false');
-
-    const core = new midtransClient.CoreApi({
-        isProduction : isProd,
-        serverKey : cleanServerKey,
-        clientKey : cleanClientKey
-    });
+    // Inisialisasi DOKU API
+    const isProd = process.env.DOKU_IS_PRODUCTION === 'true';
+    const baseUrl = isProd ? "https://api.doku.com" : "https://api-sandbox.doku.com";
+    const clientId = process.env.DOKU_CLIENT_ID || '';
+    const secretKey = process.env.DOKU_SECRET_KEY || '';
 
     const orderId = `UMR-${rencana.id.substring(0, 8)}-BLN${cicilanKe}-${Date.now()}`;
     const cicilanNominal = Math.round(Number(rencana.setoran_per_bulan));
     const adminNominal = 4440;
     const grossAmount = cicilanNominal + adminNominal;
 
-    const namaPaket = rencana.paket?.nama_paket || rencana.paket_snapshot_nama || 'Paket';
-    const prefix = "Cicilan Umrah ";
-    const suffix = ` Bulan ke-${cicilanKe}`;
-    const maxNamaLength = 50 - prefix.length - suffix.length;
-    const item1Name = `${prefix}${namaPaket.substring(0, maxNamaLength)}${suffix}`;
-
-    // Clean and validate contact details to satisfy Midtrans requirements
-    const firstName = rencana.jamaah.nama ? rencana.jamaah.nama.trim() : 'Jamaah';
+    const firstName = rencana.jamaah.nama ? rencana.jamaah.nama.trim().substring(0, 50) : 'Jamaah';
     const email = rencana.jamaah.email || 'jamaah@example.com';
-    
-    // Midtrans phone must be 5-19 chars, containing only: numbers, +, -, space
     let cleanPhone = rencana.jamaah.no_hp ? rencana.jamaah.no_hp.replace(/[^0-9+\-\s]/g, '').trim() : '';
     if (cleanPhone.length < 5 || cleanPhone.length > 19) {
-      cleanPhone = '081234567890'; // fallback to valid dummy phone
+      cleanPhone = '081234567890';
     }
 
-    // Construct bank transfer parameter based on chosen bank
-    let paymentParams: any = {
-        "transaction_details": {
-            "order_id": orderId,
-            "gross_amount": grossAmount
-        },
-        "item_details": [
-            {
-                "id": `CICILAN-${cicilanKe}`,
-                "price": cicilanNominal,
-                "quantity": 1,
-                "name": item1Name
-            },
-            {
-                "id": "ADMIN-FEE",
-                "price": adminNominal,
-                "quantity": 1,
-                "name": "Biaya Admin Payment Gateway Midtrans"
-            }
-        ],
-        "customer_details": {
-            "first_name": firstName,
-            "email": email,
-            "phone": cleanPhone
-        },
-        "custom_field1": rencana.id,
-        "custom_field2": String(cicilanKe),
-        "custom_field3": String(cicilanNominal)
+    // Gunakan URL absolute dari env atau request headers
+    const reqHeaders = new Headers(req.headers);
+    const host = reqHeaders.get("host");
+    const protocol = host?.includes("localhost") ? "http" : "https";
+    const defaultAppUrl = `${protocol}://${host}`;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || defaultAppUrl;
+
+    // Menentukan path DOKU VA API berdasarkan bank yang dipilih
+    let targetPath = "/bsm-virtual-account/v2/payment-code"; // Default BSI
+    if (bank === "bca") targetPath = "/bca-virtual-account/v2/payment-code";
+    else if (bank === "mandiri") targetPath = "/mandiri-virtual-account/v2/payment-code";
+    else if (bank === "bri") targetPath = "/bri-virtual-account/v2/payment-code";
+    else if (bank === "bni") targetPath = "/bni-virtual-account/v2/payment-code";
+    else if (bank === "cimb") targetPath = "/cimb-virtual-account/v2/payment-code";
+    else if (bank === "danamon") targetPath = "/danamon-virtual-account/v2/payment-code";
+
+    const body = {
+      order: {
+        amount: grossAmount,
+        invoice_number: orderId
+      },
+      virtual_account_info: {
+        expired_time: 60, // 60 menit
+        reusable_status: false,
+        info1: "Tabungan Umrah",
+        info2: `Cicilan ke-${cicilanKe}`
+      },
+      customer: {
+        name: firstName,
+        email: email,
+        phone: cleanPhone,
+      }
     };
 
-    if (bank === "mandiri") {
-        paymentParams.payment_type = "echannel";
-        paymentParams.echannel = {
-            "bill_info1": "Pembayaran",
-            "bill_info2": "Cicilan Tabungan"
-        };
-    } else {
-        paymentParams.payment_type = "bank_transfer";
-        paymentParams.bank_transfer = {
-            "bank": bank
-        };
+    const requestId = crypto.randomUUID();
+    const requestTimestamp = new Date().toISOString().substring(0, 19) + "Z";
+    const digest = generateDokuDigest(body);
+    const signature = generateDokuSignature(clientId, requestId, requestTimestamp, targetPath, digest, secretKey);
+
+    const response = await fetch(`${baseUrl}${targetPath}`, {
+      method: 'POST',
+      headers: {
+        'Client-Id': clientId,
+        'Request-Id': requestId,
+        'Request-Timestamp': requestTimestamp,
+        'Signature': signature,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+       return NextResponse.json({ message: "Gagal memproses pembayaran (DOKU)", detail: data }, { status: 500 });
     }
 
-    const transaction = await core.charge(paymentParams);
+    const vaNumber = data.virtual_account_info?.virtual_account_number || null;
+    const expiryTime = data.virtual_account_info?.expired_date || null;
+    let billerCode = null;
+
+    if (bank === "mandiri") {
+        // Jika DOKU mandiri VA, biller code biasanya bisa diambil dari data, atau fix misalnya 89022
+        // Kita fallback ke prefix VA mandiri dari DOKU
+        billerCode = "89022"; // 89022 adalah Company Code DOKU di Mandiri. Silakan sesuaikan jika beda di production.
+        // VA number dari response DOKU kadang sudah mencakup biller code, atau dipisah.
+        // DOKU biasanya mengembalikan virtual_account_number lengkap.
+    }
 
     return NextResponse.json({ 
-      va_number: transaction.va_numbers?.[0]?.va_number || transaction.permata_va_number || transaction.bill_key || null,
-      biller_code: transaction.biller_code || null,
+      va_number: vaNumber,
+      biller_code: billerCode,
       bank_name: bank,
       order_id: orderId,
       bulan_ke: cicilanKe,
       nominal: cicilanNominal,
       gross_amount: grossAmount,
-      expiry_time: transaction.expiry_time || null
+      expiry_time: expiryTime
     });
 
   } catch (error: any) {
-    console.error("Error creating snap token:", error);
-    const detail = error.ApiResponse ? error.ApiResponse : error.message;
-    return NextResponse.json({ message: "Gagal memproses pembayaran (Midtrans)", detail }, { status: 500 });
+    console.error("Error creating DOKU payment:", error);
+    return NextResponse.json({ message: "Gagal memproses pembayaran (DOKU)", detail: error.message }, { status: 500 });
   }
 }

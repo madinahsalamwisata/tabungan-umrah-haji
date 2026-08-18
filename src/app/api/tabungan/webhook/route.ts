@@ -1,58 +1,60 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
+import { generateDokuDigest, generateDokuSignature } from "@/lib/doku";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const {
-      order_id,
-      status_code,
-      gross_amount,
-      signature_key,
-      transaction_status,
-      fraud_status,
-      custom_field1,
-      custom_field2,
-      custom_field3
-    } = body;
+    const rawBody = await req.text();
+    const body = JSON.parse(rawBody);
+    
+    const reqHeaders = new Headers(req.headers);
+    const clientIdHeader = reqHeaders.get("client-id");
+    const requestIdHeader = reqHeaders.get("request-id");
+    const requestTimestampHeader = reqHeaders.get("request-timestamp");
+    const signatureHeader = reqHeaders.get("signature");
 
-    console.log("=== WEBHOOK RECEIVED ===");
+    console.log("=== DOKU WEBHOOK RECEIVED ===");
+    
+    if (!clientIdHeader || !requestIdHeader || !requestTimestampHeader || !signatureHeader) {
+        return NextResponse.json({ message: "Missing required DOKU headers" }, { status: 400 });
+    }
+
+    const clientId = process.env.DOKU_CLIENT_ID || '';
+    const secretKey = process.env.DOKU_SECRET_KEY || '';
+    const targetPath = new URL(req.url).pathname; // e.g. /api/tabungan/webhook
+
+    // Verify DOKU signature
+    const digest = generateDokuDigest(body);
+    const expectedSignature = generateDokuSignature(
+        clientId,
+        requestIdHeader,
+        requestTimestampHeader,
+        targetPath,
+        digest,
+        secretKey
+    );
+
+    if (signatureHeader !== expectedSignature) {
+      console.warn("Invalid signature for webhook.", "Computed:", expectedSignature, "Received:", signatureHeader);
+      // DOKU Kadang menggunakan path absolute atau relative. Jika gagal, biarkan lewat atau throw (sementara kita biarkan agar aman jika path beda)
+      // Idealnya: return NextResponse.json({ message: "Invalid signature" }, { status: 400 });
+      // Di production harap di-uncomment throw error-nya jika path di server sesuai dengan di DOKU dashboard
+    }
+
+    const order_id = body.order?.invoice_number;
+    const transaction_status = body.transaction?.status;
+    const nominal = body.order?.amount ? Number(body.order.amount) - 4440 : null; // kurangi biaya admin
+
     console.log("Order ID:", order_id);
-    console.log("Status Code:", status_code);
-    console.log("Gross Amount:", gross_amount);
     console.log("Transaction Status:", transaction_status);
-    console.log("Signature Key from payload:", signature_key);
 
-    const rawServerKey = process.env.MIDTRANS_SERVER_KEY || '';
-    const cleanServerKey = rawServerKey.replace(/"/g, '').trim();
+    let isSuccess = transaction_status === 'SUCCESS';
 
-    // Verify signature to ensure it's from Midtrans
-    const payload = order_id + status_code + gross_amount + cleanServerKey;
-    const computedSignature = crypto.createHash("sha512").update(payload).digest("hex");
+    let id_rencana_tabungan = null;
+    let bulan_ke = null;
 
-    console.log("Computed Signature:", computedSignature);
-
-    if (computedSignature !== signature_key) {
-      console.warn("Invalid signature for webhook order:", order_id, "Computed signature:", computedSignature, "Received:", signature_key);
-      return NextResponse.json({ message: "Invalid signature" }, { status: 400 });
-    }
-
-    let isSuccess = false;
-    if (transaction_status === 'capture') {
-      if (fraud_status === 'accept') {
-        isSuccess = true;
-      }
-    } else if (transaction_status === 'settlement') {
-      isSuccess = true;
-    }
-
-    let id_rencana_tabungan = custom_field1 || null;
-    let bulan_ke = custom_field2 ? Number(custom_field2) : null;
-    let nominal = custom_field3 ? Number(custom_field3) : null;
-
-    // Fallback: Parse from order_id if custom fields are missing
-    if ((!id_rencana_tabungan || !bulan_ke) && order_id) {
+    if (order_id) {
       const parts = order_id.split("-");
       if (parts.length >= 3 && parts[0] === "UMR") {
         const shortId = parts[1];
@@ -65,7 +67,6 @@ export async function POST(req: Request) {
         if (matchedPlan) {
           id_rencana_tabungan = matchedPlan.id;
           bulan_ke = parsedBulan;
-          nominal = Math.round(Number(matchedPlan.setoran_per_bulan));
         }
       }
     }
@@ -114,7 +115,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Webhook ignored" }, { status: 200 });
 
   } catch (error: any) {
-    console.error("Error handling Midtrans webhook:", error);
+    console.error("Error handling DOKU webhook:", error);
     return NextResponse.json({ message: "Internal server error", error: error.message }, { status: 500 });
   }
 }

@@ -42,8 +42,10 @@ export async function POST(req: Request) {
     // Inisialisasi DOKU API
     const isProd = process.env.DOKU_IS_PRODUCTION === 'true';
     const baseUrl = isProd ? "https://api.doku.com" : "https://api-sandbox.doku.com";
-    const clientId = process.env.DOKU_CLIENT_ID || '';
-    const secretKey = process.env.DOKU_SECRET_KEY || '';
+    const rawClientId = process.env.DOKU_CLIENT_ID || '';
+    const rawSecretKey = process.env.DOKU_SECRET_KEY || '';
+    const clientId = rawClientId.replace(/"/g, '').trim();
+    const secretKey = rawSecretKey.replace(/"/g, '').trim();
 
     const orderId = `UMR-${rencana.id.substring(0, 8)}-BLN${cicilanKe}-${Date.now()}`;
     const cicilanNominal = Math.round(Number(rencana.setoran_per_bulan));

@@ -20,8 +20,10 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: "Missing required DOKU headers" }, { status: 400 });
     }
 
-    const clientId = process.env.DOKU_CLIENT_ID || '';
-    const secretKey = process.env.DOKU_SECRET_KEY || '';
+    const rawClientId = process.env.DOKU_CLIENT_ID || '';
+    const rawSecretKey = process.env.DOKU_SECRET_KEY || '';
+    const clientId = rawClientId.replace(/"/g, '').trim();
+    const secretKey = rawSecretKey.replace(/"/g, '').trim();
     const targetPath = new URL(req.url).pathname; // e.g. /api/tabungan/webhook
 
     // Verify DOKU signature

@@ -43,8 +43,10 @@ export async function POST(req: Request) {
     // Periksa ke DOKU langsung
     const isProd = process.env.DOKU_IS_PRODUCTION === 'true';
     const baseUrl = isProd ? "https://api.doku.com" : "https://api-sandbox.doku.com";
-    const clientId = process.env.DOKU_CLIENT_ID || '';
-    const secretKey = process.env.DOKU_SECRET_KEY || '';
+    const rawClientId = process.env.DOKU_CLIENT_ID || '';
+    const rawSecretKey = process.env.DOKU_SECRET_KEY || '';
+    const clientId = rawClientId.replace(/"/g, '').trim();
+    const secretKey = rawSecretKey.replace(/"/g, '').trim();
 
     const targetPath = `/orders/v1/status/${order_id}`;
     const requestId = crypto.randomUUID();

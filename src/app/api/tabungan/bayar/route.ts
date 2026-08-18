@@ -59,6 +59,10 @@ export async function POST(req: Request) {
       cleanPhone = '081234567890';
     }
 
+    if (!clientId) {
+       return NextResponse.json({ message: "Gagal memproses pembayaran (DOKU)", detail: { error: "SERVER_ENV_MISSING", message: "DOKU_CLIENT_ID belum terbaca oleh server Vercel. Pastikan redeploy berhasil." } }, { status: 500 });
+    }
+
     // Gunakan URL absolute dari env atau request headers
     const reqHeaders = new Headers(req.headers);
     const host = reqHeaders.get("host");

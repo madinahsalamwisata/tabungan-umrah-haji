@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     }
 
     // Periksa ke DOKU langsung
-    const isProd = process.env.DOKU_IS_PRODUCTION === 'true';
+    const isProd = String(process.env.DOKU_IS_PRODUCTION).toLowerCase() === 'true';
     const baseUrl = isProd ? "https://api.doku.com" : "https://api-sandbox.doku.com";
     const rawClientId = process.env.DOKU_CLIENT_ID || '';
     const rawSecretKey = process.env.DOKU_SECRET_KEY || '';

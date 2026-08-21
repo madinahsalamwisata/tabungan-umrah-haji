@@ -43,6 +43,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingData, setEditingData] = useState<PaketData | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [posterUrl, setPosterUrl] = useState<string | null>(null);
   
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -124,12 +125,14 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
   const handleOpenAdd = () => {
     setEditingData(null);
     setIsEstimasiForm(activeTab === "estimasi");
+    setPosterUrl(null);
     setIsModalOpen(true);
   };
 
   const handleOpenEdit = (item: PaketData) => {
     setEditingData(item);
     setIsEstimasiForm(item.is_estimasi);
+    setPosterUrl(item.poster_url);
     setIsModalOpen(true);
   };
 
@@ -168,6 +171,22 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
     }
   };
 
+  const handlePosterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      showNotification('Oops...', 'Ukuran foto maksimal 2MB', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPosterUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -185,7 +204,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
       harga_double: parseFloat(formData.get("harga_double") as string),
       harga_triple: parseFloat(formData.get("harga_triple") as string),
       kuota: parseInt(formData.get("kuota") as string),
-      poster_url: formData.get("poster_url") as string || null,
+      poster_url: posterUrl,
       is_estimasi: formData.get("is_estimasi") === "on",
     };
 
@@ -1214,14 +1233,27 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                 </div>
                 {!isEstimasiForm && (
                   <div>
-                    <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">URL Poster Gambar (Opsional)</label>
-                    <input 
-                      type="text" 
-                      name="poster_url" 
-                      defaultValue={editingData?.poster_url || ""} 
-                      className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
-                      placeholder="Contoh: /images/poster.jpg atau link Drive" 
-                    />
+                    <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Poster Gambar (Opsional)</label>
+                    <div className="flex items-center gap-3">
+                      {posterUrl && (
+                        <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-garis shrink-0">
+                          <img src={posterUrl} alt="Preview" className="w-full h-full object-cover" />
+                          <button 
+                            type="button" 
+                            onClick={() => setPosterUrl(null)} 
+                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 shadow hover:scale-110"
+                          >
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                          </button>
+                        </div>
+                      )}
+                      <input 
+                        type="file" 
+                        accept="image/jpeg, image/png, image/webp"
+                        onChange={handlePosterChange}
+                        className="w-full text-xs text-teks-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-hijau-100 file:text-hijau-900 hover:file:bg-hijau-200 cursor-pointer" 
+                      />
+                    </div>
                   </div>
                 )}
               </div>

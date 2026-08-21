@@ -13,8 +13,8 @@ model Jamaah {
   email           String            @unique
   no_hp           String
   nik             String            @unique
-  alamat             String?
-  foto_url           String?
+  alamat             String?           @db.Text
+  foto_url           String?           @db.LongText
   password_hash      String
   password_plain     String?
   reset_token        String?
@@ -35,8 +35,8 @@ model Paket {
   harga_double          Decimal
   harga_triple          Decimal
   kuota                 Int
-  deskripsi_fasilitas   String?
-  poster_url            String?
+  deskripsi_fasilitas   String?           @db.Text
+  poster_url            String?           @db.LongText
   is_estimasi           Boolean           @default(false)
   RencanaTabungan       RencanaTabungan[]
 }
@@ -44,7 +44,7 @@ model Paket {
 model Pengumuman {
   id         String   @id @default(uuid())
   judul      String
-  konten     String
+  konten     String   @db.Text
   is_penting Boolean  @default(false)
   is_pinned  Boolean  @default(false)
   created_at DateTime @default(now())
@@ -88,5 +88,5 @@ model RiwayatSetoran {
 
 model Setting {
   key   String @id
-  value String
+  value String @db.Text
 }

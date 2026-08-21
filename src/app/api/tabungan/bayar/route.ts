@@ -79,18 +79,32 @@ export async function POST(req: Request) {
     else if (bank === "cimb") targetPath = "/cimb-virtual-account/v2/payment-code";
     else if (bank === "danamon") targetPath = "/danamon-virtual-account/v2/payment-code";
 
-    const body = {
+      const vaInfo: any = {
+        expired_time: 60, // 60 menit
+        reusable_status: false,
+      };
+
+      // Bank-specific payload rules for DOKU Jokul v2
+      if (bank === "bni") {
+        // BNI requires merchant_unique_reference <= 12 chars
+        vaInfo.merchant_unique_reference = orderId.replace(/-/g, '').substring(0, 12);
+        vaInfo.info1 = "Tabungan Umrah";
+        vaInfo.info2 = `Cicilan ke-${cicilanKe}`;
+      } else if (bank === "bri") {
+        // BRI fails with "Invalid JSON Format" if we send extra info fields
+        // Do nothing, just use base vaInfo
+      } else {
+        // BSI, Mandiri, and others
+        vaInfo.info1 = "Tabungan Umrah";
+        vaInfo.info2 = `Cicilan ke-${cicilanKe}`;
+      }
+
+      const body = {
       order: {
         amount: grossAmount,
         invoice_number: orderId
       },
-      virtual_account_info: {
-        expired_time: 60, // 60 menit
-        reusable_status: false,
-        merchant_unique_reference: orderId,
-        info1: "Tabungan Umrah",
-        info2: `Cicilan ke-${cicilanKe}`
-      },
+      virtual_account_info: vaInfo,
       customer: {
         name: firstName,
         email: email,

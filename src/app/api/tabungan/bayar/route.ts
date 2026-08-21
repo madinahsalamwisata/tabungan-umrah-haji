@@ -99,17 +99,23 @@ export async function POST(req: Request) {
         vaInfo.info2 = `Cicilan ke-${cicilanKe}`;
       }
 
+      const customerInfo: any = {
+        name: firstName,
+        email: email,
+      };
+      
+      // BRI API rejects the payload with "Invalid JSON Format" if phone is included
+      if (bank !== "bri") {
+        customerInfo.phone = cleanPhone;
+      }
+
       const body = {
       order: {
         amount: grossAmount,
         invoice_number: orderId
       },
       virtual_account_info: vaInfo,
-      customer: {
-        name: firstName,
-        email: email,
-        phone: cleanPhone,
-      }
+      customer: customerInfo
     };
 
     const requestId = crypto.randomUUID();

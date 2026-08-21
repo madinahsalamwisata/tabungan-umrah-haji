@@ -87,6 +87,7 @@ export async function POST(req: Request) {
       virtual_account_info: {
         expired_time: 60, // 60 menit
         reusable_status: false,
+        merchant_unique_reference: orderId,
         info1: "Tabungan Umrah",
         info2: `Cicilan ke-${cicilanKe}`
       },

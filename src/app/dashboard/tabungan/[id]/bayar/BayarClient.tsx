@@ -646,7 +646,7 @@ export default function BayarClient({
                   <span className="font-semibold text-emerald-950">{formatRp(Number(rencana.setoran_per_bulan))}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Biaya Admin Payment Gateway Midtrans</span>
+                  <span>Biaya Admin Payment Gateway DOKU</span>
                   <span className="font-semibold text-emerald-950">{formatRp(4440)}</span>
                 </div>
               </div>

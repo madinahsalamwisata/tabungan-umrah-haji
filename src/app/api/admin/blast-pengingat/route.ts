@@ -12,18 +12,6 @@ export async function POST(req: Request) {
     }
 
     const judul = "Pengingat Pembayaran Cicilan Tabungan";
-    const is_penting = true;
-    const is_pinned = true;
-
-    // Create the announcement so it appears in the dashboard
-    await prisma.pengumuman.create({
-      data: {
-        judul,
-        konten,
-        is_penting,
-        is_pinned,
-      }
-    });
 
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();

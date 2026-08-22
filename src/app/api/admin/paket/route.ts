@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 async function isAdmin() {
   const session = await getServerSession(authOptions);
   return session?.user?.email === "madinahsalamwisata@gmail.com";
@@ -37,6 +39,7 @@ export async function GET() {
       deskripsi_fasilitas: p.deskripsi_fasilitas,
       poster_url: p.poster_url,
       is_estimasi: p.is_estimasi,
+      is_deleted: p.is_deleted,
       peminat: p.RencanaTabungan.map(rt => {
         const successfulPayments = rt.RiwayatSetoran
           .filter(rs => rs.status_pembayaran === 'Lunas' || rs.status_pembayaran === 'settlement' || rs.status_pembayaran === 'success');
@@ -164,7 +167,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ message: `Gagal menghapus: Ada ${connected} jamaah aktif yang terdaftar dalam paket ini!` }, { status: 400 });
     }
 
-    await prisma.paket.delete({ where: { id } });
+    await prisma.paket.update({ where: { id }, data: { is_deleted: true } });
 
     return NextResponse.json({ message: "Paket berhasil dihapus" });
   } catch (error: any) {

@@ -35,6 +35,7 @@ type PaketData = {
   deskripsi_fasilitas: string | null;
   poster_url: string | null;
   is_estimasi: boolean;
+  is_deleted: boolean;
   peminat: PeminatItem[];
 };
 
@@ -282,8 +283,8 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
     return title;
   };
 
-  const paketPasti = data.filter(item => !item.is_estimasi);
-  const paketEstimasi = data.filter(item => item.is_estimasi);
+  const paketPasti = data.filter(item => !item.is_estimasi && !item.is_deleted);
+  const paketEstimasi = data.filter(item => item.is_estimasi && !item.is_deleted);
 
   return (
     <div className="space-y-6">
@@ -548,7 +549,12 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                         <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-hijau-100 text-hijau-800 tracking-wider">
                           Pilihan Paket
                         </span>
-                        <h2 className="text-lg font-bold text-teks-900 mt-2">{cleanTitle(selectedPaket.nama_paket, selectedPaket.is_estimasi)}</h2>
+                        <h2 className="text-lg font-bold text-teks-900 mt-2 flex items-center gap-2">
+                          {cleanTitle(selectedPaket.nama_paket, selectedPaket.is_estimasi)}
+                          {selectedPaket.is_deleted && (
+                            <span className="text-[10px] font-bold text-red-600 border border-red-300 bg-red-50 px-2 py-0.5 rounded-md shrink-0">Paket Terhapus</span>
+                          )}
+                        </h2>
                         <p className="text-xs text-teks-500 mt-1">
                           🗓️ {selectedPaket.is_estimasi ? "Estimasi Keberangkatan:" : "Keberangkatan:"} <span className="font-bold text-teks-900">
                             {selectedPaket.is_estimasi 
@@ -1039,7 +1045,12 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                           >
                             <div>
                               <div className="flex justify-between items-start mb-2.5 gap-2">
-                                <h3 className="text-sm font-bold text-teks-900 leading-snug">{cleanTitle(item.nama_paket, item.is_estimasi)}</h3>
+                                <h3 className="text-sm font-bold text-teks-900 leading-snug flex items-center gap-2 flex-wrap">
+                                  {cleanTitle(item.nama_paket, item.is_estimasi)}
+                                  {item.is_deleted && (
+                                    <span className="text-[9px] font-bold text-red-600 border border-red-300 bg-red-50 px-2 py-0.5 rounded-md shrink-0">Paket Terhapus</span>
+                                  )}
+                                </h3>
                                 {item.is_estimasi && (
                                   <span className="bg-yellow-50 text-yellow-700 border border-yellow-200/50 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Estimasi</span>
                                 )}

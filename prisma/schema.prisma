@@ -39,6 +39,7 @@ model Paket {
   deskripsi_fasilitas   String?           @db.Text
   poster_url            String?           @db.LongText
   is_estimasi           Boolean           @default(false)
+  is_deleted            Boolean           @default(false)
   RencanaTabungan       RencanaTabungan[]
 }
 

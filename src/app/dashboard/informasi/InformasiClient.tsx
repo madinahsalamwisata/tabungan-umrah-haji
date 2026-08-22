@@ -65,7 +65,7 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
           
           <!-- Content Area -->
           <div class="p-6 sm:p-8">
-            <div class="text-sm text-gray-700 leading-relaxed max-h-[300px] overflow-y-auto pr-3 custom-scrollbar text-justify">${parsedKonten}</div>
+            <div class="text-sm text-gray-700 leading-relaxed max-h-[300px] overflow-y-auto pr-3 custom-scrollbar-dark text-justify">${parsedKonten}</div>
           </div>
           
           <!-- Footer Area -->

@@ -79,5 +79,20 @@ body {
   background: rgba(255, 255, 255, 0.4);
 }
 
+/* Custom Thin Scrollbar (Dark for light backgrounds) */
+.custom-scrollbar-dark::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar-dark::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar-dark::-webkit-scrollbar-thumb {
+  background: rgba(11, 61, 48, 0.2);
+  border-radius: 10px;
+}
+.custom-scrollbar-dark::-webkit-scrollbar-thumb:hover {
+  background: rgba(11, 61, 48, 0.4);
+}
+
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }

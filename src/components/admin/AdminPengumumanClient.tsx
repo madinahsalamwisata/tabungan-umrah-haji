@@ -376,7 +376,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
             {/* Scrollable Content Body */}
             <div className="p-6 sm:p-8">
               <div 
-                className="text-sm text-gray-700 leading-relaxed max-h-[300px] overflow-y-auto pr-3 custom-scrollbar text-justify announcement-content"
+                className="text-sm text-gray-700 leading-relaxed max-h-[300px] overflow-y-auto pr-3 custom-scrollbar-dark text-justify announcement-content"
                 dangerouslySetInnerHTML={{ __html: parseFormattedText(selectedAnnouncement.konten) }}
               />
             </div>

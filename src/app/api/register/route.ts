@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { sendEmail } from "@/lib/email";
 
 
 
@@ -56,6 +57,33 @@ export async function POST(req: Request) {
 
     // Return the created user without the password hash
     const { password_hash, ...user } = newUser;
+
+    // Send welcome email
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <h2 style="color: #047857; text-align: center;">Ahlan wa Sahlan, ${nama}!</h2>
+        <p>Terima kasih telah mendaftar di <strong>Tabungan Umrah & Haji Madinah Salam Wisata</strong>.</p>
+        <p>Akun Anda telah berhasil dibuat dengan detail sebagai berikut:</p>
+        <ul>
+          <li><strong>Nama Lengkap:</strong> ${nama}</li>
+          <li><strong>Email:</strong> ${email}</li>
+          <li><strong>No. HP/WA:</strong> ${no_hp}</li>
+        </ul>
+        <p>Sekarang Anda dapat masuk ke dalam dashboard untuk memulai perencanaan tabungan Umrah atau Haji Anda bersama kami.</p>
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="https://tabunganhajiumrahku.com/login" style="background-color: #facc15; color: #064e3b; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">Masuk ke Akun Anda</a>
+        </div>
+        <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">
+          Jika Anda tidak merasa mendaftar di situs kami, silakan abaikan email ini.
+        </p>
+      </div>
+    `;
+
+    await sendEmail({
+      to: email,
+      subject: "Pendaftaran Berhasil - Tabungan Umrah & Haji Madinah Salam Wisata",
+      html: emailHtml,
+    });
 
     return Response.json(
       { message: "Registrasi berhasil", user },

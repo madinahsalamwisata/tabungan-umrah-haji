@@ -346,7 +346,7 @@ Madinah Salam Wisata
                 <span className="text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold border border-red-200">Manual</span>
               </h2>
               <p className="text-xs text-emerald-700 mt-1 leading-relaxed max-w-2xl">
-                Fitur ini akan mengirimkan email tagihan (beserta nominalnya) secara massal ke seluruh jamaah yang <strong>belum</strong> melunasi cicilan di bulan ini. Pesan ini <strong>hanya</strong> akan dikirim via email dan <strong>tidak</strong> akan muncul di dashboard umum.
+                Fitur ini akan mengirimkan **Email** dan **WhatsApp** tagihan (beserta nominalnya) secara massal ke seluruh jamaah yang <strong>belum</strong> melunasi cicilan di bulan ini. Pesan ini <strong>hanya</strong> akan dikirim via email & WA, dan <strong>tidak</strong> akan muncul di dashboard umum.
               </p>
               <div className="mt-3 bg-white/60 p-3 rounded-xl border border-emerald-100 text-xs text-emerald-800 italic line-clamp-2">
                 "{blastKonten}"
@@ -678,12 +678,12 @@ Madinah Salam Wisata
           <div className="relative w-full max-w-lg bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-7 animate-in zoom-in-95 duration-200 text-left">
             <h2 className="text-base font-bold text-teks-900 mb-2">Edit Teks Blast Pengingat</h2>
             <p className="text-[11px] text-teks-500 mb-5 border-b border-garis pb-3 leading-relaxed">
-              Teks ini akan disertakan di dalam email tagihan kepada jamaah secara privat.
+              Teks ini akan disertakan di dalam Email dan WhatsApp tagihan kepada jamaah secara privat.
             </p>
             
             <form onSubmit={(e) => { e.preventDefault(); setIsBlastModalOpen(false); }} className="space-y-4">
               <div>
-                <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-2">Pesan Pengantar Email</label>
+                <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-2">Pesan Pengantar Email & WA</label>
                 <textarea 
                   value={blastKonten}
                   onChange={(e) => setBlastKonten(e.target.value)}

@@ -82,6 +82,28 @@ export async function POST(req: Request) {
           html: emailHtml,
         });
 
+        // Send WhatsApp via Fonnte
+        if (plan.jamaah.no_hp) {
+          try {
+            const formData = new FormData();
+            formData.append("target", plan.jamaah.no_hp);
+            // Include payment link in the WA message
+            const waMessage = `${personalizedKonten}\n\nSilakan klik link berikut untuk melakukan pembayaran cicilan Anda:\nhttps://tabunganhajiumrahku.com/dashboard/tabungan/${plan.id}/bayar`;
+            formData.append("message", waMessage);
+            formData.append("delay", "2");
+
+            await fetch("https://api.fonnte.com/send", {
+              method: "POST",
+              headers: {
+                "Authorization": "DTsroBNVis8j6UFEvvmM"
+              },
+              body: formData
+            });
+          } catch (waError) {
+            console.error("Fonnte WA Error:", waError);
+          }
+        }
+
         sentCount++;
       }
     }

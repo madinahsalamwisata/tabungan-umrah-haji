@@ -155,13 +155,13 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ message: "ID wajib diisi" }, { status: 400 });
     }
 
-    // Cek jika ada Rencana Tabungan yang terhubung
+    // Cek jika ada Rencana Tabungan yang masih Aktif terhubung dengan paket ini
     const connected = await prisma.rencanaTabungan.count({
-      where: { id_paket: id }
+      where: { id_paket: id, status: "Aktif" }
     });
 
     if (connected > 0) {
-      return NextResponse.json({ message: `Gagal menghapus: Ada ${connected} jamaah yang terdaftar dalam paket ini!` }, { status: 400 });
+      return NextResponse.json({ message: `Gagal menghapus: Ada ${connected} jamaah aktif yang terdaftar dalam paket ini!` }, { status: 400 });
     }
 
     await prisma.paket.delete({ where: { id } });

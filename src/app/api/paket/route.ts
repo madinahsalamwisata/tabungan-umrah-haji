@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const pakets = await prisma.paket.findMany({
+      where: { is_deleted: false },
       orderBy: { tanggal_keberangkatan: 'asc' }
     });
     return NextResponse.json(pakets);

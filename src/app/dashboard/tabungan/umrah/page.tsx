@@ -36,6 +36,7 @@ export default async function TabunganDashboard() {
   // Ambil semua paket yang jadwalnya >= 6 bulan ke depan
   const now = new Date();
   const futurePakets = await prisma.paket.findMany({
+    where: { is_deleted: false },
     orderBy: { tanggal_keberangkatan: 'asc' }
   });
   

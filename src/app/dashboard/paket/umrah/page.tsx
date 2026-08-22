@@ -23,6 +23,7 @@ export default async function PaketPage() {
   }
 
   const pakets = await prisma.paket.findMany({
+    where: { is_deleted: false },
     orderBy: {
       tanggal_keberangkatan: 'asc'
     }

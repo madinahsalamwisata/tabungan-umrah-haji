@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation";
 
 export default function WhatsAppButton() {
   const pathname = usePathname();
-  // WhatsApp number: 6282210004644 (remove + and spaces)
-  const waNumber = "6282210004644";
+  // WhatsApp number: 6285695156701 (remove + and spaces)
+  const waNumber = "6285695156701";
   const waUrl = `https://wa.me/${waNumber}`;
 
   // Check if we are on a page with mobile bottom navigation to adjust the bottom spacing

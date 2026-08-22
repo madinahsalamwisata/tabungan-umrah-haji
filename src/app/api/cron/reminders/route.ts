@@ -87,7 +87,7 @@ export async function GET(req: Request) {
 
         await sendEmail({
           to: plan.jamaah.email,
-          subject: \`Pengingat Cicilan Tabungan \${monthString} - Madinah Salam Wisata\`,
+          subject: `Pengingat Cicilan Tabungan ${monthString} - Madinah Salam Wisata`,
           html: emailHtml,
         });
 

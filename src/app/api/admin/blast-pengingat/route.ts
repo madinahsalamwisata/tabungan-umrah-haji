@@ -44,49 +44,53 @@ export async function POST(req: Request) {
     for (const plan of activePlans) {
       if (!plan.jamaah?.email) continue;
 
-      const hasPaidThisMonth = plan.RiwayatSetoran.some((setoran) => {
-        const setoranDate = new Date(setoran.tanggal_setor);
-        return (
-          setoranDate.getMonth() === currentMonth &&
-          setoranDate.getFullYear() === currentYear &&
-          setoran.status_pembayaran === "Sukses"
-        );
-      });
+      const startDate = new Date(plan.tanggal_mulai);
+      let monthsElapsed = (currentYear - startDate.getFullYear()) * 12 + (currentMonth - startDate.getMonth()) + 1;
+      
+      if (monthsElapsed <= 0) continue;
 
-      if (!hasPaidThisMonth) {
-        const setoranFormatted = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(Number(plan.setoran_per_bulan));
+      // Target payments up to this month (max is the plan's periode_bulan)
+      const targetPayments = Math.min(monthsElapsed, plan.periode_bulan);
+      const paidCount = plan.RiwayatSetoran.filter(s => s.status_pembayaran === "Sukses").length;
+      const unpaidCount = targetPayments - paidCount;
+
+      if (unpaidCount > 0) {
+        // Build the string of unpaid months
+        const unpaidMonthNames = [];
+        for (let i = 0; i < unpaidCount; i++) {
+          const unpaidDate = new Date(startDate);
+          unpaidDate.setMonth(startDate.getMonth() + paidCount + i);
+          unpaidMonthNames.push(`${monthNames[unpaidDate.getMonth()]} ${unpaidDate.getFullYear()}`);
+        }
+        const unpaidMonthsString = unpaidMonthNames.join(", ");
+
+        const totalNominal = unpaidCount * Number(plan.setoran_per_bulan);
+        const setoranFormatted = new Intl.NumberFormat("id-ID", { minimumFractionDigits: 0 }).format(totalNominal);
         
+        let personalizedKonten = konten;
+        personalizedKonten = personalizedKonten.replace(/\[Nama Jamaah\]/g, plan.jamaah.nama);
+        personalizedKonten = personalizedKonten.replace(/\[Bulan\/Tahun\]/g, unpaidMonthsString);
+        personalizedKonten = personalizedKonten.replace(/\[Bulan\]/g, unpaidMonthsString);
+        personalizedKonten = personalizedKonten.replace(/\[Jumlah\]/g, setoranFormatted);
+
         // Convert simple markdown to HTML line breaks for email
-        const formattedKonten = konten.replace(/\n/g, '<br>');
+        const formattedKonten = personalizedKonten.replace(/\n/g, '<br>');
 
         const emailHtml = `
-          <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-            <h2 style="color: #064e3b; text-align: center;">${judul}</h2>
-            <p>Assalamu'alaikum Wr. Wb. Bapak/Ibu <strong>${plan.jamaah.nama}</strong>,</p>
-            <div style="margin: 15px 0; padding: 15px; border-left: 4px solid #059669; background-color: #f0fdf4;">
+          <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f8fafc;">
+            <div style="background-color: #ffffff; padding: 25px; border-radius: 8px; border-top: 4px solid #059669; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
               ${formattedKonten}
-            </div>
-            
-            <div style="background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin-top: 0; color: #92400e;">Detail Tagihan Anda:</h3>
-              <ul style="list-style: none; padding-left: 0;">
-                <li style="margin-bottom: 8px;"><strong>Paket:</strong> ${plan.paket?.nama_paket || plan.paket_snapshot_nama || "Paket Umrah/Haji"}</li>
-                <li style="margin-bottom: 8px;"><strong>Bulan Tagihan:</strong> ${monthString}</li>
-                <li style="margin-bottom: 8px;"><strong>Jumlah yang harus dibayar:</strong> <span style="color: #b45309; font-size: 18px; font-weight: bold;">${setoranFormatted}</span></li>
-              </ul>
-            </div>
-
-            <p>Silakan klik tombol di bawah ini untuk melakukan pembayaran cicilan Anda lewat website.</p>
-            
-            <div style="text-align: center; margin-top: 30px;">
-              <a href="https://tabunganhajiumrahku.com/dashboard/tabungan/${plan.id}/bayar" style="background-color: #059669; color: white; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 5px; display: inline-block;">Bayar Sekarang</a>
+              
+              <div style="text-align: center; margin-top: 30px; margin-bottom: 10px;">
+                <a href="https://tabunganhajiumrahku.com/dashboard/tabungan/${plan.id}/bayar" style="background-color: #059669; color: white; padding: 12px 30px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block; box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);">Bayar Sekarang</a>
+              </div>
             </div>
           </div>
         `;
 
         await sendEmail({
           to: plan.jamaah.email,
-          subject: `${judul} - ${monthString}`,
+          subject: `Pengingat Pembayaran Cicilan - ${monthString}`,
           html: emailHtml,
         });
 

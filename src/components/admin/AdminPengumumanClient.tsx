@@ -51,7 +51,32 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
   // Blast Email State
   const [isBlastModalOpen, setIsBlastModalOpen] = useState(false);
   const [isBlasting, setIsBlasting] = useState(false);
-  const [blastKonten, setBlastKonten] = useState("Harap segera melunasi pembayaran cicilan tabungan Anda untuk bulan ini agar rencana ibadah Anda berjalan lancar.");
+  const [blastKonten, setBlastKonten] = useState(`🕋 Pengingat Cicilan Tabungan Umrah/Haji 🕋
+
+Assalamu'alaikum Warahmatullahi Wabarakatuh,
+
+Bapak/Ibu [Nama Jamaah] yang dirahmati Allah ﷻ,
+
+Semoga Bapak/Ibu senantiasa dalam lindungan-Nya dan selalu diberikan kelancaran rezeki, aamiin.
+
+Kami dari Madinah Salam Wisata ingin mengingatkan dengan penuh hormat bahwa cicilan tabungan Umrah Bapak/Ibu untuk bulan [Bulan/Tahun] masih perlu diselesaikan.
+
+📌 Detail:
+Nama : [Nama Jamaah]
+Tagihan Bulan : [Bulan]
+Nominal : Rp[Jumlah]
+
+Kami percaya niat baik Bapak/Ibu untuk memenuhi panggilan Allah ke Baitullah insyaaAllah akan Allah mudahkan jalannya. Mari kita sama-sama jaga konsistensi menabung agar impian menunaikan ibadah Umrah segera terwujud. 🤲
+
+Jika ada kendala, jangan ragu menghubungi kami, insyaAllah kami bantu carikan solusinya.
+
+Jazakumullahu khairan atas perhatian dan kerja samanya. Semoga Allah ﷻ mudahkan segala urusan kita menuju Tanah Suci. Aamiin.... 
+
+Wassalamu'alaikum Warahmatullahi Wabarakatuh.
+
+Madinah Salam Wisata
+📞 +62 856-9515-6701
+🌐 tabunganhajiumrahku.com`);
 
   // Formatting state & refs
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -663,12 +688,12 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
                   value={blastKonten}
                   onChange={(e) => setBlastKonten(e.target.value)}
                   required 
-                  rows={5} 
-                  className="w-full bg-krem border border-garis rounded-xl px-3 py-2.5 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 resize-none" 
+                  rows={15} 
+                  className="w-full bg-krem border border-garis rounded-xl px-3 py-2.5 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 resize-y" 
                   placeholder="Tuliskan pesan pengantar di sini..."
                 ></textarea>
                 <p className="text-[10px] text-teks-400 mt-2 italic">
-                  *Catatan: Sistem akan otomatis menambahkan rincian nominal tagihan dan link pembayaran di bawah teks ini.
+                  *Catatan: Variabel [Nama Jamaah], [Bulan/Tahun], [Bulan], dan [Jumlah] akan diganti otomatis oleh sistem saat pengiriman.
                 </p>
               </div>
 

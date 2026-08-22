@@ -1,11 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { format } from "date-fns";
-import { id as localeID } from "date-fns/locale";
 
 export default function AdminRiwayatBlastClient({ riwayat }: { riwayat: any[] }) {
   const [selectedRiwayat, setSelectedRiwayat] = useState<any | null>(null);
+
+  const formatDate = (dateString: string) => {
+    return new Intl.DateTimeFormat("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(dateString));
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -57,7 +65,7 @@ export default function AdminRiwayatBlastClient({ riwayat }: { riwayat: any[] })
                       <p className="text-[11px] text-teks-400 mt-1">{item.jenis_pesan}</p>
                     </td>
                     <td className="p-4 hidden sm:table-cell">
-                      {format(new Date(item.tanggal_kirim), "dd MMMM yyyy, HH:mm", { locale: localeID })}
+                      {formatDate(item.tanggal_kirim)}
                     </td>
                     <td className="p-4 text-center">
                       {getStatusBadge(item.status_email)}
@@ -105,7 +113,7 @@ export default function AdminRiwayatBlastClient({ riwayat }: { riwayat: any[] })
               <div>
                 <p className="text-[10px] font-extrabold text-teks-400 uppercase tracking-wider mb-1">Waktu</p>
                 <p className="font-medium text-teks-700">
-                  {format(new Date(selectedRiwayat.tanggal_kirim), "dd MMMM yyyy, HH:mm", { locale: localeID })}
+                  {formatDate(selectedRiwayat.tanggal_kirim)}
                 </p>
               </div>
 

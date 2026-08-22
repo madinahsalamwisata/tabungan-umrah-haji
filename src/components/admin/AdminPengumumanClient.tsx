@@ -48,6 +48,11 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<PengumumanData | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Blast Email State
+  const [isBlastModalOpen, setIsBlastModalOpen] = useState(false);
+  const [isBlasting, setIsBlasting] = useState(false);
+  const [blastKonten, setBlastKonten] = useState("Harap segera melunasi pembayaran cicilan tabungan Anda untuk bulan ini agar rencana ibadah Anda berjalan lancar.");
+
   // Formatting state & refs
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [konten, setKonten] = useState("");
@@ -203,6 +208,53 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
     }
   };
 
+  const handleBlastSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isBlasting) return;
+    
+    const result = await Swal.fire({
+      title: 'Konfirmasi Blast Email',
+      text: "Apakah Anda yakin ingin mengirim email penagihan ini kepada SELURUH jamaah yang belum membayar cicilan bulan ini?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#146349',
+      cancelButtonColor: '#94A39C',
+      confirmButtonText: 'Ya, Kirim Sekarang!',
+      cancelButtonText: 'Batal',
+      customClass: {
+        popup: 'rounded-2xl border border-garis shadow-2xl',
+        title: 'text-base text-hijau-900 font-bold',
+        htmlContainer: 'text-xs text-teks-500',
+        confirmButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2 text-sm',
+        cancelButton: 'rounded-xl shadow-lg transition-all font-bold px-6 py-2 text-sm',
+      }
+    });
+
+    if (result.isConfirmed) {
+      setIsBlasting(true);
+      try {
+        const res = await fetch("/api/admin/blast-pengingat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ konten: blastKonten })
+        });
+        
+        const resData = await res.json();
+
+        if (res.ok) {
+          setIsBlastModalOpen(false);
+          showNotification('Berhasil', `Email pengingat berhasil dikirim ke ${resData.sentCount} jamaah.`, 'success');
+        } else {
+          showNotification('Gagal', resData.message || 'Gagal mengirim email pengingat.', 'error');
+        }
+      } catch (e) {
+        showNotification('Gagal', 'Terjadi kesalahan sistem saat mengirim email.', 'error');
+      } finally {
+        setIsBlasting(false);
+      }
+    }
+  };
+
   // Filter & Search logic
   const filteredData = data.filter((item) => {
     const matchesSearch = 
@@ -254,6 +306,56 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
           <svg className="w-4 h-4 stroke-white stroke-[2.2] fill-none" viewBox="0 0 24 24"><path d="M12 4.5v15m7.5-7.5h-15" /></svg>
           Buat Pengumuman Baru
         </button>
+      </div>
+
+      {/* ----------------- KOTAK BLAST PENGINGAT ----------------- */}
+      <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-[22px] shadow-sm overflow-hidden mb-8">
+        <div className="p-5 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 border border-emerald-200">
+              <svg className="w-6 h-6 stroke-emerald-700" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5C2 7 4 5 6.5 5H18c2.2 0 4 1.8 4 4v8Z"/><polyline points="15,9 18,9 18,11"/><path d="M5.5 4a2 2 0 0 0-2 2"/><path d="M18.5 4a2 2 0 0 1 2 2"/></svg>
+            </div>
+            <div>
+              <h2 className="text-[15px] font-extrabold text-emerald-900 flex items-center gap-2">
+                Blast Pengingat Cicilan
+                <span className="text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold border border-red-200">Manual</span>
+              </h2>
+              <p className="text-xs text-emerald-700 mt-1 leading-relaxed max-w-2xl">
+                Fitur ini akan mengirimkan email tagihan (beserta nominalnya) secara massal ke seluruh jamaah yang <strong>belum</strong> melunasi cicilan di bulan ini. Pesan ini juga otomatis menjadi pengumuman di dashboard jamaah.
+              </p>
+              <div className="mt-3 bg-white/60 p-3 rounded-xl border border-emerald-100 text-xs text-emerald-800 italic line-clamp-2">
+                "{blastKonten}"
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2 w-full md:w-auto shrink-0 mt-2 md:mt-0">
+            <button 
+              onClick={() => setIsBlastModalOpen(true)}
+              className="flex-1 md:flex-none px-4 py-2.5 rounded-xl text-xs font-bold text-emerald-800 bg-white hover:bg-emerald-50 border border-emerald-200 transition-colors shadow-sm flex items-center justify-center gap-2"
+            >
+              <svg className="w-4 h-4 stroke-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+              Edit Teks
+            </button>
+            <button 
+              onClick={(e) => handleBlastSubmit(e as any)}
+              disabled={isBlasting}
+              className="flex-1 md:flex-none px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 disabled:opacity-70 transition-all shadow-md flex items-center justify-center gap-2"
+            >
+              {isBlasting ? (
+                <>
+                  <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  Mengirim...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4 stroke-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2z"/></svg>
+                  Share / Blast
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Clean White Table Container */}
@@ -536,6 +638,53 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
                   ) : (
                     editingData ? "Simpan Perubahan" : "Sebarkan"
                   )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ----------------- BLAST MODAL ----------------- */}
+      {isBlastModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsBlastModalOpen(false)}></div>
+          
+          <div className="relative w-full max-w-lg bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-7 animate-in zoom-in-95 duration-200 text-left">
+            <h2 className="text-base font-bold text-teks-900 mb-2">Edit Teks Blast Pengingat</h2>
+            <p className="text-[11px] text-teks-500 mb-5 border-b border-garis pb-3 leading-relaxed">
+              Teks ini akan disertakan di dalam email tagihan kepada jamaah dan juga dipublikasikan sebagai pengumuman ber-badge PENTING di dashboard mereka.
+            </p>
+            
+            <form onSubmit={(e) => { e.preventDefault(); setIsBlastModalOpen(false); }} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-2">Pesan Pengantar Email & Pengumuman</label>
+                <textarea 
+                  value={blastKonten}
+                  onChange={(e) => setBlastKonten(e.target.value)}
+                  required 
+                  rows={5} 
+                  className="w-full bg-krem border border-garis rounded-xl px-3 py-2.5 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 resize-none" 
+                  placeholder="Tuliskan pesan pengantar di sini..."
+                ></textarea>
+                <p className="text-[10px] text-teks-400 mt-2 italic">
+                  *Catatan: Sistem akan otomatis menambahkan rincian nominal tagihan dan link pembayaran di bawah teks ini.
+                </p>
+              </div>
+
+              <div className="flex justify-end gap-2.5 mt-6 pt-4 border-t border-garis">
+                <button 
+                  type="button" 
+                  onClick={() => setIsBlastModalOpen(false)} 
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-teks-500 bg-krem hover:bg-garis/30 transition-colors"
+                >
+                  Batal
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-hijau-900 hover:bg-hijau-800 transition-colors shadow-md"
+                >
+                  Simpan Teks
                 </button>
               </div>
             </form>

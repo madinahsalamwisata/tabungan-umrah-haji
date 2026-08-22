@@ -196,6 +196,9 @@ export default function RegisterPage() {
                   className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
                   placeholder="081234567890"
                 />
+                <p className="mt-1.5 text-xs text-red-400/90 font-medium tracking-wide drop-shadow-sm">
+                  *Pastikan nomor ini terhubung ke WhatsApp aktif (kami akan mengirimkan notifikasi resmi melalui nomor +62 856-9515-6701)
+                </p>
               </div>
             </div>
 

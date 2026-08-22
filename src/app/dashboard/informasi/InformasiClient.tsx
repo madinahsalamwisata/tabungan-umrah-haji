@@ -83,7 +83,7 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
         }
       },
       customClass: {
-        popup: '!bg-transparent !p-0 shadow-none',
+        popup: 'custom-swal-announcement !bg-transparent !p-0 shadow-none',
         htmlContainer: '!m-0 !p-0',
         closeButton: '!absolute !top-4 !right-4 !z-20 !w-8 !h-8 !bg-white/50 hover:!bg-white !rounded-full !text-emerald-900 !shadow-sm transition-all focus:!outline-none'
       }

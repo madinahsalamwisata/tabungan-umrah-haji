@@ -83,22 +83,31 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
         formatted = `<u>${selectedText || 'teks'}</u>`;
         cursorOffset = selectedText ? 0 : 4;
         break;
-      case 'bullet':
-        formatted = `\n- ${selectedText}`;
+      case 'bullet': {
+        const prefix = (start > 0 && text[start - 1] !== '\n') ? '\n' : '';
+        formatted = `${prefix}- ${selectedText || 'item'}`;
+        cursorOffset = selectedText ? 0 : 4;
         break;
-      case 'number':
-        formatted = `\n1. ${selectedText}`;
+      }
+      case 'number': {
+        const prefix = (start > 0 && text[start - 1] !== '\n') ? '\n' : '';
+        formatted = `${prefix}1. ${selectedText || 'item'}`;
+        cursorOffset = selectedText ? 0 : 4;
         break;
+      }
     }
+
+    const scrollTop = textarea.scrollTop;
 
     const newContent = text.substring(0, start) + formatted + text.substring(end);
     setKonten(newContent);
 
     // Refocus and place cursor
     setTimeout(() => {
-      textarea.focus();
+      textarea.focus({ preventScroll: true });
       const newCursorPos = start + formatted.length - cursorOffset;
       textarea.setSelectionRange(newCursorPos, newCursorPos);
+      textarea.scrollTop = scrollTop;
     }, 0);
   };
 
@@ -342,7 +351,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-emerald-950/40 backdrop-blur-sm" onClick={() => setSelectedAnnouncement(null)}></div>
           
-          <div className="relative w-full max-w-xl flex flex-col bg-white/95 backdrop-blur-xl rounded-[28px] shadow-2xl overflow-hidden border border-emerald-100/50 animate-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-xl max-h-[90vh] flex flex-col bg-white/95 backdrop-blur-xl rounded-[28px] shadow-2xl overflow-hidden border border-emerald-100/50 animate-in zoom-in-95 duration-200">
             <button 
               onClick={() => setSelectedAnnouncement(null)}
               className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/50 hover:bg-white rounded-full text-emerald-900 shadow-sm transition-all focus:outline-none"
@@ -412,7 +421,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
           
-          <div className="relative w-full max-w-lg bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-7 animate-in zoom-in-95 duration-200 text-left">
+          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto custom-scrollbar-dark bg-white border border-garis rounded-[22px] shadow-2xl p-6 sm:p-7 animate-in zoom-in-95 duration-200 text-left">
             <h2 className="text-base font-bold text-teks-900 mb-5 border-b border-garis pb-3">
               {editingData ? "Edit Pengumuman" : "Buat Pengumuman Baru"}
             </h2>

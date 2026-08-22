@@ -339,55 +339,56 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
 
       {/* ----------------- DETAIL POPUP ----------------- */}
       {selectedAnnouncement && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSelectedAnnouncement(null)}></div>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-emerald-950/40 backdrop-blur-sm" onClick={() => setSelectedAnnouncement(null)}></div>
           
-          <div className="relative w-full max-w-lg bg-white border border-garis rounded-[22px] shadow-2xl p-6 animate-in zoom-in-95 duration-200 text-left flex flex-col max-h-[80vh]">
-            <div className="flex justify-between items-start border-b border-garis pb-3 mb-4 shrink-0">
-              <div className="text-left pr-6">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-base font-bold text-teks-900">{selectedAnnouncement.judul}</h3>
-                  {selectedAnnouncement.is_pinned && (
-                    <span className="status-pill inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border bg-emerald-100 text-emerald-900 border-emerald-250">
-                      📌 Di-pin
-                    </span>
-                  )}
-                  <span className={`status-pill inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border ${
-                    selectedAnnouncement.is_penting 
-                      ? 'bg-gradient-to-r from-emas to-[#E4C877] text-hijau-900 border-emas/30' 
-                      : 'bg-krem text-teks-500 border-garis'
-                  }`}>
-                    {selectedAnnouncement.is_penting ? 'Penting' : 'Biasa'}
-                  </span>
-                </div>
-                <p className="text-[10px] text-teks-500 mt-1">
-                  Disiarkan pada {new Date(selectedAnnouncement.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
-                </p>
-              </div>
-              <button 
-                onClick={() => setSelectedAnnouncement(null)}
-                className="text-teks-300 hover:text-teks-900 p-1"
-              >
-                <svg className="w-5 h-5 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
+          <div className="relative w-full max-w-xl flex flex-col bg-white/95 backdrop-blur-xl rounded-[28px] shadow-2xl overflow-hidden border border-emerald-100/50 animate-in zoom-in-95 duration-200">
+            <button 
+              onClick={() => setSelectedAnnouncement(null)}
+              className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/50 hover:bg-white rounded-full text-emerald-900 shadow-sm transition-all focus:outline-none"
+            >
+              <svg className="w-5 h-5 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+
+            {/* Header Area */}
+            <div className="relative bg-gradient-to-br from-emerald-50 to-emerald-100/50 px-6 sm:px-8 py-6 border-b border-emerald-100 shrink-0">
+               <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                 <svg className="w-24 h-24 text-emerald-900 transform rotate-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11v6h2v-6h-2zm0-4v2h2V7h-2z"/></svg>
+               </div>
+               <div className="relative z-10 pr-8">
+                  <div className="flex items-center gap-2 flex-wrap mb-2">
+                    <h3 className="text-lg sm:text-xl font-extrabold text-emerald-950 leading-tight">{selectedAnnouncement.judul}</h3>
+                    {selectedAnnouncement.is_pinned && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-emerald-100 text-emerald-800 border border-emerald-200">📌 Di-pin</span>
+                    )}
+                    {selectedAnnouncement.is_penting ? (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-amber-100 text-amber-700 border border-amber-200">Penting</span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-gray-100 text-gray-600 border border-gray-200">Biasa</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-emerald-700/70 font-medium">
+                    Disiarkan pada {new Date(selectedAnnouncement.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+                  </p>
+               </div>
             </div>
 
             {/* Scrollable Content Body */}
-            <div className="overflow-y-auto custom-scrollbar flex-1 pr-1 max-h-[300px]">
+            <div className="p-6 sm:p-8">
               <div 
-                className="text-xs text-teks-900 leading-relaxed announcement-content text-justify"
+                className="text-sm text-gray-700 leading-relaxed max-h-[300px] overflow-y-auto pr-3 custom-scrollbar text-justify announcement-content"
                 dangerouslySetInnerHTML={{ __html: parseFormattedText(selectedAnnouncement.konten) }}
               />
             </div>
 
-            {/* Footer with Edit and Delete */}
-            <div className="flex justify-end gap-2.5 mt-6 pt-4 border-t border-garis shrink-0">
+            {/* Footer Area */}
+            <div className="px-6 sm:px-8 py-4 bg-gray-50/80 border-t border-gray-100 flex justify-end gap-2.5 shrink-0">
               <button 
                 type="button" 
                 onClick={() => {
                   handleOpenEdit(selectedAnnouncement);
                   setSelectedAnnouncement(null);
-                }} 
+                }}
                 className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-hijau-900 hover:bg-hijau-800 transition-colors shadow-md flex items-center gap-1.5"
               >
                 <svg className="w-4 h-4 stroke-white stroke-2 fill-none" viewBox="0 0 24 24"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/></svg>

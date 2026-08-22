@@ -43,23 +43,35 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
     Swal.fire({
       showCloseButton: true,
       showConfirmButton: false,
-      background: '#ffffff',
-      backdrop: 'rgba(0,0,0,0.5)',
+      background: 'transparent',
+      backdrop: 'rgba(11, 61, 48, 0.5)',
       html: `
-        <div class="text-left p-6 sm:p-7">
-          <div class="flex items-center gap-2 flex-wrap mb-1.5">
-            <h3 class="text-base font-extrabold text-gray-900 leading-snug text-left" style="text-align: left;">${item.judul}</h3>
-            ${item.is_penting ? '<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase tracking-wide border bg-gradient-to-r from-yellow-500 to-yellow-600 text-white border-yellow-500/30">Penting</span>' : ''}
+        <div class="text-left flex flex-col bg-white/95 backdrop-blur-xl rounded-[28px] shadow-2xl overflow-hidden border border-emerald-100/50">
+          <!-- Header Area -->
+          <div class="relative bg-gradient-to-br from-emerald-50 to-emerald-100/50 px-6 sm:px-8 py-6 border-b border-emerald-100">
+             <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+               <svg class="w-24 h-24 text-emerald-900 transform rotate-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11v6h2v-6h-2zm0-4v2h2V7h-2z"/></svg>
+             </div>
+             <div class="relative z-10 pr-8">
+                <div class="flex items-center gap-2 flex-wrap mb-2">
+                  <h3 class="text-lg sm:text-xl font-extrabold text-emerald-950 leading-tight">${item.judul}</h3>
+                  ${item.is_penting ? '<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-amber-100 text-amber-700 border border-amber-200">Penting</span>' : ''}
+                </div>
+                <p class="text-xs text-emerald-700/70 font-medium">
+                  Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
+                </p>
+             </div>
           </div>
-          <p class="text-[10px] text-gray-400 mt-1 text-left" style="text-align: left;">
-            Disiarkan pada ${formatSafeDate(item.created_at, { dateStyle: 'long' })}
-          </p>
-          <div class="border-t border-gray-100 my-3"></div>
-          <div class="text-xs text-gray-700 leading-relaxed max-h-[250px] overflow-y-auto pr-1.5 text-justify" style="text-align: justify; text-justify: inter-word; scrollbar-width: thin;">${parsedKonten}</div>
-          <div class="border-t border-gray-100 my-3.5"></div>
-          <div class="flex justify-end">
-            <button class="tutup-btn-custom bg-[#146349] hover:bg-[#0B3D30] text-white rounded-xl text-xs font-bold px-5 py-2.5 transition-colors shadow-md cursor-pointer">
-              Tutup
+          
+          <!-- Content Area -->
+          <div class="p-6 sm:p-8">
+            <div class="text-sm text-gray-700 leading-relaxed max-h-[300px] overflow-y-auto pr-3 custom-scrollbar text-justify">${parsedKonten}</div>
+          </div>
+          
+          <!-- Footer Area -->
+          <div class="px-6 sm:px-8 py-4 bg-gray-50/80 border-t border-gray-100 flex justify-end">
+            <button class="tutup-btn-custom inline-flex items-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white rounded-full text-sm font-bold px-7 py-2 transition-all shadow-lg hover:shadow-emerald-900/20 active:scale-95 cursor-pointer">
+              Mengerti
             </button>
           </div>
         </div>
@@ -67,15 +79,13 @@ export default function InformasiClient({ initialPengumuman }: { initialPengumum
       didOpen: () => {
         const btn = Swal.getHtmlContainer()?.querySelector('.tutup-btn-custom');
         if (btn) {
-          btn.addEventListener('click', () => {
-            Swal.close();
-          });
+          btn.addEventListener('click', () => Swal.close());
         }
       },
       customClass: {
-        popup: 'rounded-[22px] border border-gray-100 shadow-2xl !p-0 text-left',
+        popup: '!bg-transparent !p-0 shadow-none',
         htmlContainer: '!m-0 !p-0',
-        closeButton: 'text-gray-300 hover:text-gray-900 !outline-none'
+        closeButton: '!absolute !top-4 !right-4 !z-20 !w-8 !h-8 !bg-white/50 hover:!bg-white !rounded-full !text-emerald-900 !shadow-sm transition-all focus:!outline-none'
       }
     });
   };

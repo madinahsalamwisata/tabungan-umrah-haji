@@ -519,8 +519,8 @@ export default function DashboardClient({
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
                       {formatSafeDate(item.created_at, { day: 'numeric', month: 'short', year: 'numeric' })}
                     </div>
-                    <div className="text-sm font-bold mt-2 line-clamp-2 leading-snug flex items-center gap-1">
-                      {item.is_pinned && <span className="shrink-0 text-xs">📌</span>}
+                    <div className="text-sm font-bold mt-2 leading-snug line-clamp-2" title={item.judul}>
+                      {item.is_pinned && <span className="inline-block mr-1 text-xs">📌</span>}
                       <span>{item.judul}</span>
                     </div>
                   </div>

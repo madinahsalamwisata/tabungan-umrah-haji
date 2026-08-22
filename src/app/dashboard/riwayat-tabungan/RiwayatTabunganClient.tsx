@@ -26,9 +26,6 @@ export default function RiwayatTabunganClient({ riwayatList }: { riwayatList: an
       {/* Header */}
       <div className="md:hidden bg-gradient-to-b from-hijau-900 to-hijau-800 pt-6 pb-5 px-5 sticky top-0 z-20 rounded-b-3xl shadow-sm">
         <div className="flex items-center gap-3">
-          <Link href="/dashboard" className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-          </Link>
           <div className="flex-1">
             <h1 className="text-base font-bold text-white tracking-tight leading-tight">Riwayat Tabungan</h1>
             <p className="text-emerald-50/80 text-[11px] font-medium mt-0.5">Tabungan Lunas & Dibatalkan</p>

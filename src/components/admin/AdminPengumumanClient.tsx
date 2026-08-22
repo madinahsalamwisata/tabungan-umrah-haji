@@ -360,7 +360,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
             </button>
 
             {/* Header Area */}
-            <div className="relative bg-gradient-to-br from-emerald-50 to-emerald-100/50 px-6 sm:px-8 py-6 border-b border-emerald-100 shrink-0">
+            <div className="relative bg-gradient-to-br from-emerald-50 to-emerald-100/50 px-6 sm:px-8 py-6 border-b border-emerald-100 shrink-0 rounded-t-[28px]">
                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                  <svg className="w-24 h-24 text-emerald-900 transform rotate-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11v6h2v-6h-2zm0-4v2h2V7h-2z"/></svg>
                </div>
@@ -391,7 +391,7 @@ export default function AdminPengumumanClient({ initialData }: { initialData: Pe
             </div>
 
             {/* Footer Area */}
-            <div className="px-6 sm:px-8 py-4 bg-gray-50/80 border-t border-gray-100 flex justify-end gap-2.5 shrink-0">
+            <div className="px-6 sm:px-8 py-4 bg-gray-50/80 border-t border-gray-100 flex justify-end gap-2.5 shrink-0 rounded-b-[28px]">
               <button 
                 type="button" 
                 onClick={() => {

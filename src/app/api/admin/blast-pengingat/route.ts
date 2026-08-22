@@ -76,12 +76,23 @@ export async function POST(req: Request) {
           </div>
         `;
 
-        await sendEmail({
-          to: plan.jamaah.email,
-          subject: `Pengingat Pembayaran Cicilan - ${monthString}`,
-          html: emailHtml,
-        });
+        let emailStatus = "Sukses";
+        let emailErrorStr = null;
+        try {
+          await sendEmail({
+            to: plan.jamaah.email,
+            subject: `Pengingat Pembayaran Cicilan - ${monthString}`,
+            html: emailHtml,
+          });
+        } catch (e: any) {
+          console.error("Email Error:", e);
+          emailStatus = "Gagal";
+          emailErrorStr = e.message || "Unknown error";
+        }
 
+        let waStatus = "Pending"; // Default if not sent
+        let waErrorStr = null;
+        
         // Send WhatsApp via Fonnte
         if (plan.jamaah.no_hp) {
           try {
@@ -92,17 +103,41 @@ export async function POST(req: Request) {
             formData.append("message", waMessage);
             formData.append("delay", "2");
 
-            await fetch("https://api.fonnte.com/send", {
+            const res = await fetch("https://api.fonnte.com/send", {
               method: "POST",
               headers: {
                 "Authorization": "DTsroBNVis8j6UFEvvmM"
               },
               body: formData
             });
-          } catch (waError) {
+            const data = await res.json();
+            if (res.ok && data.status) {
+              waStatus = "Sukses";
+            } else {
+              waStatus = "Gagal";
+              waErrorStr = data.reason || data.detail || "Fonnte rejected the request";
+            }
+          } catch (waError: any) {
             console.error("Fonnte WA Error:", waError);
+            waStatus = "Gagal";
+            waErrorStr = waError.message || "Network error";
           }
+        } else {
+           waStatus = "Gagal";
+           waErrorStr = "Nomor WA tidak diisi oleh jamaah";
         }
+
+        // Simpan Riwayat
+        await prisma.riwayatBlast.create({
+          data: {
+            id_jamaah: plan.id_jamaah,
+            jenis_pesan: "Pengingat Cicilan",
+            status_email: emailStatus,
+            status_wa: waStatus,
+            keterangan_email: emailErrorStr,
+            keterangan_wa: waErrorStr
+          }
+        });
 
         sentCount++;
       }

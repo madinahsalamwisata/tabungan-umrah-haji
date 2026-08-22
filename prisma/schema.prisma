@@ -21,6 +21,7 @@ model Jamaah {
   reset_token_expiry DateTime?
   created_at         DateTime          @default(now())
   RencanaTabungan    RencanaTabungan[]
+  RiwayatBlast       RiwayatBlast[]
 }
 
 model Paket {
@@ -89,4 +90,17 @@ model RiwayatSetoran {
 model Setting {
   key   String @id
   value String @db.Text
+}
+
+model RiwayatBlast {
+  id               String   @id @default(uuid())
+  id_jamaah        String
+  jenis_pesan      String   // e.g. "Pengingat Cicilan"
+  status_email     String   // "Sukses", "Gagal", "Pending"
+  status_wa        String   // "Sukses", "Gagal", "Pending"
+  keterangan_email String?  @db.Text
+  keterangan_wa    String?  @db.Text
+  tanggal_kirim    DateTime @default(now())
+
+  jamaah           Jamaah   @relation(fields: [id_jamaah], references: [id])
 }

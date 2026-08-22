@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { MessageCircle } from "lucide-react";
 
 export default function AdminLayout({
   children,
@@ -65,6 +66,11 @@ export default function AdminLayout({
       icon: (props: any) => (
         <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       )
+    },
+    {
+      name: "Riwayat Blast",
+      href: "/admin/riwayat-blast",
+      icon: (props: any) => <MessageCircle {...props} />,
     },
     { 
       name: "Manajemen Paket", 

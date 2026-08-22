@@ -32,6 +32,7 @@ export default async function AdminPaketPage() {
     deskripsi_fasilitas: p.deskripsi_fasilitas,
     poster_url: p.poster_url,
     is_estimasi: p.is_estimasi,
+    is_deleted: p.is_deleted,
     peminat: p.RencanaTabungan.map(rt => {
       const successfulPayments = rt.RiwayatSetoran
         .filter(rs => rs.status_pembayaran === 'Lunas' || rs.status_pembayaran === 'settlement' || rs.status_pembayaran === 'success');

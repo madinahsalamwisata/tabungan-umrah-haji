@@ -72,14 +72,14 @@ export async function POST(req: Request) {
 
     // Menentukan path DOKU VA API berdasarkan bank yang dipilih
     let targetPath = "/bsm-virtual-account/v2/payment-code"; // Default BSI
-    if (bank === "btn") targetPath = "/btn-virtual-account/v2/payment-code";
+    if (bank === "btn") targetPath = "/doku-virtual-account/v2/payment-code"; // Fallback to DOKU VA
     else if (bank === "cimb") targetPath = "/cimb-virtual-account/v2/payment-code";
     else if (bank === "danamon") targetPath = "/danamon-virtual-account/v2/payment-code";
     else if (bank === "bri") targetPath = "/bri-virtual-account/v2/payment-code";
     else if (bank === "bni") targetPath = "/bni-virtual-account/v2/payment-code";
     else if (bank === "maybank") targetPath = "/maybank-virtual-account/v2/payment-code";
     else if (bank === "permata") targetPath = "/permata-virtual-account/v2/payment-code";
-    else if (bank === "sinarmas") targetPath = "/sinarmas-virtual-account/v2/payment-code";
+    else if (bank === "sinarmas") targetPath = "/doku-virtual-account/v2/payment-code"; // Fallback to DOKU VA
 
       const vaInfo: any = {
         expired_time: 60, // 60 menit
@@ -92,8 +92,8 @@ export async function POST(req: Request) {
         vaInfo.merchant_unique_reference = orderId.replace(/-/g, '').substring(0, 12);
         vaInfo.info1 = "Tabungan Umrah";
         vaInfo.info2 = `Cicilan ke-${cicilanKe}`;
-      } else if (bank === "bri") {
-        // BRI fails with "Invalid JSON Format" if we send extra info fields
+      } else if (bank === "bri" || bank === "permata") {
+        // BRI and Permata fail with "Invalid JSON Format" if we send extra info fields
         // Do nothing, just use base vaInfo
       } else {
         // BSI, and others
@@ -106,8 +106,8 @@ export async function POST(req: Request) {
         email: email,
       };
       
-      // BRI API rejects the payload with "Invalid JSON Format" if phone is included
-      if (bank !== "bri") {
+      // BRI and Permata API reject the payload with "Invalid JSON Format" if phone is included
+      if (bank !== "bri" && bank !== "permata") {
         customerInfo.phone = cleanPhone;
       }
 

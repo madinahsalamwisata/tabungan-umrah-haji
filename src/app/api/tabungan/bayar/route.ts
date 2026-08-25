@@ -77,6 +77,7 @@ export async function POST(req: Request) {
     else if (bank === "danamon") targetPath = "/danamon-virtual-account/v2/payment-code";
     else if (bank === "bri") targetPath = "/bri-virtual-account/v2/payment-code";
     else if (bank === "bni") targetPath = "/bni-virtual-account/v2/payment-code";
+    else if (bank === "bjb") targetPath = "/doku-virtual-account/v2/payment-code"; // Fallback to DOKU VA
     else if (bank === "maybank") targetPath = "/maybank-virtual-account/v2/payment-code";
     else if (bank === "permata") targetPath = "/permata-virtual-account/v2/payment-code";
     else if (bank === "sinarmas") targetPath = "/doku-virtual-account/v2/payment-code"; // Fallback to DOKU VA

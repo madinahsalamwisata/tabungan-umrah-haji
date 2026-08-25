@@ -256,6 +256,7 @@ export default function BayarClient({
     bsi: "BSI Virtual Account",
     bri: "BRI Virtual Account (BRIVA)",
     bni: "BNI Virtual Account",
+    bjb: "BJB Virtual Account",
     btn: "BTN Virtual Account",
     cimb: "CIMB Virtual Account",
     danamon: "Danamon Virtual Account",
@@ -425,6 +426,32 @@ export default function BayarClient({
             <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
               <li>Masukkan kartu ATM Danamon dan PIN Anda.</li>
               <li>Pilih menu <strong>Pembayaran</strong> &gt; pilih <strong>Lainnya</strong> &gt; pilih <strong>Virtual Account</strong>.</li>
+              <li>Masukkan Nomor Virtual Account <strong>{vaDetails?.vaNumber}</strong>.</li>
+              <li>Konfirmasi rincian pembayaran dan selesaikan transaksi.</li>
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    if (bank === "bjb") {
+      return (
+        <div className="space-y-3 pt-1 animate-in fade-in duration-200">
+          <div>
+            <h6 className="font-bold text-emerald-900 mb-1">A. Lewat Aplikasi DIGI by bank bjb:</h6>
+            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+              <li>Buka aplikasi <strong>DIGI by bank bjb</strong> di HP Anda.</li>
+              <li>Pilih menu <strong>Beli/Bayar</strong> &gt; pilih <strong>Virtual Account</strong>.</li>
+              <li>Masukkan Nomor Virtual Account: <strong>{vaDetails?.vaNumber}</strong>.</li>
+              <li>Konfirmasikan detail cicilan dan total bayar: <strong>{formatRp(vaDetails?.grossAmount || 0)}</strong>.</li>
+              <li>Masukkan PIN Anda untuk menyelesaikan pembayaran.</li>
+            </ul>
+          </div>
+          <div>
+            <h6 className="font-bold text-emerald-900 mb-1">B. Lewat ATM BJB:</h6>
+            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+              <li>Masukkan kartu ATM BJB dan PIN Anda.</li>
+              <li>Pilih menu <strong>Transaksi Lainnya</strong> &gt; <strong>Pembayaran</strong> &gt; <strong>Virtual Account</strong>.</li>
               <li>Masukkan Nomor Virtual Account <strong>{vaDetails?.vaNumber}</strong>.</li>
               <li>Konfirmasi rincian pembayaran dan selesaikan transaksi.</li>
             </ul>
@@ -662,6 +689,7 @@ export default function BayarClient({
                   { id: "bsi", name: "BSI", desc: "Bank Syariah Indonesia" },
                   { id: "bri", name: "BRI", desc: "Bank Rakyat Indonesia" },
                   { id: "bni", name: "BNI", desc: "Bank Negara Indonesia" },
+                  { id: "bjb", name: "BJB", desc: "Bank Pembangunan Daerah Jawa Barat" },
                   { id: "btn", name: "BTN", desc: "Bank Tabungan Negara" },
                   { id: "cimb", name: "CIMB Niaga", desc: "Bank CIMB Niaga" },
                   { id: "danamon", name: "Danamon", desc: "Bank Danamon" },

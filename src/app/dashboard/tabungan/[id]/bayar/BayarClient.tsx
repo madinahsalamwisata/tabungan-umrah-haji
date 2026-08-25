@@ -254,12 +254,14 @@ export default function BayarClient({
 
   const bankLabels: { [key: string]: string } = {
     bsi: "BSI Virtual Account",
-    bca: "BCA Virtual Account",
-    mandiri: "Mandiri Bill / Multi Payment",
     bri: "BRI Virtual Account (BRIVA)",
     bni: "BNI Virtual Account",
+    btn: "BTN Virtual Account",
     cimb: "CIMB Virtual Account",
-    danamon: "Danamon Virtual Account"
+    danamon: "Danamon Virtual Account",
+    maybank: "Maybank Virtual Account",
+    permata: "Permata Virtual Account",
+    sinarmas: "Sinarmas Virtual Account"
   };
 
   const renderInstructions = () => {
@@ -301,62 +303,25 @@ export default function BayarClient({
       );
     }
 
-    if (bank === "bca") {
+    if (bank === "btn") {
       return (
         <div className="space-y-3 pt-1 animate-in fade-in duration-200">
           <div>
-            <h6 className="font-bold text-emerald-900 mb-1">A. Lewat Aplikasi BCA Mobile (m-BCA):</h6>
+            <h6 className="font-bold text-emerald-900 mb-1">A. Lewat Aplikasi BTN Mobile:</h6>
             <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
-              <li>Buka aplikasi <strong>BCA Mobile</strong> dan masuk ke menu <strong>m-BCA</strong>.</li>
-              <li>Pilih menu <strong>m-Transfer</strong> &gt; pilih <strong>BCA Virtual Account</strong>.</li>
+              <li>Buka aplikasi <strong>BTN Mobile</strong> di HP Anda.</li>
+              <li>Pilih menu <strong>Pembayaran</strong> &gt; pilih <strong>Virtual Account</strong>.</li>
               <li>Masukkan Nomor Virtual Account: <strong>{vaDetails?.vaNumber}</strong>.</li>
               <li>Konfirmasikan detail cicilan dan total bayar: <strong>{formatRp(vaDetails?.grossAmount || 0)}</strong>.</li>
-              <li>Masukkan PIN m-BCA Anda untuk menyelesaikan pembayaran.</li>
+              <li>Masukkan PIN Anda untuk menyelesaikan pembayaran.</li>
             </ul>
           </div>
           <div>
-            <h6 className="font-bold text-emerald-900 mb-1">B. Lewat KlikBCA:</h6>
+            <h6 className="font-bold text-emerald-900 mb-1">B. Lewat ATM BTN:</h6>
             <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
-              <li>Login ke <strong>KlikBCA</strong>.</li>
-              <li>Pilih menu <strong>Transfer Dana</strong> &gt; pilih <strong>Transfer ke BCA Virtual Account</strong>.</li>
-              <li>Masukkan Nomor Virtual Account: <strong>{vaDetails?.vaNumber}</strong>.</li>
-              <li>Lanjutkan transaksi dan masukkan kode respon KeyBCA untuk menyelesaikan.</li>
-            </ul>
-          </div>
-          <div>
-            <h6 className="font-bold text-emerald-900 mb-1">C. Lewat ATM BCA:</h6>
-            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
-              <li>Masukkan kartu ATM BCA dan PIN Anda.</li>
-              <li>Pilih menu <strong>Transaksi Lainnya</strong> &gt; <strong>Transfer</strong> &gt; <strong>Ke Rekening BCA Virtual Account</strong>.</li>
+              <li>Masukkan kartu ATM BTN dan PIN Anda.</li>
+              <li>Pilih menu <strong>Transaksi Lainnya</strong> &gt; <strong>Pembayaran</strong> &gt; <strong>Virtual Account</strong>.</li>
               <li>Masukkan Nomor Virtual Account <strong>{vaDetails?.vaNumber}</strong>.</li>
-              <li>Konfirmasi rincian pembayaran dan selesaikan transaksi.</li>
-            </ul>
-          </div>
-        </div>
-      );
-    }
-
-    if (bank === "mandiri") {
-      return (
-        <div className="space-y-3 pt-1 animate-in fade-in duration-200">
-          <div>
-            <h6 className="font-bold text-emerald-900 mb-1">A. Lewat Aplikasi Livin' by Mandiri:</h6>
-            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
-              <li>Buka aplikasi <strong>Livin' by Mandiri</strong> di HP Anda.</li>
-              <li>Pilih menu <strong>Bayar</strong> &gt; cari/pilih <strong>Multi Payment</strong> (atau cari <strong>Midtrans</strong>).</li>
-              <li>Masukkan Kode Perusahaan (Biller Code): <strong>{vaDetails?.billerCode}</strong>.</li>
-              <li>Masukkan Bill Key (No. VA Mandiri): <strong>{vaDetails?.vaNumber}</strong>.</li>
-              <li>Konfirmasikan detail cicilan dan total bayar: <strong>{formatRp(vaDetails?.grossAmount || 0)}</strong>.</li>
-              <li>Masukkan PIN Livin' Anda untuk menyelesaikan pembayaran.</li>
-            </ul>
-          </div>
-          <div>
-            <h6 className="font-bold text-emerald-900 mb-1">B. Lewat ATM Mandiri:</h6>
-            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
-              <li>Masukkan kartu ATM Mandiri dan PIN Anda.</li>
-              <li>Pilih menu <strong>Bayar/Beli</strong> &gt; pilih <strong>Lainnya</strong> &gt; pilih <strong>Multi Payment</strong>.</li>
-              <li>Masukkan Kode Perusahaan (Biller Code) Midtrans: <strong>{vaDetails?.billerCode}</strong>.</li>
-              <li>Masukkan Bill Key (No. VA Mandiri): <strong>{vaDetails?.vaNumber}</strong>.</li>
               <li>Konfirmasi rincian pembayaran dan selesaikan transaksi.</li>
             </ul>
           </div>
@@ -468,6 +433,84 @@ export default function BayarClient({
       );
     }
 
+    if (bank === "maybank") {
+      return (
+        <div className="space-y-3 pt-1 animate-in fade-in duration-200">
+          <div>
+            <h6 className="font-bold text-emerald-900 mb-1">A. Lewat Aplikasi M2U ID:</h6>
+            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+              <li>Buka aplikasi <strong>M2U ID</strong> di HP Anda.</li>
+              <li>Pilih menu <strong>Bayar Tagihan</strong> &gt; pilih <strong>Virtual Account</strong>.</li>
+              <li>Masukkan Nomor Virtual Account: <strong>{vaDetails?.vaNumber}</strong>.</li>
+              <li>Konfirmasikan detail cicilan dan total bayar: <strong>{formatRp(vaDetails?.grossAmount || 0)}</strong>.</li>
+              <li>Masukkan TAC/PIN Anda untuk menyelesaikan pembayaran.</li>
+            </ul>
+          </div>
+          <div>
+            <h6 className="font-bold text-emerald-900 mb-1">B. Lewat ATM Maybank:</h6>
+            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+              <li>Masukkan kartu ATM Maybank dan PIN Anda.</li>
+              <li>Pilih menu <strong>Pembayaran/Top Up Pulsa</strong> &gt; <strong>Virtual Account</strong>.</li>
+              <li>Masukkan Nomor Virtual Account <strong>{vaDetails?.vaNumber}</strong>.</li>
+              <li>Konfirmasi rincian pembayaran dan selesaikan transaksi.</li>
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    if (bank === "permata") {
+      return (
+        <div className="space-y-3 pt-1 animate-in fade-in duration-200">
+          <div>
+            <h6 className="font-bold text-emerald-900 mb-1">A. Lewat Aplikasi PermataMobile X:</h6>
+            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+              <li>Buka aplikasi <strong>PermataMobile X</strong> di HP Anda.</li>
+              <li>Pilih menu <strong>Bayar Tagihan</strong> &gt; pilih <strong>Virtual Account</strong>.</li>
+              <li>Masukkan Nomor Virtual Account: <strong>{vaDetails?.vaNumber}</strong>.</li>
+              <li>Konfirmasikan detail cicilan dan total bayar: <strong>{formatRp(vaDetails?.grossAmount || 0)}</strong>.</li>
+              <li>Selesaikan pembayaran.</li>
+            </ul>
+          </div>
+          <div>
+            <h6 className="font-bold text-emerald-900 mb-1">B. Lewat ATM Permata:</h6>
+            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+              <li>Masukkan kartu ATM Permata dan PIN Anda.</li>
+              <li>Pilih menu <strong>Transaksi Lainnya</strong> &gt; <strong>Pembayaran</strong> &gt; <strong>Pembayaran Lainnya</strong> &gt; <strong>Virtual Account</strong>.</li>
+              <li>Masukkan Nomor Virtual Account <strong>{vaDetails?.vaNumber}</strong>.</li>
+              <li>Konfirmasi rincian pembayaran dan selesaikan transaksi.</li>
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    if (bank === "sinarmas") {
+      return (
+        <div className="space-y-3 pt-1 animate-in fade-in duration-200">
+          <div>
+            <h6 className="font-bold text-emerald-900 mb-1">A. Lewat Aplikasi SimobiPlus:</h6>
+            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+              <li>Buka aplikasi <strong>SimobiPlus</strong> di HP Anda.</li>
+              <li>Pilih menu <strong>Pay/Bayar</strong> &gt; pilih <strong>Virtual Account</strong>.</li>
+              <li>Masukkan Nomor Virtual Account: <strong>{vaDetails?.vaNumber}</strong>.</li>
+              <li>Konfirmasikan detail cicilan dan total bayar: <strong>{formatRp(vaDetails?.grossAmount || 0)}</strong>.</li>
+              <li>Masukkan EasyPIN Anda untuk menyelesaikan pembayaran.</li>
+            </ul>
+          </div>
+          <div>
+            <h6 className="font-bold text-emerald-900 mb-1">B. Lewat ATM Sinarmas:</h6>
+            <ul className="list-decimal pl-4 space-y-1 text-emerald-950/80">
+              <li>Masukkan kartu ATM Sinarmas dan PIN Anda.</li>
+              <li>Pilih menu <strong>Pembayaran</strong> &gt; <strong>Virtual Account</strong>.</li>
+              <li>Masukkan Nomor Virtual Account <strong>{vaDetails?.vaNumber}</strong>.</li>
+              <li>Konfirmasi rincian pembayaran dan selesaikan transaksi.</li>
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
     return null;
   };
 
@@ -494,46 +537,6 @@ export default function BayarClient({
                 <span className="text-xs font-semibold px-2 py-0.5 bg-emerald-800 rounded-md animate-pulse">Pending</span>
               </div>
               
-              {vaDetails.bankName.toLowerCase() === "mandiri" ? (
-                <div className="flex flex-col gap-3.5 mb-4">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-emerald-300/80 mb-1.5">Kode Perusahaan (Biller Code)</span>
-                    <div className="flex items-center justify-between gap-2 bg-black/20 px-3 py-2 rounded-xl border border-white/5">
-                      <span className="text-base sm:text-lg md:text-xl font-mono font-bold tracking-normal sm:tracking-widest break-all select-all">
-                        {vaDetails.billerCode}
-                      </span>
-                      <button 
-                        onClick={() => copyToClipboard(vaDetails.billerCode || "", "Kode Biller")}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer"
-                        title="Salin Kode Biller"
-                      >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                        </svg>
-                        Salin
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-emerald-300/80 mb-1.5">Bill Key (No. Rekening Mandiri VA)</span>
-                    <div className="flex items-center justify-between gap-2 bg-black/20 px-3 py-2 rounded-xl border border-white/5">
-                      <span className="text-base sm:text-lg md:text-xl font-mono font-bold tracking-normal sm:tracking-widest break-all select-all">
-                        {vaDetails.vaNumber}
-                      </span>
-                      <button 
-                        onClick={() => copyToClipboard(vaDetails.vaNumber, "Nomor Bill Key")}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer"
-                        title="Salin Bill Key"
-                      >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                        </svg>
-                        Salin
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
                 <div className="flex flex-col mb-4">
                   <span className="text-[10px] text-emerald-300/80 mb-1.5">Nomor Virtual Account</span>
                   <div className="flex items-center justify-between gap-2 bg-black/20 px-3 py-2.5 rounded-xl border border-white/5">
@@ -552,7 +555,6 @@ export default function BayarClient({
                     </button>
                   </div>
                 </div>
-              )}
               
               <div className="flex justify-between items-end border-t border-white/10 pt-3">
                 <div className="flex flex-col">
@@ -608,18 +610,8 @@ export default function BayarClient({
                     <h6 className="font-bold text-emerald-900 mb-1">Cara Transfer dari Bank Lain (BCA, Mandiri, BRI, dll):</h6>
                     <ul className="list-decimal pl-4 space-y-1">
                       <li>Buka aplikasi M-Banking atau pergi ke ATM bank Anda.</li>
-                      <li>Pilih menu <strong>Transfer ke Bank Lain</strong> (Transfer Antar Bank).</li>
-                      {vaDetails.bankName.toLowerCase() === "mandiri" ? (
-                        <>
-                          <li>Pilih Bank Tujuan: <strong>Bank Mandiri</strong> (Kode Bank: <strong>008</strong>).</li>
-                          <li>Masukkan nomor rekening tujuan (gabungan kode biller + bill key): <strong>{vaDetails.billerCode}{vaDetails.vaNumber}</strong>.</li>
-                        </>
-                      ) : (
-                        <>
-                          <li>Pilih Bank Tujuan: <strong>{bankLabels[vaDetails.bankName.toLowerCase()]?.split(" ")[0]}</strong>.</li>
-                          <li>Masukkan nomor rekening tujuan: Nomor VA <strong>{vaDetails.vaNumber}</strong>.</li>
-                        </>
-                      )}
+                      <li>Pilih Bank Tujuan: <strong>{bankLabels[vaDetails.bankName.toLowerCase()]?.split(" ")[0]}</strong>.</li>
+                      <li>Masukkan nomor rekening tujuan: Nomor VA <strong>{vaDetails.vaNumber}</strong>.</li>
                       <li>Masukkan nominal transfer: <strong>{formatRp(vaDetails.grossAmount)}</strong> (jumlah harus sama persis).</li>
                       <li>Saat konfirmasi transfer, pastikan nama rekening tujuan yang muncul adalah <strong>MIDTRANS - [Nama Jamaah]</strong>.</li>
                       <li>Selesaikan pembayaran.</li>
@@ -668,10 +660,14 @@ export default function BayarClient({
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { id: "bsi", name: "BSI", desc: "Bank Syariah Indonesia" },
-                  { id: "bca", name: "BCA", desc: "Bank Central Asia" },
-                  { id: "mandiri", name: "Mandiri", desc: "Bank Mandiri" },
                   { id: "bri", name: "BRI", desc: "Bank Rakyat Indonesia" },
                   { id: "bni", name: "BNI", desc: "Bank Negara Indonesia" },
+                  { id: "btn", name: "BTN", desc: "Bank Tabungan Negara" },
+                  { id: "cimb", name: "CIMB Niaga", desc: "Bank CIMB Niaga" },
+                  { id: "danamon", name: "Danamon", desc: "Bank Danamon" },
+                  { id: "maybank", name: "Maybank", desc: "Bank Maybank" },
+                  { id: "permata", name: "Permata", desc: "Bank Permata" },
+                  { id: "sinarmas", name: "Sinarmas", desc: "Bank Sinarmas" },
                 ].map((b) => (
                   <button
                     key={b.id}

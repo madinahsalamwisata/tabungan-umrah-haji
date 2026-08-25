@@ -72,12 +72,14 @@ export async function POST(req: Request) {
 
     // Menentukan path DOKU VA API berdasarkan bank yang dipilih
     let targetPath = "/bsm-virtual-account/v2/payment-code"; // Default BSI
-    if (bank === "bca") targetPath = "/bca-virtual-account/v2/payment-code";
-    else if (bank === "mandiri") targetPath = "/mandiri-virtual-account/v2/payment-code";
-    else if (bank === "bri") targetPath = "/bri-virtual-account/v2/payment-code";
-    else if (bank === "bni") targetPath = "/bni-virtual-account/v2/payment-code";
+    if (bank === "btn") targetPath = "/btn-virtual-account/v2/payment-code";
     else if (bank === "cimb") targetPath = "/cimb-virtual-account/v2/payment-code";
     else if (bank === "danamon") targetPath = "/danamon-virtual-account/v2/payment-code";
+    else if (bank === "bri") targetPath = "/bri-virtual-account/v2/payment-code";
+    else if (bank === "bni") targetPath = "/bni-virtual-account/v2/payment-code";
+    else if (bank === "maybank") targetPath = "/maybank-virtual-account/v2/payment-code";
+    else if (bank === "permata") targetPath = "/permata-virtual-account/v2/payment-code";
+    else if (bank === "sinarmas") targetPath = "/sinarmas-virtual-account/v2/payment-code";
 
       const vaInfo: any = {
         expired_time: 60, // 60 menit
@@ -94,7 +96,7 @@ export async function POST(req: Request) {
         // BRI fails with "Invalid JSON Format" if we send extra info fields
         // Do nothing, just use base vaInfo
       } else {
-        // BSI, Mandiri, and others
+        // BSI, and others
         vaInfo.info1 = "Tabungan Umrah";
         vaInfo.info2 = `Cicilan ke-${cicilanKe}`;
       }
@@ -144,14 +146,6 @@ export async function POST(req: Request) {
     const vaNumber = data.virtual_account_info?.virtual_account_number || null;
     const expiryTime = data.virtual_account_info?.expired_date || null;
     let billerCode = null;
-
-    if (bank === "mandiri") {
-        // Jika DOKU mandiri VA, biller code biasanya bisa diambil dari data, atau fix misalnya 89022
-        // Kita fallback ke prefix VA mandiri dari DOKU
-        billerCode = "89022"; // 89022 adalah Company Code DOKU di Mandiri. Silakan sesuaikan jika beda di production.
-        // VA number dari response DOKU kadang sudah mencakup biller code, atau dipisah.
-        // DOKU biasanya mengembalikan virtual_account_number lengkap.
-    }
 
     return NextResponse.json({ 
       va_number: vaNumber,

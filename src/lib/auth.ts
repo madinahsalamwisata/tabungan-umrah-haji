@@ -37,6 +37,10 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Password salah");
         }
 
+        if (!user.is_verified) {
+          throw new Error("unverified");
+        }
+
         return {
           id: user.id,
           email: user.email,

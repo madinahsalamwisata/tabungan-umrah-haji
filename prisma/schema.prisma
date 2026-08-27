@@ -19,6 +19,8 @@ model Jamaah {
   password_plain     String?
   reset_token        String?
   reset_token_expiry DateTime?
+  is_verified        Boolean           @default(false)
+  verification_token String?
   created_at         DateTime          @default(now())
   RencanaTabungan    RencanaTabungan[]
   RiwayatBlast       RiwayatBlast[]

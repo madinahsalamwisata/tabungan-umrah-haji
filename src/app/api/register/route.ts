@@ -42,6 +42,7 @@ export async function POST(req: Request) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const verificationToken = crypto.randomUUID();
 
     const newUser = await prisma.jamaah.create({
       data: {
@@ -52,6 +53,8 @@ export async function POST(req: Request) {
         alamat: "", // Default to empty string since database still enforces NOT NULL
         password_hash: hashedPassword,
         password_plain: password,
+        is_verified: false,
+        verification_token: verificationToken,
       },
     });
 
@@ -69,9 +72,9 @@ export async function POST(req: Request) {
           <li><strong>Email:</strong> ${email}</li>
           <li><strong>No. HP/WA:</strong> ${no_hp}</li>
         </ul>
-        <p>Sekarang Anda dapat masuk ke dalam dashboard untuk memulai perencanaan tabungan Umrah atau Haji Anda bersama kami.</p>
+        <p>Sebelum Anda dapat masuk, Anda harus memverifikasi alamat email Anda dengan menekan tombol di bawah ini:</p>
         <div style="text-align: center; margin-top: 30px;">
-          <a href="https://tabunganhajiumrahku.com/login" style="background-color: #facc15; color: #064e3b; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">Masuk ke Akun Anda</a>
+          <a href="${process.env.NEXTAUTH_URL}/api/verify?token=${verificationToken}" style="background-color: #facc15; color: #064e3b; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">Verifikasi Akun Anda</a>
         </div>
         <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">
           Jika Anda tidak merasa mendaftar di situs kami, silakan abaikan email ini.

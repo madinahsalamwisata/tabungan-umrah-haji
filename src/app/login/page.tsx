@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 function LoginForm() {
   const router = useRouter();
@@ -16,6 +17,7 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const images = [
     "/images/bg/makkah_thumbnail.webp",
@@ -54,7 +56,11 @@ function LoginForm() {
       });
 
       if (res?.error) {
-        setError("Email atau kata sandi salah");
+        if (res.error === "unverified") {
+          setError("unverified");
+        } else {
+          setError("Email atau kata sandi salah");
+        }
       } else {
         if (form.email.toLowerCase() === "madinahsalamwisata@gmail.com") {
           router.push("/admin");
@@ -124,7 +130,7 @@ function LoginForm() {
         {/* Glassmorphism Container */}
         <div className="backdrop-blur-md bg-white/10 py-6 px-4 shadow-2xl rounded-2xl sm:px-10 border border-white/20">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {error && (
+            {error && error !== "unverified" && (
               <div className="bg-red-500/20 backdrop-blur-sm border-l-4 border-red-500 p-4 rounded-md">
                 <div className="flex">
                   <div className="ml-3">
@@ -182,20 +188,36 @@ function LoginForm() {
                   </Link>
                 </div>
               </div>
-              <div className="mt-1">
+              <div className="mt-1 relative">
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={form.password}
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
-                  className="appearance-none block w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
+                  className="appearance-none block w-full px-3 py-2 pr-10 bg-black/20 border border-white/20 rounded-md shadow-sm placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-black/40 sm:text-sm transition-all"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" aria-hidden="true" />
+                  ) : (
+                    <Eye className="h-5 w-5" aria-hidden="true" />
+                  )}
+                </button>
               </div>
+              {error === "unverified" && (
+                <p className="mt-2 text-sm text-red-400 font-medium bg-red-900/40 p-2 rounded border border-red-500/30">
+                  Anda harus verifikasi akun terlebih dahulu melalui email yang telah kami kirim.
+                </p>
+              )}
             </div>
 
             <div>

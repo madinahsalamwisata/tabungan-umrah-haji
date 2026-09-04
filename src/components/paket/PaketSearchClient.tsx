@@ -225,9 +225,13 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
             const formatShortCurrency = (val: number) => `Rp ${(val / 1000000).toLocaleString('id-ID', {maximumFractionDigits: 1})} jt`;
 
             const diskon = Number(paket.diskon) || 0;
-            const originalQuad = Number(paket.harga_quad) + diskon;
-            const originalTriple = Number(paket.harga_triple) + diskon;
-            const originalDouble = Number(paket.harga_double) + diskon;
+            const originalQuad = Number(paket.harga_quad);
+            const originalTriple = Number(paket.harga_triple);
+            const originalDouble = Number(paket.harga_double);
+            
+            const finalQuad = Math.max(0, originalQuad - diskon);
+            const finalTriple = Math.max(0, originalTriple - diskon);
+            const finalDouble = Math.max(0, originalDouble - diskon);
 
             // Split fasilitas into an array
             const fasilitasArray = paket.deskripsi_fasilitas 
@@ -308,7 +312,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                       <div className="w-full sm:w-auto">
                         <p className="text-xs text-gray-900 mb-0.5 drop-shadow-sm font-medium">Mulai dari (Quad)</p>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-black text-emerald-900 drop-shadow-md">{formatShortCurrency(Number(paket.harga_quad))}</span>
+                          <span className="text-2xl font-black text-emerald-900 drop-shadow-md">{formatShortCurrency(finalQuad)}</span>
                           {diskon > 0 && (
                             <span className="text-xs text-gray-400 line-through">{formatCurrency(originalQuad)}</span>
                           )}
@@ -319,15 +323,15 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                         <div className="flex flex-col gap-1 text-right text-gray-900 font-medium">
                           <div className="flex justify-between sm:justify-end gap-2.5">
                             <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Quad:</span>
-                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_quad))}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalQuad)}</span>}</span>
+                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(finalQuad)}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalQuad)}</span>}</span>
                           </div>
                           <div className="flex justify-between sm:justify-end gap-2.5">
                             <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Triple:</span>
-                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_triple))}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalTriple)}</span>}</span>
+                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(finalTriple)}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalTriple)}</span>}</span>
                           </div>
                           <div className="flex justify-between sm:justify-end gap-2.5">
                             <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> Double:</span>
-                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_double))}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalDouble)}</span>}</span>
+                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(finalDouble)}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalDouble)}</span>}</span>
                           </div>
                         </div>
 
@@ -404,15 +408,15 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     <div className="bg-krem/40 rounded-xl p-3 border border-garis/60 space-y-2">
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-teks-500 font-medium">Quad (Ber-4)</span>
-                        <span className="font-bold text-teks-900">{formatCurrency(Number(paket.harga_quad))}</span>
+                        <span className="font-bold text-teks-900">{formatCurrency(finalQuad)}</span>
                       </div>
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-teks-500 font-medium">Triple (Ber-3)</span>
-                        <span className="font-bold text-teks-900">{formatCurrency(Number(paket.harga_triple))}</span>
+                        <span className="font-bold text-teks-900">{formatCurrency(finalTriple)}</span>
                       </div>
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-teks-500 font-medium">Double (Ber-2)</span>
-                        <span className="font-bold text-teks-900">{formatCurrency(Number(paket.harga_double))}</span>
+                        <span className="font-bold text-teks-900">{formatCurrency(finalDouble)}</span>
                       </div>
                     </div>
 

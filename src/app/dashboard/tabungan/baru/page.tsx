@@ -45,6 +45,7 @@ export default async function TabunganBaruPage(props: {
     harga_quad: paket.harga_quad.toString(),
     harga_triple: paket.harga_triple.toString(),
     harga_double: paket.harga_double.toString(),
+    diskon: paket.diskon?.toString() || "0",
     kuota: paket.kuota,
     deskripsi_fasilitas: paket.deskripsi_fasilitas,
     poster_url: paket.poster_url,

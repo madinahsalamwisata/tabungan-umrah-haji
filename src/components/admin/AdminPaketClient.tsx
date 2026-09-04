@@ -385,15 +385,15 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                     <div className="grid grid-cols-3 gap-2 mt-4 pt-3.5 border-t border-garis/60">
                       <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
                         <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Quad</div>
-                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_quad.toLocaleString('id-ID')}</div>
+                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {Math.max(0, Number(item.harga_quad) - (Number(item.diskon) || 0)).toLocaleString('id-ID')}</div>
                       </div>
                       <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
                         <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Triple</div>
-                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_triple.toLocaleString('id-ID')}</div>
+                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {Math.max(0, Number(item.harga_triple) - (Number(item.diskon) || 0)).toLocaleString('id-ID')}</div>
                       </div>
                       <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
                         <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Double</div>
-                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_double.toLocaleString('id-ID')}</div>
+                        <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {Math.max(0, Number(item.harga_double) - (Number(item.diskon) || 0)).toLocaleString('id-ID')}</div>
                       </div>
                     </div>
                   </div>
@@ -447,15 +447,15 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                   <div className="grid grid-cols-3 gap-2 mt-4 pt-3.5 border-t border-garis/60">
                     <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
                       <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Quad</div>
-                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_quad.toLocaleString('id-ID')}</div>
+                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {Math.max(0, Number(item.harga_quad) - (Number(item.diskon) || 0)).toLocaleString('id-ID')}</div>
                     </div>
                     <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
                       <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Triple</div>
-                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_triple.toLocaleString('id-ID')}</div>
+                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {Math.max(0, Number(item.harga_triple) - (Number(item.diskon) || 0)).toLocaleString('id-ID')}</div>
                     </div>
                     <div className="text-center bg-krem p-1.5 rounded-lg border border-garis/30">
                       <div className="text-[8.5px] uppercase tracking-wider text-teks-300 font-extrabold">Double</div>
-                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {item.harga_double.toLocaleString('id-ID')}</div>
+                      <div className="text-[11px] font-bold text-teks-900 mt-0.5">Rp {Math.max(0, Number(item.harga_double) - (Number(item.diskon) || 0)).toLocaleString('id-ID')}</div>
                     </div>
                   </div>
                 </div>

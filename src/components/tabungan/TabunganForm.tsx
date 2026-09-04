@@ -33,14 +33,16 @@ export default function TabunganForm({ paket, maxBulan = 24 }: { paket: any, max
       .catch(err => console.error("Error fetching terms", err));
   }, []);
 
-  // Dapatkan harga sesuai jenis kamar
   const getHargaKamar = () => {
+    let harga = 0;
     switch(jenisKamar) {
-      case "Quad": return Number(paket.harga_quad);
-      case "Triple": return Number(paket.harga_triple);
-      case "Double": return Number(paket.harga_double);
-      default: return Number(paket.harga_quad);
+      case "Quad": harga = Number(paket.harga_quad); break;
+      case "Triple": harga = Number(paket.harga_triple); break;
+      case "Double": harga = Number(paket.harga_double); break;
+      default: harga = Number(paket.harga_quad); break;
     }
+    const diskon = Number(paket.diskon) || 0;
+    return Math.max(0, harga - diskon);
   };
 
   const hargaPerOrang = getHargaKamar();

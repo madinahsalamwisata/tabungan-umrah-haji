@@ -58,6 +58,9 @@ export async function PUT(req: Request) {
     if (jenis_kamar === "Quad") hargaPerOrang = Number(rencana.paket.harga_quad);
     else if (jenis_kamar === "Triple") hargaPerOrang = Number(rencana.paket.harga_triple);
     else if (jenis_kamar === "Double") hargaPerOrang = Number(rencana.paket.harga_double);
+    
+    const diskon = Number(rencana.paket.diskon) || 0;
+    hargaPerOrang = Math.max(0, hargaPerOrang - diskon);
 
     const totalBiayaBaru = hargaPerOrang * Number(jumlah_jamaah);
     

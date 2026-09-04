@@ -40,6 +40,7 @@ export async function GET() {
       poster_url: p.poster_url,
       is_estimasi: p.is_estimasi,
       is_deleted: p.is_deleted,
+      diskon: Number(p.diskon || 0),
       peminat: p.RencanaTabungan.map(rt => {
         const successfulPayments = rt.RiwayatSetoran
           .filter(rs => rs.status_pembayaran === 'Lunas' || rs.status_pembayaran === 'settlement' || rs.status_pembayaran === 'success');
@@ -98,7 +99,8 @@ export async function POST(req: Request) {
         kuota: parseInt(body.kuota),
         deskripsi_fasilitas: body.deskripsi_fasilitas,
         poster_url: body.poster_url || null,
-        is_estimasi: body.is_estimasi || false
+        is_estimasi: body.is_estimasi || false,
+        diskon: body.diskon ? Number(body.diskon) : 0
       }
     });
 
@@ -135,7 +137,8 @@ export async function PUT(req: Request) {
         kuota: parseInt(body.kuota),
         deskripsi_fasilitas: body.deskripsi_fasilitas,
         poster_url: body.poster_url || null,
-        is_estimasi: body.is_estimasi || false
+        is_estimasi: body.is_estimasi || false,
+        diskon: body.diskon ? Number(body.diskon) : 0
       }
     });
 

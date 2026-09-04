@@ -36,6 +36,7 @@ type PaketData = {
   poster_url: string | null;
   is_estimasi: boolean;
   is_deleted: boolean;
+  diskon?: number;
   peminat: PeminatItem[];
 };
 
@@ -207,6 +208,7 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
       kuota: parseInt(formData.get("kuota") as string),
       poster_url: posterUrl,
       is_estimasi: formData.get("is_estimasi") === "on",
+      diskon: parseFloat(formData.get("diskon") as string) || 0,
     };
 
     // If it's estimasi, we save date as the first of selected month (e.g. YYYY-MM-01)
@@ -1209,6 +1211,16 @@ export default function AdminPaketClient({ initialData }: { initialData: PaketDa
                     defaultValue={editingData?.kuota} 
                     required 
                     className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-extrabold text-teks-500 uppercase tracking-wider mb-1">Nominal Diskon (Harga Coret)</label>
+                  <input 
+                    type="number" 
+                    name="diskon" 
+                    defaultValue={editingData?.diskon || 0} 
+                    className="w-full bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900" 
+                    placeholder="Isi 0 jika tidak ada diskon"
                   />
                 </div>
 

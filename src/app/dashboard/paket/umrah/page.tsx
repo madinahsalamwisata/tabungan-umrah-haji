@@ -65,6 +65,7 @@ export default async function PaketPage() {
     deskripsi_fasilitas: paket.deskripsi_fasilitas,
     poster_url: paket.poster_url,
     is_estimasi: paket.is_estimasi,
+    diskon: paket.diskon.toString(),
   }));
 
   const rencanaTabunganList = await prisma.rencanaTabungan.findMany({

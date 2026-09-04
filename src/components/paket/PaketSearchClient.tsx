@@ -113,6 +113,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
             deskripsi_fasilitas: paket.deskripsi_fasilitas,
             poster_url: paket.poster_url,
             is_estimasi: paket.is_estimasi,
+            diskon: paket.diskon,
           }));
 
           if (active) {
@@ -223,7 +224,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
             const formatCurrency = (val: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
             const formatShortCurrency = (val: number) => `Rp ${(val / 1000000).toLocaleString('id-ID', {maximumFractionDigits: 1})} jt`;
 
-            const diskon = 1000000;
+            const diskon = Number(paket.diskon) || 0;
             const originalQuad = Number(paket.harga_quad) + diskon;
             const originalTriple = Number(paket.harga_triple) + diskon;
             const originalDouble = Number(paket.harga_double) + diskon;
@@ -257,10 +258,12 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     <div className="absolute top-0 left-0 bg-emerald-900 text-white font-bold px-3 py-1 rounded-br-xl text-xs z-10 shadow-md">
                       {durasiHari} Hari
                     </div>
-                    <div className="absolute top-0 right-0 bg-red-500 text-white font-bold px-3 py-1 rounded-bl-xl text-xs z-10 flex items-center gap-1 shadow-md">
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                      Diskon {formatCurrency(diskon)}
-                    </div>
+                    {diskon > 0 && (
+                      <div className="absolute top-0 right-0 bg-red-500 text-white font-bold px-3 py-1 rounded-bl-xl text-xs z-10 flex items-center gap-1 shadow-md">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Diskon {formatCurrency(diskon)}
+                      </div>
+                    )}
                   </div>
                   
                   {/* Right Side: Content */}
@@ -306,7 +309,9 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                         <p className="text-xs text-gray-900 mb-0.5 drop-shadow-sm font-medium">Mulai dari (Quad)</p>
                         <div className="flex items-baseline gap-2">
                           <span className="text-2xl font-black text-emerald-900 drop-shadow-md">{formatShortCurrency(Number(paket.harga_quad))}</span>
-                          <span className="text-xs text-gray-400 line-through">{formatCurrency(originalQuad)}</span>
+                          {diskon > 0 && (
+                            <span className="text-xs text-gray-400 line-through">{formatCurrency(originalQuad)}</span>
+                          )}
                         </div>
                       </div>
                       
@@ -314,15 +319,15 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                         <div className="flex flex-col gap-1 text-right text-gray-900 font-medium">
                           <div className="flex justify-between sm:justify-end gap-2.5">
                             <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Quad:</span>
-                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_quad))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalQuad)}</span></span>
+                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_quad))}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalQuad)}</span>}</span>
                           </div>
                           <div className="flex justify-between sm:justify-end gap-2.5">
                             <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Triple:</span>
-                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_triple))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalTriple)}</span></span>
+                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_triple))}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalTriple)}</span>}</span>
                           </div>
                           <div className="flex justify-between sm:justify-end gap-2.5">
                             <span className="flex items-center gap-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> Double:</span>
-                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_double))}</strong> <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalDouble)}</span></span>
+                            <span><strong className="text-emerald-900 drop-shadow-sm">{formatCurrency(Number(paket.harga_double))}</strong> {diskon > 0 && <span className="text-gray-400/80 line-through text-[10px]">{formatCurrency(originalDouble)}</span>}</span>
                           </div>
                         </div>
 
@@ -367,9 +372,11 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                     <div className="absolute top-2 left-2 bg-hijau-900 text-white font-bold px-2 py-0.5 rounded-lg text-[10px]">
                       {durasiHari} Hari
                     </div>
-                    <div className="absolute bottom-2 right-2 bg-red-500 text-white font-bold px-2 py-0.5 rounded-lg text-[10px]">
-                      Diskon {formatShortCurrency(diskon)}
-                    </div>
+                    {diskon > 0 && (
+                      <div className="absolute bottom-2 right-2 bg-red-500 text-white font-bold px-2 py-0.5 rounded-lg text-[10px]">
+                        Diskon {formatShortCurrency(diskon)}
+                      </div>
+                    )}
                   </div>
 
                   {/* Content Area */}

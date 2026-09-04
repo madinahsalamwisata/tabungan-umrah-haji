@@ -249,7 +249,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                   {/* Left Side: Image */}
                   <div className="w-full md:w-[280px] shrink-0 relative bg-emerald-900/50 min-h-[200px] md:min-h-full">
                     <img 
-                      src={paket.gambar || "/images/paket-umrah-rabiul-akhir-1448-h.jpeg"} 
+                      src={paket.poster_url || "/images/paket-umrah-rabiul-akhir-1448-h.jpeg"} 
                       alt={paket.nama_paket}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
@@ -360,7 +360,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
                   {/* Image Area */}
                   <div className="relative h-44 bg-krem overflow-hidden">
                     <img 
-                      src={paket.gambar || "/images/paket-umrah-rabiul-akhir-1448-h.jpeg"} 
+                      src={paket.poster_url || "/images/paket-umrah-rabiul-akhir-1448-h.jpeg"} 
                       alt={paket.nama_paket}
                       className="w-full h-full object-cover"
                     />

@@ -83,7 +83,7 @@ export default function TabunganSearchClient({ pakets, activePaketIds }: { paket
     let active = true;
     async function fetchUpdatedPakets() {
       try {
-        const res = await fetch("/api/paket");
+        const res = await fetch("/api/paket?t=" + new Date().getTime(), { cache: "no-store" });
         if (res.ok) {
           const rawPakets: any[] = await res.json();
           

@@ -78,7 +78,7 @@ export default function PaketSearchClient({ pakets, activePaketIds }: { pakets: 
     let active = true;
     async function fetchUpdatedPakets() {
       try {
-        const res = await fetch("/api/paket");
+        const res = await fetch("/api/paket?t=" + new Date().getTime(), { cache: "no-store" });
         if (res.ok) {
           const rawPakets: any[] = await res.json();
           

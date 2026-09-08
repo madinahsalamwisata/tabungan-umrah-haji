@@ -122,24 +122,58 @@ export async function PUT(req: Request) {
       return NextResponse.json({ message: "ID Paket wajib diisi" }, { status: 400 });
     }
 
-    const updated = await prisma.paket.update({
-      where: { id: body.id },
-      data: {
-        nama_paket: body.nama_paket,
-        tanggal_keberangkatan: new Date(body.tanggal_keberangkatan),
-        tanggal_kepulangan: new Date(body.tanggal_kepulangan),
-        hotel_makkah: body.hotel_makkah,
-        hotel_madinah: body.hotel_madinah,
-        maskapai: body.maskapai,
-        harga_quad: body.harga_quad,
-        harga_double: body.harga_double,
-        harga_triple: body.harga_triple,
-        kuota: parseInt(body.kuota),
-        deskripsi_fasilitas: body.deskripsi_fasilitas,
-        poster_url: body.poster_url || null,
-        is_estimasi: body.is_estimasi || false,
-        diskon: body.diskon ? Number(body.diskon) : 0
+    const updated = await prisma.$transaction(async (tx) => {
+      const paket = await tx.paket.update({
+        where: { id: body.id },
+        data: {
+          nama_paket: body.nama_paket,
+          tanggal_keberangkatan: new Date(body.tanggal_keberangkatan),
+          tanggal_kepulangan: new Date(body.tanggal_kepulangan),
+          hotel_makkah: body.hotel_makkah,
+          hotel_madinah: body.hotel_madinah,
+          maskapai: body.maskapai,
+          harga_quad: body.harga_quad,
+          harga_double: body.harga_double,
+          harga_triple: body.harga_triple,
+          kuota: parseInt(body.kuota),
+          deskripsi_fasilitas: body.deskripsi_fasilitas,
+          poster_url: body.poster_url || null,
+          is_estimasi: body.is_estimasi || false,
+          diskon: body.diskon ? Number(body.diskon) : 0
+        }
+      });
+
+      // Update RencanaTabungan yang aktif dan lunas
+      const rencanas = await tx.rencanaTabungan.findMany({
+        where: { id_paket: body.id, status: { in: ["Aktif", "Lunas"] } }
+      });
+
+      for (const rencana of rencanas) {
+        let hargaKamar = 0;
+        if (rencana.jenis_kamar === 'Quad') hargaKamar = Number(paket.harga_quad);
+        else if (rencana.jenis_kamar === 'Triple') hargaKamar = Number(paket.harga_triple);
+        else if (rencana.jenis_kamar === 'Double') hargaKamar = Number(paket.harga_double);
+        else hargaKamar = Number(paket.harga_quad); // default
+
+        const diskon = Number(paket.diskon) || 0;
+        const totalBiayaBaru = Math.max(0, hargaKamar - diskon) * rencana.jumlah_jamaah;
+        const setoranBulanBaru = totalBiayaBaru / rencana.periode_bulan;
+
+        await tx.rencanaTabungan.update({
+          where: { id: rencana.id },
+          data: {
+            total_biaya: totalBiayaBaru,
+            setoran_per_bulan: setoranBulanBaru,
+            paket_snapshot_nama: paket.nama_paket,
+            paket_snapshot_is_estimasi: paket.is_estimasi,
+            paket_snapshot_tanggal_berangkat: paket.tanggal_keberangkatan,
+            paket_snapshot_tanggal_kepulangan: paket.tanggal_kepulangan,
+            paket_snapshot_maskapai: paket.maskapai
+          }
+        });
       }
+
+      return paket;
     });
 
     return NextResponse.json(updated);

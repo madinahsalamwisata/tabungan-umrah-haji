@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const namaJamaah = setoran.rencana_tabungan.jamaah.nama;
     const nominalAngka = Number(setoran.nominal);
     const terbilangText = terbilangRupiah(nominalAngka);
-    const namaPaket = setoran.rencana_tabungan.paket_nama || setoran.rencana_tabungan.paket?.nama_paket || "Paket Dihapus";
+    const namaPaket = setoran.rencana_tabungan.paket_snapshot_nama || setoran.rencana_tabungan.paket?.nama_paket || "Paket Dihapus";
     const untukTeks = `Pembayaran Paket ${namaPaket}`;
 
     // 1. Sync with Google Sheets to get the receipt number

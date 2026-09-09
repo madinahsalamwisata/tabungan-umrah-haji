@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     const untukTeks = `Pembayaran Paket ${namaPaket}`;
 
     // 1. Sync with Google Sheets to get the receipt number
-    const appScriptUrl = "https://script.google.com/macros/s/AKfycbxmO9QYOPiRGEfcVt_nJHj_p8Kn5c26Z22V3NLeGgP4BDp1h8bKx0Y3G13k3tbuhSVZ3A/exec";
+    const appScriptUrl = "https://script.google.com/macros/s/AKfycbyJ42CRNj6_zlDVgQRWXCiAkJatvbfyYkAqN9_SwisfIYE8EElT0vsgI3cRyPRf5OtelA/exec";
     
     // We send empty nomor_surat for now, the App Script (if updated) will handle it.
     // We will instruct the user to update the App Script to construct it, OR we can construct it after getting the number.

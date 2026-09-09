@@ -46,6 +46,39 @@ export default function AdminDashboardClient({ initialSetoran }: { initialSetora
     return matchSearch && matchDate;
   });
 
+  const [printingId, setPrintingId] = useState<string | null>(null);
+
+  const handleCetak = async (id: string, nama: string) => {
+    try {
+      setPrintingId(id);
+      const res = await fetch('/api/admin/kuitansi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transactionId: id })
+      });
+
+      if (!res.ok) {
+        throw new Error('Gagal mencetak kuitansi');
+      }
+
+      // Download file
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Kuitansi_${nama.replace(/\s+/g, '_')}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error(err);
+      alert('Terjadi kesalahan saat mencetak kuitansi.');
+    } finally {
+      setPrintingId(null);
+    }
+  };
+
   return (
     <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden">
       {/* Panel Header */}
@@ -99,7 +132,7 @@ export default function AdminDashboardClient({ initialSetoran }: { initialSetora
                 <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300 bg-white">Paket Tujuan</th>
                 <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300 bg-white">Tanggal Setor</th>
                 <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300 bg-white">Nominal</th>
-                <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300 bg-white">Status</th>
+                <th scope="col" className="px-6 py-3.5 text-[10.5px] font-extrabold uppercase tracking-wider text-teks-300 bg-white w-48">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-garis">
@@ -138,15 +171,31 @@ export default function AdminDashboardClient({ initialSetoran }: { initialSetora
                       Rp {Number(setoran.nominal).toLocaleString('id-ID')}
                     </td>
                     <td className="px-6 py-4 text-left">
-                      <span className={`status-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10.5px] font-extrabold uppercase tracking-wide border ${
-                        isSuccess
-                          ? 'bg-hijau-100 text-hijau-800 border-hijau-200/50'
-                          : isPending
-                          ? 'bg-yellow-50 text-yellow-700 border-yellow-200/50'
-                          : 'bg-red-50 text-red-600 border-red-100/50'
-                      }`}>
-                        {isSuccess ? 'Success' : setoran.status_pembayaran}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className={`status-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10.5px] font-extrabold uppercase tracking-wide border ${
+                          isSuccess
+                            ? 'bg-hijau-100 text-hijau-800 border-hijau-200/50'
+                            : isPending
+                            ? 'bg-yellow-50 text-yellow-700 border-yellow-200/50'
+                            : 'bg-red-50 text-red-600 border-red-100/50'
+                        }`}>
+                          {isSuccess ? 'Success' : setoran.status_pembayaran}
+                        </span>
+                        {isSuccess && (
+                          <button
+                            onClick={() => handleCetak(setoran.id, setoran.rencana_tabungan.jamaah.nama)}
+                            disabled={printingId === setoran.id}
+                            className="p-1.5 rounded-lg bg-krem hover:bg-emas/20 text-emas-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                            title="Cetak Kuitansi"
+                          >
+                            {printingId === setoran.id ? (
+                              <svg className="animate-spin w-4 h-4 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                            ) : (
+                              <svg className="w-4 h-4 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+                            )}
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );

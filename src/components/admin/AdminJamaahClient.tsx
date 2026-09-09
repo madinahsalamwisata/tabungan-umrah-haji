@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -43,6 +43,20 @@ type JamaahData = {
 export default function AdminJamaahClient({ initialData }: { initialData: JamaahData[] }) {
   const router = useRouter();
   const [data, setData] = useState<JamaahData[]>(initialData);
+  
+  // Sync state when server data updates (from router.refresh())
+  useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
+
+  // Auto refresh data every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      router.refresh();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [router]);
+
   const [search, setSearch] = useState("");
   const [selectedJamaahId, _setSelectedJamaahId] = useState<string | null>(() => {
     if (typeof window !== "undefined") {

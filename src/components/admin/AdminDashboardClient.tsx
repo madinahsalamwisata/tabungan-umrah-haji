@@ -21,35 +21,71 @@ interface SetoranItem {
 
 export default function AdminDashboardClient({ initialSetoran }: { initialSetoran: SetoranItem[] }) {
   const [search, setSearch] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const filteredSetoran = initialSetoran.filter((item) => {
     const term = search.toLowerCase();
-    return (
+    const matchSearch = (
       item.rencana_tabungan.jamaah.nama.toLowerCase().includes(term) ||
       item.rencana_tabungan.jamaah.nik.includes(term) ||
       item.rencana_tabungan.paket_nama.toLowerCase().includes(term) ||
       item.status_pembayaran.toLowerCase().includes(term)
     );
+
+    let matchDate = true;
+    if (startDate) {
+      matchDate = matchDate && new Date(item.tanggal_setor) >= new Date(startDate);
+    }
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      matchDate = matchDate && new Date(item.tanggal_setor) <= end;
+    }
+
+    return matchSearch && matchDate;
   });
 
   return (
     <div className="bg-white border border-garis rounded-[22px] shadow-[0_14px_34px_-18px_rgba(11,61,48,0.20)] overflow-hidden">
       {/* Panel Header */}
-      <div className="px-6 py-5 border-b border-garis bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="px-6 py-5 border-b border-garis bg-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div className="text-left">
           <h3 className="text-base font-bold text-teks-900">Aktivitas Transaksi</h3>
           <p className="text-xs text-teks-500 mt-1">Daftar transaksi setoran tabungan terakhir dari jamaah.</p>
         </div>
-        {/* Search Box */}
-        <div className="search flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full sm:w-72 shrink-0">
-          <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input 
-            type="text" 
-            placeholder="Cari transaksi..." 
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
-          />
+        
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+          {/* Date Range Filter */}
+          <div className="flex items-center gap-2">
+            <input 
+              type="date"
+              title="Dari Tanggal"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 w-[120px]"
+            />
+            <span className="text-teks-300 font-bold text-xs">-</span>
+            <input 
+              type="date"
+              title="Sampai Tanggal"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="bg-krem border border-garis rounded-xl px-3 py-2 text-xs text-teks-900 focus:outline-none focus:border-hijau-900 w-[120px]"
+            />
+          </div>
+
+          {/* Search Box */}
+          <div className="search flex items-center gap-2 bg-krem border border-garis rounded-xl px-3.5 py-2 w-full sm:w-64 shrink-0">
+            <svg className="w-4 h-4 stroke-teks-300 stroke-2 fill-none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input 
+              type="text" 
+              placeholder="Cari transaksi..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="border-none bg-transparent outline-none text-xs w-full text-teks-900 font-sans"
+            />
+          </div>
         </div>
       </div>
 
